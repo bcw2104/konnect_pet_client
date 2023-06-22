@@ -1,14 +1,14 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import CustomButton from '../elements/CustomButton';
 import colors from '../../commons/colors';
 import { useStores } from '../../contexts/StoreContext';
 import CustomInput from '../elements/CustomInput';
-import regex from '../../commons/regex';
-import serviceApi from './../../utils/ServiceApis';
+import serviceApis from './../../utils/ServiceApis';
+import { asyncStorage } from '../../storage/Storage';
 
 const DefaultLogin = () => {
-  const { systemStore } = useStores();
+  const { systemStore,userStore } = useStores();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,25 +23,29 @@ const DefaultLogin = () => {
       setPasswordError(true);
       return;
     }
-    try {
-      const payload = {
-        email,
-        password,
-      }
-      const response = await serviceApi.login(payload);
-
-      console.log(response); 
-    } catch (error) {
-      console.log(error);
-    } 
+    const payload = {
+      email,
+      password,
+    }
+    const response = await serviceApis.login(payload);
+    if(response?.rsp_code === "1000"){
+      
+      asyncStorage.setItem('access_token', response.result.accessToken);
+      asyncStorage.setItem('access_token_expire_at', response.result.accessTokenExpireAt);
+      asyncStorage.setItem('refresh_token', response.result.refreshToken);
+      asyncStorage.setItem('refresh_token_expire_at', response.result.refreshTokenExpireAt);
+      setLoginFailed(false);
+      userStore.setLoginStatus(true);
+    }
+    else{
+      setLoginFailed(true);
+    }
   };
   return (
     <View style={styles.form}>
       <CustomInput
-        autoFocus={true}
         onChangeText={setEmail}
-        style={styles.input}
-        width={systemStore.winWidth * 0.8}
+        wrapperStyle={styles.input}
         placeholder='Email'
         keyboardType='email-address'
         errorHandler={emailError}
@@ -50,14 +54,13 @@ const DefaultLogin = () => {
       <CustomInput
         secureTextEntry={true}
         onChangeText={setPassword}
-        style={styles.input}
-        width={systemStore.winWidth * 0.8}
+        wrapperStyle={styles.input}
         placeholder='Password'
         errorHandler={passwordError}
         errorMsg='비밀번호를 입력해주세요.'
       />
       {loginFailed && (
-        <Text style={{ color: colors.danger }}>Invalid email or password</Text>
+        <Text style={styles.loginFailed}>Invalid email or password</Text>
       )}
       <CustomButton
         bgColor={colors.dark}
@@ -65,9 +68,8 @@ const DefaultLogin = () => {
         text='Sign In'
         fontColor={colors.white}
         onPress={loginSubmit}
-        width={systemStore.winWidth * 0.8}
         height={50}
-        styles={styles.submit}
+        wrapperStyle={styles.submit}
       />
     </View>
   );
@@ -81,9 +83,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
+    flex:0.9,
     marginTop: 20,
   },
   submit: {
+    flex:0.9,
     marginTop: 20,
   },
+  loginFailed: {
+    color: colors.danger,
+    marginTop:5,
+    alignSelf: 'flex-start'
+  }
 });

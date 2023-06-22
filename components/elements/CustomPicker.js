@@ -3,19 +3,19 @@ import React from 'react';
 import { useState } from 'react';
 import colors from '../../commons/colors';
 import { useEffect } from 'react';
+import RNPickerSelect from '@react-native-picker/picker';
 
-const CustomInput = ({
+const CustomPicker = ({
   autoFocus = false,
-  secureTextEntry = false,
-  onChangeText = () => {},
+  onValueChange = () => {},
+  items = [],
+  defaultValue = null,
   width = 'auto',
   height = 50,
   wrapperStyle = {},
   style = {},
   placeholder = '',
-  keyboardType = 'default',
-  editable = true,
-  regex = '',
+  disabled = false,
   errorHandler = false,
   errorMsg = '',
 }) => {
@@ -25,22 +25,6 @@ const CustomInput = ({
     setError(errorHandler);
   }, [errorHandler]);
 
-  const onChangeTextWithRegex = (value) => {
-    if (!!regex) {
-      const test = regex.test(value);
-
-      if (!test) {
-        setError(true);
-        onChangeText(null);
-      } else {
-        setError(false);
-        onChangeText(value);
-      }
-    } else {
-      setError(false);
-      onChangeText(value);
-    }
-  };
   return (
     <>
       <View
@@ -51,13 +35,17 @@ const CustomInput = ({
           ...wrapperStyle,
         }}
       >
-        <TextInput
-          autoFocus={autoFocus}
-          secureTextEntry={secureTextEntry}
-          onChangeText={onChangeTextWithRegex}
-          keyboardType={keyboardType}
-          placeholder={placeholder}
-          editable={editable}
+        <RNPickerSelect
+          textInputProps={{ underlineColorAndroid: 'transparent' }}
+          onValueChange={onValueChange}
+          placeholder={{
+            label: { placeholder },
+          }}
+          disabled={disabled}
+          fixAndroidTouchableBug={true}
+          value={defaultValue}
+          useNativeAndroidPickerStyle={false}
+          items={items}
           style={{
             width: width,
             height: height,
@@ -88,4 +76,4 @@ const CustomInput = ({
   );
 };
 
-export default CustomInput;
+export default CustomPicker;

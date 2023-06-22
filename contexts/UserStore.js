@@ -1,11 +1,12 @@
 import { makeAutoObservable } from 'mobx';
+import { utils } from '../utils/Utils';
 
 export default class UserStore {
   _rootStore = null;
   _email = null;
   _password = null;
   _platform = null;
-  _token = null;
+  _isLogin = false;
 
   constructor(rootStore) {
     makeAutoObservable(this);
@@ -22,8 +23,13 @@ export default class UserStore {
     this._password = password;
   }
 
-  updateToken(newToken) {
-    this._token = newToken;
+  setLoginStatus(isLogin) {
+    this._isLogin = isLogin;
+  }
+
+  logout() {
+    this._isLogin = false;
+    utils.resetToken();
   }
 
   get email() {
@@ -37,9 +43,10 @@ export default class UserStore {
     return this._platform;
   }
 
-  get token() {
-    return this._token;
+  get isLogin() {
+    return this._isLogin;
   }
+
   get rootStore() {
     return this._rootStore;
   }
