@@ -3,18 +3,17 @@ import React from 'react';
 import { useState } from 'react';
 import colors from '../../commons/colors';
 import { useEffect } from 'react';
-import RNPickerSelect from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 
 const CustomPicker = ({
-  autoFocus = false,
+  value = '',
   onValueChange = () => {},
   items = [],
-  defaultValue = null,
   width = 'auto',
   height = 50,
   wrapperStyle = {},
   style = {},
-  placeholder = '',
+  itemStyle = {},
   disabled = false,
   errorHandler = false,
   errorMsg = '',
@@ -32,32 +31,33 @@ const CustomPicker = ({
           flexDirection: 'row',
           height: height,
           width: width,
+          borderWidth: 1,
+          borderColor: error ? colors.danger : colors.gray,
+          borderRadius: 5,
+          borderStyle: 'solid',
+          alignItems: 'center',
           ...wrapperStyle,
         }}
       >
-        <RNPickerSelect
-          textInputProps={{ underlineColorAndroid: 'transparent' }}
-          onValueChange={onValueChange}
-          placeholder={{
-            label: { placeholder },
-          }}
-          disabled={disabled}
-          fixAndroidTouchableBug={true}
-          value={defaultValue}
-          useNativeAndroidPickerStyle={false}
-          items={items}
+        <Picker
+          selectedValue={value}
+          onValueChange={(itemValue, itemIndex) => onValueChange(itemValue)}
+          enabled={!disabled}
           style={{
-            width: width,
-            height: height,
-            paddingHorizontal: 10,
-            borderWidth: 1,
-            borderColor: error ? colors.danger : colors.gray,
-            borderRadius: 5,
-            borderStyle: 'solid',
             flex: 1,
             ...style,
           }}
-        />
+          itemStyle={itemStyle}  
+        >
+          {items.map((item, index) => (
+            <Picker.Item
+              key={item.value}
+              label={`${item.label} +${item.value}`}
+              value={item.value}
+              style={itemStyle}
+            />
+          ))}
+        </Picker>
       </View>
       {error && (
         <Text

@@ -7,7 +7,9 @@ import { useEffect } from 'react';
 const CustomInput = ({
   autoFocus = false,
   secureTextEntry = false,
-  onChangeText = () => {},
+  value = '',
+  maxLength = -1,
+  onValueChange = () => {},
   width = 'auto',
   height = 50,
   wrapperStyle = {},
@@ -25,20 +27,24 @@ const CustomInput = ({
     setError(errorHandler);
   }, [errorHandler]);
 
-  const onChangeTextWithRegex = (value) => {
-    if (!!regex) {
+  const onValueChangeWithRegex = (value) => {
+    if(maxLength != -1){
+      if(maxLength < value.length){
+        return;
+      }
+    }
+    if (value.length > 0 && !!regex) {
       const test = regex.test(value);
 
       if (!test) {
         setError(true);
-        onChangeText(null);
       } else {
         setError(false);
-        onChangeText(value);
+        onValueChange(value);
       }
     } else {
       setError(false);
-      onChangeText(value);
+      onValueChange(value);
     }
   };
   return (
@@ -54,7 +60,9 @@ const CustomInput = ({
         <TextInput
           autoFocus={autoFocus}
           secureTextEntry={secureTextEntry}
-          onChangeText={onChangeTextWithRegex}
+          maxLength={maxLength}
+          value={value}
+          onChangeText={onValueChangeWithRegex}
           keyboardType={keyboardType}
           placeholder={placeholder}
           editable={editable}

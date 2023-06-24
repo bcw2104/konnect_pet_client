@@ -2,7 +2,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Container from '../../components/layout/Container'
 
-const SignUpStep2View = () => {
+const SignUpStep2View = (props) => {
+  console.log()
   return (
     <Container>
       <Text>Sign up</Text>

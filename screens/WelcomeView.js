@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite';
 import DefaultLogin from '../components/auth/DefaultLogin';
 import colors from '../commons/colors';
 import Container from '../components/layout/Container';
-import * as Navigator from '../navigations/Navigator';
 import { useBackPressHandler } from '../hooks/useBackPressHandler';
+import { navigate } from '../navigations/Navigator';
 
 const Welcome = () => {
   useBackPressHandler();
@@ -36,7 +36,7 @@ const Welcome = () => {
           <Text style={[styles.optionText, styles.bar]}>|</Text>
           <Pressable
             onPress={() => {
-              Navigator.navigate('signup_step1', {});
+              navigate('signup_step1', {});
             }}
             hitSlop={10}
           >

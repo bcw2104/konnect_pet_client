@@ -3,6 +3,7 @@ import React from 'react';
 import colors from '../../commons/colors';
 
 const CustomButton = ({
+  disabled = false,
   onPress = () => {},
   bgColor = colors.light,
   bgColorPress = colors.lightDeep,
@@ -11,7 +12,7 @@ const CustomButton = ({
   text = '',
   width = 'auto',
   height = 50,
-  wrapperStyle={},
+  wrapperStyle = {},
   styles = {},
 }) => {
   return (
@@ -24,6 +25,7 @@ const CustomButton = ({
       }}
     >
       <Pressable
+        disabled={disabled}
         onPress={onPress}
         style={({ pressed }) => [
           {
@@ -33,7 +35,8 @@ const CustomButton = ({
             borderColor: colors.dark,
             borderWidth: bgColor == colors.light ? 1 : 0,
             backgroundColor: pressed ? bgColorPress : bgColor,
-            flex:1,
+            flex: 1,
+            opacity: disabled ? 0.7 : 1,
             ...styles,
           },
         ]}

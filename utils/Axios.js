@@ -13,7 +13,7 @@ baseAxios.interceptors.response.use(
     if (response.data.rsp_code !== '1000') {
       Toast.show({
         type: 'error',
-        text1: response.data.rsp_msg,
+        text1: response.data.rsp_msg_detail,
       });
     }
     return response.data;
@@ -22,7 +22,11 @@ baseAxios.interceptors.response.use(
   async function (error) {
     const { config: originConfig, response } = error;
     // 토큰 갱신 로직
+
     if (response.data.rsp_code === '9202') {
+      if (originConfig.attempt >= 3) {
+        return Promise.reject(error);
+      }
       const accessToken = await asyncStorage.getItem('access_token');
       const refreshToken = await asyncStorage.getItem('refresh_token');
 
@@ -52,18 +56,24 @@ baseAxios.interceptors.response.use(
             result.data.refreshTokenExpireAt
           );
 
-          axios(originConfig);
+          originConfig.headers.Authorization = `Bearer ${result.data.accessToken}`;
+          originConfig.attempt = !originConfig.attempt
+            ? 1
+            : originConfig.attempt++;
+
+          return await baseAxios.request(originConfig);
         }
       } catch (e) {
         await asyncStorage.resetToken();
         Update.reloadAsync();
+        return Promise.reject(error);
       }
     } else {
       Toast.show({
         type: 'error',
-        text1: response.data?.rsp_msg || 'Please try again later',
+        text1: response.data?.rsp_msg_detail || 'Please try again later',
       });
+      return Promise.reject(error);
     }
-    return response.data;
   }
 );

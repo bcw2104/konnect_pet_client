@@ -23,7 +23,8 @@ const DefaultLogin = () => {
     <View style={styles.form}>
       <CustomInput
         autoFocus={true}
-        onChangeText={setEmail}
+        value={email}
+        onValueChange={setEmail}
         style={styles.input}
         width={systemStore.winWidth * 0.8}
         placeholder='Email'
@@ -33,7 +34,8 @@ const DefaultLogin = () => {
       />
       <CustomInput
         secureTextEntry={true}
-        onChangeText={setPassword}
+        value={password}
+        onValueChange={setPassword}
         style={styles.input}
         width={systemStore.winWidth * 0.8}
         placeholder='Password'

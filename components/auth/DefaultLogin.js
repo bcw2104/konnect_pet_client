@@ -23,11 +23,7 @@ const DefaultLogin = () => {
       setPasswordError(true);
       return;
     }
-    const payload = {
-      email,
-      password,
-    }
-    const response = await serviceApis.login(payload);
+    const response = await serviceApis.login(email,password);
     if(response?.rsp_code === "1000"){
       
       asyncStorage.setItem('access_token', response.result.accessToken);
@@ -44,7 +40,8 @@ const DefaultLogin = () => {
   return (
     <View style={styles.form}>
       <CustomInput
-        onChangeText={setEmail}
+        value={email}
+        onValueChange={setEmail}
         wrapperStyle={styles.input}
         placeholder='Email'
         keyboardType='email-address'
@@ -53,7 +50,8 @@ const DefaultLogin = () => {
       />
       <CustomInput
         secureTextEntry={true}
-        onChangeText={setPassword}
+        value={password}
+        onValueChange={setPassword}
         wrapperStyle={styles.input}
         placeholder='Password'
         errorHandler={passwordError}
