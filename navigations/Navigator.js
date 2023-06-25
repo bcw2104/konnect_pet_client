@@ -1,11 +1,15 @@
 import { createNavigationContainerRef } from '@react-navigation/native';
 
 export const navigationRef = createNavigationContainerRef();
+export const Navigator = {
+  goBack: () => {
+    navigationRef.current?.goBack();
+  },
+  navigate: (name, params) => {
+    navigationRef.current?.navigate(name, params);
+  },
 
-export function navigate(name, params) {
-  navigationRef.current?.navigate(name, params);
-}
-
-export function resetRoot(name, params) {
-  navigationRef.current?.navigate(name, params);
-}
+  reset: (name, params) => {
+    navigationRef.current?.reset(name, params);
+  },
+};

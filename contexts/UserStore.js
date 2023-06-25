@@ -1,10 +1,11 @@
-import { makeAutoObservable } from 'mobx';
-import { utils } from '../utils/Utils';
+import { makeAutoObservable, runInAction } from 'mobx';
+import serviceApis from './../utils/ServiceApis';
+import { asyncStorage } from '../storage/Storage';
 
 export default class UserStore {
   _rootStore = null;
+  _userId = null;
   _email = null;
-  _password = null;
   _platform = null;
   _isLogin = false;
 
@@ -13,14 +14,15 @@ export default class UserStore {
     this._rootStore = rootStore;
   }
 
-  initUserInfo(user) {
-    this._email = user.email;
-    this._platform = user.platform;
-  }
+  async initUserInfo() {
+    const response = await serviceApis.getUserInfo();
 
-  storeJoinDataLevel3(email, password) {
-    this._email = email;
-    this._password = password;
+    runInAction(() => {
+      this._userId = response.result.userId;
+      this._email = response.result.email;
+      this._platform = response.result.platform;
+      this._isLogin = true;
+    });
   }
 
   setLoginStatus(isLogin) {
@@ -29,14 +31,11 @@ export default class UserStore {
 
   logout() {
     this._isLogin = false;
-    utils.resetToken();
+    asyncStorage.resetToken();
   }
 
   get email() {
     return this._email;
-  }
-  get password() {
-    return this._password;
   }
 
   get platform() {

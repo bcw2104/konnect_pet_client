@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomButton from '../elements/CustomButton';
 import colors from '../../commons/colors';
 import { useStores } from '../../contexts/StoreContext';
@@ -8,7 +8,7 @@ import serviceApis from './../../utils/ServiceApis';
 import { asyncStorage } from '../../storage/Storage';
 
 const DefaultLogin = () => {
-  const { systemStore,userStore } = useStores();
+  const { userStore } = useStores();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,26 +17,30 @@ const DefaultLogin = () => {
   const [loginFailed, setLoginFailed] = useState(false);
 
   const loginSubmit = async () => {
-
-    if(!email || !password) {
+    if (!email || !password) {
       setEmailError(true);
       setPasswordError(true);
       return;
     }
-    const response = await serviceApis.login(email,password);
-    if(response?.rsp_code === "1000"){
-      
+    const response = await serviceApis.login(email, password);
+    if (response?.rsp_code === '1000') {
       asyncStorage.setItem('access_token', response.result.accessToken);
-      asyncStorage.setItem('access_token_expire_at', response.result.accessTokenExpireAt);
+      asyncStorage.setItem(
+        'access_token_expire_at',
+        response.result.accessTokenExpireAt
+      );
       asyncStorage.setItem('refresh_token', response.result.refreshToken);
-      asyncStorage.setItem('refresh_token_expire_at', response.result.refreshTokenExpireAt);
+      asyncStorage.setItem(
+        'refresh_token_expire_at',
+        response.result.refreshTokenExpireAt
+      );
       setLoginFailed(false);
-      userStore.setLoginStatus(true);
-    }
-    else{
+      userStore.initUserInfo();
+    } else {
       setLoginFailed(true);
     }
   };
+
   return (
     <View style={styles.form}>
       <CustomInput
@@ -81,16 +85,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    flex:0.9,
+    flex: 0.9,
     marginTop: 20,
   },
   submit: {
-    flex:0.9,
+    flex: 0.9,
     marginTop: 20,
   },
   loginFailed: {
     color: colors.danger,
-    marginTop:5,
-    alignSelf: 'flex-start'
-  }
+    marginTop: 5,
+    alignSelf: 'flex-start',
+  },
 });

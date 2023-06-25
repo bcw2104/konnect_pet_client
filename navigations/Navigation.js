@@ -7,10 +7,11 @@ import { observer } from 'mobx-react-lite';
 import { navigationRef } from './Navigator';
 import { Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import SignUpStep1View from '../screens/signup/SignUpStep1View';
-import SignUpStep2View from '../screens/signup/SignUpStep2View';
-import SignUpStep3View from '../screens/signup/SignUpStep3View';
-import SignUpStep4View from '../screens/signup/SignUpStep4View';
+import SignupStep1View from '../screens/signup/SignupStep1View';
+import SignupStep2View from '../screens/signup/SignupStep2View';
+import SignupStep4View from '../screens/signup/SignupStep4View';
+import TermsView from '../screens/terms/TermsView';
+import SignupStep3View from './../screens/signup/SignupStep3View';
 
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
@@ -23,6 +24,19 @@ const Navigation = () => {
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name='home' component={HomeView}></Stack.Screen>
+          <Stack.Group
+            screenOptions={(props) => ({
+              headerBackVisible: false,
+              headerLeft: () => (
+                <Pressable onPress={props.navigation.goBack}>
+                  <Ionicons name='arrow-back-sharp' size={24} color='black' />
+                </Pressable>
+              ),
+              presentation: 'modal',
+            })}
+          >
+            <Stack.Screen name='terms' component={TermsView}></Stack.Screen>
+          </Stack.Group>
         </Stack.Navigator>
       ) : (
         <Stack.Navigator initialRouteName='welcome'>
@@ -45,20 +59,34 @@ const Navigation = () => {
           >
             <Stack.Screen
               name='signup_step1'
-              component={SignUpStep1View}
+              component={SignupStep1View}
             ></Stack.Screen>
             <Stack.Screen
               name='signup_step2'
-              component={SignUpStep2View}
+              component={SignupStep2View}
             ></Stack.Screen>
             <Stack.Screen
               name='signup_step3'
-              component={SignUpStep3View}
+              component={SignupStep3View}
             ></Stack.Screen>
             <Stack.Screen
               name='signup_step4'
-              component={SignUpStep4View}
+              component={SignupStep4View}
             ></Stack.Screen>
+          </Stack.Group>
+          <Stack.Group
+            screenOptions={(props) => ({
+              headerBackVisible: false,
+              headerTitle: '',
+              headerLeft: () => (
+                <Pressable onPress={props.navigation.goBack}>
+                  <Ionicons name='arrow-back-sharp' size={24} color='black' />
+                </Pressable>
+              ),
+              presentation: 'modal',
+            })}
+          >
+            <Stack.Screen name='terms' component={TermsView}></Stack.Screen>
           </Stack.Group>
         </Stack.Navigator>
       )}

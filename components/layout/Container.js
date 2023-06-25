@@ -2,13 +2,18 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import { useHeaderHeight } from '@react-navigation/elements';
+import colors from '../../commons/colors';
 
-const Container = ({ outerElementHeight = 0,children }) => {
+const Container = ({ outerElementHeight = 0, children }) => {
   const { systemStore } = useStores();
   const headerHeight = useHeaderHeight();
 
   return (
-    <ScrollView>
+    <ScrollView
+      contentContainerStyle={{
+        backgroundColor: colors.white,
+      }}
+    >
       <View
         style={{
           flex: 1,

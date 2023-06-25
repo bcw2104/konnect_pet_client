@@ -6,7 +6,8 @@ import DefaultLogin from '../components/auth/DefaultLogin';
 import colors from '../commons/colors';
 import Container from '../components/layout/Container';
 import { useBackPressHandler } from '../hooks/useBackPressHandler';
-import { navigate } from '../navigations/Navigator';
+import { Navigator } from '../navigations/Navigator';
+import { platform } from '../commons/constants';
 
 const Welcome = () => {
   useBackPressHandler();
@@ -36,7 +37,7 @@ const Welcome = () => {
           <Text style={[styles.optionText, styles.bar]}>|</Text>
           <Pressable
             onPress={() => {
-              navigate('signup_step1', {});
+              Navigator.navigate('signup_step1', { platform: platform.EMAIL });
             }}
             hitSlop={10}
           >

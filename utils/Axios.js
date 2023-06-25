@@ -8,6 +8,18 @@ export const baseAxios = axios.create({
   baseURL: Constants.expoConfig.extra.BASE_API_URL,
 });
 
+baseAxios.interceptors.request.use(async function (config) {
+  const accessToken = await asyncStorage.getItem('access_token');
+
+  if (!!accessToken) {
+    config.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${accessToken}`,
+    };
+  }
+  return config;
+});
+
 baseAxios.interceptors.response.use(
   function (response) {
     if (response.data.rsp_code !== '1000') {
@@ -22,7 +34,7 @@ baseAxios.interceptors.response.use(
   async function (error) {
     const { config: originConfig, response } = error;
     // 토큰 갱신 로직
-
+    
     if (response.data.rsp_code === '9202') {
       if (originConfig.attempt >= 3) {
         return Promise.reject(error);
@@ -45,23 +57,26 @@ baseAxios.interceptors.response.use(
         );
 
         if (result.data.rsp_code == '1000') {
-          asyncStorage.setItem('access_token', result.data.accessToken);
+          asyncStorage.setItem('access_token', result.data.result.accessToken);
           asyncStorage.setItem(
             'access_token_expire_at',
-            result.data.accessTokenExpireAt
+            result.data.result.accessTokenExpireAt
           );
-          asyncStorage.setItem('refresh_token', result.data.refreshToken);
+          asyncStorage.setItem(
+            'refresh_token',
+            result.data.result.refreshToken
+          );
           asyncStorage.setItem(
             'refresh_token_expire_at',
-            result.data.refreshTokenExpireAt
+            result.data.result.refreshTokenExpireAt
           );
 
-          originConfig.headers.Authorization = `Bearer ${result.data.accessToken}`;
+          originConfig.headers.Authorization = `Bearer ${result.data.result.accessToken}`;
           originConfig.attempt = !originConfig.attempt
             ? 1
             : originConfig.attempt++;
 
-          return await baseAxios.request(originConfig);
+          return await axios.request(originConfig);
         }
       } catch (e) {
         await asyncStorage.resetToken();
@@ -69,6 +84,9 @@ baseAxios.interceptors.response.use(
         return Promise.reject(error);
       }
     } else {
+      if(response.data.rsp_code == "9201"){
+        asyncStorage.resetToken();
+      }
       Toast.show({
         type: 'error',
         text1: response.data?.rsp_msg_detail || 'Please try again later',

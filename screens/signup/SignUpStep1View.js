@@ -4,14 +4,19 @@ import Container from '../../components/layout/Container';
 import CustomInput from '../../components/elements/CustomInput';
 import CustomButton from '../../components/elements/CustomButton';
 import colors from '../../commons/colors';
-import serviceApis from './../../utils/ServiceApis';
-import CustomPicker from './../../components/elements/CustomPicker';
-import { navigate } from '../../navigations/Navigator';
-import moment from 'moment/moment';
-import useInterval from './../../hooks/useInertval';
+import serviceApis from '../../utils/ServiceApis';
+import CustomPicker from '../../components/elements/CustomPicker';
+import { Navigator } from '../../navigations/Navigator';
+import useInterval from '../../hooks/useInertval';
+import regex from '../../commons/regex';
+import Timer from '../../components/elements/Timer';
 
-const SignUpStep1View = () => {
-  const FOOT_BUTTON_HEIGHT = 50;
+const FOOT_BUTTON_HEIGHT = 50;
+const VERIFY_TIMEOUT = 180;
+
+const SignupStep1View = (props) => {
+  const { route } = props;
+
   const [screenData, setScreenData] = useState({});
   const [countryCode, setCountryCode] = useState('');
   const [tel, setTel] = useState('');
@@ -19,49 +24,69 @@ const SignUpStep1View = () => {
   const [verifiyError, setVerifiyError] = useState(false);
   const [remain, setRemain] = useState(0);
   const [verifing, setVerifing] = useState(false);
+  const [openRetry, setOpenRetry] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [verifyData, setVerifyData] = useState(null);
 
-  const VERIFY_TIMEOUT = 180;
-
   useEffect(() => {
+    console.log(route.params);
     const fetchData = async () => {
       try {
-        const screenData = await serviceApis.screenSignUpStep1();
+        const screenData = await serviceApis.screenSignupStep1();
 
         setScreenData(screenData.result);
         setCountryCode(screenData.result.countryCodes[0].value);
         setIsLoaded(true);
       } catch (error) {
-        navigate('welcome', {});
+        Navigator.reset('welcome', {});
       }
     };
     fetchData();
   }, []);
 
+  const goToNextStep = (params) => {
+    Navigator.navigate('signup_step2', { ...params, ...route.params });
+  };
+
   useInterval(() => {
     if (remain > 0) {
+      if (remain == VERIFY_TIMEOUT - 5) {
+        setOpenRetry(true);
+      }
       setRemain(remain - 1);
     } else {
-      if(verifing){
-        setVerifing(false);
+      if (verifing) {
+        resetVerifyStatus();
         setVerifyData(null);
-        setVerifiyError(false);
-        setVerifyCode('');
       }
     }
   }, 1000);
 
+  const resetVerifyStatus = () => {
+    setOpenRetry(false);
+    setVerifing(false);
+    setVerifiyError(false);
+    setVerifyCode('');
+  };
+
   const handleTelChange = (tel) => {
+    resetVerifyStatus();
+    setVerifyData(null);
     setTel(tel);
   };
 
   const requestSmsVerification = async () => {
     setVerifing(true);
+    setOpenRetry(false);
     setRemain(VERIFY_TIMEOUT);
+    let reqTel = tel;
+    if (reqTel.startsWith('0')) {
+      reqTel = reqTel.substring(0);
+      setTel(reqTel);
+    }
     try {
       const response = await serviceApis.requestSmsVerification(
-        countryCode + tel
+        countryCode + reqTel
       );
       setVerifyData({
         reqId: response.result.reqId,
@@ -74,7 +99,7 @@ const SignUpStep1View = () => {
   };
 
   const submitVerifyCode = async () => {
-    if(!verifyData) return;
+    if (!verifyData) return;
 
     setVerifiyError(false);
     try {
@@ -85,11 +110,14 @@ const SignUpStep1View = () => {
       );
 
       if (response.rsp_code === '1000') {
-        setRemain(0);
-        navigate('signup_step2', {
+        goToNextStep({
           smsReqId: verifyData.reqId,
           smsTimestamp: verifyData.timestamp,
+          tel: tel,
         });
+        resetVerifyStatus();
+        setVerifyData(null);
+        setRemain(0);
       }
     } catch (error) {
       setVerifiyError(true);
@@ -114,12 +142,12 @@ const SignUpStep1View = () => {
                 items={screenData.countryCodes}
                 wrapperStyle={styles.phoneNumCountry}
               />
-              <View style={styles.phoneVerifyWrap}>
+              <View style={styles.phoneInputWrap}>
                 <CustomInput
                   value={tel}
                   maxLength={20}
                   onValueChange={handleTelChange}
-                  regex={/^[0-9]+$/}
+                  regex={regex.number}
                   keyboardType='number-pad'
                   placeholder='Phone number'
                   errorMsg='Please enter numbers only.'
@@ -132,13 +160,13 @@ const SignUpStep1View = () => {
                   wrapperStyle={styles.phoneVerifyButton}
                   width={110}
                   fontSize={15}
-                  disabled={verifing}
+                  disabled={verifing && !openRetry}
                   onPress={requestSmsVerification}
-                  text='인증번호 발송'
+                  text={verifing ? '재발송' : '인증번호 발송'}
                 />
               </View>
               {verifing && (
-                <View>
+                <View style={styles.phoneVerifyWrap}>
                   <CustomInput
                     value={verifyCode}
                     onValueChange={setVerifyCode}
@@ -149,8 +177,7 @@ const SignUpStep1View = () => {
                     errorHandler={verifiyError}
                     errorMsg='Incorrect verify code.'
                   />
-                  <Text style={styles.verifyTimer}>
-                    {`${moment.duration(remain, 's').minutes()}:${("00"+moment.duration(remain, 's').seconds())?.slice(-2)}`}</Text>
+                  <Timer style={styles.verifyTimer} remain={remain} />
                 </View>
               )}
             </View>
@@ -180,7 +207,7 @@ const SignUpStep1View = () => {
     </>
   );
 };
-export default SignUpStep1View;
+export default SignupStep1View;
 
 const styles = StyleSheet.create({
   section1: {
@@ -203,7 +230,7 @@ const styles = StyleSheet.create({
   phoneNumCountry: {
     marginTop: 20,
   },
-  phoneVerifyWrap: {
+  phoneInputWrap: {
     marginTop: 10,
     position: 'relative',
     alignItems: 'center',

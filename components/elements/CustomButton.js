@@ -27,6 +27,7 @@ const CustomButton = ({
       <Pressable
         disabled={disabled}
         onPress={onPress}
+        hitSlop={10}
         style={({ pressed }) => [
           {
             width: width,
