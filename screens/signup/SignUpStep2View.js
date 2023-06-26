@@ -28,13 +28,13 @@ const SignupStep2View = (props) => {
   const [verifiyError, setVerifiyError] = useState(false);
   const [remain, setRemain] = useState(0);
   const [verifing, setVerifing] = useState(false);
+
   const [openRetry, setOpenRetry] = useState(false);
   const [verifyData, setVerifyData] = useState(null);
   const [isVerifySuccess, setIsVerifySuccess] = useState(false);
   const [isPasswordSuccess, setIsPasswordSuccess] = useState(false);
 
   useEffect(() => {
-    console.log(route.params);
     if (route.params.platform != platform.EMAIL) {
       goToNextStep({});
     }
@@ -110,14 +110,17 @@ const SignupStep2View = (props) => {
       setEmailError(true);
       return;
     }
+    setRemain(VERIFY_TIMEOUT);
     setOpenRetry(false);
     setVerifing(true);
-    setRemain(VERIFY_TIMEOUT);
+
     try {
       const response = await serviceApis.requestEmailVerification(email);
+
       setVerifyData({
         reqId: response.result.reqId,
         timestamp: response.result.timestamp,
+        email: email,
       });
     } catch (error) {
       setRemain(0);
@@ -133,16 +136,18 @@ const SignupStep2View = (props) => {
       const response = await serviceApis.submitEmailVerification(
         verifyData.reqId,
         verifyData.timestamp,
+        verifyData.email,
         verifyCode
       );
-      2;
       if (response.rsp_code === '1000') {
         setIsVerifySuccess(true);
         resetVerifyStatus();
         setRemain(0);
       }
     } catch (error) {
-      setVerifiyError(true);
+      if (error.response.data.rsp_code != '9214') {
+        setVerifiyError(true);
+      }
     }
   };
 

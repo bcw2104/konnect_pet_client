@@ -8,11 +8,16 @@ export default serviceApis = {
 
   //auth
   login: (email,password) => baseAxios.post(`/api/auth/v1/login`, {email,password}),
+  socialLogin: (token,type) => baseAxios.post(`/api/auth/v1/login/social`, {
+    token:token,
+    type:type
+  }),
   join: (payload) => baseAxios.post(`/api/auth/v1/join`, payload),
+
   tokenRefresh: (accessToken,refreshToken) => baseAxios.post(`/api/auth/v1/token/refresh`, {},{
     headers: {
-      Expired: `Bearer ${accessToken}`,
-      Refresh: `Bearer ${refreshToken}`,
+      EXPRIED: `Bearer ${accessToken}`,
+      REFRESH: `Bearer ${refreshToken}`,
     },
   }),
 
@@ -21,9 +26,9 @@ export default serviceApis = {
 
   //verification
   requestSmsVerification: (tel) => baseAxios.post(`/api/auth/v1/verify/sms`, {tel}),
-  submitSmsVerification: (reqId,timestamp,verify) => baseAxios.post(`/api/auth/v1/verify/sms/check`, {reqId,timestamp,verify}),
+  submitSmsVerification: (reqId,timestamp,encTel,verify) => baseAxios.post(`/api/auth/v1/verify/sms/check`, {reqId,timestamp,encTel,verify}),
   requestEmailVerification: (email) => baseAxios.post(`/api/auth/v1/verify/email`, {email}),
-  submitEmailVerification: (reqId,timestamp,verify) => baseAxios.post(`/api/auth/v1/verify/email/check`, {reqId,timestamp,verify}),
+  submitEmailVerification: (reqId,timestamp,email,verify) => baseAxios.post(`/api/auth/v1/verify/email/check`, {reqId,timestamp,email,verify}),
 
   //user
   getUserInfo: () =>  baseAxios.get(`/api/user/v1/info`),

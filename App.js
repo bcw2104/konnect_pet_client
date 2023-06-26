@@ -96,7 +96,7 @@ export default function App() {
   return (
     <StoreProvider value={rootStore}>
       <View onLayout={onLayoutRootView} style={styles.container}>
-        <StatusBar style='auto' />
+        <StatusBar style='dark' />
         <Navigation />
       </View>
       <GlobalModal />

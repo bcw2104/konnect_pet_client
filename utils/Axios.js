@@ -22,12 +22,6 @@ baseAxios.interceptors.request.use(async function (config) {
 
 baseAxios.interceptors.response.use(
   function (response) {
-    if (response.data.rsp_code !== '1000') {
-      Toast.show({
-        type: 'error',
-        text1: response.data.rsp_msg_detail,
-      });
-    }
     return response.data;
   },
 

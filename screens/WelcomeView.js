@@ -8,6 +8,7 @@ import Container from '../components/layout/Container';
 import { useBackPressHandler } from '../hooks/useBackPressHandler';
 import { Navigator } from '../navigations/Navigator';
 import { platform } from '../commons/constants';
+import FacebookLogin from '../components/auth/FacebookLogin';
 
 const Welcome = () => {
   useBackPressHandler();
@@ -15,7 +16,7 @@ const Welcome = () => {
   return (
     <Container>
       <View style={styles.section1}>
-        <Text style={styles.title}>반가워요!</Text>
+        <Text style={styles.title}>반가워요!aaa</Text>
         <Text style={styles.titleSub}>산책을 시작해볼까요?</Text>
       </View>
       <View style={styles.section2}>
@@ -29,7 +30,7 @@ const Welcome = () => {
         </View>
         <View style={styles.socialWrap}>
           <GoogleLogin />
-          <GoogleLogin />
+          <FacebookLogin />
           <GoogleLogin />
         </View>
         <View style={styles.optionsWrap}>

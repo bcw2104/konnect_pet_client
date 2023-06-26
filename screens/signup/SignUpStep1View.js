@@ -18,7 +18,7 @@ const SignupStep1View = (props) => {
   const { route } = props;
 
   const [screenData, setScreenData] = useState({});
-  const [countryCode, setCountryCode] = useState('');
+  const [nationCode, setNationCode] = useState('');
   const [tel, setTel] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
   const [verifiyError, setVerifiyError] = useState(false);
@@ -29,13 +29,12 @@ const SignupStep1View = (props) => {
   const [verifyData, setVerifyData] = useState(null);
 
   useEffect(() => {
-    console.log(route.params);
     const fetchData = async () => {
       try {
         const screenData = await serviceApis.screenSignupStep1();
 
         setScreenData(screenData.result);
-        setCountryCode(screenData.result.countryCodes[0].value);
+        setNationCode(screenData.result.nationCodes[0].value);
         setIsLoaded(true);
       } catch (error) {
         Navigator.reset('welcome', {});
@@ -80,16 +79,13 @@ const SignupStep1View = (props) => {
     setOpenRetry(false);
     setRemain(VERIFY_TIMEOUT);
     let reqTel = tel;
-    if (reqTel.startsWith('0')) {
-      reqTel = reqTel.substring(0);
-      setTel(reqTel);
-    }
     try {
       const response = await serviceApis.requestSmsVerification(
-        countryCode + reqTel
+        nationCode + reqTel
       );
       setVerifyData({
         reqId: response.result.reqId,
+        tel: response.result.data,
         timestamp: response.result.timestamp,
       });
     } catch (error) {
@@ -106,6 +102,7 @@ const SignupStep1View = (props) => {
       const response = await serviceApis.submitSmsVerification(
         verifyData.reqId,
         verifyData.timestamp,
+        verifyData.tel,
         verifyCode
       );
 
@@ -113,14 +110,17 @@ const SignupStep1View = (props) => {
         goToNextStep({
           smsReqId: verifyData.reqId,
           smsTimestamp: verifyData.timestamp,
-          tel: tel,
+          nationCode: nationCode,
+          encTel: verifyData.tel,
         });
         resetVerifyStatus();
         setVerifyData(null);
         setRemain(0);
       }
     } catch (error) {
-      setVerifiyError(true);
+      if(error.response.data.rsp_code != '9213') {
+        setVerifiyError(true);
+      }
     }
   };
 
@@ -137,9 +137,9 @@ const SignupStep1View = (props) => {
                 핸드폰 번호를 입력해주세요.
               </Text>
               <CustomPicker
-                value={countryCode}
-                onValueChange={setCountryCode}
-                items={screenData.countryCodes}
+                value={nationCode}
+                onValueChange={setNationCode}
+                items={screenData.nationCodes}
                 wrapperStyle={styles.phoneNumCountry}
               />
               <View style={styles.phoneInputWrap}>

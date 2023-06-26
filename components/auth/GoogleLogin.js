@@ -1,58 +1,66 @@
 import axios from 'axios';
-import { ResponseType } from 'expo-auth-session';
-import * as Google from 'expo-auth-session/providers/google';
-import Constants from 'expo-constants';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import serviceApis from '../../utils/ServiceApis';
+import { platform } from '../../commons/constants';
+import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
+import { Navigator } from '../../navigations/Navigator';
 
 const GoogleLogin = () => {
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId: Constants.expoConfig.extra.GOOGLE_AUTH_CLIDENT_ID_WEB,
-    androidClientId: Constants.expoConfig.extra.GOOGLE_AUTH_CLIDENT_ID_AOS,
-    iosClientId: Constants.expoConfig.extra.GOOGLE_AUTH_CLIDENT_ID_IOS,
-    responseType: ResponseType.Code,
-    scopes: ['profile', 'email', 'openid'],
-  });
-
   const { userStore } = useStores();
 
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const token = response.authentication.accessToken;
-      getUserInfo(token);
-    }
-  }, [response]);
+  GoogleSignin.configure({});
 
-  const getUserInfo = async (token) => {
+  const signIn = async () => {
+    let tokens;
     try {
-      const response = await axios.get(
-        'http://10.0.2.2:8080/api/auth/v1/google/userinfo',
-        {
-          headers: { SOCIAL_AUTH_TOKEN: token },
-        }
+      await GoogleSignin.hasPlayServices();
+      tokens = await GoogleSignin.getTokens();
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please try again later',
+      });
+      return;
+    }
+    try {
+      const response = await serviceApis.socialLogin(
+        tokens.accessToken,
+        platform.GOOGLE
       );
 
-      if (response.data.rsp_code == 1000) {
-        const userInfo = response.data.result;
-        userStore.initUserInfo({
-          email: userInfo.email,
-          platform: userInfo.platform,
+      if (response.rsp_code === '1000') {
+        asyncStorage.setItem('access_token', response.result.accessToken);
+        asyncStorage.setItem(
+          'access_token_expire_at',
+          response.result.accessTokenExpireAt
+        );
+        asyncStorage.setItem('refresh_token', response.result.refreshToken);
+        asyncStorage.setItem(
+          'refresh_token_expire_at',
+          response.result.refreshTokenExpireAt
+        );
+        userStore.initUserInfo();
+      } else if (response.rsp_code === '9210') {
+        Navigator.navigate('signup_step1', {
+          platform: platform.GOOGLE,
+          email: response.result.email,
         });
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
+
   return (
-    <Pressable
-      title='Sign in with Google'
-      disabled={!request}
-      onPress={() => {
-        promptAsync();
-      }}
-      style={styles.button}
-    />
+    <>
+      <Pressable
+        title='Sign in with Google'
+        onPress={signIn}
+        style={styles.button}
+      />
+    </>
   );
 };
 
@@ -64,7 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal:10
+    marginHorizontal: 10,
   },
 });
 
