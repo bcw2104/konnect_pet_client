@@ -29,7 +29,7 @@ const SignupStep3View = (props) => {
         setScreenData({ termsGroups: termsGroups });
 
         const termsAgreed = {};
-        for (let i = 0; i < termsGroups.length; i++) {
+        for (let i = 0; i < termsGroups?.length; i++) {
           termsAgreed[termsGroups[i].termsGroupId] = {
             checkedYn: false,
             requiredYn: termsGroups[i].requiredYn,

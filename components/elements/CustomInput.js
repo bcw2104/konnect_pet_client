@@ -8,7 +8,7 @@ const CustomInput = ({
   autoFocus = false,
   secureTextEntry = false,
   value = '',
-  maxLength = 1000,
+  maxLength = 100,
   onValueChange = () => {},
   width = 'auto',
   height = 50,
@@ -28,10 +28,10 @@ const CustomInput = ({
   }, [errorHandler]);
 
   const onValueChangeWithRegex = (value) => {
-    if (maxLength < value.length) {
+    if (maxLength < value?.length) {
       return;
     }
-    if (value.length > 0 && !!regex) {
+    if (value?.length > 0 && !!regex) {
       const test = regex.test(value);
 
       if (!test) {

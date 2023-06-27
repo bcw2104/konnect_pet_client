@@ -18,8 +18,10 @@ const GoogleLogin = () => {
     let tokens;
     try {
       await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signIn();
       tokens = await GoogleSignin.getTokens();
     } catch (error) {
+      console.log(error)
       Toast.show({
         type: 'error',
         text1: 'Please try again later',
