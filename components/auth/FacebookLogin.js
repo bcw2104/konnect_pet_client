@@ -14,7 +14,9 @@ const FacebookLogin = () => {
   const { userStore } = useStores();
 
   const signIn = async () => {
-    await LoginManager.logInWithPermissions(['email','public_profile']);
+    const {isCancelled} = await LoginManager.logInWithPermissions(['email','public_profile']);
+    
+    if(isCancelled) return;
 
     let token;
     if (Platform.OS === 'ios') {
@@ -22,6 +24,7 @@ const FacebookLogin = () => {
     } else {
       token = await AccessToken.getCurrentAccessToken();
     }
+
     try {
       const response = await serviceApis.socialLogin(
         token,
