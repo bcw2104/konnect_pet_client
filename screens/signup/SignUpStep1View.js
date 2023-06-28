@@ -16,7 +16,6 @@ const VERIFY_TIMEOUT = 180;
 
 const SignupStep1View = (props) => {
   const { route } = props;
-
   const [screenData, setScreenData] = useState({});
   const [nationCode, setNationCode] = useState('');
   const [tel, setTel] = useState('');
@@ -32,7 +31,6 @@ const SignupStep1View = (props) => {
     const fetchData = async () => {
       try {
         const screenData = await serviceApis.screenSignupStep1();
-
         setScreenData(screenData.result);
         setNationCode(screenData.result.nationCodes[0].value);
         setIsLoaded(true);

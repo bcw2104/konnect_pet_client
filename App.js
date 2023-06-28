@@ -9,6 +9,8 @@ import Toast from 'react-native-toast-message';
 import Navigation from './navigations/Navigation';
 import { asyncStorage } from './storage/Storage';
 import serviceApis from './utils/ServiceApis';
+import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
+import { Settings } from 'react-native-fbsdk-next';
 
 const rootStore = new RootStore();
 
@@ -16,6 +18,8 @@ export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
+    initFacebook();
+
     async function prepare() {
       try {
         const isLogin = await checkLogin();
@@ -33,6 +37,14 @@ export default function App() {
 
     prepare();
   }, []);
+
+  const initFacebook = async () => {
+    const { status } = await requestTrackingPermissionsAsync();
+    Settings.initializeSDK();
+    if (status === 'granted') {
+      await Settings.setAdvertiserTrackingEnabled(true);
+    }
+  };
 
   const checkLogin = async () => {
     const accessToken = await asyncStorage.getItem('access_token');

@@ -8,15 +8,21 @@ import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
 import { Navigator } from '../../navigations/Navigator';
 import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next';
-
+import { Platform } from 'react-native';
 
 const FacebookLogin = () => {
   const { userStore } = useStores();
 
   const signIn = async () => {
-    const data = await AccessToken.getCurrentAccessToken();
+    await LoginManager.logInWithPermissions(['openid']);
 
-    console.log(data);
+    if (Platform.OS === 'ios') {
+      const result = await AuthenticationToken.getAuthenticationTokenIOS();
+      console.log(result?.authenticationToken);
+    } else {
+      const result = await AccessToken.getCurrentAccessToken();
+      console.log(result?.accessToken);
+    }
   };
 
   return (

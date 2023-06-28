@@ -7,11 +7,11 @@ import { observer } from 'mobx-react-lite';
 import { navigationRef } from './Navigator';
 import { Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import SignupStep1View from '../screens/signup/SignupStep1View';
-import SignupStep2View from '../screens/signup/SignupStep2View';
-import SignupStep4View from '../screens/signup/SignupStep4View';
 import TermsView from '../screens/terms/TermsView';
-import SignupStep3View from './../screens/signup/SignupStep3View';
+import SignupStep1View from './../screens/signup/SignUpStep1View';
+import SignupStep2View from './../screens/signup/SignUpStep2View';
+import SignupStep3View from './../screens/signup/SignUpStep3View';
+import SignupStep4View from './../screens/signup/SignUpStep4View';
 
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
