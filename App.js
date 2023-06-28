@@ -11,11 +11,16 @@ import { asyncStorage } from './storage/Storage';
 import serviceApis from './utils/ServiceApis';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 import { Settings } from 'react-native-fbsdk-next';
+import { useFonts } from 'expo-font';
+import colors from './commons/colors';
 
 const rootStore = new RootStore();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+  const [fontsLoaded] = useFonts({
+    'Robato': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+  });
 
   useEffect(() => {
     initFacebook();
@@ -101,7 +106,7 @@ export default function App() {
     }
   }, [appIsReady]);
 
-  if (!appIsReady) {
+  if (!appIsReady && !fontsLoaded) {
     return null;
   }
 
@@ -119,6 +124,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.white,
     flex: 1,
     backgroundColor: '#fff',
   },

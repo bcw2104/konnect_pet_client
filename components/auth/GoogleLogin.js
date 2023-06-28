@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import React from 'react';
+import { Pressable, StyleSheet } from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import serviceApis from '../../utils/ServiceApis';
 import { platform } from '../../commons/constants';
@@ -21,11 +21,13 @@ const GoogleLogin = () => {
       await GoogleSignin.signIn();
       tokens = await GoogleSignin.getTokens();
     } catch (error) {
-      console.log(error)
-      Toast.show({
-        type: 'error',
-        text1: 'Please try again later',
-      });
+      if (error.code != statusCodes.SIGN_IN_CANCELLED && error.code != statusCodes.IN_PROGRESS) {
+        
+        Toast.show({
+          type: 'error',
+          text1: 'Please try again later',
+        });
+      } 
       return;
     }
     try {

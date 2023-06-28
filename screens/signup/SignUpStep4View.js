@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import Container from '../../components/layout/Container';
 import { useEffect } from 'react';
@@ -8,6 +8,7 @@ import serviceApis from './../../utils/ServiceApis';
 import { Navigator } from './../../navigations/Navigator';
 import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
+import CustomText from '../../components/elements/CustomText';
 
 const FOOT_BUTTON_HEIGHT = 50;
 
@@ -48,7 +49,7 @@ const SignupStep4View = (props) => {
     <>
       <Container>
         <View style={styles.section1}>
-          <Text style={styles.guideText}>거주지를 입력해주세요.</Text>
+          <CustomText style={styles.guideText}>거주지를 입력해주세요.</CustomText>
         </View>
         <View style={styles.section2}></View>
       </Container>

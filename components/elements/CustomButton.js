@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import colors from '../../commons/colors';
+import CustomText from './CustomText';
 
 const CustomButton = ({
   disabled = false,
@@ -36,22 +37,22 @@ const CustomButton = ({
             borderColor: colors.dark,
             borderWidth: bgColor == colors.light ? 1 : 0,
             backgroundColor: pressed ? bgColorPress : bgColor,
+            justifyContent:'center',
             flex: 1,
             opacity: disabled ? 0.7 : 1,
             ...styles,
           },
         ]}
       >
-        <Text
+        <CustomText
           style={{
             fontSize: fontSize,
             color: fontColor,
             textAlign: 'center',
-            lineHeight: height,
           }}
         >
           {text}
-        </Text>
+        </CustomText>
       </Pressable>
     </View>
   );
