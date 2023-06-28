@@ -1,4 +1,4 @@
-import { StyleSheet, CustomText, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Container from '../../components/layout/Container';
 import CustomInput from '../../components/elements/CustomInput';

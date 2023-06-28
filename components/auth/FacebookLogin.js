@@ -7,22 +7,46 @@ import { platform } from '../../commons/constants';
 import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
 import { Navigator } from '../../navigations/Navigator';
-import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next';
+import { AccessToken, AuthenticationToken, LoginManager, Settings } from 'react-native-fbsdk-next';
 import { Platform } from 'react-native';
 
 const FacebookLogin = () => {
   const { userStore } = useStores();
 
   const signIn = async () => {
-    await LoginManager.logInWithPermissions(['openid']);
+    await LoginManager.logInWithPermissions(['email','public_profile']);
 
+    let token;
     if (Platform.OS === 'ios') {
-      const result = await AuthenticationToken.getAuthenticationTokenIOS();
-      console.log(result?.authenticationToken);
+      token = await AuthenticationToken.getAuthenticationTokenIOS();
     } else {
-      const result = await AccessToken.getCurrentAccessToken();
-      console.log(result?.accessToken);
+      token = await AccessToken.getCurrentAccessToken();
     }
+    try {
+      const response = await serviceApis.socialLogin(
+        token,
+        platform.FACEBOOK
+      );
+
+      if (response.rsp_code === '1000') {
+        asyncStorage.setItem('access_token', response.result.accessToken);
+        asyncStorage.setItem(
+          'access_token_expire_at',
+          response.result.accessTokenExpireAt
+        );
+        asyncStorage.setItem('refresh_token', response.result.refreshToken);
+        asyncStorage.setItem(
+          'refresh_token_expire_at',
+          response.result.refreshTokenExpireAt
+        );
+        userStore.initUserInfo();
+      } else if (response.rsp_code === '9210') {
+        Navigator.navigate('signup_step1', {
+          platform: platform.FACEBOOK,
+          email: response.result.email,
+        });
+      }
+    } catch (error) {}
   };
 
   return (

@@ -37,6 +37,7 @@ const CustomButton = ({
             borderColor: colors.dark,
             borderWidth: bgColor == colors.light ? 1 : 0,
             backgroundColor: pressed ? bgColorPress : bgColor,
+            justifyContent:'center',
             flex: 1,
             opacity: disabled ? 0.7 : 1,
             ...styles,

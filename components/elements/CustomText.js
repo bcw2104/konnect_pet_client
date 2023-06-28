@@ -1,15 +1,10 @@
 import { Text } from "react-native";
 import React from "react";
 
-const CustomText = ({ styles = {}, childrun }) => {
+const CustomText = (props) => {
   return (
-    <Text
-      style={{
-        fontFamily: "Robato",
-        ...styles,
-      }}
-    >
-      {childrun}
+    <Text style={[props.style, { fontFamily: "Robato" }]}>
+      {props.children}
     </Text>
   );
 };

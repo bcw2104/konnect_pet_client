@@ -1,4 +1,4 @@
-import { StyleSheet, CustomText, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import Container from '../../components/layout/Container';
 import { useState } from 'react';

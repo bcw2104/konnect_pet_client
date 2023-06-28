@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, CustomText, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import GoogleLogin from '../components/auth/GoogleLogin';
 import { observer } from 'mobx-react-lite';
 import DefaultLogin from '../components/auth/DefaultLogin';
