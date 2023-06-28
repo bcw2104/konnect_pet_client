@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, CustomText, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Container from '../../components/layout/Container';
 import CustomInput from '../../components/elements/CustomInput';
@@ -10,6 +10,7 @@ import { Navigator } from '../../navigations/Navigator';
 import useInterval from '../../hooks/useInertval';
 import regex from '../../commons/regex';
 import Timer from '../../components/elements/Timer';
+import CustomText from '../../components/elements/CustomText';
 
 const FOOT_BUTTON_HEIGHT = 50;
 const VERIFY_TIMEOUT = 180;
@@ -128,12 +129,12 @@ const SignupStep1View = (props) => {
         <>
           <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
             <View style={styles.section1}>
-              <Text style={styles.guideText}>핸드폰 번호를 인증해주세요.</Text>
+              <CustomText style={styles.guideCustomText}>핸드폰 번호를 인증해주세요.</CustomText>
             </View>
             <View style={styles.section2}>
-              <Text style={styles.phoneVerifyText}>
+              <CustomText style={styles.phoneVerifyCustomText}>
                 핸드폰 번호를 입력해주세요.
-              </Text>
+              </CustomText>
               <CustomPicker
                 value={nationCode}
                 onValueChange={setNationCode}
@@ -160,7 +161,7 @@ const SignupStep1View = (props) => {
                   fontSize={15}
                   disabled={verifing && !openRetry}
                   onPress={requestSmsVerification}
-                  text={verifing ? '재발송' : '인증번호 발송'}
+                  CustomText={verifing ? '재발송' : '인증번호 발송'}
                 />
               </View>
               {verifing && (
@@ -181,12 +182,12 @@ const SignupStep1View = (props) => {
             </View>
             <View style={styles.section3}>
               <View style={styles.helpWrap}>
-                <Text style={styles.helpTitle}>인증번호가 오지 않나요?</Text>
-                <Text style={styles.helpContent}>
+                <CustomText style={styles.helpTitle}>인증번호가 오지 않나요?</CustomText>
+                <CustomText style={styles.helpContent}>
                   인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
                   않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
                   내용입니다.
-                </Text>
+                </CustomText>
               </View>
             </View>
           </Container>
@@ -194,7 +195,7 @@ const SignupStep1View = (props) => {
             fontColor={colors.white}
             bgColor={colors.dark}
             bgColorPress={colors.darkDeep}
-            text='인증완료'
+            CustomText='인증완료'
             disabled={!verifyData}
             onPress={submitVerifyCode}
             styles={styles.submitTheme}
@@ -218,11 +219,11 @@ const styles = StyleSheet.create({
     flex: 3,
     justifyContent: 'space-between',
   },
-  guideText: {
+  guideCustomText: {
     fontSize: 24,
     fontWeight: 'bold',
   },
-  phoneVerifyText: {
+  phoneVerifyCustomText: {
     fontSize: 16,
   },
   phoneNumCountry: {

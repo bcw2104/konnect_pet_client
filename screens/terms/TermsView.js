@@ -7,6 +7,7 @@ import serviceApis from './../../utils/ServiceApis';
 import { Navigator, navigationRef } from '../../navigations/Navigator';
 import moment from 'moment';
 import { WebView } from 'react-native-webview';
+import CustomText from '../../components/elements/CustomText';
 
 const TermsView = (props) => {
   const { route } = props;
@@ -34,10 +35,10 @@ const TermsView = (props) => {
       {isLoaded && (
         <Container>
           <View style={styles.section1}>
-            <Text style={styles.guideText}>{terms.termsName}</Text>
-            <Text style={styles.guideSubText}>
+            <CustomText style={styles.guideText}>{terms.termsName}</CustomText>
+            <CustomText style={styles.guideSubText}>
               created: {moment(terms.createdDate).format('yyyy-MM-DD HH:mm:ss')}
-            </Text>
+            </CustomText>
           </View>
           <View style={styles.section2}>
             <WebView

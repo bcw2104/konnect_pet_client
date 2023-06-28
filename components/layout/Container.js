@@ -11,7 +11,7 @@ const Container = ({ outerElementHeight = 0, children }) => {
   return (
     <ScrollView
       contentContainerStyle={{
-        backgroundColor: colors.white,
+        backgroundColor: "transparent",
       }}
     >
       <View

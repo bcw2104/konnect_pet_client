@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, CustomText, View } from 'react-native';
 import GoogleLogin from '../components/auth/GoogleLogin';
 import { observer } from 'mobx-react-lite';
 import DefaultLogin from '../components/auth/DefaultLogin';
@@ -9,6 +9,7 @@ import { useBackPressHandler } from '../hooks/useBackPressHandler';
 import { Navigator } from '../navigations/Navigator';
 import { platform } from '../commons/constants';
 import FacebookLogin from '../components/auth/FacebookLogin';
+import CustomText from '../components/elements/CustomText';
 
 const Welcome = () => {
   useBackPressHandler();
@@ -16,8 +17,8 @@ const Welcome = () => {
   return (
     <Container>
       <View style={styles.section1}>
-        <Text style={styles.title}>반가워요!aaa</Text>
-        <Text style={styles.titleSub}>산책을 시작해볼까요?</Text>
+        <CustomText style={styles.title}>반가워요!aaa</CustomText>
+        <CustomText style={styles.titleSub}>산책을 시작해볼까요?</CustomText>
       </View>
       <View style={styles.section2}>
         <View style={styles.loginWrap}>
@@ -25,7 +26,7 @@ const Welcome = () => {
         </View>
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>OR</Text>
+          <CustomText style={styles.dividerCustomText}>OR</CustomText>
           <View style={styles.dividerLine} />
         </View>
         <View style={styles.socialWrap}>
@@ -34,15 +35,15 @@ const Welcome = () => {
           <GoogleLogin />
         </View>
         <View style={styles.optionsWrap}>
-          <Text style={styles.optionText}>Find Password</Text>
-          <Text style={[styles.optionText, styles.bar]}>|</Text>
+          <CustomText style={styles.optionCustomText}>Find Password</CustomText>
+          <CustomText style={[styles.optionCustomText, styles.bar]}>|</CustomText>
           <Pressable
             onPress={() => {
               Navigator.navigate('signup_step1', { platform: platform.EMAIL });
             }}
             hitSlop={10}
           >
-            <Text style={styles.optionText}>Sign Up</Text>
+            <CustomText style={styles.optionCustomText}>Sign Up</CustomText>
           </Pressable>
         </View>
       </View>
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  optionText: {
+  optionCustomText: {
     color: colors.dark,
     fontSize: 16,
   },
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     width: 200,
   },
-  dividerText: {
+  dividerCustomText: {
     color: colors.dark,
     alignSelf: 'center',
     paddingHorizontal: 5,

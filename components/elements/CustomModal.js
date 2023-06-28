@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { Modal } from 'native-base';
 import CustomButton from './CustomButton';
@@ -6,6 +6,7 @@ import colors from '../../commons/colors';
 import { useState } from 'react';
 import { forwardRef } from 'react';
 import { useStores } from '../../contexts/StoreContext';
+import CustomText from './CustomText';
 
 const CustomModal = ({
   content = '',
@@ -55,7 +56,7 @@ const CustomModal = ({
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalText}>{content}</Text>
+          <CustomText style={styles.modalText}>{content}</CustomText>
           <View stlye={styles.buttonWrap}>
             <CustomButton
               bgColor={colors.light}

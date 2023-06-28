@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, CustomText, View } from 'react-native';
 import React from 'react';
 import Container from '../../components/layout/Container';
 import { useState } from 'react';
@@ -9,6 +9,7 @@ import colors from '../../commons/colors';
 import { Pressable } from 'react-native';
 import CheckBox from '../../components/elements/CheckBox';
 import { Navigator } from './../../navigations/Navigator';
+import CustomText from '../../components/elements/CustomText';
 
 const FOOT_BUTTON_HEIGHT = 50;
 
@@ -98,21 +99,21 @@ const SignupStep3View = (props) => {
         <>
           <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
             <View style={styles.section1}>
-              <Text style={styles.guideText}>약관 동의를 해주세요.</Text>
+              <CustomText style={styles.guideCustomText}>약관 동의를 해주세요.</CustomText>
             </View>
             <View style={styles.section2}>
               <Pressable style={styles.termsSelectAll} onPress={toggleAll}>
                 <CheckBox checked={selectAll} size={27} onPress={toggleAll} />
-                <Text
+                <CustomText
                   style={[
-                    styles.termsText,
+                    styles.termsCustomText,
                     {
                       fontSize: 17,
                     },
                   ]}
                 >
                   전체 선택
-                </Text>
+                </CustomText>
               </Pressable>
               {screenData.termsGroups.map((ele) => (
                 <View key={ele.termsGroupId}>
@@ -133,26 +134,26 @@ const SignupStep3View = (props) => {
                       size={27}
                     />
                     <Pressable
-                      style={styles.termsText}
+                      style={styles.termsCustomText}
                       onPress={() => {
                         Navigator.navigate('terms', { termsGroupId: ele.termsGroupId });
                       }}
                     >
-                      <Text
+                      <CustomText
                         style={{
-                          textDecorationLine: 'underline',
+                          CustomTextDecorationLine: 'underline',
                           fontSize: 15,
                         }}
                       >
                         [{ele.requiredYn ? '필수' : '선택'}]{ele.termsGroupName}{' '}
                         동의
-                      </Text>
+                      </CustomText>
                     </Pressable>
                   </View>
                   {ele.termsGroupContent && (
-                    <Text style={styles.termsContent}>
+                    <CustomText style={styles.termsContent}>
                       {ele.termsGroupContent}
-                    </Text>
+                    </CustomText>
                   )}
                 </View>
               ))}
@@ -162,7 +163,7 @@ const SignupStep3View = (props) => {
             fontColor={colors.white}
             bgColor={colors.dark}
             bgColorPress={colors.darkDeep}
-            text='다음'
+            CustomText='다음'
             disabled={!isRequiredAllChecked}
             onPress={submitSignupData}
             styles={styles.submitTheme}
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
     flex: 4,
   },
 
-  guideText: {
+  guideCustomText: {
     fontSize: 24,
     fontWeight: 'bold',
   },
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
   },
-  termsText: { marginLeft: 20 },
+  termsCustomText: { marginLeft: 20 },
   termsContent: {
     marginTop: -5,
     paddingLeft: 54,

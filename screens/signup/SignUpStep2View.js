@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, CustomText, View } from 'react-native';
 import React from 'react';
 import Container from '../../components/layout/Container';
 import { Navigator } from '../../navigations/Navigator';
@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import regex from '../../commons/regex';
 import { platform } from './../../commons/constants';
 import Timer from '../../components/elements/Timer';
+import CustomText from '../../components/elements/CustomText';
 
 const FOOT_BUTTON_HEIGHT = 50;
 const VERIFY_TIMEOUT = 600;
@@ -164,10 +165,10 @@ const SignupStep2View = (props) => {
     <>
       <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
         <View style={styles.section1}>
-          <Text style={styles.guideText}>가입 정보를 입력해주세요.</Text>
+          <CustomText style={styles.guideCustomText}>가입 정보를 입력해주세요.</CustomText>
         </View>
         <View style={styles.section2}>
-          <Text style={styles.emailVerifyText}>이메일을 입력해주세요.</Text>
+          <CustomText style={styles.emailVerifyCustomText}>이메일을 입력해주세요.</CustomText>
           <View style={styles.emailInputWrap}>
             <CustomInput
               value={email}
@@ -188,7 +189,7 @@ const SignupStep2View = (props) => {
               fontSize={15}
               disabled={isVerifySuccess || (verifing && !openRetry)}
               onPress={requestSmsVerification}
-              text={
+              CustomText={
                 isVerifySuccess
                   ? '인증 완료'
                   : verifing
@@ -218,19 +219,19 @@ const SignupStep2View = (props) => {
                 width={110}
                 fontSize={15}
                 onPress={submitVerifyCode}
-                text='인증하기'
+                CustomText='인증하기'
               />
             </View>
           )}
         </View>
         <View style={styles.section3}>
-          <Text style={styles.passwordText}>비밀번호를 입력해주세요.</Text>
+          <CustomText style={styles.passwordCustomText}>비밀번호를 입력해주세요.</CustomText>
           <View style={styles.passwordInputWrap}>
             <CustomInput
               value={password}
               maxLength={20}
               onValueChange={handlePasswordChange}
-              secureTextEntry={true}
+              secureCustomTextEntry={true}
               keyboardType='default'
               placeholder='Password'
               errorHandler={passwordError}
@@ -240,7 +241,7 @@ const SignupStep2View = (props) => {
               value={password2}
               maxLength={20}
               onValueChange={handlePassword2Change}
-              secureTextEntry={true}
+              secureCustomTextEntry={true}
               keyboardType='default'
               placeholder='Verify password'
               errorHandler={password2Error}
@@ -251,12 +252,12 @@ const SignupStep2View = (props) => {
         </View>
         <View style={styles.section4}>
           <View style={styles.helpWrap}>
-            <Text style={styles.helpTitle}>인증번호가 오지 않나요?</Text>
-            <Text style={styles.helpContent}>
+            <CustomText style={styles.helpTitle}>인증번호가 오지 않나요?</CustomText>
+            <CustomText style={styles.helpContent}>
               인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
               않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
               내용입니다.
-            </Text>
+            </CustomText>
           </View>
         </View>
       </Container>
@@ -264,7 +265,7 @@ const SignupStep2View = (props) => {
         fontColor={colors.white}
         bgColor={colors.dark}
         bgColorPress={colors.darkDeep}
-        text='다음'
+        CustomText='다음'
         disabled={!isVerifySuccess || !isPasswordSuccess}
         onPress={submitSignupData}
         styles={styles.submitTheme}
@@ -289,11 +290,11 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'space-between',
   },
-  guideText: {
+  guideCustomText: {
     fontSize: 24,
     fontWeight: 'bold',
   },
-  emailVerifyText: {
+  emailVerifyCustomText: {
     fontSize: 16,
   },
   emailAddressCountry: {

@@ -5,6 +5,7 @@ import colors from '../../commons/colors';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import { Modal } from 'react-native';
+import CustomText from './CustomText';
 
 const GlobalModal = () => {
   const { systemStore, modalStore } = useStores();
@@ -25,7 +26,7 @@ const GlobalModal = () => {
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalText}>{modalStore.content}</Text>
+          <CustomText style={styles.modalText}>{modalStore.content}</CustomText>
           <View style={styles.buttonWrap}>
             <CustomButton
               bgColor={!!modalStore.secondBtnText ? colors.light : colors.dark}

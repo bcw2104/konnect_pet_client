@@ -6,6 +6,7 @@ import { useStores } from '../../contexts/StoreContext';
 import CustomInput from '../elements/CustomInput';
 import serviceApis from './../../utils/ServiceApis';
 import { asyncStorage } from '../../storage/Storage';
+import CustomText from '../elements/CustomText';
 
 const DefaultLogin = () => {
   const { userStore } = useStores();
@@ -62,7 +63,7 @@ const DefaultLogin = () => {
         errorMsg='비밀번호를 입력해주세요.'
       />
       {loginFailed && (
-        <Text style={styles.loginFailed}>Invalid email or password</Text>
+        <CustomText style={styles.loginFailed}>Invalid email or password</CustomText>
       )}
       <CustomButton
         bgColor={colors.dark}

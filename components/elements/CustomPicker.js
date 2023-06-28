@@ -4,6 +4,7 @@ import { useState } from 'react';
 import colors from '../../commons/colors';
 import { useEffect } from 'react';
 import { Picker } from '@react-native-picker/picker';
+import CustomText from './CustomText';
 
 const CustomPicker = ({
   value = '',
@@ -60,7 +61,7 @@ const CustomPicker = ({
         </Picker>
       </View>
       {error && (
-        <Text
+        <CustomText
           style={{
             color: colors.danger,
             fontSize: 14,
@@ -70,7 +71,7 @@ const CustomPicker = ({
           }}
         >
           {errorMsg}
-        </Text>
+        </CustomText>
       )}
     </>
   );

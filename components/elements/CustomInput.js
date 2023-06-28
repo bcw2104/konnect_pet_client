@@ -3,6 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import colors from '../../commons/colors';
 import { useEffect } from 'react';
+import CustomText from './CustomText';
 
 const CustomInput = ({
   autoFocus = false,
@@ -75,7 +76,7 @@ const CustomInput = ({
         />
       </View>
       {error && (
-        <Text
+        <CustomText
           style={{
             color: colors.danger,
             fontSize: 14,
@@ -85,7 +86,7 @@ const CustomInput = ({
           }}
         >
           {errorMsg}
-        </Text>
+        </CustomText>
       )}
     </>
   );
