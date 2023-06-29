@@ -19,7 +19,7 @@
     "babel-preset-react-native": "^4.0.1",
     "eas": "^0.1.0",
     "eas-cli": "^3.14.0",
-    "expo": "^48.0.19",
+    "expo": "~48.0.18",
     "expo-application": "~5.1.1",
     "expo-cli": "^6.3.9",
     "expo-constants": "^14.2.1",
