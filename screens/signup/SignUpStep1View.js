@@ -161,7 +161,7 @@ const SignupStep1View = (props) => {
                   fontSize={15}
                   disabled={verifing && !openRetry}
                   onPress={requestSmsVerification}
-                  CustomText={verifing ? '재발송' : '인증번호 발송'}
+                  text={verifing ? '재발송' : '인증번호 발송'}
                 />
               </View>
               {verifing && (
@@ -195,7 +195,7 @@ const SignupStep1View = (props) => {
             fontColor={colors.white}
             bgColor={colors.dark}
             bgColorPress={colors.darkDeep}
-            CustomText='인증완료'
+            text='인증완료'
             disabled={!verifyData}
             onPress={submitVerifyCode}
             styles={styles.submitTheme}

@@ -189,7 +189,7 @@ const SignupStep2View = (props) => {
               fontSize={15}
               disabled={isVerifySuccess || (verifing && !openRetry)}
               onPress={requestSmsVerification}
-              CustomText={
+              text={
                 isVerifySuccess
                   ? '인증 완료'
                   : verifing
@@ -219,7 +219,7 @@ const SignupStep2View = (props) => {
                 width={110}
                 fontSize={15}
                 onPress={submitVerifyCode}
-                CustomText='인증하기'
+                text='인증하기'
               />
             </View>
           )}
@@ -265,7 +265,7 @@ const SignupStep2View = (props) => {
         fontColor={colors.white}
         bgColor={colors.dark}
         bgColorPress={colors.darkDeep}
-        CustomText='다음'
+        text='다음'
         disabled={!isVerifySuccess || !isPasswordSuccess}
         onPress={submitSignupData}
         styles={styles.submitTheme}

@@ -163,7 +163,7 @@ const SignupStep3View = (props) => {
             fontColor={colors.white}
             bgColor={colors.dark}
             bgColorPress={colors.darkDeep}
-            CustomText='다음'
+            text='다음'
             disabled={!isRequiredAllChecked}
             onPress={submitSignupData}
             styles={styles.submitTheme}

@@ -17,7 +17,7 @@ const Welcome = () => {
   return (
     <Container>
       <View style={styles.section1}>
-        <CustomText style={styles.title}>반가워요!aaa</CustomText>
+        <CustomText style={styles.title}>반가워요!</CustomText>
         <CustomText style={styles.titleSub}>산책을 시작해볼까요?</CustomText>
       </View>
       <View style={styles.section2}>
@@ -35,7 +35,7 @@ const Welcome = () => {
           <GoogleLogin />
         </View>
         <View style={styles.optionsWrap}>
-          <CustomText style={styles.optionCustomText}>Find Password</CustomText>
+          <CustomText style={styles.optionCustomText}>Find Account</CustomText>
           <CustomText style={[styles.optionCustomText, styles.bar]}>|</CustomText>
           <Pressable
             onPress={() => {

@@ -1,5 +1,7 @@
-import axios from 'axios';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
@@ -8,6 +10,8 @@ import { platform } from '../../commons/constants';
 import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
 import { Navigator } from '../../navigations/Navigator';
+import { Image } from 'react-native';
+import colors from './../../commons/colors';
 
 const GoogleLogin = () => {
   const { userStore } = useStores();
@@ -21,13 +25,15 @@ const GoogleLogin = () => {
       await GoogleSignin.signIn();
       tokens = await GoogleSignin.getTokens();
     } catch (error) {
-      if (error.code != statusCodes.SIGN_IN_CANCELLED && error.code != statusCodes.IN_PROGRESS) {
-        
+      if (
+        error.code != statusCodes.SIGN_IN_CANCELLED &&
+        error.code != statusCodes.IN_PROGRESS
+      ) {
         Toast.show({
           type: 'error',
           text1: 'Please try again later',
         });
-      } 
+      }
       return;
     }
     try {
@@ -63,7 +69,12 @@ const GoogleLogin = () => {
         title='Sign in with Google'
         onPress={signIn}
         style={styles.button}
-      />
+      >
+        <Image
+          style={styles.logo}
+          source={require('../../assets/images/logos/logo_google.png')}
+        />
+      </Pressable>
     </>
   );
 };
@@ -73,11 +84,16 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: 'green',
+    backgroundColor: colors.white,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 10,
   },
+  logo:{
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+  }
 });
 
 export default GoogleLogin;
