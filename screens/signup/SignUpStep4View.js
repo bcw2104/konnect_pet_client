@@ -49,7 +49,7 @@ const SignupStep4View = (props) => {
     <>
       <Container>
         <View style={styles.section1}>
-          <CustomText style={styles.guideText}>거주지를 입력해주세요.</CustomText>
+          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>거주지를 입력해주세요.</CustomText>
         </View>
         <View style={styles.section2}></View>
       </Container>
@@ -76,9 +76,5 @@ const styles = StyleSheet.create({
     flex: 4,
   },
 
-  guideText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
   submitTheme: { borderRadius: 0 },
 });

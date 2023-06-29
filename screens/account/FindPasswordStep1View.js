@@ -16,7 +16,7 @@ import CustomText from '../../components/elements/CustomText';
 const FOOT_BUTTON_HEIGHT = 50;
 const VERIFY_TIMEOUT = 600;
 
-const SignupStep2View = (props) => {
+const FindPasswordStep1View = (props) => {
   const { route } = props;
 
   const [email, setEmail] = useState('');
@@ -36,13 +36,10 @@ const SignupStep2View = (props) => {
   const [isPasswordSuccess, setIsPasswordSuccess] = useState(false);
 
   useEffect(() => {
-    if (route.params.platform != platform.EMAIL) {
-      goToNextStep({});
-    }
   }, []);
 
   const goToNextStep = (params) => {
-    Navigator.navigate('signup_step3', { ...params, ...route.params });
+    Navigator.navigate('find_password_step2', { ...params, ...route.params });
   };
 
   useInterval(() => {
@@ -74,34 +71,6 @@ const SignupStep2View = (props) => {
     setVerifyData(null);
     setEmailError(false);
     setEmail(email);
-  };
-
-  const confirmPassword = (password1, password2) => {
-    const test = regex.password.test(password1);
-
-    if (!test) {
-      setPasswordError(true);
-    } else {
-      setPasswordError(false);
-    }
-
-    if (password1 != password2) {
-      setIsPasswordSuccess(false);
-      setPassword2Error(true);
-    } else {
-      setIsPasswordSuccess(test);
-      setPassword2Error(false);
-    }
-  };
-
-  const handlePasswordChange = (password) => {
-    confirmPassword(password, password2);
-    setPassword(password);
-  };
-
-  const handlePassword2Change = (password2) => {
-    confirmPassword(password, password2);
-    setPassword2(password2);
   };
 
   const requestVerification = async () => {
@@ -152,7 +121,7 @@ const SignupStep2View = (props) => {
     }
   };
 
-  const submitSignupData = async () => {
+  const submit = async () => {
     goToNextStep({
       emailReqId: verifyData.reqId,
       emailTimestamp: verifyData.timestamp,
@@ -165,7 +134,7 @@ const SignupStep2View = (props) => {
     <>
       <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
         <View style={styles.section1}>
-          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>가입 정보를 입력해주세요.</CustomText>
+          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>가입한 이메일을 입력해주세요.</CustomText>
         </View>
         <View style={styles.section2}>
           <CustomText fontSize={16}>이메일을 입력해주세요.</CustomText>
@@ -224,32 +193,6 @@ const SignupStep2View = (props) => {
             </View>
           )}
         </View>
-        <View style={styles.section3}>
-          <CustomText style={styles.passwordCustomText}>비밀번호를 입력해주세요.</CustomText>
-          <View style={styles.passwordInputWrap}>
-            <CustomInput
-              value={password}
-              maxLength={20}
-              onValueChange={handlePasswordChange}
-              secureCustomTextEntry={true}
-              keyboardType='default'
-              placeholder='Password'
-              errorHandler={passwordError}
-              errorMsg='Password must contain at least one character, special character, and number.'
-            />
-            <CustomInput
-              value={password2}
-              maxLength={20}
-              onValueChange={handlePassword2Change}
-              secureCustomTextEntry={true}
-              keyboardType='default'
-              placeholder='Verify password'
-              errorHandler={password2Error}
-              errorMsg='Passwords do not match.'
-              wrapperStyle={styles.password2Input}
-            />
-          </View>
-        </View>
         <View style={styles.section4}>
           <View style={styles.helpWrap}>
             <CustomText style={styles.helpTitle}>인증번호가 오지 않나요?</CustomText>
@@ -266,15 +209,15 @@ const SignupStep2View = (props) => {
         bgColor={colors.dark}
         bgColorPress={colors.darkDeep}
         text='다음'
-        disabled={!isVerifySuccess || !isPasswordSuccess}
-        onPress={submitSignupData}
+        disabled={!isVerifySuccess}
+        onPress={submit}
         styles={styles.submitTheme}
         height={FOOT_BUTTON_HEIGHT}
       />
     </>
   );
 };
-export default SignupStep2View;
+export default FindPasswordStep1View;
 
 const styles = StyleSheet.create({
   section1: {
@@ -321,16 +264,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
-  },
-
-  passwordInputWrap: {
-    marginTop: 10,
-    position: 'relative',
-    alignItems: 'center',
-  },
-
-  password2Input: {
-    marginTop: 10,
   },
 
   submitTheme: { borderRadius: 0 },

@@ -48,7 +48,7 @@ const CustomPicker = ({
             flex: 1,
             ...style,
           }}
-          itemStyle={itemStyle}  
+          itemStyle={itemStyle}
         >
           {items.map((item, index) => (
             <Picker.Item
@@ -62,9 +62,9 @@ const CustomPicker = ({
       </View>
       {error && (
         <CustomText
+          fontColor={colors.danger}
+          fontSize={14}
           style={{
-            color: colors.danger,
-            fontSize: 14,
             marginTop: 5,
             textAlign: 'left',
             alignSelf: 'flex-start',

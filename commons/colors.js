@@ -8,13 +8,14 @@ export default colors = {
   warning: '#ffbb33',
   warningDeep: '#FF8800',
 
-  dark: '#2E2E2E',
+  dark: '#363636',
   darkDeep: '#212121',
 
   light: '#fafafa',
   lightDeep: '#eeeeee',
 
   gray: '#bdbdbd',
+  grayDeep: '#6b6b6b',
 
   black: '#000000',
   white: '#ffffff',

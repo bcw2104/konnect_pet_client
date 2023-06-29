@@ -35,8 +35,10 @@ const TermsView = (props) => {
       {isLoaded && (
         <Container>
           <View style={styles.section1}>
-            <CustomText style={styles.guideText}>{terms.termsName}</CustomText>
-            <CustomText style={styles.guideSubText}>
+            <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+              {terms.termsName}
+            </CustomText>
+            <CustomText style={{ marginTop: 5 }} fontSize={16}>
               created: {moment(terms.createdDate).format('yyyy-MM-DD HH:mm:ss')}
             </CustomText>
           </View>
@@ -68,13 +70,5 @@ const styles = StyleSheet.create({
   },
   section2: {
     flex: 1,
-  },
-  guideText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  guideSubText: {
-    fontSize: 16,
-    marginTop: 5,
   },
 });

@@ -99,19 +99,14 @@ const SignupStep3View = (props) => {
         <>
           <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
             <View style={styles.section1}>
-              <CustomText style={styles.guideCustomText}>약관 동의를 해주세요.</CustomText>
+              <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+                약관 동의를 해주세요.
+              </CustomText>
             </View>
             <View style={styles.section2}>
               <Pressable style={styles.termsSelectAll} onPress={toggleAll}>
                 <CheckBox checked={selectAll} size={27} onPress={toggleAll} />
-                <CustomText
-                  style={[
-                    styles.termsCustomText,
-                    {
-                      fontSize: 17,
-                    },
-                  ]}
-                >
+                <CustomText fontSize={17} style={styles.termsCustomText}>
                   전체 선택
                 </CustomText>
               </Pressable>
@@ -136,13 +131,15 @@ const SignupStep3View = (props) => {
                     <Pressable
                       style={styles.termsCustomText}
                       onPress={() => {
-                        Navigator.navigate('terms', { termsGroupId: ele.termsGroupId });
+                        Navigator.navigate('terms', {
+                          termsGroupId: ele.termsGroupId,
+                        });
                       }}
                     >
                       <CustomText
+                        fontSize={15}
                         style={{
                           CustomTextDecorationLine: 'underline',
-                          fontSize: 15,
                         }}
                       >
                         [{ele.requiredYn ? '필수' : '선택'}]{ele.termsGroupName}{' '}
@@ -184,10 +181,6 @@ const styles = StyleSheet.create({
     flex: 4,
   },
 
-  guideCustomText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
   termsSelectAll: {
     flexDirection: 'row',
     paddingHorizontal: 10,

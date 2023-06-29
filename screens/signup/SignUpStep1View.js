@@ -73,7 +73,7 @@ const SignupStep1View = (props) => {
     setTel(tel);
   };
 
-  const requestSmsVerification = async () => {
+  const requestVerification = async () => {
     setVerifing(true);
     setOpenRetry(false);
     setRemain(VERIFY_TIMEOUT);
@@ -117,7 +117,7 @@ const SignupStep1View = (props) => {
         setRemain(0);
       }
     } catch (error) {
-      if(error.response.data.rsp_code != '9213') {
+      if (error.response.data.rsp_code != '9213') {
         setVerifiyError(true);
       }
     }
@@ -129,10 +129,12 @@ const SignupStep1View = (props) => {
         <>
           <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
             <View style={styles.section1}>
-              <CustomText style={styles.guideCustomText}>핸드폰 번호를 인증해주세요.</CustomText>
+              <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+                핸드폰 번호를 인증해주세요.
+              </CustomText>
             </View>
             <View style={styles.section2}>
-              <CustomText style={styles.phoneVerifyCustomText}>
+              <CustomText fontSize={16}>
                 핸드폰 번호를 입력해주세요.
               </CustomText>
               <CustomPicker
@@ -160,7 +162,7 @@ const SignupStep1View = (props) => {
                   width={110}
                   fontSize={15}
                   disabled={verifing && !openRetry}
-                  onPress={requestSmsVerification}
+                  onPress={requestVerification}
                   text={verifing ? '재발송' : '인증번호 발송'}
                 />
               </View>
@@ -182,7 +184,9 @@ const SignupStep1View = (props) => {
             </View>
             <View style={styles.section3}>
               <View style={styles.helpWrap}>
-                <CustomText style={styles.helpTitle}>인증번호가 오지 않나요?</CustomText>
+                <CustomText style={styles.helpTitle}>
+                  인증번호가 오지 않나요?
+                </CustomText>
                 <CustomText style={styles.helpContent}>
                   인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
                   않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
@@ -219,13 +223,6 @@ const styles = StyleSheet.create({
     flex: 3,
     justifyContent: 'space-between',
   },
-  guideCustomText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  phoneVerifyCustomText: {
-    fontSize: 16,
-  },
   phoneNumCountry: {
     marginTop: 20,
   },
@@ -249,7 +246,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 23,
     right: 15,
-    fontSize: 18,
     color: colors.danger,
   },
 

@@ -7,6 +7,9 @@ import CustomInput from '../elements/CustomInput';
 import serviceApis from './../../utils/ServiceApis';
 import { asyncStorage } from '../../storage/Storage';
 import CustomText from '../elements/CustomText';
+import { Pressable } from 'react-native';
+import { Navigator } from '../../navigations/Navigator';
+import { platform } from '../../commons/constants';
 
 const DefaultLogin = () => {
   const { userStore } = useStores();
@@ -63,8 +66,26 @@ const DefaultLogin = () => {
         errorMsg='비밀번호를 입력해주세요.'
       />
       {loginFailed && (
-        <CustomText style={styles.loginFailed}>Invalid email or password</CustomText>
+        <CustomText style={styles.loginFailed}>
+          Invalid email or password
+        </CustomText>
       )}
+      <View
+        style={{
+          marginTop: 15,
+          marginBottom:5,
+          alignSelf:'flex-end'
+        }}
+      >
+        <Pressable
+          onPress={() => {
+            Navigator.navigate('find_password_step1', {});
+          }}
+          hitSlop={10}
+        >
+          <CustomText fontSize={15}>Forget password?</CustomText>
+        </Pressable>
+      </View>
       <CustomButton
         bgColor={colors.dark}
         bgColorPress={colors.dangerDeep}

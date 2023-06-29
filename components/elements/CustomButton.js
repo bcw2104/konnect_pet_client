@@ -46,10 +46,10 @@ const CustomButton = ({
       >
         <CustomText
           style={{
-            fontSize: fontSize,
-            color: fontColor,
             textAlign: 'center',
           }}
+          fontSize={fontSize}
+          fontColor={fontColor}
         >
           {text}
         </CustomText>

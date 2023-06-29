@@ -17,8 +17,10 @@ const Welcome = () => {
   return (
     <Container>
       <View style={styles.section1}>
-        <CustomText style={styles.title}>반가워요!</CustomText>
-        <CustomText style={styles.titleSub}>산책을 시작해볼까요?</CustomText>
+        <CustomText style={{ fontWeight: 'bold' }} fontSize={30}>
+          반가워요!
+        </CustomText>
+        <CustomText style={{ marginTop: 10 }}>산책을 시작해볼까요?</CustomText>
       </View>
       <View style={styles.section2}>
         <View style={styles.loginWrap}>
@@ -26,7 +28,7 @@ const Welcome = () => {
         </View>
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
-          <CustomText style={styles.dividerCustomText}>OR</CustomText>
+          <CustomText style={styles.dividerCustomText} fontSize={13}>OR</CustomText>
           <View style={styles.dividerLine} />
         </View>
         <View style={styles.socialWrap}>
@@ -35,15 +37,28 @@ const Welcome = () => {
           <GoogleLogin />
         </View>
         <View style={styles.optionsWrap}>
-          <CustomText style={styles.optionCustomText}>Find Account</CustomText>
-          <CustomText style={[styles.optionCustomText, styles.bar]}>|</CustomText>
+          <CustomText
+            style={styles.optionCustomText}
+            fontColor={colors.grayDeep}
+            fontSize={16}
+          >
+            Don't have an account?
+          </CustomText>
           <Pressable
             onPress={() => {
               Navigator.navigate('signup_step1', { platform: platform.EMAIL });
             }}
             hitSlop={10}
           >
-            <CustomText style={styles.optionCustomText}>Sign Up</CustomText>
+            <CustomText
+              style={{
+                marginLeft: 10,
+                textDecorationLine: 'underline',
+              }}
+              fontSize={16}
+            >
+              Sign Up
+            </CustomText>
           </Pressable>
         </View>
       </View>
@@ -58,13 +73,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-  titleSub: {
-    marginTop: 10,
   },
   section2: {
     flex: 1,
@@ -82,10 +90,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  optionCustomText: {
-    color: colors.dark,
-    fontSize: 16,
-  },
 
   divider: {
     flexDirection: 'row',
@@ -94,19 +98,13 @@ const styles = StyleSheet.create({
     width: 200,
   },
   dividerCustomText: {
-    color: colors.dark,
     alignSelf: 'center',
     paddingHorizontal: 5,
-    fontSize: 13,
   },
   dividerLine: {
     backgroundColor: colors.dark,
     height: 1,
     flex: 1,
     alignSelf: 'center',
-  },
-  bar: {
-    marginHorizontal: 10,
-    color: colors.dark,
   },
 });

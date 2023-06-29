@@ -77,9 +77,9 @@ const CustomInput = ({
       </View>
       {error && (
         <CustomText
+          fontColor={colors.danger}
+          fontSize={14}
           style={{
-            color: colors.danger,
-            fontSize: 14,
             marginTop: 5,
             textAlign: 'left',
             alignSelf: 'flex-start',

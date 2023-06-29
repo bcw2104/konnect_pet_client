@@ -1,10 +1,23 @@
-import { Text } from "react-native";
-import React from "react";
+import { Text } from 'react-native';
+import React from 'react';
+import colors from '../../commons/colors';
 
-const CustomText = (props) => {
+const CustomText = ({
+  style = {},
+  fontColor = colors.dark,
+  fontSize = 18,
+  children,
+}) => {
   return (
-    <Text style={[props.style, { fontFamily: "Robato" }]}>
-      {props.children}
+    <Text
+      style={{
+        fontFamily: 'Robato',
+        fontSize: fontSize,
+        color: fontColor,
+        ...style,
+      }}
+    >
+      {children}
     </Text>
   );
 };
