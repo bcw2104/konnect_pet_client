@@ -3,160 +3,29 @@ import React from 'react';
 import Container from '../../components/layout/Container';
 import { Navigator } from '../../navigations/Navigator';
 import CustomButton from '../../components/elements/CustomButton';
-import CustomInput from '../../components/elements/CustomInput';
 import colors from '../../commons/colors';
 import serviceApis from '../../utils/ServiceApis';
 import { useState } from 'react';
-import { useEffect } from 'react';
-import regex from '../../commons/regex';
-import { platform } from './../../commons/constants';
-import Timer from '../../components/elements/Timer';
 import CustomText from '../../components/elements/CustomText';
+import PasswordSettingForm from '../../components/forms/PasswordSettingForm';
+import EmailVerify from '../../components/forms/EmailVerify';
 
 const FOOT_BUTTON_HEIGHT = 50;
-const VERIFY_TIMEOUT = 600;
 
 const SignupStep2View = (props) => {
   const { route } = props;
-
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
-  const [password2, setPassword2] = useState('');
-  const [password2Error, setPassword2Error] = useState(false);
-  const [verifyCode, setVerifyCode] = useState('');
-  const [verifiyError, setVerifiyError] = useState(false);
-  const [remain, setRemain] = useState(0);
-  const [verifing, setVerifing] = useState(false);
-
-  const [openRetry, setOpenRetry] = useState(false);
-  const [verifyData, setVerifyData] = useState(null);
-  const [isVerifySuccess, setIsVerifySuccess] = useState(false);
-  const [isPasswordSuccess, setIsPasswordSuccess] = useState(false);
-
-  useEffect(() => {
-    if (route.params.platform != platform.EMAIL) {
-      goToNextStep({});
-    }
-  }, []);
+  const [verifyKey, setVerifyKey] = useState(null);
 
   const goToNextStep = (params) => {
     Navigator.navigate('signup_step3', { ...params, ...route.params });
   };
 
-  useInterval(() => {
-    if (remain > 0) {
-      if (remain == VERIFY_TIMEOUT - 5) {
-        setOpenRetry(true);
-      }
-      setRemain(remain - 1);
-    } else {
-      if (verifing) {
-        resetVerifyStatus();
-        if (!isVerifySuccess) {
-          setVerifyData(null);
-        }
-      }
-    }
-  }, 1000);
-
-  const resetVerifyStatus = () => {
-    setOpenRetry(false);
-    setVerifing(false);
-    setVerifiyError(false);
-    setVerifyCode('');
-  };
-
-  const handleEmailChange = (email) => {
-    resetVerifyStatus();
-    setIsVerifySuccess(false);
-    setVerifyData(null);
-    setEmailError(false);
-    setEmail(email);
-  };
-
-  const confirmPassword = (password1, password2) => {
-    const test = regex.password.test(password1);
-
-    if (!test) {
-      setPasswordError(true);
-    } else {
-      setPasswordError(false);
-    }
-
-    if (password1 != password2) {
-      setIsPasswordSuccess(false);
-      setPassword2Error(true);
-    } else {
-      setIsPasswordSuccess(test);
-      setPassword2Error(false);
-    }
-  };
-
-  const handlePasswordChange = (password) => {
-    confirmPassword(password, password2);
-    setPassword(password);
-  };
-
-  const handlePassword2Change = (password2) => {
-    confirmPassword(password, password2);
-    setPassword2(password2);
-  };
-
-  const requestVerification = async () => {
-    const test = regex.email.test(email);
-
-    if (!test) {
-      setEmailError(true);
-      return;
-    }
-    setRemain(VERIFY_TIMEOUT);
-    setOpenRetry(false);
-    setVerifing(true);
-
-    try {
-      const response = await serviceApis.requestEmailVerification(email);
-
-      setVerifyData({
-        reqId: response.result.reqId,
-        timestamp: response.result.timestamp,
-        email: email,
-      });
-    } catch (error) {
-      setRemain(0);
-      setVerifing(false);
-    }
-  };
-
-  const submitVerifyCode = async () => {
-    if (!verifyData) return;
-
-    setVerifiyError(false);
-    try {
-      const response = await serviceApis.submitEmailVerification(
-        verifyData.reqId,
-        verifyData.timestamp,
-        verifyData.email,
-        verifyCode
-      );
-      if (response.rsp_code === '1000') {
-        setIsVerifySuccess(true);
-        resetVerifyStatus();
-        setRemain(0);
-      }
-    } catch (error) {
-      if (error.response.data.rsp_code != '9214') {
-        setVerifiyError(true);
-      }
-    }
-  };
-
   const submitSignupData = async () => {
+    if (!verifyKey || !password) return;
+
     goToNextStep({
-      emailReqId: verifyData.reqId,
-      emailTimestamp: verifyData.timestamp,
-      email: email,
+      emailVerifyKey: verifyKey,
       password: password,
     });
   };
@@ -165,94 +34,28 @@ const SignupStep2View = (props) => {
     <>
       <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
         <View style={styles.section1}>
-          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>가입 정보를 입력해주세요.</CustomText>
+          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+            가입 정보를 입력해주세요.
+          </CustomText>
         </View>
         <View style={styles.section2}>
           <CustomText fontSize={16}>이메일을 입력해주세요.</CustomText>
-          <View style={styles.emailInputWrap}>
-            <CustomInput
-              value={email}
-              maxLength={20}
-              onValueChange={handleEmailChange}
-              keyboardType='email-address'
-              placeholder='Email address'
-              errorHandler={emailError}
-              errorMsg='Invalid email address.'
-              wrapperStyle={styles.emailAddressInput}
-            />
-            <CustomButton
-              fontColor={colors.white}
-              bgColor={colors.dark}
-              bgColorPress={colors.darkDeep}
-              wrapperStyle={styles.emailVerifyButton}
-              width={110}
-              fontSize={15}
-              disabled={isVerifySuccess || (verifing && !openRetry)}
-              onPress={requestVerification}
-              text={
-                isVerifySuccess
-                  ? '인증 완료'
-                  : verifing
-                  ? '재발송'
-                  : '인증번호 발송'
-              }
-            />
-          </View>
-          {verifing && (
-            <View style={styles.emailVerifyWrap}>
-              <CustomInput
-                value={verifyCode}
-                onValueChange={setVerifyCode}
-                maxLength={10}
-                keyboardType='default'
-                wrapperStyle={styles.emailVerifyInput}
-                placeholder='Verify code'
-                errorHandler={verifiyError}
-                errorMsg='Incorrect verify code.'
-              />
-              <Timer style={styles.verifyTimer} remain={remain} />
-              <CustomButton
-                fontColor={colors.white}
-                bgColor={colors.dark}
-                bgColorPress={colors.darkDeep}
-                wrapperStyle={styles.verifySubmitButton}
-                width={110}
-                fontSize={15}
-                onPress={submitVerifyCode}
-                text='인증하기'
-              />
-            </View>
-          )}
+          <EmailVerify
+            verifyKey={verifyKey}
+            onVerifyKeyChange={setVerifyKey}
+            requestVerificationApi={serviceApis.requestJoinEmailVerification}
+            submitVerificationApi={serviceApis.submitJoinEmailVerification}
+          />
         </View>
         <View style={styles.section3}>
-          <CustomText style={styles.passwordCustomText}>비밀번호를 입력해주세요.</CustomText>
-          <View style={styles.passwordInputWrap}>
-            <CustomInput
-              value={password}
-              maxLength={20}
-              onValueChange={handlePasswordChange}
-              secureCustomTextEntry={true}
-              keyboardType='default'
-              placeholder='Password'
-              errorHandler={passwordError}
-              errorMsg='Password must contain at least one character, special character, and number.'
-            />
-            <CustomInput
-              value={password2}
-              maxLength={20}
-              onValueChange={handlePassword2Change}
-              secureCustomTextEntry={true}
-              keyboardType='default'
-              placeholder='Verify password'
-              errorHandler={password2Error}
-              errorMsg='Passwords do not match.'
-              wrapperStyle={styles.password2Input}
-            />
-          </View>
+          <CustomText>비밀번호를 입력해주세요.</CustomText>
+          <PasswordSettingForm onPasswordChange={setPassword} />
         </View>
         <View style={styles.section4}>
           <View style={styles.helpWrap}>
-            <CustomText style={styles.helpTitle}>인증번호가 오지 않나요?</CustomText>
+            <CustomText style={styles.helpTitle}>
+              인증번호가 오지 않나요?
+            </CustomText>
             <CustomText style={styles.helpContent}>
               인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
               않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
@@ -266,7 +69,7 @@ const SignupStep2View = (props) => {
         bgColor={colors.dark}
         bgColorPress={colors.darkDeep}
         text='다음'
-        disabled={!isVerifySuccess || !isPasswordSuccess}
+        disabled={!verifyKey || !password}
         onPress={submitSignupData}
         styles={styles.submitTheme}
         height={FOOT_BUTTON_HEIGHT}
@@ -289,48 +92,6 @@ const styles = StyleSheet.create({
   section4: {
     flex: 2,
     justifyContent: 'space-between',
-  },
-  emailAddressCountry: {
-    marginTop: 20,
-  },
-  emailInputWrap: {
-    marginTop: 10,
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  emailAddressInput: {
-    flex: 1,
-  },
-  emailVerifyButton: {
-    position: 'absolute',
-    right: 0,
-  },
-  emailVerifyWrap: {
-    marginTop: 10,
-    position: 'relative',
-    alignItems: 'center',
-  },
-  verifyTimer: {
-    position: 'absolute',
-    top: 13,
-    right: 125,
-    color: colors.danger,
-  },
-  verifySubmitButton: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
-
-  passwordInputWrap: {
-    marginTop: 10,
-    position: 'relative',
-    alignItems: 'center',
-  },
-
-  password2Input: {
-    marginTop: 10,
   },
 
   submitTheme: { borderRadius: 0 },

@@ -28,7 +28,7 @@ const Welcome = () => {
         </View>
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
-          <CustomText style={styles.dividerCustomText} fontSize={13}>OR</CustomText>
+          <CustomText style={styles.dividerText} fontSize={13}>OR</CustomText>
           <View style={styles.dividerLine} />
         </View>
         <View style={styles.socialWrap}>
@@ -38,7 +38,7 @@ const Welcome = () => {
         </View>
         <View style={styles.optionsWrap}>
           <CustomText
-            style={styles.optionCustomText}
+            style={styles.optionText}
             fontColor={colors.grayDeep}
             fontSize={16}
           >
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     width: 200,
   },
-  dividerCustomText: {
+  dividerText: {
     alignSelf: 'center',
     paddingHorizontal: 5,
   },

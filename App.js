@@ -13,6 +13,8 @@ import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 import { Settings } from 'react-native-fbsdk-next';
 import { useFonts } from 'expo-font';
 import colors from './commons/colors';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 
 const rootStore = new RootStore();
 
@@ -23,25 +25,26 @@ export default function App() {
   });
 
   useEffect(() => {
-    initFacebook();
-
+    if(!fontsLoaded) return;
     async function prepare() {
       try {
+        initFacebook();
+        await initDeviceInfo();
         const isLogin = await checkLogin();
 
         if (isLogin) {
           rootStore.userStore.initUserInfo();
         }
-        await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
+
       } finally {
-        // Tell the application to render
+
         setAppIsReady(true);
       }
     }
 
     prepare();
-  }, []);
+  }, [fontsLoaded]);
 
   const initFacebook = async () => {
     const { status } = await requestTrackingPermissionsAsync();
@@ -50,6 +53,44 @@ export default function App() {
       await Settings.setAdvertiserTrackingEnabled(true);
     }
   };
+
+  const initDeviceInfo = async () => {
+    const deviceToken = await registerForPushNotificationsAsync();
+    rootStore.userStore.setDeviceInfo(Device.modelName,Device.osName,
+      Device.osVersion,deviceToken);
+  }
+
+  const registerForPushNotificationsAsync = async () => {
+    let token = null;
+
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+  
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        //Failed to get push token for push notification!
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      //Must use physical device for Push Notifications
+    }
+  
+    return token;
+  }
 
   const checkLogin = async () => {
     const accessToken = await asyncStorage.getItem('access_token');
@@ -106,7 +147,7 @@ export default function App() {
     }
   }, [appIsReady]);
 
-  if (!appIsReady && !fontsLoaded) {
+  if (!appIsReady) {
     return null;
   }
 
@@ -126,6 +167,5 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     flex: 1,
-    backgroundColor: '#fff',
   },
 });

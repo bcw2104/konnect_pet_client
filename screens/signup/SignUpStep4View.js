@@ -9,6 +9,7 @@ import { Navigator } from './../../navigations/Navigator';
 import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
 import CustomText from '../../components/elements/CustomText';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 const FOOT_BUTTON_HEIGHT = 50;
 
@@ -26,7 +27,11 @@ const SignupStep4View = (props) => {
         ...route.params,
       });
       console.log(response);
-      if (response?.rsp_code === '1000') {
+      if (response?.rsp_code === '1002') {
+        Toast.show({
+          type: 'success',
+          text1: response.rsp_msg_detail,
+        });
         asyncStorage.setItem('access_token', response.result.accessToken);
         asyncStorage.setItem(
           'access_token_expire_at',

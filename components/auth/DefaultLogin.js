@@ -66,15 +66,23 @@ const DefaultLogin = () => {
         errorMsg='비밀번호를 입력해주세요.'
       />
       {loginFailed && (
-        <CustomText style={styles.loginFailed}>
+        <CustomText
+          fontColor={colors.danger}
+          fontSize={14}
+          style={{
+            marginTop: 5,
+            textAlign: 'left',
+            alignSelf: 'flex-start',
+          }}
+        >
           Invalid email or password
         </CustomText>
       )}
       <View
         style={{
           marginTop: 15,
-          marginBottom:5,
-          alignSelf:'flex-end'
+          marginBottom: 5,
+          alignSelf: 'flex-end',
         }}
       >
         <Pressable
@@ -113,10 +121,5 @@ const styles = StyleSheet.create({
   submit: {
     flex: 0.9,
     marginTop: 20,
-  },
-  loginFailed: {
-    color: colors.danger,
-    marginTop: 5,
-    alignSelf: 'flex-start',
   },
 });

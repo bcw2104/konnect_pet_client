@@ -12,6 +12,7 @@ import regex from '../../commons/regex';
 import { platform } from './../../commons/constants';
 import Timer from '../../components/elements/Timer';
 import CustomText from '../../components/elements/CustomText';
+import EmailVerify from '../../components/forms/EmailVerify';
 
 const FOOT_BUTTON_HEIGHT = 50;
 const VERIFY_TIMEOUT = 600;
@@ -19,114 +20,17 @@ const VERIFY_TIMEOUT = 600;
 const FindPasswordStep1View = (props) => {
   const { route } = props;
 
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState(false);
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
-  const [password2, setPassword2] = useState('');
-  const [password2Error, setPassword2Error] = useState(false);
-  const [verifyCode, setVerifyCode] = useState('');
-  const [verifiyError, setVerifiyError] = useState(false);
-  const [remain, setRemain] = useState(0);
-  const [verifing, setVerifing] = useState(false);
-
-  const [openRetry, setOpenRetry] = useState(false);
-  const [verifyData, setVerifyData] = useState(null);
-  const [isVerifySuccess, setIsVerifySuccess] = useState(false);
-  const [isPasswordSuccess, setIsPasswordSuccess] = useState(false);
-
-  useEffect(() => {
-  }, []);
+  const [verifyKey, setVerifyKey] = useState(null);
 
   const goToNextStep = (params) => {
     Navigator.navigate('find_password_step2', { ...params, ...route.params });
   };
 
-  useInterval(() => {
-    if (remain > 0) {
-      if (remain == VERIFY_TIMEOUT - 5) {
-        setOpenRetry(true);
-      }
-      setRemain(remain - 1);
-    } else {
-      if (verifing) {
-        resetVerifyStatus();
-        if (!isVerifySuccess) {
-          setVerifyData(null);
-        }
-      }
-    }
-  }, 1000);
-
-  const resetVerifyStatus = () => {
-    setOpenRetry(false);
-    setVerifing(false);
-    setVerifiyError(false);
-    setVerifyCode('');
-  };
-
-  const handleEmailChange = (email) => {
-    resetVerifyStatus();
-    setIsVerifySuccess(false);
-    setVerifyData(null);
-    setEmailError(false);
-    setEmail(email);
-  };
-
-  const requestVerification = async () => {
-    const test = regex.email.test(email);
-
-    if (!test) {
-      setEmailError(true);
-      return;
-    }
-    setRemain(VERIFY_TIMEOUT);
-    setOpenRetry(false);
-    setVerifing(true);
-
-    try {
-      const response = await serviceApis.requestEmailVerification(email);
-
-      setVerifyData({
-        reqId: response.result.reqId,
-        timestamp: response.result.timestamp,
-        email: email,
-      });
-    } catch (error) {
-      setRemain(0);
-      setVerifing(false);
-    }
-  };
-
-  const submitVerifyCode = async () => {
-    if (!verifyData) return;
-
-    setVerifiyError(false);
-    try {
-      const response = await serviceApis.submitEmailVerification(
-        verifyData.reqId,
-        verifyData.timestamp,
-        verifyData.email,
-        verifyCode
-      );
-      if (response.rsp_code === '1000') {
-        setIsVerifySuccess(true);
-        resetVerifyStatus();
-        setRemain(0);
-      }
-    } catch (error) {
-      if (error.response.data.rsp_code != '9214') {
-        setVerifiyError(true);
-      }
-    }
-  };
-
   const submit = async () => {
+    if(!verifyKey) return;
+    
     goToNextStep({
-      emailReqId: verifyData.reqId,
-      emailTimestamp: verifyData.timestamp,
-      email: email,
-      password: password,
+      emailVerifyKey: verifyKey,
     });
   };
 
@@ -138,62 +42,14 @@ const FindPasswordStep1View = (props) => {
         </View>
         <View style={styles.section2}>
           <CustomText fontSize={16}>이메일을 입력해주세요.</CustomText>
-          <View style={styles.emailInputWrap}>
-            <CustomInput
-              value={email}
-              maxLength={20}
-              onValueChange={handleEmailChange}
-              keyboardType='email-address'
-              placeholder='Email address'
-              errorHandler={emailError}
-              errorMsg='Invalid email address.'
-              wrapperStyle={styles.emailAddressInput}
-            />
-            <CustomButton
-              fontColor={colors.white}
-              bgColor={colors.dark}
-              bgColorPress={colors.darkDeep}
-              wrapperStyle={styles.emailVerifyButton}
-              width={110}
-              fontSize={15}
-              disabled={isVerifySuccess || (verifing && !openRetry)}
-              onPress={requestVerification}
-              text={
-                isVerifySuccess
-                  ? '인증 완료'
-                  : verifing
-                  ? '재발송'
-                  : '인증번호 발송'
-              }
-            />
-          </View>
-          {verifing && (
-            <View style={styles.emailVerifyWrap}>
-              <CustomInput
-                value={verifyCode}
-                onValueChange={setVerifyCode}
-                maxLength={10}
-                keyboardType='default'
-                wrapperStyle={styles.emailVerifyInput}
-                placeholder='Verify code'
-                errorHandler={verifiyError}
-                errorMsg='Incorrect verify code.'
-              />
-              <Timer style={styles.verifyTimer} remain={remain} />
-              <CustomButton
-                fontColor={colors.white}
-                bgColor={colors.dark}
-                bgColorPress={colors.darkDeep}
-                wrapperStyle={styles.verifySubmitButton}
-                width={110}
-                fontSize={15}
-                onPress={submitVerifyCode}
-                text='인증하기'
-              />
-            </View>
-          )}
+          <EmailVerify
+            verifyKey={verifyKey}
+            onVerifyKeyChange={setVerifyKey}
+            requestVerificationApi={serviceApis.requestResetPasswordEmailVerification}
+            submitVerificationApi={serviceApis.submitResetPasswordEmailVerification}
+          />
         </View>
-        <View style={styles.section4}>
+        <View style={styles.section3}>
           <View style={styles.helpWrap}>
             <CustomText style={styles.helpTitle}>인증번호가 오지 않나요?</CustomText>
             <CustomText style={styles.helpContent}>
@@ -209,7 +65,7 @@ const FindPasswordStep1View = (props) => {
         bgColor={colors.dark}
         bgColorPress={colors.darkDeep}
         text='다음'
-        disabled={!isVerifySuccess}
+        disabled={!verifyKey}
         onPress={submit}
         styles={styles.submitTheme}
         height={FOOT_BUTTON_HEIGHT}
@@ -229,7 +85,7 @@ const styles = StyleSheet.create({
   section3: {
     flex: 1,
   },
-  section4: {
+  section3: {
     flex: 2,
     justifyContent: 'space-between',
   },

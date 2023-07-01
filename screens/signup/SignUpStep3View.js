@@ -87,9 +87,8 @@ const SignupStep3View = (props) => {
   };
 
   const submitSignupData = async () => {
-    if (!isRequiredAllChecked) {
-      return;
-    }
+    if (!isRequiredAllChecked) return;
+    
     goToNextStep({ termsAgreed: termsAgreed });
   };
 
@@ -106,7 +105,7 @@ const SignupStep3View = (props) => {
             <View style={styles.section2}>
               <Pressable style={styles.termsSelectAll} onPress={toggleAll}>
                 <CheckBox checked={selectAll} size={27} onPress={toggleAll} />
-                <CustomText fontSize={17} style={styles.termsCustomText}>
+                <CustomText fontSize={17} style={{ marginLeft: 20 }}>
                   전체 선택
                 </CustomText>
               </Pressable>
@@ -129,26 +128,36 @@ const SignupStep3View = (props) => {
                       size={27}
                     />
                     <Pressable
-                      style={styles.termsCustomText}
                       onPress={() => {
                         Navigator.navigate('terms', {
                           termsGroupId: ele.termsGroupId,
                         });
                       }}
                     >
-                      <CustomText
-                        fontSize={15}
-                        style={{
-                          CustomTextDecorationLine: 'underline',
-                        }}
-                      >
-                        [{ele.requiredYn ? '필수' : '선택'}]{ele.termsGroupName}{' '}
-                        동의
-                      </CustomText>
+                      <View style={{ marginLeft: 20, flexDirection: 'row' }}>
+                        <CustomText fontSize={15}>
+                          [{ele.requiredYn ? '필수' : '선택'}]{' '}
+                        </CustomText>
+                        <CustomText
+                          fontSize={15}
+                          style={{
+                            textDecorationLine: 'underline',
+                          }}
+                        >
+                          {ele.termsGroupName}{' '}
+                        </CustomText>
+                        <CustomText fontSize={15}>동의</CustomText>
+                      </View>
                     </Pressable>
                   </View>
                   {ele.termsGroupContent && (
-                    <CustomText style={styles.termsContent}>
+                    <CustomText
+                      style={{
+                        marginTop: -5,
+                        paddingLeft: 54,
+                      }}
+                      fontSize={14}
+                    >
                       {ele.termsGroupContent}
                     </CustomText>
                   )}
@@ -193,11 +202,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     paddingVertical: 10,
-  },
-  termsCustomText: { marginLeft: 20 },
-  termsContent: {
-    marginTop: -5,
-    paddingLeft: 54,
   },
   submitTheme: { borderRadius: 0 },
 });

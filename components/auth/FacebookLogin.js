@@ -42,10 +42,10 @@ const FacebookLogin = () => {
           response.result.refreshTokenExpireAt
         );
         userStore.initUserInfo();
-      } else if (response.rsp_code === '9210') {
+      } else if (response.rsp_code === '9215') {
         Navigator.navigate('signup_step1', {
           platform: platform.FACEBOOK,
-          email: response.result.email,
+          emailVerifyKey: response.result.key,
         });
       }
     } catch (error) {}

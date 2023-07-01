@@ -9,6 +9,11 @@ export default class UserStore {
   _platform = null;
   _isLogin = false;
 
+  _deviceModel = null;
+  _deviceOs = null;
+  _deviceOsVersion = null;
+  _deviceToken = null;
+
   constructor(rootStore) {
     makeAutoObservable(this);
     this._rootStore = rootStore;
@@ -16,6 +21,16 @@ export default class UserStore {
 
   async initUserInfo() {
     const response = await serviceApis.getUserInfo();
+    try {
+      await serviceApis.updateDeviceInfo(
+        this._deviceModel,
+        this._deviceOs,
+        this._deviceOsVersion,
+        this._deviceToken
+      );
+    } catch (error) {
+      
+    }
 
     runInAction(() => {
       this._userId = response.result.userId;
@@ -23,6 +38,13 @@ export default class UserStore {
       this._platform = response.result.platform;
       this._isLogin = true;
     });
+  }
+
+  setDeviceInfo(deviceModel, deviceOs, deviceOsVersion, deviceToken) {
+    this._deviceModel = deviceModel;
+    this._deviceOs = deviceOs;
+    this._deviceOsVersion = deviceOsVersion;
+    this._deviceToken = deviceToken;
   }
 
   setLoginStatus(isLogin) {

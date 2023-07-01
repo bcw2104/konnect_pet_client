@@ -8,6 +8,7 @@ import { Navigator, navigationRef } from '../../navigations/Navigator';
 import moment from 'moment';
 import { WebView } from 'react-native-webview';
 import CustomText from '../../components/elements/CustomText';
+import colors from '../../commons/colors';
 
 const TermsView = (props) => {
   const { route } = props;
@@ -46,6 +47,7 @@ const TermsView = (props) => {
             <WebView
               style={{
                 flex: 1,
+                backgroundColor:colors.white
               }}
               source={{
                 html: `<html>

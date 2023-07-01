@@ -16,7 +16,7 @@ import { platform } from '../../commons/constants';
 const FOOT_BUTTON_HEIGHT = 50;
 const VERIFY_TIMEOUT = 180;
 
-const SignupStep1View = (props) => {
+const LeaveView = (props) => {
   const { route } = props;
   const [screenData, setScreenData] = useState({});
   const [nationCode, setNationCode] = useState('');
@@ -32,24 +32,16 @@ const SignupStep1View = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const screenData = await serviceApis.screenSignupStep1();
+        const screenData = await serviceApis.screenLeave();
         setScreenData(screenData.result);
         setNationCode(screenData.result.nationCodes[0].value);
         setIsLoaded(true);
       } catch (error) {
-        Navigator.reset('welcome', {});
+        Navigator.reset('home', {});
       }
     };
     fetchData();
   }, []);
-
-  const goToNextStep = (params) => {
-    if (route.params.platform != platform.EMAIL) {
-      Navigator.navigate('signup_step3', { ...params, ...route.params });
-    } else {
-      Navigator.navigate('signup_step2', { ...params, ...route.params });
-    }
-  };
 
   useInterval(() => {
     if (remain > 0) {
@@ -107,7 +99,7 @@ const SignupStep1View = (props) => {
 
     setVerifiyError(false);
     try {
-      const response = await serviceApis.submitJoinSmsVerification(
+      const response = await serviceApis.submitSmsVerification(
         verifyData.reqId,
         verifyData.timestamp,
         verifyData.tel,
@@ -221,7 +213,7 @@ const SignupStep1View = (props) => {
     </>
   );
 };
-export default SignupStep1View;
+export default LeaveView;
 
 const styles = StyleSheet.create({
   section1: {
