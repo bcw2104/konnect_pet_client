@@ -15,6 +15,7 @@ import { useFonts } from 'expo-font';
 import colors from './commons/colors';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import { useBackPressHandler } from './hooks/useBackPressHandler';
 
 const rootStore = new RootStore();
 
@@ -23,6 +24,7 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     'Robato': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
   });
+  useBackPressHandler();
 
   useEffect(() => {
     if(!fontsLoaded) return;
@@ -33,12 +35,11 @@ export default function App() {
         const isLogin = await checkLogin();
 
         if (isLogin) {
-          rootStore.userStore.initUserInfo();
+          await rootStore.userStore.initUserInfo();
         }
       } catch (e) {
 
       } finally {
-
         setAppIsReady(true);
       }
     }

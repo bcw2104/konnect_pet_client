@@ -12,7 +12,7 @@ import regex from '../../commons/regex';
 import { platform } from './../../commons/constants';
 import Timer from '../../components/elements/Timer';
 import CustomText from '../../components/elements/CustomText';
-import EmailVerify from '../../components/forms/EmailVerify';
+import EmailVerify from '../../components/modules/EmailVerify';
 
 const FOOT_BUTTON_HEIGHT = 50;
 const VERIFY_TIMEOUT = 600;
@@ -51,8 +51,8 @@ const FindPasswordStep1View = (props) => {
         </View>
         <View style={styles.section3}>
           <View style={styles.helpWrap}>
-            <CustomText style={styles.helpTitle}>인증번호가 오지 않나요?</CustomText>
-            <CustomText style={styles.helpContent}>
+            <CustomText fontSize={15}>인증번호가 오지 않나요?</CustomText>
+            <CustomText fontSize={15}>
               인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
               않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
               내용입니다.
@@ -80,10 +80,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   section2: {
-    flex: 1,
-  },
-  section3: {
-    flex: 1,
+    flex: 2,
   },
   section3: {
     flex: 2,

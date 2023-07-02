@@ -9,7 +9,8 @@ import { asyncStorage } from '../../storage/Storage';
 import CustomText from '../elements/CustomText';
 import { Pressable } from 'react-native';
 import { Navigator } from '../../navigations/Navigator';
-import { platform } from '../../commons/constants';
+import { KeyboardAvoidingView } from 'react-native';
+import { Platform } from 'react-native';
 
 const DefaultLogin = () => {
   const { userStore } = useStores();
@@ -21,6 +22,9 @@ const DefaultLogin = () => {
   const [loginFailed, setLoginFailed] = useState(false);
 
   const loginSubmit = async () => {
+    setEmailError(false);
+    setPasswordError(false);
+
     if (!email || !password) {
       setEmailError(true);
       setPasswordError(true);
@@ -46,7 +50,10 @@ const DefaultLogin = () => {
   };
 
   return (
-    <View style={styles.form}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.form}
+    >
       <CustomInput
         value={email}
         onValueChange={setEmail}
@@ -103,7 +110,7 @@ const DefaultLogin = () => {
         height={50}
         wrapperStyle={styles.submit}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -111,15 +118,12 @@ export default DefaultLogin;
 
 const styles = StyleSheet.create({
   form: {
-    flex: 1,
     alignItems: 'center',
   },
   input: {
-    flex: 0.9,
-    marginTop: 20,
+    marginTop: 10,
   },
   submit: {
-    flex: 0.9,
-    marginTop: 20,
+    marginTop: 10,
   },
 });

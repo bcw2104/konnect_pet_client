@@ -25,6 +25,9 @@ export default serviceApis = {
     },
   }),
 
+  //mypage
+  leaveUser: (smsVerifyKey) => baseAxios.post(`/api/user/v1/mypage/leave`, {smsVerifyKey}),
+
   //terms
   requestSignupTerms: (groupId) => baseAxios.get(`/api/auth/v1/terms/group/${groupId}/lastest`),
 

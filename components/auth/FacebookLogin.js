@@ -28,7 +28,7 @@ const FacebookLogin = () => {
     }
 
     try {
-      const response = await serviceApis.socialLogin(token, platform.FACEBOOK);
+      const response = await serviceApis.socialLogin(token.accessToken, platform.FACEBOOK);
 
       if (response.rsp_code === '1000') {
         asyncStorage.setItem('access_token', response.result.accessToken);

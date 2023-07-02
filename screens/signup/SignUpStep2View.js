@@ -7,8 +7,8 @@ import colors from '../../commons/colors';
 import serviceApis from '../../utils/ServiceApis';
 import { useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
-import PasswordSettingForm from '../../components/forms/PasswordSettingForm';
-import EmailVerify from '../../components/forms/EmailVerify';
+import PasswordSetting from '../../components/modules/PasswordSetting';
+import EmailVerify from '../../components/modules/EmailVerify';
 
 const FOOT_BUTTON_HEIGHT = 50;
 
@@ -21,7 +21,7 @@ const SignupStep2View = (props) => {
     Navigator.navigate('signup_step3', { ...params, ...route.params });
   };
 
-  const submitSignupData = async () => {
+  const submit = async () => {
     if (!verifyKey || !password) return;
 
     goToNextStep({
@@ -48,15 +48,16 @@ const SignupStep2View = (props) => {
           />
         </View>
         <View style={styles.section3}>
-          <CustomText>비밀번호를 입력해주세요.</CustomText>
-          <PasswordSettingForm onPasswordChange={setPassword} />
+          <CustomText fontSize={16}>비밀번호를 입력해주세요.</CustomText>
+          <PasswordSetting onPasswordChange={setPassword} />
         </View>
+        
         <View style={styles.section4}>
           <View style={styles.helpWrap}>
-            <CustomText style={styles.helpTitle}>
+            <CustomText fontSize={15}>
               인증번호가 오지 않나요?
             </CustomText>
-            <CustomText style={styles.helpContent}>
+            <CustomText fontSize={15}>
               인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
               않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
               내용입니다.
@@ -70,7 +71,7 @@ const SignupStep2View = (props) => {
         bgColorPress={colors.darkDeep}
         text='다음'
         disabled={!verifyKey || !password}
-        onPress={submitSignupData}
+        onPress={submit}
         styles={styles.submitTheme}
         height={FOOT_BUTTON_HEIGHT}
       />
@@ -84,14 +85,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   section2: {
-    flex: 1,
+    flex: 3,
   },
   section3: {
-    flex: 1,
+    flex: 3,
   },
   section4: {
-    flex: 2,
-    justifyContent: 'space-between',
+    flex:3
   },
 
   submitTheme: { borderRadius: 0 },

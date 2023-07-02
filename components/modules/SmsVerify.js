@@ -1,30 +1,34 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import CustomText from '../elements/CustomText';
+import CustomPicker from '../elements/CustomPicker';
+import CustomInput from '../elements/CustomInput';
+import CustomButton from '../elements/CustomButton';
+import Timer from '../elements/Timer';
 import { useState } from 'react';
 import useInterval from './../../hooks/useInertval';
-import CustomButton from '../elements/CustomButton';
-import CustomInput from '../elements/CustomInput';
-import Timer from '../elements/Timer';
+import { KeyboardAvoidingView } from 'react-native';
+import { Platform } from 'react-native';
 
-const VERIFY_TIMEOUT = 600;
+const VERIFY_TIMEOUT = 180;
 
-const EmailVerify = ({
-  defaultEmail = '',
+const SmsVerify = ({
+  defaultTel = '',
+  nationCodes = [],
+  nationCode = null,
+  onNationCodeChange = (value) => {},
   verifyKey = null,
   onVerifyKeyChange = (value) => {},
   requestVerificationApi,
   submitVerificationApi,
 }) => {
-  const [verifyData, setVerifyData] = useState(null);
+  const [tel, setTel] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
   const [verifiyError, setVerifiyError] = useState(false);
   const [remain, setRemain] = useState(0);
   const [verifing, setVerifing] = useState(false);
-
-  const [email, setEmail] = useState(defaultEmail);
-  const [emailError, setEmailError] = useState(false);
-
   const [openVerify, setOpenVerify] = useState(true);
+  const [verifyData, setVerifyData] = useState(null);
 
   useInterval(() => {
     if (remain > 0) {
@@ -47,33 +51,34 @@ const EmailVerify = ({
     setVerifyCode('');
   };
 
-  const handleEmailChange = (email) => {
+  const handleNationCodeChange = (nationCode) => {
     resetVerifyStatus();
     onVerifyKeyChange(null);
     setVerifyData(null);
-    setEmailError(false);
-    setEmail(email);
+    onNationCodeChange(nationCode);
+  };
+
+  const handleTelChange = (tel) => {
+    resetVerifyStatus();
+    onVerifyKeyChange(null);
+    setVerifyData(null);
+    setTel(tel);
   };
 
   const requestVerification = async () => {
-    const test = regex.email.test(email);
-
-    if (!test) {
-      setEmailError(true);
-      return;
-    }
-
     setOpenVerify(false);
 
+    let reqTel = tel;
     try {
-      const response = await requestVerificationApi(email);
+      const response = await requestVerificationApi(nationCode + reqTel);
+
       setRemain(VERIFY_TIMEOUT);
       setVerifing(true);
 
       setVerifyData({
         reqId: response.result.reqId,
+        tel: response.result.tel,
         timestamp: response.result.timestamp,
-        email: email,
       });
     } catch (error) {
       setRemain(0);
@@ -90,9 +95,10 @@ const EmailVerify = ({
       const response = await submitVerificationApi(
         verifyData.reqId,
         verifyData.timestamp,
-        verifyData.email,
+        verifyData.tel,
         verifyCode
       );
+
       if (response.rsp_code === '1000') {
         resetVerifyStatus();
         setRemain(0);
@@ -100,29 +106,38 @@ const EmailVerify = ({
         onVerifyKeyChange(response.result.key);
       }
     } catch (error) {
-      setVerifiyError(true);
+      if (error.response.data.rsp_code != '9213') {
+        setVerifiyError(true);
+      }
     }
   };
 
   return (
-    <>
-      <View style={styles.emailInputWrap}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <CustomText fontSize={16}>핸드폰 번호를 입력해주세요.</CustomText>
+      <CustomPicker
+        value={nationCode}
+        onValueChange={handleNationCodeChange}
+        items={nationCodes}
+        wrapperStyle={styles.phoneNumCountry}
+      />
+      <View style={styles.phoneInputWrap}>
         <CustomInput
-          value={email}
-          disabled={!!defaultEmail}
+          value={tel}
           maxLength={20}
-          onValueChange={handleEmailChange}
-          keyboardType='email-address'
-          placeholder='Email address'
-          errorHandler={emailError}
-          errorMsg='Invalid email address.'
-          wrapperStyle={styles.emailAddressInput}
+          onValueChange={handleTelChange}
+          regex={regex.number}
+          keyboardType='number-pad'
+          placeholder='Phone number'
+          errorMsg='Please enter numbers only.'
         />
         <CustomButton
           fontColor={colors.white}
           bgColor={colors.dark}
           bgColorPress={colors.darkDeep}
-          wrapperStyle={styles.emailVerifyButton}
+          wrapperStyle={styles.phoneVerifyButton}
           width={110}
           fontSize={15}
           disabled={!openVerify}
@@ -139,13 +154,13 @@ const EmailVerify = ({
         />
       </View>
       {verifing && (
-        <View style={styles.emailVerifyWrap}>
+        <View style={styles.phoneVerifyWrap}>
           <CustomInput
             value={verifyCode}
             onValueChange={setVerifyCode}
             maxLength={10}
-            keyboardType='default'
-            wrapperStyle={styles.emailVerifyInput}
+            keyboardType='number-pad'
+            wrapperStyle={styles.phoneVerifyInput}
             placeholder='Verify code'
             errorHandler={verifiyError}
             errorMsg='Incorrect verify code.'
@@ -163,27 +178,28 @@ const EmailVerify = ({
           />
         </View>
       )}
-    </>
+    </KeyboardAvoidingView>
   );
 };
 
-export default EmailVerify;
+export default SmsVerify;
 
 const styles = StyleSheet.create({
-  emailInputWrap: {
+  phoneNumCountry: {
+    marginTop: 20,
+  },
+  phoneInputWrap: {
     marginTop: 10,
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-  emailAddressInput: {
-    flex: 1,
-  },
-  emailVerifyButton: {
+  phoneVerifyButton: {
     position: 'absolute',
     right: 0,
   },
-  emailVerifyWrap: {
+
+  phoneVerifyWrap: {
     marginTop: 10,
     position: 'relative',
     alignItems: 'center',

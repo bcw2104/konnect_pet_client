@@ -9,26 +9,15 @@ const Container = ({ outerElementHeight = 0, children }) => {
   const headerHeight = useHeaderHeight();
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        backgroundColor:colors.white
+    <View
+      style={{
+        flex: 1,
+        paddingHorizontal: 15,
+        marginTop: systemStore.statusBarHeight,
       }}
     >
-      <View
-        style={{
-          flex: 1,
-          paddingHorizontal: 15,
-          marginTop: systemStore.statusBarHeight,
-          minHeight:
-            systemStore.winHeight -
-            systemStore.statusBarHeight -
-            headerHeight -
-            outerElementHeight,
-        }}
-      >
-        {children}
-      </View>
-    </ScrollView>
+      {children}
+    </View>
   );
 };
 

@@ -5,14 +5,12 @@ import { observer } from 'mobx-react-lite';
 import DefaultLogin from '../components/auth/DefaultLogin';
 import colors from '../commons/colors';
 import Container from '../components/layout/Container';
-import { useBackPressHandler } from '../hooks/useBackPressHandler';
 import { Navigator } from '../navigations/Navigator';
 import { platform } from '../commons/constants';
 import FacebookLogin from '../components/auth/FacebookLogin';
 import CustomText from '../components/elements/CustomText';
 
-const Welcome = () => {
-  useBackPressHandler();
+const WelcomeView = () => {
 
   return (
     <Container>
@@ -66,7 +64,7 @@ const Welcome = () => {
   );
 };
 
-export default observer(Welcome);
+export default observer(WelcomeView);
 
 const styles = StyleSheet.create({
   section1: {
@@ -75,7 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   section2: {
-    flex: 1,
+    flex: 3,
   },
   loginWrap: {
     alignItems: 'center',

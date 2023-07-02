@@ -8,7 +8,7 @@ import serviceApis from '../../utils/ServiceApis';
 import { useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import PasswordSettingForm from '../../components/forms/PasswordSettingForm';
+import PasswordSetting from '../../components/modules/PasswordSetting';
 
 const FOOT_BUTTON_HEIGHT = 50;
 
@@ -52,7 +52,7 @@ const FindPasswordStep2View = (props) => {
           </CustomText>
         </View>
         <View style={styles.section2}>
-          <PasswordSettingForm onPasswordChange={setPassword}/>
+          <PasswordSetting onPasswordChange={setPassword}/>
         </View>
       </Container>
       <CustomButton

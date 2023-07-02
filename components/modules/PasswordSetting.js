@@ -1,25 +1,25 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import CustomInput from '../elements/CustomInput';
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import regex from '../../commons/regex';
+import { KeyboardAvoidingView } from 'react-native';
+import { Platform } from 'react-native';
 
-const PasswordSettingForm = ({ 
-  onPasswordChange = (value) => {} 
-}) => {
+const PasswordSetting = ({ onPasswordChange = (value) => {} }) => {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [password2, setPassword2] = useState('');
   const [password2Error, setPassword2Error] = useState(false);
   const [isPasswordSuccess, setIsPasswordSuccess] = useState(false);
 
-  useEffect(()=>{
-    if(isPasswordSuccess){
+  useEffect(() => {
+    if (isPasswordSuccess) {
       onPasswordChange(password);
-    }else{
+    } else {
       onPasswordChange(null);
     }
-  },[isPasswordSuccess])
+  }, [isPasswordSuccess]);
 
   const confirmPassword = (password1, password2) => {
     const test = regex.password.test(password1);
@@ -50,7 +50,10 @@ const PasswordSettingForm = ({
   };
 
   return (
-    <View style={styles.passwordInputWrap}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.passwordInputWrap}
+    >
       <CustomInput
         value={password}
         maxLength={20}
@@ -72,16 +75,15 @@ const PasswordSettingForm = ({
         errorMsg='Passwords do not match.'
         wrapperStyle={styles.password2Input}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
-export default PasswordSettingForm;
+export default PasswordSetting;
 
 const styles = StyleSheet.create({
   passwordInputWrap: {
     marginTop: 10,
-    position: 'relative',
     alignItems: 'center',
   },
 
