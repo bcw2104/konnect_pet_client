@@ -2,11 +2,7 @@ import { baseAxios } from "./Axios";
 
 export default serviceApis = {
   //screen
-  screenSignupStep1: () => baseAxios.get(`/api/auth/v1/screen/signup/step1`),
-  screenSignupStep3: () => baseAxios.get(`/api/auth/v1/screen/signup/step3`),
-  
-  screenLeave: () => baseAxios.get(`/api/user/v1/screen/mypage/leave`),
-
+  screenNations: () => baseAxios.get(`/api/screen/public/v1/nations`),
 
   //auth
   login: (email,password) => baseAxios.post(`/api/auth/v1/login`, {email,password}),
@@ -29,7 +25,9 @@ export default serviceApis = {
   leaveUser: (smsVerifyKey) => baseAxios.post(`/api/user/v1/mypage/leave`, {smsVerifyKey}),
 
   //terms
-  requestSignupTerms: (groupId) => baseAxios.get(`/api/auth/v1/terms/group/${groupId}/lastest`),
+  getTermsDetail: (groupId) => baseAxios.get(`/api/terms/v1/group/${groupId}/lastest`),
+  getSignUpTerms: () => baseAxios.get(`/api/terms/v1/group/signup`),
+  getAllTerms: () => baseAxios.get(`/api/terms/v1/group/all`),
 
   //verification
   requestJoinSmsVerification: (tel) => baseAxios.post(`/api/auth/v1/join/verify/sms`, {tel}),

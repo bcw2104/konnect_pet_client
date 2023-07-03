@@ -30,7 +30,7 @@ const AuthStackNavigator = () => {
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name='arrow-back-sharp' size={24} color='black' />
+              <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
         })}
@@ -58,7 +58,7 @@ const AuthStackNavigator = () => {
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name='arrow-back-sharp' size={24} color='black' />
+              <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
         })}
@@ -78,7 +78,7 @@ const AuthStackNavigator = () => {
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name='arrow-back-sharp' size={24} color='black' />
+              <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
           presentation: 'modal',

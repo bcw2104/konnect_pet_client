@@ -31,7 +31,6 @@ export default class UserStore {
     } catch (error) {
       
     }
-
     runInAction(() => {
       this._userId = response.result.userId;
       this._email = response.result.email;

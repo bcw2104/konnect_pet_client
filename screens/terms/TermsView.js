@@ -15,17 +15,17 @@ import { observer } from 'mobx-react-lite';
 const TermsView = (props) => {
   const { route } = props;
   const { commonStore } = useStores();
-  const [terms, setTerms] = useState(null);
+  const [term, setTerm] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       commonStore.setIsLoading(true);
       try {
-        const screenData = await serviceApis.requestSignupTerms(
+        const response = await serviceApis.getTermsDetail(
           route.params.termsGroupId
         );
 
-        setTerms(screenData.result);
+        setTerm(response.result);
       } catch (error) {
         Navigator.goBack();
       } finally {
@@ -41,10 +41,11 @@ const TermsView = (props) => {
         <Container>
           <View style={styles.section1}>
             <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
-              {terms.termsName}
+              {term?.termsName}
             </CustomText>
             <CustomText style={{ marginTop: 5 }} fontSize={16}>
-              created: {moment(terms.createdDate).format('yyyy-MM-DD HH:mm:ss')}
+              created:{' '}
+              {moment(term?.createdDate).format('yyyy-MM-DD HH:mm:ss')}
             </CustomText>
           </View>
           <View style={styles.section2}>
@@ -57,7 +58,7 @@ const TermsView = (props) => {
                 html: `<html>
                 <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1"></head>
-                <body>${terms.termsContent}</body>
+                <body>${term?.termsContent}</body>
                 </html>`,
               }}
             />

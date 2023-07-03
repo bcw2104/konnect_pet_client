@@ -79,7 +79,8 @@ baseAxios.interceptors.response.use(
       }
     } else {
       if(response.data.rsp_code == "9201"){
-        asyncStorage.resetToken();
+        await asyncStorage.resetToken();
+        Update.reloadAsync();
       }
       Toast.show({
         type: 'error',

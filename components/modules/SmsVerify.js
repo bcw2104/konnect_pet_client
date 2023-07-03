@@ -10,12 +10,14 @@ import useInterval from './../../hooks/useInertval';
 import { KeyboardAvoidingView } from 'react-native';
 import { Platform } from 'react-native';
 import regex from '../../commons/regex';
+import serviceApis from './../../utils/ServiceApis';
+import { useEffect } from 'react';
+import { Navigator } from '../../navigations/Navigator';
 
 const VERIFY_TIMEOUT = 180;
 
 const SmsVerify = ({
   defaultTel = '',
-  nationCodes = [],
   nationCode = null,
   onNationCodeChange = (value) => {},
   verifyKey = null,
@@ -23,6 +25,8 @@ const SmsVerify = ({
   requestVerificationApi,
   submitVerificationApi,
 }) => {
+  const [nationCodes, setNationCodes] = useState([]);
+
   const [tel, setTel] = useState(defaultTel);
   const [telError, setTelError] = useState(false);
 
@@ -33,6 +37,20 @@ const SmsVerify = ({
   const [openVerify, setOpenVerify] = useState(true);
   const [verifyData, setVerifyData] = useState(null);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await serviceApis.screenNations();
+        const nationCodes = response.result.nationCodes;
+        setNationCodes(nationCodes);
+        onNationCodeChange(nationCodes[0].value);
+      } catch (error) {
+        Navigator.reset('welcome', {});
+      }
+    };
+    fetchData();
+  }, []);
+  
   useInterval(() => {
     if (remain > 0) {
       if (remain == VERIFY_TIMEOUT - 5) {
