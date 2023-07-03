@@ -5,6 +5,6 @@ export default regex = {
 
   number: /^[0-9]+$/,
 
-  tel: /^[0-9]{0,14}$/,
+  tel: /^[0-9]{6,14}$/,
   
 }
