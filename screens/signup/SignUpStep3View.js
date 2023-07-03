@@ -1,7 +1,7 @@
-import { StyleSheet, View,Pressable } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
 import React from 'react';
 import Container from '../../components/layouts/Container';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import serviceApis from './../../utils/ServiceApis';
 import CustomButton from '../../components/elements/CustomButton';
 import colors from '../../commons/colors';
@@ -9,11 +9,13 @@ import CheckBox from '../../components/elements/CheckBox';
 import { Navigator } from './../../navigations/Navigator';
 import CustomText from '../../components/elements/CustomText';
 import { observer } from 'mobx-react-lite';
+import { useStores } from '../../contexts/StoreContext';
 
 const FOOT_BUTTON_HEIGHT = 50;
 
 const SignupStep3View = (props) => {
   const { route } = props;
+  const { commonStore } = useStores();
 
   const [terms, setTerms] = useState([]);
   const [termsAgreed, setTermsAgreed] = useState({});
@@ -22,6 +24,7 @@ const SignupStep3View = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      commonStore.setIsLoading(true);
       try {
         const response = await serviceApis.getSignUpTerms();
         const termsGroups = response.result;
@@ -38,6 +41,8 @@ const SignupStep3View = (props) => {
         setTermsAgreed(termsAgreed);
       } catch (error) {
         Navigator.goBack();
+      } finally {
+        commonStore.setIsLoading(false);
       }
     };
 
@@ -91,85 +96,89 @@ const SignupStep3View = (props) => {
 
   return (
     <>
-      <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
-        <View style={styles.section1}>
-          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
-            약관 동의를 해주세요.
-          </CustomText>
-        </View>
-        <View style={styles.section2}>
-          <Pressable style={styles.termsSelectAll} onPress={toggleAll}>
-            <CheckBox checked={selectAll} size={27} onPress={toggleAll} />
-            <CustomText fontSize={17} style={{ marginLeft: 20 }}>
-              전체 선택
-            </CustomText>
-          </Pressable>
-          {terms.map((ele) => (
-            <View key={ele.termsGroupId}>
-              <View style={styles.termsItem}>
-                <CheckBox
-                  checked={termsAgreed[ele.termsGroupId].checkedYn}
-                  onPress={() => {
-                    const newTermsAgreed = {
-                      ...termsAgreed,
-                      [ele.termsGroupId]: {
-                        ...termsAgreed[ele.termsGroupId],
-                        checkedYn: !termsAgreed[ele.termsGroupId].checkedYn,
-                      },
-                    };
-                    setTermsAgreed(newTermsAgreed);
-                    checkTerms(newTermsAgreed);
-                  }}
-                  size={27}
-                />
-                <Pressable
-                  onPress={() => {
-                    Navigator.navigate('terms', {
-                      termsGroupId: ele.termsGroupId,
-                    });
-                  }}
-                >
-                  <View style={{ marginLeft: 20, flexDirection: 'row' }}>
-                    <CustomText fontSize={15}>
-                      [{ele.requiredYn ? '필수' : '선택'}]{' '}
-                    </CustomText>
-                    <CustomText
-                      fontSize={15}
-                      style={{
-                        textDecorationLine: 'underline',
+      {!commonStore.isLoading && (
+        <>
+          <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
+            <View style={styles.section1}>
+              <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+                약관 동의를 해주세요.
+              </CustomText>
+            </View>
+            <View style={styles.section2}>
+              <Pressable style={styles.termsSelectAll} onPress={toggleAll}>
+                <CheckBox checked={selectAll} size={27} onPress={toggleAll} />
+                <CustomText fontSize={17} style={{ marginLeft: 20 }}>
+                  전체 선택
+                </CustomText>
+              </Pressable>
+              {terms.map((ele) => (
+                <View key={ele.termsGroupId}>
+                  <View style={styles.termsItem}>
+                    <CheckBox
+                      checked={termsAgreed[ele.termsGroupId].checkedYn}
+                      onPress={() => {
+                        const newTermsAgreed = {
+                          ...termsAgreed,
+                          [ele.termsGroupId]: {
+                            ...termsAgreed[ele.termsGroupId],
+                            checkedYn: !termsAgreed[ele.termsGroupId].checkedYn,
+                          },
+                        };
+                        setTermsAgreed(newTermsAgreed);
+                        checkTerms(newTermsAgreed);
+                      }}
+                      size={27}
+                    />
+                    <Pressable
+                      onPress={() => {
+                        Navigator.navigate('terms', {
+                          termsGroupId: ele.termsGroupId,
+                        });
                       }}
                     >
-                      {ele.termsGroupName}{' '}
-                    </CustomText>
-                    <CustomText fontSize={15}>동의</CustomText>
+                      <View style={{ marginLeft: 20, flexDirection: 'row' }}>
+                        <CustomText fontSize={15}>
+                          [{ele.requiredYn ? '필수' : '선택'}]{' '}
+                        </CustomText>
+                        <CustomText
+                          fontSize={15}
+                          style={{
+                            textDecorationLine: 'underline',
+                          }}
+                        >
+                          {ele.termsGroupName}{' '}
+                        </CustomText>
+                        <CustomText fontSize={15}>동의</CustomText>
+                      </View>
+                    </Pressable>
                   </View>
-                </Pressable>
-              </View>
-              {ele.termsGroupContent && (
-                <CustomText
-                  style={{
-                    marginTop: -5,
-                    paddingLeft: 54,
-                  }}
-                  fontSize={14}
-                >
-                  {ele.termsGroupContent}
-                </CustomText>
-              )}
+                  {ele.termsGroupContent && (
+                    <CustomText
+                      style={{
+                        marginTop: -5,
+                        paddingLeft: 54,
+                      }}
+                      fontSize={14}
+                    >
+                      {ele.termsGroupContent}
+                    </CustomText>
+                  )}
+                </View>
+              ))}
             </View>
-          ))}
-        </View>
-      </Container>
-      <CustomButton
-        fontColor={colors.white}
-        bgColor={colors.dark}
-        bgColorPress={colors.darkDeep}
-        text='다음'
-        disabled={!isRequiredAllChecked}
-        onPress={submitSignupData}
-        styles={styles.submitTheme}
-        height={FOOT_BUTTON_HEIGHT}
-      />
+          </Container>
+          <CustomButton
+            fontColor={colors.white}
+            bgColor={colors.dark}
+            bgColorPress={colors.darkDeep}
+            text='다음'
+            disabled={!isRequiredAllChecked}
+            onPress={submitSignupData}
+            styles={styles.submitTheme}
+            height={FOOT_BUTTON_HEIGHT}
+          />
+        </>
+      )}
     </>
   );
 };

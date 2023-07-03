@@ -5,18 +5,24 @@ import CustomText from '../../components/elements/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
 import serviceApis from './../../utils/ServiceApis';
+import { useStores } from '../../contexts/StoreContext';
+import { observer } from 'mobx-react-lite';
 
 const TermsListView = () => {
+  const { commonStore } = useStores();
   const [terms, setTerms] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
+      commonStore.setIsLoading(true);
       try {
         const response = await serviceApis.getAllTerms();
         const termsGroups = response.result;
         setTerms(termsGroups);
       } catch (error) {
         Navigator.goBack();
+      } finally {
+        commonStore.setIsLoading(false);
       }
     };
 
@@ -24,35 +30,43 @@ const TermsListView = () => {
   }, []);
 
   return (
-    <Container>
-      <View style={styles.section1}>
-        <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
-          이용약관
-        </CustomText>
-      </View>
-      <View style={styles.section2}>
-        {terms.map((ele) => (
-          <Pressable
-            key={ele.termsGroupId}
-            onPress={() => {
-              Navigator.navigate('terms', {
-                termsGroupId: ele.termsGroupId,
-              });
-            }}
-            style={styles.menuItem}
-          >
-            <CustomText fontSize={18} style={{ fontWeight: 'bold' }}>
-              {ele.termsGroupName}
+    <>
+      {!commonStore.isLoading && (
+        <Container>
+          <View style={styles.section1}>
+            <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+              이용약관
             </CustomText>
-            <Ionicons name='chevron-forward-outline' size={28} color='black' />
-          </Pressable>
-        ))}
-      </View>
-    </Container>
+          </View>
+          <View style={styles.section2}>
+            {terms.map((ele) => (
+              <Pressable
+                key={ele.termsGroupId}
+                onPress={() => {
+                  Navigator.navigate('terms', {
+                    termsGroupId: ele.termsGroupId,
+                  });
+                }}
+                style={styles.menuItem}
+              >
+                <CustomText fontSize={18} style={{ fontWeight: 'bold' }}>
+                  {ele.termsGroupName}
+                </CustomText>
+                <Ionicons
+                  name='chevron-forward-outline'
+                  size={28}
+                  color='black'
+                />
+              </Pressable>
+            ))}
+          </View>
+        </Container>
+      )}
+    </>
   );
 };
 
-export default TermsListView;
+export default observer(TermsListView);
 
 const styles = StyleSheet.create({
   section1: {
