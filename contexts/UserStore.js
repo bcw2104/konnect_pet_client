@@ -6,6 +6,7 @@ export default class UserStore {
   _rootStore = null;
   _userId = null;
   _email = null;
+  _tel = null;
   _platform = null;
   _isLogin = false;
 
@@ -34,6 +35,7 @@ export default class UserStore {
     runInAction(() => {
       this._userId = response.result.userId;
       this._email = response.result.email;
+      this._tel = response.result.tel;
       this._platform = response.result.platform;
       this._isLogin = true;
     });
@@ -57,6 +59,10 @@ export default class UserStore {
 
   get email() {
     return this._email;
+  }
+  
+  get tel() {
+    return this._tel;
   }
 
   get platform() {

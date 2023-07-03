@@ -17,7 +17,7 @@ import { Navigator } from '../../navigations/Navigator';
 const VERIFY_TIMEOUT = 180;
 
 const SmsVerify = ({
-  defaultTel = '',
+  fixedTel = null,
   nationCode = null,
   onNationCodeChange = (value) => {},
   verifyKey = null,
@@ -27,7 +27,7 @@ const SmsVerify = ({
 }) => {
   const [nationCodes, setNationCodes] = useState([]);
 
-  const [tel, setTel] = useState(defaultTel);
+  const [tel, setTel] = useState(fixedTel);
   const [telError, setTelError] = useState(false);
 
   const [verifyCode, setVerifyCode] = useState('');
@@ -48,9 +48,10 @@ const SmsVerify = ({
         Navigator.reset('welcome', {});
       }
     };
-    fetchData();
+
+    if (!fixedTel) fetchData();
   }, []);
-  
+
   useInterval(() => {
     if (remain > 0) {
       if (remain == VERIFY_TIMEOUT - 5) {
@@ -88,11 +89,13 @@ const SmsVerify = ({
   };
 
   const requestVerification = async () => {
-    const test = regex.tel.test(tel);
+    if (!fixedTel) {
+      const test = regex.tel.test(tel);
 
-    if (!test) {
-      setTelError(true);
-      return;
+      if (!test) {
+        setTelError(true);
+        return;
+      }
     }
 
     setOpenVerify(false);
@@ -148,18 +151,19 @@ const SmsVerify = ({
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <CustomText fontSize={16}>핸드폰 번호를 입력해주세요.</CustomText>
-      <CustomPicker
-        value={nationCode}
-        onValueChange={handleNationCodeChange}
-        items={nationCodes}
-        wrapperStyle={styles.phoneNumCountry}
-      />
+      {!fixedTel && (
+        <CustomPicker
+          value={nationCode}
+          onValueChange={handleNationCodeChange}
+          items={nationCodes}
+          wrapperStyle={styles.phoneNumCountry}
+        />
+      )}
       <View style={styles.phoneInputWrap}>
         <CustomInput
           value={tel}
           maxLength={20}
-          disabled={!!defaultTel}
+          editable={!fixedTel}
           onValueChange={handleTelChange}
           regex={regex.number}
           keyboardType='number-pad'

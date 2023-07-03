@@ -71,6 +71,7 @@ const CustomInput = ({
             borderRadius: 5,
             borderStyle: 'solid',
             flex: 1,
+            color: editable ? colors.dark : colors.grayDeep,
             ...style,
           }}
         />

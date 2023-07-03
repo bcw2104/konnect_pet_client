@@ -12,7 +12,7 @@ import regex from '../../commons/regex';
 const VERIFY_TIMEOUT = 600;
 
 const EmailVerify = ({
-  defaultEmail = '',
+  fixedEmail = '',
   verifyKey = null,
   onVerifyKeyChange = (value) => {},
   requestVerificationApi,
@@ -24,7 +24,7 @@ const EmailVerify = ({
   const [remain, setRemain] = useState(0);
   const [verifing, setVerifing] = useState(false);
 
-  const [email, setEmail] = useState(defaultEmail);
+  const [email, setEmail] = useState(fixedEmail);
   const [emailError, setEmailError] = useState(false);
 
   const [openVerify, setOpenVerify] = useState(true);
@@ -119,7 +119,7 @@ const EmailVerify = ({
       <View style={styles.emailInputWrap}>
         <CustomInput
           value={email}
-          disabled={!!defaultEmail}
+          editable={!fixedEmail}
           maxLength={20}
           onValueChange={handleEmailChange}
           keyboardType='email-address'

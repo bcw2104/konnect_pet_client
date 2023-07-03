@@ -43,6 +43,7 @@ const SignupStep1View = (props) => {
           </CustomText>
         </View>
         <View style={styles.section2}>
+          <CustomText fontSize={16}>핸드폰 번호를 입력해주세요.</CustomText>
           <SmsVerify
             nationCode={nationCode}
             onNationCodeChange={setNationCode}

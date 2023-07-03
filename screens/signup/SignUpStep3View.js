@@ -1,12 +1,10 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View,Pressable } from 'react-native';
 import React from 'react';
 import Container from '../../components/layouts/Container';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import serviceApis from './../../utils/ServiceApis';
 import CustomButton from '../../components/elements/CustomButton';
 import colors from '../../commons/colors';
-import { Pressable } from 'react-native';
 import CheckBox from '../../components/elements/CheckBox';
 import { Navigator } from './../../navigations/Navigator';
 import CustomText from '../../components/elements/CustomText';
