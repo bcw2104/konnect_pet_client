@@ -3,7 +3,7 @@ import React from 'react';
 import CustomButton from '../../components/elements/CustomButton';
 import { useStores } from '../../contexts/StoreContext';
 import CustomText from '../../components/elements/CustomText';
-import Container from '../../components/layout/Container';
+import Container from '../../components/layouts/Container';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 const HomeView = () => {

@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import Container from '../../components/layout/Container';
+import Container from '../../components/layouts/Container';
 import { useEffect } from 'react';
 import colors from './../../commons/colors';
 import CustomButton from './../../components/elements/CustomButton';

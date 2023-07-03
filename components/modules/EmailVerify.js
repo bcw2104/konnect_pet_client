@@ -7,6 +7,7 @@ import CustomInput from '../elements/CustomInput';
 import Timer from '../elements/Timer';
 import { Platform } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native';
+import regex from '../../commons/regex';
 
 const VERIFY_TIMEOUT = 600;
 
@@ -102,7 +103,12 @@ const EmailVerify = ({
         onVerifyKeyChange(response.result.key);
       }
     } catch (error) {
-      setVerifiyError(true);
+      if (
+        error.response.data.rsp_code == '9211' ||
+        error.response.data.rsp_code == '9212'
+      ) {
+        setVerifiyError(true);
+      }
     }
   };
 

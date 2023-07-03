@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import React from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 import GoogleLogin from '../components/auth/GoogleLogin';
 import { observer } from 'mobx-react-lite';
 import DefaultLogin from '../components/auth/DefaultLogin';
 import colors from '../commons/colors';
-import Container from '../components/layout/Container';
+import Container from '../components/layouts/Container';
 import { Navigator } from '../navigations/Navigator';
 import { platform } from '../commons/constants';
 import FacebookLogin from '../components/auth/FacebookLogin';

@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import Container from '../../components/layout/Container';
-import CustomInput from '../../components/elements/CustomInput';
+import Container from '../../components/layouts/Container';
 import CustomButton from '../../components/elements/CustomButton';
 import colors from '../../commons/colors';
 import serviceApis from '../../utils/ServiceApis';

@@ -1,16 +1,11 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import Container from '../../components/layout/Container';
+import Container from '../../components/layouts/Container';
 import { Navigator } from '../../navigations/Navigator';
 import CustomButton from '../../components/elements/CustomButton';
-import CustomInput from '../../components/elements/CustomInput';
 import colors from '../../commons/colors';
 import serviceApis from '../../utils/ServiceApis';
 import { useState } from 'react';
-import { useEffect } from 'react';
-import regex from '../../commons/regex';
-import { platform } from './../../commons/constants';
-import Timer from '../../components/elements/Timer';
 import CustomText from '../../components/elements/CustomText';
 import EmailVerify from '../../components/modules/EmailVerify';
 
@@ -86,38 +81,5 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'space-between',
   },
-  emailAddressCountry: {
-    marginTop: 20,
-  },
-  emailInputWrap: {
-    marginTop: 10,
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  emailAddressInput: {
-    flex: 1,
-  },
-  emailVerifyButton: {
-    position: 'absolute',
-    right: 0,
-  },
-  emailVerifyWrap: {
-    marginTop: 10,
-    position: 'relative',
-    alignItems: 'center',
-  },
-  verifyTimer: {
-    position: 'absolute',
-    top: 13,
-    right: 125,
-    color: colors.danger,
-  },
-  verifySubmitButton: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
-
   submitTheme: { borderRadius: 0 },
 });

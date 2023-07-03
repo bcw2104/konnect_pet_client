@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import Container from '../../components/layout/Container';
+import Container from '../../components/layouts/Container';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import serviceApis from './../../utils/ServiceApis';
-import { Navigator, navigationRef } from '../../navigations/Navigator';
+import { Navigator } from '../../navigations/Navigator';
 import moment from 'moment';
 import { WebView } from 'react-native-webview';
 import CustomText from '../../components/elements/CustomText';

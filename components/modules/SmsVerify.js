@@ -9,6 +9,7 @@ import { useState } from 'react';
 import useInterval from './../../hooks/useInertval';
 import { KeyboardAvoidingView } from 'react-native';
 import { Platform } from 'react-native';
+import regex from '../../commons/regex';
 
 const VERIFY_TIMEOUT = 180;
 
@@ -22,7 +23,9 @@ const SmsVerify = ({
   requestVerificationApi,
   submitVerificationApi,
 }) => {
-  const [tel, setTel] = useState('');
+  const [tel, setTel] = useState(defaultTel);
+  const [telError, setTelError] = useState(false);
+
   const [verifyCode, setVerifyCode] = useState('');
   const [verifiyError, setVerifiyError] = useState(false);
   const [remain, setRemain] = useState(0);
@@ -63,9 +66,17 @@ const SmsVerify = ({
     onVerifyKeyChange(null);
     setVerifyData(null);
     setTel(tel);
+    setTelError(false);
   };
 
   const requestVerification = async () => {
+    const test = regex.tel.test(tel);
+
+    if (!test) {
+      setTelError(true);
+      return;
+    }
+
     setOpenVerify(false);
 
     let reqTel = tel;
@@ -106,7 +117,10 @@ const SmsVerify = ({
         onVerifyKeyChange(response.result.key);
       }
     } catch (error) {
-      if (error.response.data.rsp_code != '9213') {
+      if (
+        error.response.data.rsp_code == '9211' ||
+        error.response.data.rsp_code == '9212'
+      ) {
         setVerifiyError(true);
       }
     }
@@ -127,11 +141,13 @@ const SmsVerify = ({
         <CustomInput
           value={tel}
           maxLength={20}
+          disabled={!!defaultTel}
           onValueChange={handleTelChange}
           regex={regex.number}
           keyboardType='number-pad'
           placeholder='Phone number'
-          errorMsg='Please enter numbers only.'
+          errorHandler={telError}
+          errorMsg='Invalid phone number.'
         />
         <CustomButton
           fontColor={colors.white}
