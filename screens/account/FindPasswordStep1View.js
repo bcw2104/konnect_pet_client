@@ -10,7 +10,6 @@ import CustomText from '../../components/elements/CustomText';
 import EmailVerify from '../../components/modules/EmailVerify';
 
 const FOOT_BUTTON_HEIGHT = 50;
-const VERIFY_TIMEOUT = 600;
 
 const FindPasswordStep1View = (props) => {
   const { route } = props;

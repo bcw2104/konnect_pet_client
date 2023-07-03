@@ -14,11 +14,12 @@ import { Image } from 'react-native';
 import colors from './../../commons/colors';
 
 const GoogleLogin = () => {
-  const { userStore } = useStores();
+  const { userStore, commonStore } = useStores();
 
   GoogleSignin.configure({});
 
   const signIn = async () => {
+    commonStore.setIsLoading(true);
     let tokens;
     try {
       await GoogleSignin.hasPlayServices();
@@ -60,7 +61,10 @@ const GoogleLogin = () => {
           emailVerifyKey: response.result.key,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      commonStore.setIsLoading(false);
+    }
   };
 
   return (
@@ -89,11 +93,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 10,
   },
-  logo:{
+  logo: {
     borderRadius: 30,
     width: 60,
     height: 60,
-  }
+  },
 });
 
 export default GoogleLogin;

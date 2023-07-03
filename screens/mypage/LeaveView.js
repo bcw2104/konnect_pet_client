@@ -9,26 +9,28 @@ import CustomText from '../../components/elements/CustomText';
 import SmsVerify from '../../components/modules/SmsVerify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useStores } from '../../contexts/StoreContext';
+import { observer } from 'mobx-react-lite';
 
 const FOOT_BUTTON_HEIGHT = 50;
 
 const LeaveView = () => {
-  const {userStore} = useStores();
+  const { userStore, commonStore } = useStores();
 
   const [screenData, setScreenData] = useState({});
-  const [isLoaded, setIsLoaded] = useState(false);
   const [nationCode, setNationCode] = useState('');
   const [verifyKey, setVerifyKey] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      commonStore.setIsLoading(true);
       try {
         const screenData = await serviceApis.screenLeave();
         setScreenData(screenData.result);
         setNationCode(screenData.result.nationCodes[0].value);
-        setIsLoaded(true);
       } catch (error) {
         Navigator.reset('home', {});
+      } finally {
+        commonStore.setIsLoading(false);
       }
     };
     fetchData();
@@ -42,7 +44,7 @@ const LeaveView = () => {
     if (response.rsp_code == '1000') {
       Toast.show({
         type: 'success',
-        text1: "회원 탈퇴가 완료되었습니다.",
+        text1: '회원 탈퇴가 완료되었습니다.',
       });
       userStore.logout();
     }
@@ -50,7 +52,7 @@ const LeaveView = () => {
 
   return (
     <>
-      {isLoaded && (
+      {!commonStore.isLoading && (
         <>
           <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
             <View style={styles.section1}>
@@ -96,7 +98,7 @@ const LeaveView = () => {
     </>
   );
 };
-export default LeaveView;
+export default observer(LeaveView);
 
 const styles = StyleSheet.create({
   section1: {

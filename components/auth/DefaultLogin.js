@@ -13,7 +13,7 @@ import { KeyboardAvoidingView } from 'react-native';
 import { Platform } from 'react-native';
 
 const DefaultLogin = () => {
-  const { userStore } = useStores();
+  const { userStore, commonStore } = useStores();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,22 +30,29 @@ const DefaultLogin = () => {
       setPasswordError(true);
       return;
     }
-    const response = await serviceApis.login(email, password);
-    if (response?.rsp_code === '1000') {
-      asyncStorage.setItem('access_token', response.result.accessToken);
-      asyncStorage.setItem(
-        'access_token_expire_at',
-        response.result.accessTokenExpireAt
-      );
-      asyncStorage.setItem('refresh_token', response.result.refreshToken);
-      asyncStorage.setItem(
-        'refresh_token_expire_at',
-        response.result.refreshTokenExpireAt
-      );
-      setLoginFailed(false);
-      userStore.initUserInfo();
-    } else {
-      setLoginFailed(true);
+    commonStore.setIsLoading(true);
+
+    try {
+      const response = await serviceApis.login(email, password);
+      if (response?.rsp_code === '1000') {
+        asyncStorage.setItem('access_token', response.result.accessToken);
+        asyncStorage.setItem(
+          'access_token_expire_at',
+          response.result.accessTokenExpireAt
+        );
+        asyncStorage.setItem('refresh_token', response.result.refreshToken);
+        asyncStorage.setItem(
+          'refresh_token_expire_at',
+          response.result.refreshTokenExpireAt
+        );
+        setLoginFailed(false);
+        userStore.initUserInfo();
+      } else {
+        setLoginFailed(true);
+      }
+    } catch (e) {
+    } finally {
+      commonStore.setIsLoading(false);
     }
   };
 

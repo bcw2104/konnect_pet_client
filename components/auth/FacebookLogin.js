@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet} from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
 import serviceApis from '../../utils/ServiceApis';
 import { platform } from '../../commons/constants';
 import { asyncStorage } from '../../storage/Storage';
@@ -13,22 +13,32 @@ import {
 import { Platform } from 'react-native';
 
 const FacebookLogin = () => {
-  const { userStore } = useStores();
+  const { userStore, commonStore } = useStores();
 
   const signIn = async () => {
-    const {isCancelled} = await LoginManager.logInWithPermissions(['email','public_profile']);
-   
-    if(isCancelled) return;
- 
-    let token;
-    if (Platform.OS === 'ios') {
-      token = await AuthenticationToken.getAuthenticationTokenIOS();
-    } else {
-      token = await AccessToken.getCurrentAccessToken();
-    }
-
+    commonStore.setIsLoading(true);
     try {
-      const response = await serviceApis.socialLogin(token.accessToken, platform.FACEBOOK);
+      const { isCancelled } = await LoginManager.logInWithPermissions([
+        'email',
+        'public_profile',
+      ]);
+
+      if (isCancelled) {
+        commonStore.setIsLoading(false);
+        return;
+      }
+
+      let token;
+      if (Platform.OS === 'ios') {
+        token = await AuthenticationToken.getAuthenticationTokenIOS();
+      } else {
+        token = await AccessToken.getCurrentAccessToken();
+      }
+
+      const response = await serviceApis.socialLogin(
+        token.accessToken,
+        platform.FACEBOOK
+      );
 
       if (response.rsp_code === '1000') {
         asyncStorage.setItem('access_token', response.result.accessToken);
@@ -48,7 +58,10 @@ const FacebookLogin = () => {
           emailVerifyKey: response.result.key,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      commonStore.setIsLoading(false);
+    }
   };
 
   return (
@@ -74,11 +87,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 10,
   },
-  logo:{
+  logo: {
     width: 60,
     height: 60,
     borderRadius: 30,
-  }
+  },
 });
 
 export default FacebookLogin;

@@ -8,25 +8,29 @@ import { Navigator } from '../../navigations/Navigator';
 import CustomText from '../../components/elements/CustomText';
 import { platform } from '../../commons/constants';
 import SmsVerify from '../../components/modules/SmsVerify';
+import { useStores } from '../../contexts/StoreContext';
+import { observer } from 'mobx-react-lite';
 
 const FOOT_BUTTON_HEIGHT = 50;
 
 const SignupStep1View = (props) => {
   const { route } = props;
+  const { commonStore } = useStores();
   const [screenData, setScreenData] = useState({});
   const [nationCode, setNationCode] = useState('');
-  const [isLoaded, setIsLoaded] = useState(false);
   const [verifyKey, setVerifyKey] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      commonStore.setIsLoading(true);
       try {
         const screenData = await serviceApis.screenSignupStep1();
         setScreenData(screenData.result);
         setNationCode(screenData.result.nationCodes[0].value);
-        setIsLoaded(true);
       } catch (error) {
         Navigator.reset('welcome', {});
+      } finally {
+        commonStore.setIsLoading(false);
       }
     };
     fetchData();
@@ -45,13 +49,13 @@ const SignupStep1View = (props) => {
 
     goToNextStep({
       smsVerifyKey: verifyKey,
-      nationCode:nationCode,
+      nationCode: nationCode,
     });
   };
 
   return (
     <>
-      {isLoaded && (
+      {!commonStore.isLoading && (
         <>
           <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
             <View style={styles.section1}>
@@ -72,9 +76,7 @@ const SignupStep1View = (props) => {
             </View>
             <View style={styles.section3}>
               <View style={styles.helpWrap}>
-                <CustomText fontSize={15}>
-                  인증번호가 오지 않나요?
-                </CustomText>
+                <CustomText fontSize={15}>인증번호가 오지 않나요?</CustomText>
                 <CustomText fontSize={15}>
                   인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
                   않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
@@ -98,7 +100,7 @@ const SignupStep1View = (props) => {
     </>
   );
 };
-export default SignupStep1View;
+export default observer(SignupStep1View);
 
 const styles = StyleSheet.create({
   section1: {

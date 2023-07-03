@@ -10,20 +10,23 @@ import { Pressable } from 'react-native';
 import CheckBox from '../../components/elements/CheckBox';
 import { Navigator } from './../../navigations/Navigator';
 import CustomText from '../../components/elements/CustomText';
+import { useStores } from '../../contexts/StoreContext';
+import { observer } from 'mobx-react-lite';
 
 const FOOT_BUTTON_HEIGHT = 50;
 
 const SignupStep3View = (props) => {
   const { route } = props;
+  const { commonStore } = useStores();
+
   const [screenData, setScreenData] = useState({});
   const [termsAgreed, setTermsAgreed] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [isRequiredAllChecked, setIsRequiredAllChecked] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    console.log(route.params);
     const fetchData = async () => {
+      commonStore.setIsLoading(true);
       try {
         const screenData = await serviceApis.screenSignupStep3();
         const termsGroups = screenData.result;
@@ -38,9 +41,10 @@ const SignupStep3View = (props) => {
         }
         setSelectAll(false);
         setTermsAgreed(termsAgreed);
-        setIsLoaded(true);
       } catch (error) {
         Navigator.goBack();
+      } finally {
+        commonStore.setIsLoading(false);
       }
     };
 
@@ -88,13 +92,13 @@ const SignupStep3View = (props) => {
 
   const submitSignupData = async () => {
     if (!isRequiredAllChecked) return;
-    
+
     goToNextStep({ termsAgreed: termsAgreed });
   };
 
   return (
     <>
-      {isLoaded && (
+      {!commonStore.isLoading && (
         <>
           <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
             <View style={styles.section1}>
@@ -180,7 +184,7 @@ const SignupStep3View = (props) => {
     </>
   );
 };
-export default SignupStep3View;
+export default observer(SignupStep3View);
 
 const styles = StyleSheet.create({
   section1: {

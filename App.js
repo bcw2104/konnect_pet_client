@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StoreProvider } from './contexts/StoreContext';
 import { RootStore } from './contexts/RootStore';
@@ -16,18 +16,19 @@ import colors from './commons/colors';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { useBackPressHandler } from './hooks/useBackPressHandler';
+import Loader from './components/modules/Loader';
 
 const rootStore = new RootStore();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({
-    'Robato': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+    Robato: require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
   });
   useBackPressHandler();
 
   useEffect(() => {
-    if(!fontsLoaded) return;
+    if (!fontsLoaded) return;
     async function prepare() {
       try {
         initFacebook();
@@ -37,8 +38,8 @@ export default function App() {
         if (isLogin) {
           await rootStore.userStore.initUserInfo();
         }
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
-
       } finally {
         setAppIsReady(true);
       }
@@ -57,9 +58,13 @@ export default function App() {
 
   const initDeviceInfo = async () => {
     const deviceToken = await registerForPushNotificationsAsync();
-    rootStore.userStore.setDeviceInfo(Device.modelName,Device.osName,
-      Device.osVersion,deviceToken);
-  }
+    rootStore.userStore.setDeviceInfo(
+      Device.modelName,
+      Device.osName,
+      Device.osVersion,
+      deviceToken
+    );
+  };
 
   const registerForPushNotificationsAsync = async () => {
     let token = null;
@@ -72,9 +77,10 @@ export default function App() {
         lightColor: '#FF231F7C',
       });
     }
-  
+
     if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
       if (existingStatus !== 'granted') {
         const { status } = await Notifications.requestPermissionsAsync();
@@ -89,9 +95,9 @@ export default function App() {
     } else {
       //Must use physical device for Push Notifications
     }
-  
+
     return token;
-  }
+  };
 
   const checkLogin = async () => {
     const accessToken = await asyncStorage.getItem('access_token');
@@ -158,6 +164,7 @@ export default function App() {
         <StatusBar style='dark' />
         <Navigation />
       </View>
+      <Loader />
       <GlobalModal />
       <Toast />
     </StoreProvider>

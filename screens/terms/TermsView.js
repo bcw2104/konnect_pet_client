@@ -9,23 +9,27 @@ import moment from 'moment';
 import { WebView } from 'react-native-webview';
 import CustomText from '../../components/elements/CustomText';
 import colors from '../../commons/colors';
+import { useStores } from '../../contexts/StoreContext';
+import { observer } from 'mobx-react-lite';
 
 const TermsView = (props) => {
   const { route } = props;
+  const { commonStore } = useStores();
   const [terms, setTerms] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      commonStore.setIsLoading(true);
       try {
         const screenData = await serviceApis.requestSignupTerms(
           route.params.termsGroupId
         );
 
         setTerms(screenData.result);
-        setIsLoaded(true);
       } catch (error) {
         Navigator.goBack();
+      } finally {
+        commonStore.setIsLoading(false);
       }
     };
     fetchData();
@@ -33,7 +37,7 @@ const TermsView = (props) => {
 
   return (
     <>
-      {isLoaded && (
+      {!commonStore.isLoading && (
         <Container>
           <View style={styles.section1}>
             <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
@@ -47,7 +51,7 @@ const TermsView = (props) => {
             <WebView
               style={{
                 flex: 1,
-                backgroundColor:colors.white
+                backgroundColor: colors.white,
               }}
               source={{
                 html: `<html>
@@ -64,7 +68,7 @@ const TermsView = (props) => {
   );
 };
 
-export default TermsView;
+export default observer(TermsView);
 
 const styles = StyleSheet.create({
   section1: {
