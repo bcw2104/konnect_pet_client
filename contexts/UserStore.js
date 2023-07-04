@@ -57,6 +57,7 @@ export default class UserStore {
   logout() {
     this._isLogin = false;
     asyncStorage.resetToken();
+    serviceApis.logout();
   }
 
   get email() {
