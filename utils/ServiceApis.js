@@ -14,12 +14,7 @@ export default serviceApis = {
   resetPassword: (payload) => baseAxios.post(`/api/auth/v1/password/reset`, payload),
 
 
-  tokenRefresh: (accessToken,refreshToken) => baseAxios.post(`/api/auth/v1/token/refresh`, {},{
-    headers: {
-      EXPRIED: `Bearer ${accessToken}`,
-      REFRESH: `Bearer ${refreshToken}`,
-    },
-  }),
+  tokenRefresh: () => baseAxios.post(`/api/auth/v1/token/refresh`),
 
   //mypage
   leaveUser: (smsVerifyKey) => baseAxios.post(`/api/user/v1/mypage/leave`, {smsVerifyKey}),
@@ -44,6 +39,7 @@ export default serviceApis = {
   submitEmailVerification: (reqId,timestamp,email,verify) => baseAxios.post(`/api/user/v1/verify/email/check`, {reqId,timestamp,email,verify}),
 
   //user
+  logout: () =>  baseAxios.get(`/api/user/logout`),
   getUserInfo: () =>  baseAxios.get(`/api/user/v1/info`),
   updateDeviceInfo: (deviceModel, deviceOs, deviceOsVersion, deviceToken) => baseAxios.post(`/api/user/v1/device`,{deviceModel, deviceOs, deviceOsVersion, deviceToken})
 }

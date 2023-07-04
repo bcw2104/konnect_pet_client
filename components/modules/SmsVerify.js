@@ -103,7 +103,6 @@ const SmsVerify = ({
     let reqTel = tel;
     try {
       const response = await requestVerificationApi(nationCode + reqTel);
-
       setRemain(VERIFY_TIMEOUT);
       setVerifing(true);
 

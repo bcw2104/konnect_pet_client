@@ -28,18 +28,15 @@ baseAxios.interceptors.response.use(
   async function (error) {
     const { config: originConfig, response } = error;
     // 토큰 갱신 로직
-    
     if (response.data.rsp_code === '9202') {
       if (originConfig.attempt >= 3) {
         return Promise.reject(error);
       }
-      const accessToken = await asyncStorage.getItem('access_token');
       const refreshToken = await asyncStorage.getItem('refresh_token');
 
       const config = {
         headers: {
-          Expired: `Bearer ${accessToken}`,
-          Refresh: `Bearer ${refreshToken}`,
+          Authorization: `Bearer ${refreshToken}`,
         },
       };
 
@@ -52,25 +49,17 @@ baseAxios.interceptors.response.use(
 
         if (result.data.rsp_code == '1000') {
           asyncStorage.setItem('access_token', result.data.result.accessToken);
-          asyncStorage.setItem(
-            'access_token_expire_at',
-            result.data.result.accessTokenExpireAt
-          );
-          asyncStorage.setItem(
-            'refresh_token',
-            result.data.result.refreshToken
-          );
-          asyncStorage.setItem(
-            'refresh_token_expire_at',
-            result.data.result.refreshTokenExpireAt
-          );
+          asyncStorage.setItem('access_token_expire_at',result.data.result.accessTokenExpireAt);
+          asyncStorage.setItem('refresh_token',result.data.result.refreshToken);
+          asyncStorage.setItem('refresh_token_expire_at',result.data.result.refreshTokenExpireAt);
 
           originConfig.headers.Authorization = `Bearer ${result.data.result.accessToken}`;
           originConfig.attempt = !originConfig.attempt
             ? 1
             : originConfig.attempt++;
 
-          return await axios.request(originConfig);
+          const rerespone = await axios.request(originConfig);
+          return rerespone.data;
         }
       } catch (e) {
         await asyncStorage.resetToken();

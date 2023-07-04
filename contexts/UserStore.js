@@ -21,24 +21,26 @@ export default class UserStore {
   }
 
   async initUserInfo() {
-    const response = await serviceApis.getUserInfo();
+    const accessToken = await asyncStorage.getItem('access_token');
+    if (!accessToken) return;
+
     try {
+      const response = await serviceApis.getUserInfo();
+      runInAction(() => {
+        this._userId = response.result.userId;
+        this._email = response.result.email;
+        this._tel = response.result.tel;
+        this._platform = response.result.platform;
+        this._isLogin = true;
+      });
+
       await serviceApis.updateDeviceInfo(
         this._deviceModel,
         this._deviceOs,
         this._deviceOsVersion,
         this._deviceToken
       );
-    } catch (error) {
-      
-    }
-    runInAction(() => {
-      this._userId = response.result.userId;
-      this._email = response.result.email;
-      this._tel = response.result.tel;
-      this._platform = response.result.platform;
-      this._isLogin = true;
-    });
+    } catch (error) {}
   }
 
   setDeviceInfo(deviceModel, deviceOs, deviceOsVersion, deviceToken) {
@@ -60,7 +62,7 @@ export default class UserStore {
   get email() {
     return this._email;
   }
-  
+
   get tel() {
     return this._tel;
   }

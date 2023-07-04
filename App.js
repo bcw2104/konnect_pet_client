@@ -33,14 +33,10 @@ export default function App() {
       try {
         initFacebook();
         await initDeviceInfo();
-        const isLogin = await checkLogin();
-
-        if (isLogin) {
-          await rootStore.userStore.initUserInfo();
-        }
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await rootStore.userStore.initUserInfo();
       } catch (e) {
       } finally {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         setAppIsReady(true);
       }
     }
@@ -97,55 +93,6 @@ export default function App() {
     }
 
     return token;
-  };
-
-  const checkLogin = async () => {
-    const accessToken = await asyncStorage.getItem('access_token');
-    const accessTokenExpireAt = await asyncStorage.getItem(
-      'access_token_expire_at'
-    );
-    const refreshToken = await asyncStorage.getItem('refresh_token');
-    const refreshTokenExpireAt = await asyncStorage.getItem(
-      'refresh_token_expire_at'
-    );
-
-    //강제 로그인
-    if (
-      !refreshToken ||
-      !refreshTokenExpireAt ||
-      Date.now() + 1000 * 60 * 60 * 24 > refreshTokenExpireAt
-    ) {
-      await asyncStorage.resetToken();
-      return false;
-    } else if (
-      !accessToken ||
-      !accessTokenExpireAt ||
-      Date.now() + 1000 * 60 * 10 > accessTokenExpireAt
-    ) {
-      const response = await serviceApis.tokenRefresh(
-        accessToken,
-        refreshToken
-      );
-
-      if (response.rsp_code == '1000') {
-        asyncStorage.setItem('access_token', response.result.accessToken);
-        asyncStorage.setItem(
-          'access_token_expire_at',
-          response.result.accessTokenExpireAt
-        );
-        asyncStorage.setItem('refresh_token', response.result.refreshToken);
-        asyncStorage.setItem(
-          'refresh_token_expire_at',
-          response.result.refreshTokenExpireAt
-        );
-
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return true;
-    }
   };
 
   const onLayoutRootView = useCallback(async () => {
