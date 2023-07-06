@@ -20,6 +20,8 @@ import Loader from './components/modules/Loader';
 
 const rootStore = new RootStore();
 
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({

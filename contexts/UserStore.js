@@ -54,9 +54,9 @@ export default class UserStore {
     this._isLogin = isLogin;
   }
 
-  logout() {
+  async logout() {
     try {
-      serviceApis.logout();
+      await serviceApis.logout();
     } catch (error) {
     } finally {
       runInAction(() => {
