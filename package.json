@@ -2,10 +2,10 @@
   "name": "konnect_pet_app",
   "version": "1.0.0",
   "scripts": {
-    "start": "npx expo start",
-    "android": "npx expo run:android",
-    "ios": "npx expo run:ios",
-    "web": "npx expo start --web"
+    "start": "NODE_ENV=development npx expo start",
+    "android": "NODE_ENV=development npx expo run:android",
+    "ios": "NODE_ENV=development npx expo run:ios",
+    "web": "NODE_ENV=development npx expo start --web"
   },
   "dependencies": {
     "@expo/metro-config": "^0.10.6",
