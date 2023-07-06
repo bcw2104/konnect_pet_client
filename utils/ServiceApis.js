@@ -39,7 +39,7 @@ export default serviceApis = {
   submitEmailVerification: (reqId,timestamp,email,verify) => baseAxios.post(`/api/user/v1/verify/email/check`, {reqId,timestamp,email,verify}),
 
   //user
-  logout: () =>  baseAxios.get(`/api/user/logout`),
+  logout: () =>  baseAxios.post(`/api/user/v1/logout`),
   getUserInfo: () =>  baseAxios.get(`/api/user/v1/info`),
   updateDeviceInfo: (deviceModel, deviceOs, deviceOsVersion, deviceToken) => baseAxios.post(`/api/user/v1/device`,{deviceModel, deviceOs, deviceOsVersion, deviceToken})
 }

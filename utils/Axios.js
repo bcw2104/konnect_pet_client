@@ -1,15 +1,20 @@
 import axios from 'axios';
-import Constants from 'expo-constants';
 import { asyncStorage } from '../storage/Storage';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import * as Update from 'expo-updates';
+import { Platform } from 'react-native';
 
 export const baseAxios = axios.create({
-  baseURL: Constants.expoConfig.extra.BASE_API_URL,
+  baseURL: !process.env.NODE_ENV
+    ? Platform.OS == 'ios'
+      ? 'http://127.0.0.1:8080'
+      : 'http://10.0.2.2:8080'
+    : process.env.EXPO_PUBLIC_BASE_API_URL,
 });
 
 baseAxios.interceptors.request.use(async function (config) {
   const accessToken = await asyncStorage.getItem('access_token');
+  console.log(config);
 
   if (!!accessToken) {
     config.headers = {
@@ -41,17 +46,32 @@ baseAxios.interceptors.response.use(
       };
 
       try {
+        const BASE_API_URL = !process.env.NODE_ENV
+          ? Platform.OS == 'ios'
+            ? 'http://127.0.0.1:8080'
+            : 'http://10.0.2.2:8080'
+          : process.env.EXPO_PUBLIC_BASE_API_URL;
+          
         const result = await axios.post(
-          `${Constants.expoConfig.extra.BASE_API_URL}/api/auth/v1/token/refresh`,
+          `${BASE_API_URL}/api/auth/v1/token/refresh`,
           {},
           config
         );
 
         if (result.data.rsp_code == '1000') {
           asyncStorage.setItem('access_token', result.data.result.accessToken);
-          asyncStorage.setItem('access_token_expire_at',result.data.result.accessTokenExpireAt);
-          asyncStorage.setItem('refresh_token',result.data.result.refreshToken);
-          asyncStorage.setItem('refresh_token_expire_at',result.data.result.refreshTokenExpireAt);
+          asyncStorage.setItem(
+            'access_token_expire_at',
+            result.data.result.accessTokenExpireAt
+          );
+          asyncStorage.setItem(
+            'refresh_token',
+            result.data.result.refreshToken
+          );
+          asyncStorage.setItem(
+            'refresh_token_expire_at',
+            result.data.result.refreshTokenExpireAt
+          );
 
           originConfig.headers.Authorization = `Bearer ${result.data.result.accessToken}`;
           originConfig.attempt = !originConfig.attempt
@@ -67,7 +87,7 @@ baseAxios.interceptors.response.use(
         return Promise.reject(error);
       }
     } else {
-      if(response.data.rsp_code == "9201"){
+      if (response.data.rsp_code == '9201') {
         await asyncStorage.resetToken();
         Update.reloadAsync();
       }
