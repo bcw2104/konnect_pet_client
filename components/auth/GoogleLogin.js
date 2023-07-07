@@ -35,6 +35,7 @@ const GoogleLogin = () => {
           text1: 'Please try again later',
         });
       }
+      commonStore.setIsLoading(false);
       return;
     }
     try {
