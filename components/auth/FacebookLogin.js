@@ -1,16 +1,14 @@
-import React from 'react';
-import { Image, Pressable, StyleSheet } from 'react-native';
-import serviceApis from '../../utils/ServiceApis';
-import { platform } from '../../commons/constants';
-import { asyncStorage } from '../../storage/Storage';
-import { useStores } from '../../contexts/StoreContext';
-import { Navigator } from '../../navigations/Navigator';
+import React from "react";
+import { Image, Pressable, StyleSheet } from "react-native";
+import serviceApis from "../../utils/ServiceApis";
+import { platform } from "../../commons/constants";
+import { asyncStorage } from "../../storage/Storage";
+import { useStores } from "../../contexts/StoreContext";
+import { Navigator } from "../../navigations/Navigator";
 import {
   AccessToken,
-  AuthenticationToken,
   LoginManager,
-} from 'react-native-fbsdk-next';
-import { Platform } from 'react-native';
+} from "react-native-fbsdk-next";
 
 const FacebookLogin = () => {
   const { userStore, commonStore } = useStores();
@@ -19,8 +17,8 @@ const FacebookLogin = () => {
     commonStore.setIsLoading(true);
     try {
       const { isCancelled } = await LoginManager.logInWithPermissions([
-        'email',
-        'public_profile',
+        "email",
+        "public_profile",
       ]);
 
       if (isCancelled) {
@@ -28,32 +26,24 @@ const FacebookLogin = () => {
         return;
       }
 
-      let token;
-      if (Platform.OS === 'ios') {
-        token = await AuthenticationToken.getAuthenticationTokenIOS();
-      } else {
-        token = await AccessToken.getCurrentAccessToken();
-      }
+      const token = await AccessToken.getCurrentAccessToken();
 
-      const response = await serviceApis.socialLogin(
-        token.accessToken,
-        platform.FACEBOOK
-      );
+      const response = await serviceApis.socialLogin(token.accessToken, platform.FACEBOOK);
 
-      if (response.rsp_code === '1000') {
-        asyncStorage.setItem('access_token', response.result.accessToken);
+      if (response.rsp_code === "1000") {
+        asyncStorage.setItem("access_token", response.result.accessToken);
         asyncStorage.setItem(
-          'access_token_expire_at',
+          "access_token_expire_at",
           response.result.accessTokenExpireAt
         );
-        asyncStorage.setItem('refresh_token', response.result.refreshToken);
+        asyncStorage.setItem("refresh_token", response.result.refreshToken);
         asyncStorage.setItem(
-          'refresh_token_expire_at',
+          "refresh_token_expire_at",
           response.result.refreshTokenExpireAt
         );
         userStore.initUserInfo();
-      } else if (response.rsp_code === '9216') {
-        Navigator.navigate('signup_step1', {
+      } else if (response.rsp_code === "9216") {
+        Navigator.navigate("signup_step1", {
           platform: platform.FACEBOOK,
           emailVerifyKey: response.result.key,
         });
@@ -66,13 +56,13 @@ const FacebookLogin = () => {
 
   return (
     <Pressable
-      title='Sign in with Google'
+      title="Sign in with Google"
       onPress={signIn}
       style={styles.button}
     >
       <Image
         style={styles.logo}
-        source={require('../../assets/images/logos/logo_facebook.png')}
+        source={require("../../assets/images/logos/logo_facebook.png")}
       />
     </Pressable>
   );
@@ -83,8 +73,8 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginHorizontal: 10,
   },
   logo: {
