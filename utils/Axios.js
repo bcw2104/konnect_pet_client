@@ -10,7 +10,7 @@ export const baseAxios = axios.create({
 
 baseAxios.interceptors.request.use(async function (config) {
   const accessToken = await asyncStorage.getItem('access_token');
-  console.log(config);
+  config.timeout = 5000;
 
   if (!!accessToken) {
     config.headers = {

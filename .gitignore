@@ -11,6 +11,7 @@ npm-debug.*
 web-build/
 android
 .android
+*.apk
 
 # macOS
 .DS_Store
@@ -76,6 +77,20 @@ yarn-error.log
 .expo/
 web-build/
 dist/
+
+# OSX
+#
+.DS_Store
+
+# Xcode
+ios/
+
+# Bundle artifacts
+*.jsbundle
+
+# CocoaPods
+/Pods/
+
 
 #keys
 *key.*
