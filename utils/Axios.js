@@ -46,12 +46,13 @@ baseAxios.interceptors.response.use(
       };
 
       try {
-        const BASE_API_URL = process.env.NODE_ENV=='development'
-          ? Platform.OS == 'ios'
-            ? 'http://127.0.0.1:8080'
-            : 'http://10.0.2.2:8080'
-          : process.env.EXPO_PUBLIC_BASE_API_URL;
+        // const BASE_API_URL = process.env.NODE_ENV=='development'
+        //   ? Platform.OS == 'ios'
+        //     ? 'http://127.0.0.1:8080'
+        //     : 'http://10.0.2.2:8080'
+        //   : process.env.EXPO_PUBLIC_BASE_API_URL;
           
+        const BASE_API_URL = process.env.EXPO_PUBLIC_BASE_API_URL;
         const result = await axios.post(
           `${BASE_API_URL}/api/auth/v1/token/refresh`,
           {},
