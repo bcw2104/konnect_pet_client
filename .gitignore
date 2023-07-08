@@ -9,8 +9,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-android
-.android
+
 *.apk
 *.aab
 
@@ -84,7 +83,7 @@ dist/
 .DS_Store
 
 # Xcode
-ios/
+
 
 # Bundle artifacts
 *.jsbundle

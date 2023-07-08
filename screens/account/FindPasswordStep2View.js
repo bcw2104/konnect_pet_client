@@ -10,8 +10,6 @@ import CustomText from '../../components/elements/CustomText';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import PasswordSetting from '../../components/modules/PasswordSetting';
 
-const FOOT_BUTTON_HEIGHT = 50;
-
 const FindPasswordStep2View = (props) => {
   const { route } = props;
 
@@ -41,7 +39,7 @@ const FindPasswordStep2View = (props) => {
 
   return (
     <>
-      <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
+      <Container>
         <View style={styles.section1}>
           <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
             Please set a new password.
@@ -63,7 +61,7 @@ const FindPasswordStep2View = (props) => {
         disabled={!password}
         onPress={submit}
         styles={styles.submitTheme}
-        height={FOOT_BUTTON_HEIGHT}
+        height={50}
       />
     </>
   );

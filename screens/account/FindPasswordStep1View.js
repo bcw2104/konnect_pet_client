@@ -9,8 +9,6 @@ import { useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
 import EmailVerify from '../../components/modules/EmailVerify';
 
-const FOOT_BUTTON_HEIGHT = 50;
-
 const FindPasswordStep1View = (props) => {
   const { route } = props;
 
@@ -30,7 +28,7 @@ const FindPasswordStep1View = (props) => {
 
   return (
     <>
-      <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
+      <Container >
         <View style={styles.section1}>
           <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>가입한 이메일을 입력해주세요.</CustomText>
         </View>
@@ -62,7 +60,7 @@ const FindPasswordStep1View = (props) => {
         disabled={!verifyKey}
         onPress={submit}
         styles={styles.submitTheme}
-        height={FOOT_BUTTON_HEIGHT}
+        height={50}
       />
     </>
   );

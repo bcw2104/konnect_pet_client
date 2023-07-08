@@ -11,8 +11,6 @@ import CustomText from '../../components/elements/CustomText';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../contexts/StoreContext';
 
-const FOOT_BUTTON_HEIGHT = 50;
-
 const SignupStep3View = (props) => {
   const { route } = props;
   const { commonStore } = useStores();
@@ -98,7 +96,7 @@ const SignupStep3View = (props) => {
     <>
       {!commonStore.isLoading && (
         <>
-          <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
+          <Container>
             <View style={styles.section1}>
               <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
                 약관 동의를 해주세요.
@@ -175,7 +173,7 @@ const SignupStep3View = (props) => {
             disabled={!isRequiredAllChecked}
             onPress={submitSignupData}
             styles={styles.submitTheme}
-            height={FOOT_BUTTON_HEIGHT}
+            height={50}
           />
         </>
       )}

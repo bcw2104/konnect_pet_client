@@ -10,8 +10,6 @@ import CustomText from '../../components/elements/CustomText';
 import PasswordSetting from '../../components/modules/PasswordSetting';
 import EmailVerify from '../../components/modules/EmailVerify';
 
-const FOOT_BUTTON_HEIGHT = 50;
-
 const SignupStep2View = (props) => {
   const { route } = props;
   const [password, setPassword] = useState('');
@@ -32,7 +30,7 @@ const SignupStep2View = (props) => {
 
   return (
     <>
-      <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
+      <Container>
         <View style={styles.section1}>
           <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
             가입 정보를 입력해주세요.
@@ -73,7 +71,7 @@ const SignupStep2View = (props) => {
         disabled={!verifyKey || !password}
         onPress={submit}
         styles={styles.submitTheme}
-        height={FOOT_BUTTON_HEIGHT}
+        height={50}
       />
     </>
   );

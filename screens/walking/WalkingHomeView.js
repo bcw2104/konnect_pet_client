@@ -1,28 +1,27 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import CustomButton from '../../components/elements/CustomButton';
 import { useStores } from '../../contexts/StoreContext';
-import CustomText from '../../components/elements/CustomText';
 import Container from '../../components/layouts/Container';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import GoogleMap from '../../components/map/GoogleMap';
 
 const HomeView = () => {
   const { userStore } = useStores();
-  const tabBarHeight = useBottomTabBarHeight();
 
   return (
-    <Container outerElementHeight={tabBarHeight}>
-      <CustomText>HomeView</CustomText>
-      <CustomButton
-        text='logout'
-        onPress={() => {
-          userStore.logout();
-        }}
-      />
+    <Container>
+      <View style={styles.section1}>
+        <GoogleMap />
+      </View>
     </Container>
   );
 };
 
 export default HomeView;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  section1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

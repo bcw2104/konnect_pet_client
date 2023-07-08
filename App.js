@@ -7,8 +7,6 @@ import { StatusBar } from 'expo-status-bar';
 import GlobalModal from './components/elements/GlobalModal';
 import Toast from 'react-native-toast-message';
 import Navigation from './navigations/Navigation';
-import { asyncStorage } from './storage/Storage';
-import serviceApis from './utils/ServiceApis';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 import { Settings } from 'react-native-fbsdk-next';
 import { useFonts } from 'expo-font';

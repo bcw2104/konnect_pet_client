@@ -1,13 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Container from '../../components/layouts/Container'
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 const MyPageHomeView = () => {
-  const tabBarHeight = useBottomTabBarHeight();
-
   return (
-    <Container outerElementHeight={tabBarHeight}>
+    <Container>
       <Text>MypageView</Text>
     </Container>
   )

@@ -10,8 +10,6 @@ import { platform } from '../../commons/constants';
 import SmsVerify from '../../components/modules/SmsVerify';
 import { observer } from 'mobx-react-lite';
 
-const FOOT_BUTTON_HEIGHT = 50;
-
 const SignupStep1View = (props) => {
   const { route } = props;
   const [nationCode, setNationCode] = useState('');
@@ -36,7 +34,7 @@ const SignupStep1View = (props) => {
 
   return (
     <>
-      <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
+      <Container>
         <View style={styles.section1}>
           <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
             핸드폰 번호를 인증해주세요.
@@ -72,7 +70,7 @@ const SignupStep1View = (props) => {
         disabled={!verifyKey}
         onPress={submit}
         styles={styles.submitTheme}
-        height={FOOT_BUTTON_HEIGHT}
+        height={50}
       />
     </>
   );

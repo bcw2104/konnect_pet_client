@@ -10,8 +10,6 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 
-const FOOT_BUTTON_HEIGHT = 50;
-
 const LeaveView = () => {
   const { userStore } = useStores();
 
@@ -34,7 +32,7 @@ const LeaveView = () => {
 
   return (
     <>
-      <Container outerElementHeight={FOOT_BUTTON_HEIGHT}>
+      <Container>
         <View style={styles.section1}>
           <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
             핸드폰 번호를 인증해주세요.
@@ -70,7 +68,7 @@ const LeaveView = () => {
         disabled={!verifyKey}
         onPress={submit}
         styles={styles.submitTheme}
-        height={FOOT_BUTTON_HEIGHT}
+        height={50}
       />
     </>
   );

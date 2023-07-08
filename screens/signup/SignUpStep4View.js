@@ -11,8 +11,6 @@ import { useStores } from '../../contexts/StoreContext';
 import CustomText from '../../components/elements/CustomText';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
-const FOOT_BUTTON_HEIGHT = 50;
-
 const SignupStep4View = (props) => {
   const { route } = props;
   const { userStore } = useStores();
@@ -65,7 +63,7 @@ const SignupStep4View = (props) => {
         text='가입 완료'
         onPress={submitSignupData}
         styles={styles.submitTheme}
-        height={FOOT_BUTTON_HEIGHT}
+        height={50}
       />
     </>
   );

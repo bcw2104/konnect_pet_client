@@ -1,23 +1,26 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Platform, SafeAreaView, View } from 'react-native';
 import React from 'react';
 import { useStores } from '../../contexts/StoreContext';
-import { useHeaderHeight } from '@react-navigation/elements';
-import colors from '../../commons/colors';
 
-const Container = ({ outerElementHeight = 0, children }) => {
+const Container = ({ children }) => {
   const { systemStore } = useStores();
-  const headerHeight = useHeaderHeight();
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
-        paddingHorizontal: 15,
-        marginTop: systemStore.statusBarHeight,
       }}
     >
-      {children}
-    </View>
+      <View
+        style={{
+          paddingHorizontal: 15,
+          flex: 1,
+          marginTop: Platform.OS == 'ios' ? 0 : systemStore.statusBarHeight,
+        }} 
+      >
+        {children}
+      </View>
+    </SafeAreaView>
   );
 };
 
