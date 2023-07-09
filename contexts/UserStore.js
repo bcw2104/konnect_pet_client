@@ -22,6 +22,10 @@ export default class UserStore {
 
   async initUserInfo() {
     const accessToken = await asyncStorage.getItem('access_token');
+    Toast.show({
+      type: 'error',
+      text1: accessToken,
+    });
     if (!accessToken) return;
 
     try {

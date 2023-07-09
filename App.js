@@ -23,9 +23,9 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({
-    "Robato-Regular": require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
-    "Robato-Bold": require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
-    "Robato-Thin": require('./assets/fonts/Roboto/Roboto-Thin.ttf')
+    "Roboto-Regular": require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+    "Roboto-Bold": require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
+    "Roboto-Thin": require('./assets/fonts/Roboto/Roboto-Thin.ttf')
   });
   useBackPressHandler();
 
@@ -37,6 +37,10 @@ export default function App() {
         await initDeviceInfo();
         await rootStore.userStore.initUserInfo();
       } catch (e) {
+        Toast.show({
+          type: 'error',
+          text1: e,
+        });
       } finally {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         setAppIsReady(true);

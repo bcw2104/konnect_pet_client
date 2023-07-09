@@ -64,9 +64,9 @@ const WalkingHomeView = () => {
     return existingStatus == 'granted';
   };
   const requestLocationPermissions = async () => {
-    if (!hasLocationPermissions()) {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      finalStatus = status;
+    const existingStatus = await hasLocationPermissions();
+    if (!existingStatus) {
+      const { status:finalStatus } = await Location.requestForegroundPermissionsAsync();
 
       if (finalStatus !== 'granted') {
         modalStore.openTwoButtonModal(
@@ -84,6 +84,7 @@ const WalkingHomeView = () => {
 
     return true;
   };
+  
   const getMyLocation = async () => {
     const status = await requestLocationPermissions();
 

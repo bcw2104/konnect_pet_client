@@ -5,7 +5,7 @@ import { FONT_FAMILY, FONT_WEIGHT } from '../../commons/constants';
 
 const CustomText = ({
   style = {},
-  fontFamily = FONT_FAMILY.ROBATO,
+  fontFamily = FONT_FAMILY.ROBOTO,
   fontWeight = FONT_WEIGHT.REGULAR,
   fontColor = COLORS.dark,
   fontSize = 18,

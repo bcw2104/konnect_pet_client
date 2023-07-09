@@ -30,7 +30,7 @@ const WalkingView = () => {
 
   const [isMapReady, setIsMapReady] = useState(false);
   const [seconds, setSeconds] = useState(0);
-  const [meters, setMeters] = useState(0);
+  const [meters, setMeters] = useState(-10);
   const { systemStore, modalStore } = useStores();
 
   useEffect(() => {
@@ -45,7 +45,6 @@ const WalkingView = () => {
           { accuracy: Location.Accuracy.High, distanceInterval: 10 },
           async ({ coords }) => {
             setMeters((meters) => meters + 10);
-            console.log(coords);
             changeMyLocation(coords);
           }
         );
@@ -84,13 +83,15 @@ const WalkingView = () => {
     return existingStatus == 'granted';
   };
   const requestLocationPermissions = async () => {
-    if (!hasLocationPermissions()) {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      finalStatus = status;
+    const existingStatus = await hasLocationPermissions();
+    if (!existingStatus) {
+      const { status:finalStatus } = await Location.requestForegroundPermissionsAsync();
 
       if (finalStatus !== 'granted') {
-        modalStore.openOneButtonModal(
+        modalStore.openTwoButtonModal(
           '정상적인 산책 기록을 위해 위치 권한을 승인해주세요.',
+          '취소',
+          () => {},
           '승인하러 가기',
           () => {
             Linking.openSettings();
@@ -102,6 +103,7 @@ const WalkingView = () => {
 
     return true;
   };
+  
   const getMyLocation = async () => {
     const status = await requestLocationPermissions();
 

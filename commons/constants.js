@@ -12,5 +12,5 @@ export const FONT_WEIGHT = {
 };
 
 export const FONT_FAMILY = {
-  ROBATO: 'Robato',
+  ROBOTO: 'Roboto',
 };
