@@ -16,16 +16,11 @@ const SignupStep4View = (props) => {
   const { route } = props;
   const { userStore } = useStores();
 
-  useEffect(() => {
-    console.log(route.params);
-  }, []);
-
   const submitSignupData = async () => {
     try {
       const response = await serviceApis.join({
         ...route.params,
       });
-      console.log(response);
       if (response?.rsp_code === '1002') {
         Toast.show({
           type: 'success',

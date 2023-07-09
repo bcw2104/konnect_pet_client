@@ -15,6 +15,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { useBackPressHandler } from './hooks/useBackPressHandler';
 import Loader from './components/modules/Loader';
+import { Platform } from 'react-native';
 
 const rootStore = new RootStore();
 
@@ -33,30 +34,10 @@ export default function App() {
     if (!fontsLoaded) return;
     async function prepare() {
       try {
-        Toast.show({
-          type: 'success',
-          text1: "step0",
-        });
         initFacebook();
-        Toast.show({
-          type: 'success',
-          text1: "step1",
-        });
         await initDeviceInfo();
-        Toast.show({
-          type: 'success',
-          text1: "step2",
-        });
         await rootStore.userStore.initUserInfo();
-        Toast.show({
-          type: 'success',
-          text1: "step3",
-        });
       } catch (e) {
-        Toast.show({
-          type: 'error',
-          text1: e.,
-        });
       } finally {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         setAppIsReady(true);
@@ -109,7 +90,6 @@ export default function App() {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
     } else {
       //Must use physical device for Push Notifications
     }
