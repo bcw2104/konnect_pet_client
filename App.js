@@ -33,13 +33,29 @@ export default function App() {
     if (!fontsLoaded) return;
     async function prepare() {
       try {
+        Toast.show({
+          type: 'success',
+          text1: "step0",
+        });
         initFacebook();
+        Toast.show({
+          type: 'success',
+          text1: "step1",
+        });
         await initDeviceInfo();
+        Toast.show({
+          type: 'success',
+          text1: "step2",
+        });
         await rootStore.userStore.initUserInfo();
+        Toast.show({
+          type: 'success',
+          text1: "step3",
+        });
       } catch (e) {
         Toast.show({
           type: 'error',
-          text1: e,
+          text1: e.,
         });
       } finally {
         await new Promise((resolve) => setTimeout(resolve, 2000));

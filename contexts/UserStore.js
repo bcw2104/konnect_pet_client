@@ -45,7 +45,11 @@ export default class UserStore {
         this._deviceOsVersion,
         this._deviceToken
       );
-    } catch (error) {}
+    } catch (error) {
+      Toast.show({
+        type: 'success',
+        text1: error,
+      });}
   }
 
   setDeviceInfo(deviceModel, deviceOs, deviceOsVersion, deviceToken) {

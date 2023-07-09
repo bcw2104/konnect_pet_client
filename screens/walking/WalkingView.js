@@ -41,6 +41,9 @@ const WalkingView = () => {
       const status = await hasLocationPermissions();
 
       if (status) {
+        let { coords } = await Location.getCurrentPositionAsync({});
+        changeMyLocation(coords);
+
         watchPosition = await Location.watchPositionAsync(
           { accuracy: Location.Accuracy.High, distanceInterval: 10 },
           async ({ coords }) => {
@@ -48,9 +51,24 @@ const WalkingView = () => {
             changeMyLocation(coords);
           }
         );
+      } else {
+        modalStore.openTwoButtonModal(
+          '정상적인 산책 기록을 위해 위치 권한을 승인해주세요.',
+          '취소',
+          () => {
+            goToHome();
+          },
+          '승인하러 가기',
+          () => {
+            Linking.openSettings();
+            goToHome();
+          }
+        );
       }
     };
+    
     fetchData();
+
     return () => {
       if (!!watchPosition) {
         console.log('watching position removed');
@@ -62,6 +80,10 @@ const WalkingView = () => {
   useInterval(() => {
     setSeconds((seconds) => seconds + 1);
   }, 1000);
+
+  const goToHome = (params) => {
+    Navigator.reset('walking_home', params);
+  };
 
   const goToNextStep = (params) => {
     Navigator.reset('walking_home', params);
@@ -85,7 +107,8 @@ const WalkingView = () => {
   const requestLocationPermissions = async () => {
     const existingStatus = await hasLocationPermissions();
     if (!existingStatus) {
-      const { status:finalStatus } = await Location.requestForegroundPermissionsAsync();
+      const { status: finalStatus } =
+        await Location.requestForegroundPermissionsAsync();
 
       if (finalStatus !== 'granted') {
         modalStore.openTwoButtonModal(
@@ -103,7 +126,7 @@ const WalkingView = () => {
 
     return true;
   };
-  
+
   const getMyLocation = async () => {
     const status = await requestLocationPermissions();
 
@@ -136,7 +159,7 @@ const WalkingView = () => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          text={<MaterialIcons name="my-location" size={30} color="black" />}
+          text={<MaterialIcons name='my-location' size={30} color='black' />}
           fontColor={COLORS.white}
           onPress={getMyLocation}
           width={60}
@@ -160,7 +183,7 @@ const WalkingView = () => {
           <CustomButton
             bgColor={COLORS.warning}
             bgColorPress={COLORS.warningDeep}
-            text={<MaterialIcons name="pause" size={30} color="black" />}
+            text={<MaterialIcons name='pause' size={30} color='black' />}
             fontColor={COLORS.white}
             onPress={stopWalking}
             width={60}
