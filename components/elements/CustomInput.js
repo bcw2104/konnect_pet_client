@@ -1,7 +1,7 @@
 import { Text, TextInput, View } from 'react-native';
 import React from 'react';
 import { useState } from 'react';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import { useEffect } from 'react';
 import CustomText from './CustomText';
 
@@ -67,18 +67,18 @@ const CustomInput = ({
             height: height,
             paddingHorizontal: 10,
             borderWidth: 1,
-            borderColor: error ? colors.danger : colors.gray,
+            borderColor: error ? COLORS.danger : COLORS.gray,
             borderRadius: 5,
             borderStyle: 'solid',
             flex: 1,
-            color: editable ? colors.dark : colors.grayDeep,
+            color: editable ? COLORS.dark : COLORS.grayDeep,
             ...style,
           }}
         />
       </View>
       {error && (
         <CustomText
-          fontColor={colors.danger}
+          fontColor={COLORS.danger}
           fontSize={14}
           style={{
             marginTop: 5,

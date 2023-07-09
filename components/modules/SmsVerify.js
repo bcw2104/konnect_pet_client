@@ -9,10 +9,11 @@ import { useState } from 'react';
 import useInterval from './../../hooks/useInertval';
 import { KeyboardAvoidingView } from 'react-native';
 import { Platform } from 'react-native';
-import regex from '../../commons/regex';
+import REGEX from '../../commons/regex';
 import serviceApis from './../../utils/ServiceApis';
 import { useEffect } from 'react';
 import { Navigator } from '../../navigations/Navigator';
+import COLORS from '../../commons/colors';
 
 const VERIFY_TIMEOUT = 180;
 
@@ -90,7 +91,7 @@ const SmsVerify = ({
 
   const requestVerification = async () => {
     if (!fixedTel) {
-      const test = regex.tel.test(tel);
+      const test = REGEX.tel.test(tel);
 
       if (!test) {
         setTelError(true);
@@ -164,16 +165,16 @@ const SmsVerify = ({
           maxLength={20}
           editable={!fixedTel}
           onValueChange={handleTelChange}
-          regex={regex.number}
+          regex={REGEX.number}
           keyboardType='number-pad'
           placeholder='Phone number'
           errorHandler={telError}
           errorMsg='Invalid phone number.'
         />
         <CustomButton
-          fontColor={colors.white}
-          bgColor={colors.dark}
-          bgColorPress={colors.darkDeep}
+          fontColor={COLORS.white}
+          bgColor={COLORS.dark}
+          bgColorPress={COLORS.darkDeep}
           wrapperStyle={styles.phoneVerifyButton}
           width={110}
           fontSize={15}
@@ -202,11 +203,11 @@ const SmsVerify = ({
             errorHandler={verifiyError}
             errorMsg='Incorrect verify code.'
           />
-          <Timer style={styles.verifyTimer} remain={remain} />
+          <Timer style={styles.verifyTimer} remain={remain} fontColor={COLORS.danger} />
           <CustomButton
-            fontColor={colors.white}
-            bgColor={colors.dark}
-            bgColorPress={colors.darkDeep}
+            fontColor={COLORS.white}
+            bgColor={COLORS.dark}
+            bgColorPress={COLORS.darkDeep}
             wrapperStyle={styles.verifySubmitButton}
             width={110}
             fontSize={15}
@@ -245,7 +246,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 13,
     right: 125,
-    color: colors.danger,
   },
   verifySubmitButton: {
     position: 'absolute',

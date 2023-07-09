@@ -5,8 +5,9 @@ import { observer } from 'mobx-react-lite';
 import { navigationRef } from './Navigator';
 import AuthStackNavigator from './stacks/AuthStackNavigator';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import colors from '../commons/colors';
+import COLORS from '../commons/colors';
 import MyPageStackNavigator from './stacks/MyPageStackNavigator';
+import WalkingStackNavigator from './stacks/WalkingStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,7 +15,7 @@ const navTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: colors.white,
+    background: COLORS.white,
   },
 };
 
@@ -25,15 +26,15 @@ const Navigation = () => {
       {userStore.isLogin ? (
         <Tab.Navigator>
           <Tab.Screen
-            name='walking_tab'
-            component={WalkingHomeView}
+            name="walking_tab"
+            component={WalkingStackNavigator}
             options={{
               headerShown: false,
               tabBarLabel: 'Walking',
             }}
           />
           <Tab.Screen
-            name='mypage_tab'
+            name="mypage_tab"
             component={MyPageStackNavigator}
             options={{
               headerShown: false,

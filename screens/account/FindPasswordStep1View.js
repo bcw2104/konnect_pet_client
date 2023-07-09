@@ -3,11 +3,12 @@ import React from 'react';
 import Container from '../../components/layouts/Container';
 import { Navigator } from '../../navigations/Navigator';
 import CustomButton from '../../components/elements/CustomButton';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import serviceApis from '../../utils/ServiceApis';
 import { useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
 import EmailVerify from '../../components/modules/EmailVerify';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const FindPasswordStep1View = (props) => {
   const { route } = props;
@@ -30,7 +31,7 @@ const FindPasswordStep1View = (props) => {
     <>
       <Container >
         <View style={styles.section1}>
-          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>가입한 이메일을 입력해주세요.</CustomText>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>가입한 이메일을 입력해주세요.</CustomText>
         </View>
         <View style={styles.section2}>
           <CustomText fontSize={16}>이메일을 입력해주세요.</CustomText>
@@ -53,13 +54,13 @@ const FindPasswordStep1View = (props) => {
         </View>
       </Container>
       <CustomButton
-        fontColor={colors.white}
-        bgColor={colors.dark}
-        bgColorPress={colors.darkDeep}
+        fontColor={COLORS.white}
+        bgColor={COLORS.dark}
+        bgColorPress={COLORS.darkDeep}
         text='다음'
         disabled={!verifyKey}
         onPress={submit}
-        styles={styles.submitTheme}
+        style={styles.submitTheme}
         height={50}
       />
     </>

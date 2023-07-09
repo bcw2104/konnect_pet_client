@@ -3,12 +3,13 @@ import React from 'react';
 import Container from '../../components/layouts/Container';
 import { Navigator } from '../../navigations/Navigator';
 import CustomButton from '../../components/elements/CustomButton';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import serviceApis from '../../utils/ServiceApis';
 import { useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import PasswordSetting from '../../components/modules/PasswordSetting';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const FindPasswordStep2View = (props) => {
   const { route } = props;
@@ -41,7 +42,7 @@ const FindPasswordStep2View = (props) => {
     <>
       <Container>
         <View style={styles.section1}>
-          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
             Please set a new password.
           </CustomText>
           <CustomText style={{ marginTop: 10 }}>
@@ -54,13 +55,13 @@ const FindPasswordStep2View = (props) => {
         </View>
       </Container>
       <CustomButton
-        fontColor={colors.white}
-        bgColor={colors.dark}
-        bgColorPress={colors.darkDeep}
+        fontColor={COLORS.white}
+        bgColor={COLORS.dark}
+        bgColorPress={COLORS.darkDeep}
         text='변경하기'
         disabled={!password}
         onPress={submit}
-        styles={styles.submitTheme}
+        style={styles.submitTheme}
         height={50}
       />
     </>

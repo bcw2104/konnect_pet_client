@@ -4,12 +4,13 @@ import Container from '../../components/layouts/Container';
 import { useState, useEffect } from 'react';
 import serviceApis from './../../utils/ServiceApis';
 import CustomButton from '../../components/elements/CustomButton';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import CheckBox from '../../components/elements/CheckBox';
 import { Navigator } from './../../navigations/Navigator';
 import CustomText from '../../components/elements/CustomText';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../contexts/StoreContext';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const SignupStep3View = (props) => {
   const { route } = props;
@@ -98,7 +99,7 @@ const SignupStep3View = (props) => {
         <>
           <Container>
             <View style={styles.section1}>
-              <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
                 약관 동의를 해주세요.
               </CustomText>
             </View>
@@ -166,13 +167,13 @@ const SignupStep3View = (props) => {
             </View>
           </Container>
           <CustomButton
-            fontColor={colors.white}
-            bgColor={colors.dark}
-            bgColorPress={colors.darkDeep}
+            fontColor={COLORS.white}
+            bgColor={COLORS.dark}
+            bgColorPress={COLORS.darkDeep}
             text='다음'
             disabled={!isRequiredAllChecked}
             onPress={submitSignupData}
-            styles={styles.submitTheme}
+            style={styles.submitTheme}
             height={50}
           />
         </>
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     paddingVertical: 20,
-    backgroundColor: colors.lightDeep,
+    backgroundColor: COLORS.lightDeep,
     borderRadius: 10,
     marginBottom: 20,
   },

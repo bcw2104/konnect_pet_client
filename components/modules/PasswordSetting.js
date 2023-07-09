@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import CustomInput from '../elements/CustomInput';
 import { useEffect, useState } from 'react';
-import regex from '../../commons/regex';
+import REGEX from '../../commons/regex';
 import { KeyboardAvoidingView } from 'react-native';
 import { Platform } from 'react-native';
 
@@ -22,7 +22,7 @@ const PasswordSetting = ({ onPasswordChange = (value) => {} }) => {
   }, [isPasswordSuccess]);
 
   const confirmPassword = (password1, password2) => {
-    const test = regex.password.test(password1);
+    const test = REGEX.password.test(password1);
 
     if (!test) {
       setPasswordError(true);

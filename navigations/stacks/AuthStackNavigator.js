@@ -8,7 +8,7 @@ import SignupStep4View from './../../screens/signup/SignUpStep4View';
 import WelcomeView from '../../screens/WelcomeView';
 import FindPasswordStep1View from './../../screens/account/FindPasswordStep1View';
 import FindPasswordStep2View from './../../screens/account/FindPasswordStep2View';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import TermsView from './../../screens/terms/TermsView';
 
 const AuthStack = createNativeStackNavigator();

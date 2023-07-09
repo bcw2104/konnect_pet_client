@@ -15,7 +15,7 @@ const Container = ({ children }) => {
         style={{
           paddingHorizontal: 15,
           flex: 1,
-          marginTop: Platform.OS == 'ios' ? 0 : systemStore.statusBarHeight,
+          marginTop: Platform.OS == 'ios' ? 0 : systemStore.statusBarHeight + 15,
         }} 
       >
         {children}

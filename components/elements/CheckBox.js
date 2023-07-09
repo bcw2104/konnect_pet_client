@@ -1,6 +1,6 @@
 import { Pressable} from 'react-native';
 import React from 'react';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import { Ionicons } from '@expo/vector-icons';
 
 const CheckBox = ({
@@ -8,7 +8,7 @@ const CheckBox = ({
   onPress = () => {},
   checked = false,
   size = 24,
-  styles = {},
+  style = {},
 }) => {
   return (
     <Pressable
@@ -19,16 +19,16 @@ const CheckBox = ({
         width: size,
         height: size,
         opacity: disabled ? 0.7 : 1,
-        ...styles,
+        ...style,
       }}
     >
       {checked ? (
-        <Ionicons name='checkmark-circle' size={size} color={colors.primary} />
+        <Ionicons name='checkmark-circle' size={size} color={COLORS.primary} />
       ) : (
         <Ionicons
           name='checkmark-circle-outline'
           size={size}
-          color={colors.black}
+          color={COLORS.black}
         />
       )}
     </Pressable>

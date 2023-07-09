@@ -3,10 +3,10 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import GoogleLogin from '../components/auth/GoogleLogin';
 import { observer } from 'mobx-react-lite';
 import DefaultLogin from '../components/auth/DefaultLogin';
-import colors from '../commons/colors';
+import COLORS from '../commons/colors';
 import Container from '../components/layouts/Container';
 import { Navigator } from '../navigations/Navigator';
-import { platform } from '../commons/constants';
+import { FONT_WEIGHT, SOCIAL_TYPE } from '../commons/constants';
 import FacebookLogin from '../components/auth/FacebookLogin';
 import CustomText from '../components/elements/CustomText';
 
@@ -15,7 +15,7 @@ const WelcomeView = () => {
   return (
     <Container>
       <View style={styles.section1}>
-        <CustomText style={{ fontWeight: 'bold' }} fontSize={30}>
+        <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={30}>
           반가워요!
         </CustomText>
         <CustomText style={{ marginTop: 10 }}>산책을 시작해볼까요?</CustomText>
@@ -37,14 +37,14 @@ const WelcomeView = () => {
         <View style={styles.optionsWrap}>
           <CustomText
             style={styles.optionText}
-            fontColor={colors.grayDeep}
+            fontColor={COLORS.grayDeep}
             fontSize={16}
           >
             Don't have an account?
           </CustomText>
           <Pressable
             onPress={() => {
-              Navigator.navigate('signup_step1', { platform: platform.EMAIL });
+              Navigator.navigate('signup_step1', { platform: SOCIAL_TYPE.EMAIL });
             }}
             hitSlop={10}
           >
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   dividerLine: {
-    backgroundColor: colors.dark,
+    backgroundColor: COLORS.dark,
     height: 1,
     flex: 1,
     alignSelf: 'center',

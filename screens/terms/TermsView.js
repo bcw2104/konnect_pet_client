@@ -8,9 +8,10 @@ import { Navigator } from '../../navigations/Navigator';
 import moment from 'moment';
 import { WebView } from 'react-native-webview';
 import CustomText from '../../components/elements/CustomText';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const TermsView = (props) => {
   const { route } = props;
@@ -40,7 +41,7 @@ const TermsView = (props) => {
       {!commonStore.isLoading && (
         <Container>
           <View style={styles.section1}>
-            <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+            <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
               {term?.termsName}
             </CustomText>
             <CustomText style={{ marginTop: 5 }} fontSize={16}>
@@ -52,7 +53,7 @@ const TermsView = (props) => {
             <WebView
               style={{
                 flex: 1,
-                backgroundColor: colors.white,
+                backgroundColor: COLORS.white,
               }}
               source={{
                 html: `<html>

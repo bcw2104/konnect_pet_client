@@ -28,9 +28,12 @@
     "expo-dev-client": "~2.4.4",
     "expo-device": "~5.4.0",
     "expo-font": "^11.1.1",
+    "expo-location": "~16.0.0",
+    "expo-modules-autolinking": "^1.5.0",
     "expo-notifications": "~0.20.1",
     "expo-splash-screen": "~0.20.4",
     "expo-status-bar": "~1.6.0",
+    "expo-task-manager": "~11.3.0",
     "expo-tracking-transparency": "~3.1.0",
     "expo-updates": "~0.18.8",
     "expo-web-browser": "~12.3.2",
@@ -54,7 +57,8 @@
     "react-native-svg": "13.9.0",
     "react-native-toast-message": "^2.1.6",
     "react-native-web": "~0.19.6",
-    "react-native-webview": "13.2.2"
+    "react-native-webview": "13.2.2",
+    "expo-linking": "~5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

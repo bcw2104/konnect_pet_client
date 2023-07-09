@@ -2,13 +2,14 @@ import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import CustomButton from '../../components/elements/CustomButton';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import serviceApis from '../../utils/ServiceApis';
 import CustomText from '../../components/elements/CustomText';
 import SmsVerify from '../../components/modules/SmsVerify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const LeaveView = () => {
   const { userStore } = useStores();
@@ -34,7 +35,7 @@ const LeaveView = () => {
     <>
       <Container>
         <View style={styles.section1}>
-          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
             핸드폰 번호를 인증해주세요.
           </CustomText>
         </View>
@@ -61,13 +62,13 @@ const LeaveView = () => {
         </View>
       </Container>
       <CustomButton
-        fontColor={colors.white}
-        bgColor={colors.dark}
-        bgColorPress={colors.darkDeep}
+        fontColor={COLORS.white}
+        bgColor={COLORS.dark}
+        bgColorPress={COLORS.darkDeep}
         text='인증완료'
         disabled={!verifyKey}
         onPress={submit}
-        styles={styles.submitTheme}
+        style={styles.submitTheme}
         height={50}
       />
     </>
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 23,
     right: 15,
-    color: colors.danger,
+    color: COLORS.danger,
   },
 
   submitTheme: { borderRadius: 0 },

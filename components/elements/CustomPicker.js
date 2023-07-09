@@ -1,7 +1,7 @@
 import { Platform, Text, TextInput, View } from "react-native";
 import React from "react";
 import { useState } from "react";
-import colors from "../../commons/colors";
+import COLORS from "../../commons/colors";
 import { useEffect } from "react";
 import { Picker, PickerIOS } from "@react-native-picker/picker";
 import CustomText from "./CustomText";
@@ -33,11 +33,11 @@ const CustomPicker = ({
           height: height,
           width: width,
           borderWidth: 1,
-          borderColor: error ? colors.danger : colors.gray,
+          borderColor: error ? COLORS.danger : COLORS.gray,
           borderRadius: 5,
           borderStyle: "solid",
           alignItems: "center",
-          backgroundColor: colors.white,
+          backgroundColor: COLORS.white,
           ...wrapperStyle,
         }}
       >
@@ -91,7 +91,7 @@ const CustomPicker = ({
       </View>
       {error && (
         <CustomText
-          fontColor={colors.danger}
+          fontColor={COLORS.danger}
           fontSize={14}
           style={{
             marginTop: 5,

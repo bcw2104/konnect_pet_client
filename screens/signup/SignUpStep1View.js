@@ -6,7 +6,7 @@ import colors from '../../commons/colors';
 import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import CustomText from '../../components/elements/CustomText';
-import { platform } from '../../commons/constants';
+import { FONT_WEIGHT, SOCIAL_TYPE } from '../../commons/constants';
 import SmsVerify from '../../components/modules/SmsVerify';
 import { observer } from 'mobx-react-lite';
 
@@ -16,7 +16,7 @@ const SignupStep1View = (props) => {
   const [verifyKey, setVerifyKey] = useState(null);
 
   const goToNextStep = (params) => {
-    if (route.params.platform != platform.EMAIL) {
+    if (route.params.platform != SOCIAL_TYPE.EMAIL) {
       Navigator.navigate('signup_step3', { ...params, ...route.params });
     } else {
       Navigator.navigate('signup_step2', { ...params, ...route.params });
@@ -36,7 +36,7 @@ const SignupStep1View = (props) => {
     <>
       <Container>
         <View style={styles.section1}>
-          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
             핸드폰 번호를 인증해주세요.
           </CustomText>
         </View>
@@ -63,13 +63,13 @@ const SignupStep1View = (props) => {
         </View>
       </Container>
       <CustomButton
-        fontColor={colors.white}
-        bgColor={colors.dark}
-        bgColorPress={colors.darkDeep}
+        fontColor={COLORS.white}
+        bgColor={COLORS.dark}
+        bgColorPress={COLORS.darkDeep}
         text='다음'
         disabled={!verifyKey}
         onPress={submit}
-        styles={styles.submitTheme}
+        style={styles.submitTheme}
         height={50}
       />
     </>

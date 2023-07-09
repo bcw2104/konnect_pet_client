@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import Container from '../../components/layouts/Container';
 import { useEffect } from 'react';
-import colors from './../../commons/colors';
+import COLORS from './../../commons/colors';
 import CustomButton from './../../components/elements/CustomButton';
 import serviceApis from './../../utils/ServiceApis';
 import { Navigator } from './../../navigations/Navigator';
@@ -10,6 +10,7 @@ import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
 import CustomText from '../../components/elements/CustomText';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const SignupStep4View = (props) => {
   const { route } = props;
@@ -52,17 +53,17 @@ const SignupStep4View = (props) => {
     <>
       <Container>
         <View style={styles.section1}>
-          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>거주지를 입력해주세요.</CustomText>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>거주지를 입력해주세요.</CustomText>
         </View>
         <View style={styles.section2}></View>
       </Container>
       <CustomButton
-        fontColor={colors.white}
-        bgColor={colors.dark}
-        bgColorPress={colors.darkDeep}
+        fontColor={COLORS.white}
+        bgColor={COLORS.dark}
+        bgColorPress={COLORS.darkDeep}
         text='가입 완료'
         onPress={submitSignupData}
-        styles={styles.submitTheme}
+        style={styles.submitTheme}
         height={50}
       />
     </>

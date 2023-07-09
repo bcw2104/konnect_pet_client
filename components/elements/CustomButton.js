@@ -1,20 +1,20 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import CustomText from './CustomText';
 
 const CustomButton = ({
   disabled = false,
   onPress = () => {},
-  bgColor = colors.light,
-  bgColorPress = colors.lightDeep,
-  fontColor = colors.black,
+  bgColor = COLORS.light,
+  bgColorPress = COLORS.lightDeep,
+  fontColor = COLORS.black,
   fontSize = 16,
   text = '',
   width = 'auto',
   height = 50,
   wrapperStyle = {},
-  styles = {},
+  style = {},
 }) => {
   return (
     <View
@@ -34,13 +34,13 @@ const CustomButton = ({
             width: width,
             height: height,
             borderRadius: 5,
-            borderColor: colors.dark,
-            borderWidth: bgColor == colors.light ? 1 : 0,
+            borderColor: COLORS.dark,
+            borderWidth: bgColor == COLORS.light ? 1 : 0,
             backgroundColor: pressed ? bgColorPress : bgColor,
             justifyContent:'center',
             flex: 1,
             opacity: disabled ? 0.7 : 1,
-            ...styles,
+            ...style,
           },
         ]}
       >

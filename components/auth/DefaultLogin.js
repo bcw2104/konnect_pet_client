@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import CustomButton from '../elements/CustomButton';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import { useStores } from '../../contexts/StoreContext';
 import CustomInput from '../elements/CustomInput';
 import serviceApis from './../../utils/ServiceApis';
@@ -81,7 +81,7 @@ const DefaultLogin = () => {
       />
       {loginFailed && (
         <CustomText
-          fontColor={colors.danger}
+          fontColor={COLORS.danger}
           fontSize={14}
           style={{
             marginTop: 5,
@@ -109,10 +109,10 @@ const DefaultLogin = () => {
         </Pressable>
       </View>
       <CustomButton
-        bgColor={colors.dark}
-        bgColorPress={colors.dangerDeep}
+        bgColor={COLORS.dark}
+        bgColorPress={COLORS.darkDeep}
         text='Sign In'
-        fontColor={colors.white}
+        fontColor={COLORS.white}
         onPress={loginSubmit}
         height={50}
         wrapperStyle={styles.submit}

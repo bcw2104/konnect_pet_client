@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, Pressable, StyleSheet } from "react-native";
 import serviceApis from "../../utils/ServiceApis";
-import { platform } from "../../commons/constants";
+import { SOCIAL_TYPE } from "../../commons/constants";
 import { asyncStorage } from "../../storage/Storage";
 import { useStores } from "../../contexts/StoreContext";
 import { Navigator } from "../../navigations/Navigator";
@@ -28,7 +28,7 @@ const FacebookLogin = () => {
 
       const token = await AccessToken.getCurrentAccessToken();
 
-      const response = await serviceApis.socialLogin(token.accessToken, platform.FACEBOOK);
+      const response = await serviceApis.socialLogin(token.accessToken, SOCIAL_TYPE.FACEBOOK);
 
       if (response.rsp_code === "1000") {
         asyncStorage.setItem("access_token", response.result.accessToken);
@@ -44,7 +44,7 @@ const FacebookLogin = () => {
         userStore.initUserInfo();
       } else if (response.rsp_code === "9216") {
         Navigator.navigate("signup_step1", {
-          platform: platform.FACEBOOK,
+          platform: SOCIAL_TYPE.FACEBOOK,
           emailVerifyKey: response.result.key,
         });
       }

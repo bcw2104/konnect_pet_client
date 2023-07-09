@@ -10,7 +10,7 @@ import Navigation from './navigations/Navigation';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 import { Settings } from 'react-native-fbsdk-next';
 import { useFonts } from 'expo-font';
-import colors from './commons/colors';
+import COLORS from './commons/colors';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { useBackPressHandler } from './hooks/useBackPressHandler';
@@ -23,7 +23,9 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({
-    Robato: require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+    "Robato-Regular": require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+    "Robato-Bold": require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
+    "Robato-Thin": require('./assets/fonts/Roboto/Roboto-Thin.ttf')
   });
   useBackPressHandler();
 
@@ -120,7 +122,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.white,
+    backgroundColor: COLORS.white,
     flex: 1,
   },
 });

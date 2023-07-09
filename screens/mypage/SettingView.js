@@ -4,12 +4,13 @@ import Container from '../../components/layouts/Container';
 import CustomText from '../../components/elements/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const SettingView = () => {
   return (
     <Container>
       <View style={styles.section1}>
-        <CustomText style={{ fontWeight: 'bold' }} fontSize={28}>
+        <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={28}>
           Setting
         </CustomText>
       </View>
@@ -20,7 +21,7 @@ const SettingView = () => {
           }}
           style={styles.menuItem}
         >
-          <CustomText fontSize={18} style={{ fontWeight: 'bold' }}>알림 설정</CustomText>
+          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD} >알림 설정</CustomText>
           <Ionicons name='chevron-forward-outline' size={28} color='black' />
         </Pressable>
         <Pressable
@@ -29,7 +30,7 @@ const SettingView = () => {
           }}
           style={styles.menuItem}
         >
-          <CustomText fontSize={18} style={{ fontWeight: 'bold' }}>차단목록</CustomText>
+          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD} >차단목록</CustomText>
           <Ionicons name='chevron-forward-outline' size={28} color='black' />
         </Pressable>
         <Pressable
@@ -38,7 +39,7 @@ const SettingView = () => {
           }}
           style={styles.menuItem}
         >
-          <CustomText fontSize={18} style={{ fontWeight: 'bold' }}>문의하기</CustomText>
+          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD} >문의하기</CustomText>
           <Ionicons name='chevron-forward-outline' size={28} color='black' />
         </Pressable>
         <Pressable
@@ -47,7 +48,7 @@ const SettingView = () => {
           }}
           style={styles.menuItem}
         >
-          <CustomText fontSize={18} style={{ fontWeight: 'bold' }}>이용약관</CustomText>
+          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD} >이용약관</CustomText>
           <Ionicons name='chevron-forward-outline' size={28} color='black' />
         </Pressable>
         <Pressable
@@ -56,7 +57,7 @@ const SettingView = () => {
           }}
           style={styles.menuItem}
         >
-          <CustomText fontSize={18} style={{ fontWeight: 'bold' }}>앱 정보</CustomText>
+          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD} >앱 정보</CustomText>
           <Ionicons name='chevron-forward-outline' size={28} color='black' />
         </Pressable>
         <Pressable
@@ -65,7 +66,7 @@ const SettingView = () => {
           }}
           style={styles.menuItem}
         >
-          <CustomText fontSize={18} style={{ fontWeight: 'bold' }}>회원탈퇴</CustomText>
+          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD} >회원탈퇴</CustomText>
           <Ionicons name='chevron-forward-outline' size={28} color='black' />
         </Pressable>
       </View>

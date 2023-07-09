@@ -7,7 +7,7 @@ import {
 import React from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 
 const { width: WIN_WIDTH, height: WIN_HEIGHT } = Dimensions.get('window');
 
@@ -19,7 +19,7 @@ const Loader = () => {
         <View style={styles.container}>
           <ActivityIndicator
             size='large'
-            color={colors.dark}
+            color={COLORS.dark}
             animating={commonStore.isLoading}
           />
         </View>

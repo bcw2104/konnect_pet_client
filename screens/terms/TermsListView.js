@@ -7,6 +7,7 @@ import { Navigator } from '../../navigations/Navigator';
 import serviceApis from './../../utils/ServiceApis';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const TermsListView = () => {
   const { commonStore } = useStores();
@@ -34,7 +35,7 @@ const TermsListView = () => {
       {!commonStore.isLoading && (
         <Container>
           <View style={styles.section1}>
-            <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+            <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
               이용약관
             </CustomText>
           </View>
@@ -49,7 +50,7 @@ const TermsListView = () => {
                 }}
                 style={styles.menuItem}
               >
-                <CustomText fontSize={18} style={{ fontWeight: 'bold' }}>
+                <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD} >
                   {ele.termsGroupName}
                 </CustomText>
                 <Ionicons

@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { BackHandler, Dimensions, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import Container from '../../components/layouts/Container';
@@ -8,7 +8,9 @@ import COLORS from '../../commons/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
-import serviceApis from '../../utils/ServiceApis';
+import CustomText from '../../components/elements/CustomText';
+import Timer from '../../components/elements/Timer';
+import { FONT_WEIGHT } from '../../commons/constants';
 import { Navigator } from '../../navigations/Navigator';
 
 const screen = Dimensions.get('window');
@@ -17,7 +19,7 @@ const ASPECT_RATIO = screen.width / screen.height;
 const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const WalkingHomeView = () => {
+const WalkingView = () => {
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
     latitude: 0,
@@ -25,27 +27,45 @@ const WalkingHomeView = () => {
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
   });
-  
+
   const [isMapReady, setIsMapReady] = useState(false);
+  const [seconds, setSeconds] = useState(0);
+  const [meters, setMeters] = useState(0);
   const { systemStore, modalStore } = useStores();
 
   useEffect(() => {
-    if(!isMapReady) false;
+    if (!isMapReady) false;
+    let watchPosition = null;
+
     const fetchData = async () => {
       const status = await hasLocationPermissions();
 
       if (status) {
-        let { coords } = await Location.getCurrentPositionAsync({});
-        changeMyLocation(coords);
-      } else {
-        //TODO: 기본 위치 설정
+        watchPosition = await Location.watchPositionAsync(
+          { accuracy: Location.Accuracy.High, distanceInterval: 10 },
+          async ({ coords }) => {
+            setMeters((meters) => meters + 10);
+            console.log(coords);
+            changeMyLocation(coords);
+          }
+        );
       }
     };
     fetchData();
-  }, [isMapReady]);
+    return () => {
+      if (!!watchPosition) {
+        console.log('watching position removed');
+        watchPosition.remove();
+      }
+    };
+  }, []);
+
+  useInterval(() => {
+    setSeconds((seconds) => seconds + 1);
+  }, 1000);
 
   const goToNextStep = (params) => {
-    Navigator.reset('walking', params);
+    Navigator.reset('walking_home', params);
   };
 
   const changeMyLocation = (coords) => {
@@ -69,10 +89,8 @@ const WalkingHomeView = () => {
       finalStatus = status;
 
       if (finalStatus !== 'granted') {
-        modalStore.openTwoButtonModal(
+        modalStore.openOneButtonModal(
           '정상적인 산책 기록을 위해 위치 권한을 승인해주세요.',
-          '취소',
-          () => {},
           '승인하러 가기',
           () => {
             Linking.openSettings();
@@ -88,26 +106,15 @@ const WalkingHomeView = () => {
     const status = await requestLocationPermissions();
 
     if (!status) return;
-    
+
     let { coords } = await Location.getCurrentPositionAsync({});
     changeMyLocation(coords);
   };
-
-  const startWalking = async () => {
-    const status = await requestLocationPermissions();
-
-    if (!status) return;
-
-    try {
-      const response = await serviceApis.startWalking();
-      goToNextStep({ walkingKey: response.result.key });
-    } catch (e) {
-      console.log(e);
-    }
+  const stopWalking = async () => {
+    goToNextStep();
   };
-  const onRegionChange = ({ latitude, longitude }) => {
 
-  };
+  const onRegionChange = ({ latitude, longitude }) => {};
 
   const onMapReady = () => {
     setIsMapReady(true);
@@ -118,7 +125,7 @@ const WalkingHomeView = () => {
       <View style={styles.section1}>
         <GoogleMap
           mapRef={mapRef}
-          region = {region}
+          region={region}
           onRegionChange={onRegionChange}
           onMapReady={onMapReady}
         />
@@ -137,21 +144,46 @@ const WalkingHomeView = () => {
             borderRadius: 30,
           }}
         />
-        <CustomButton
-          bgColor={COLORS.dark}
-          bgColorPress={COLORS.darkDeep}
-          text="산책 시작"
-          fontColor={COLORS.white}
-          onPress={startWalking}
-          height={50}
-          wrapperStyle={styles.start}
-        />
+        <View style={styles.dashboard}>
+          <View style={{ alignItems: 'center' }}>
+            <Timer remain={seconds} fontWeight={FONT_WEIGHT.BOLD} />
+            <CustomText
+              fontSize={15}
+              fontColor={COLORS.grayDeep}
+              style={{ marginTop: 5 }}
+            >
+              시간
+            </CustomText>
+          </View>
+          <CustomButton
+            bgColor={COLORS.warning}
+            bgColorPress={COLORS.warningDeep}
+            text={<MaterialIcons name="pause" size={30} color="black" />}
+            fontColor={COLORS.white}
+            onPress={stopWalking}
+            width={60}
+            height={60}
+            style={{
+              borderRadius: 30,
+            }}
+          />
+          <View style={{ alignItems: 'center' }}>
+            <CustomText fontWeight={FONT_WEIGHT.BOLD}>{meters} M</CustomText>
+            <CustomText
+              fontSize={15}
+              fontColor={COLORS.grayDeep}
+              style={{ marginTop: 5 }}
+            >
+              거리
+            </CustomText>
+          </View>
+        </View>
       </View>
     </Container>
   );
 };
 
-export default WalkingHomeView;
+export default WalkingView;
 
 const styles = StyleSheet.create({
   section1: {
@@ -163,12 +195,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: 0,
     padding: 20,
+    bottom: 0,
   },
   location: {
     alignSelf: 'flex-end',
     marginBottom: 30,
   },
-  start: {},
+  dashboard: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+  },
 });

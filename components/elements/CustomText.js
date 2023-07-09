@@ -1,17 +1,20 @@
 import { Text } from 'react-native';
 import React from 'react';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
+import { FONT_FAMILY, FONT_WEIGHT } from '../../commons/constants';
 
 const CustomText = ({
   style = {},
-  fontColor = colors.dark,
+  fontFamily = FONT_FAMILY.ROBATO,
+  fontWeight = FONT_WEIGHT.REGULAR,
+  fontColor = COLORS.dark,
   fontSize = 18,
   children,
 }) => {
   return (
     <Text
       style={{
-        fontFamily: 'Robato',
+        fontFamily: fontFamily + "-" + fontWeight,
         fontSize: fontSize,
         color: fontColor,
         ...style,

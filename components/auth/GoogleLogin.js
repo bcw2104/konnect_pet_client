@@ -6,12 +6,12 @@ import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import serviceApis from '../../utils/ServiceApis';
-import { platform } from '../../commons/constants';
+import { SOCIAL_TYPE } from '../../commons/constants';
 import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
 import { Navigator } from '../../navigations/Navigator';
 import { Image } from 'react-native';
-import colors from './../../commons/colors';
+import COLORS from './../../commons/colors';
 
 const GoogleLogin = () => {
   const { userStore, commonStore } = useStores();
@@ -41,7 +41,7 @@ const GoogleLogin = () => {
     try {
       const response = await serviceApis.socialLogin(
         tokens.accessToken,
-        platform.GOOGLE
+        SOCIAL_TYPE.GOOGLE
       );
 
       if (response.rsp_code === '1000') {
@@ -58,7 +58,7 @@ const GoogleLogin = () => {
         userStore.initUserInfo();
       } else if (response.rsp_code === '9216') {
         Navigator.navigate('signup_step1', {
-          platform: platform.GOOGLE,
+          platform: SOCIAL_TYPE.GOOGLE,
           emailVerifyKey: response.result.key,
         });
       }
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: colors.white,
+    backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 10,

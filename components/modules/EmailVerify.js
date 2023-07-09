@@ -7,7 +7,8 @@ import CustomInput from '../elements/CustomInput';
 import Timer from '../elements/Timer';
 import { Platform } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native';
-import regex from '../../commons/regex';
+import REGEX from '../../commons/regex';
+import COLORS from '../../commons/colors';
 
 const VERIFY_TIMEOUT = 600;
 
@@ -59,7 +60,7 @@ const EmailVerify = ({
   };
 
   const requestVerification = async () => {
-    const test = regex.email.test(email);
+    const test = REGEX.email.test(email);
 
     if (!test) {
       setEmailError(true);
@@ -128,9 +129,9 @@ const EmailVerify = ({
           errorMsg='Invalid email address.'
         />
         <CustomButton
-          fontColor={colors.white}
-          bgColor={colors.dark}
-          bgColorPress={colors.darkDeep}
+          fontColor={COLORS.white}
+          bgColor={COLORS.dark}
+          bgColorPress={COLORS.darkDeep}
           wrapperStyle={styles.emailVerifyButton}
           width={110}
           fontSize={15}
@@ -159,11 +160,11 @@ const EmailVerify = ({
             errorHandler={verifiyError}
             errorMsg='Incorrect verify code.'
           />
-          <Timer style={styles.verifyTimer} remain={remain} />
+          <Timer style={styles.verifyTimer} remain={remain} fontColor={COLORS.danger}/>
           <CustomButton
-            fontColor={colors.white}
-            bgColor={colors.dark}
-            bgColorPress={colors.darkDeep}
+            fontColor={COLORS.white}
+            bgColor={COLORS.dark}
+            bgColorPress={COLORS.darkDeep}
             wrapperStyle={styles.verifySubmitButton}
             width={110}
             fontSize={15}
@@ -198,7 +199,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 13,
     right: 125,
-    color: colors.danger,
   },
   verifySubmitButton: {
     position: 'absolute',

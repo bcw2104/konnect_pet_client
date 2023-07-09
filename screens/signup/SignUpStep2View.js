@@ -3,12 +3,13 @@ import React from 'react';
 import Container from '../../components/layouts/Container';
 import { Navigator } from '../../navigations/Navigator';
 import CustomButton from '../../components/elements/CustomButton';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import serviceApis from '../../utils/ServiceApis';
 import { useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
 import PasswordSetting from '../../components/modules/PasswordSetting';
 import EmailVerify from '../../components/modules/EmailVerify';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const SignupStep2View = (props) => {
   const { route } = props;
@@ -32,7 +33,7 @@ const SignupStep2View = (props) => {
     <>
       <Container>
         <View style={styles.section1}>
-          <CustomText style={{ fontWeight: 'bold' }} fontSize={24}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
             가입 정보를 입력해주세요.
           </CustomText>
         </View>
@@ -64,13 +65,13 @@ const SignupStep2View = (props) => {
         </View>
       </Container>
       <CustomButton
-        fontColor={colors.white}
-        bgColor={colors.dark}
-        bgColorPress={colors.darkDeep}
+        fontColor={COLORS.white}
+        bgColor={COLORS.dark}
+        bgColorPress={COLORS.darkDeep}
         text='다음'
         disabled={!verifyKey || !password}
         onPress={submit}
-        styles={styles.submitTheme}
+        style={styles.submitTheme}
         height={50}
       />
     </>

@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { Modal } from 'native-base';
 import CustomButton from './CustomButton';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import { useState } from 'react';
 import { forwardRef } from 'react';
 import { useStores } from '../../contexts/StoreContext';
@@ -59,18 +59,18 @@ const CustomModal = ({
           <CustomText style={styles.modalText}>{content}</CustomText>
           <View stlye={styles.buttonWrap}>
             <CustomButton
-              bgColor={colors.light}
-              bgColorPress={colors.lightDeep}
-              fontColor={colors.black}
+              bgColor={COLORS.light}
+              bgColorPress={COLORS.lightDeep}
+              fontColor={COLORS.black}
               fontSize={14}
               onPress={closeModal}
               text={closeText}
             />
             {!!okText && (
               <CustomButton
-                bgColor={colors.dark}
-                bgColorPress={colors.darkDeep}
-                fontColor={colors.white}
+                bgColor={COLORS.dark}
+                bgColorPress={COLORS.darkDeep}
+                fontColor={COLORS.white}
                 fontSize={14}
                 onPress={confirm}
                 text={okText}
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: colors.white,
+    backgroundColor: COLORS.white,
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',

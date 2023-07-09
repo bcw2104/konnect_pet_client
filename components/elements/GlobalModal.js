@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import CustomButton from './CustomButton';
-import colors from '../../commons/colors';
+import COLORS from '../../commons/colors';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import { Modal } from 'react-native';
@@ -29,13 +29,14 @@ const GlobalModal = () => {
           <CustomText style={styles.modalText}>{modalStore.content}</CustomText>
           <View style={styles.buttonWrap}>
             <CustomButton
-              bgColor={!!modalStore.secondBtnText ? colors.light : colors.dark}
+              bgColor={!!modalStore.secondBtnText ? COLORS.light : COLORS.dark}
               bgColorPress={
-                !!modalStore.secondBtnText ? colors.lightDeep : colors.darkDeep
+                !!modalStore.secondBtnText ? COLORS.lightDeep : COLORS.darkDeep
               }
               fontColor={
-                !!modalStore.secondBtnText ? colors.black : colors.white
+                !!modalStore.secondBtnText ? COLORS.black : COLORS.white
               }
+              wrapperStyle={{flex:1}}
               fontSize={16}
               onPress={close}
               text={modalStore.firstBtnText}
@@ -44,10 +45,11 @@ const GlobalModal = () => {
               <>
                 <View style={{ marginHorizontal: 5 }}></View>
                 <CustomButton
-                  bgColor={colors.dark}
-                  bgColorPress={colors.darkDeep}
-                  fontColor={colors.white}
+                  bgColor={COLORS.dark}
+                  bgColorPress={COLORS.darkDeep}
+                  fontColor={COLORS.white}
                   fontSize={16}
+                  wrapperStyle={{flex:1}}
                   onPress={() => {
                     if (!!modalStore.secondBtnCallback) {
                       modalStore.secondBtnCallback();
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     width: '80%',
-    backgroundColor: colors.white,
+    backgroundColor: COLORS.white,
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
