@@ -19,7 +19,7 @@ import { Platform } from 'react-native';
 
 const rootStore = new RootStore();
 
-// SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -33,37 +33,17 @@ export default function App() {
   useEffect(() => {
     if (!fontsLoaded) return;
     async function prepare() {
-      await SplashScreen.hideAsync();
       try {
-        Toast.show({
-          type: 'error',
-          text1: 'error3',
-        });
         await initFacebook();
-        Toast.show({
-          type: 'error',
-          text1: 'error4',
-        });
         await initDeviceInfo();
-        Toast.show({
-          type: 'error',
-          text1: 'error5',
-        });
         await rootStore.userStore.initUserInfo();
       } catch (e) {
-        Toast.show({
-          type: 'error',
-          text1: 'error1' + e.message,
-        });
       } finally {
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         setAppIsReady(true);
       }
     }
-    Toast.show({
-      type: 'success',
-      text1: 'start',
-    });
+
     prepare();
   }, [fontsLoaded]);
 
@@ -76,26 +56,17 @@ export default function App() {
   };
 
   const initDeviceInfo = async () => {
-    try {
-      const deviceToken = await registerForPushNotificationsAsync();
-      rootStore.userStore.setDeviceInfo(
-        Device.modelName,
-        Device.osName,
-        Device.osVersion,
-        deviceToken
-      );
-    } catch (e) {
-      Toast.show({
-        type: 'error',
-        text1: 'error2' + e.message,
-      });
-
-      throw e;
-    }
+    const deviceToken = await registerForPushNotificationsAsync();
+    rootStore.userStore.setDeviceInfo(
+      Device.modelName,
+      Device.osName,
+      Device.osVersion,
+      deviceToken
+    );
   };
 
   const registerForPushNotificationsAsync = async () => {
-    let token;
+    let token = null;
     if (Device.isDevice) {
       const { status: existingStatus } =
         await Notifications.getPermissionsAsync();
@@ -105,18 +76,24 @@ export default function App() {
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {
+        //Failed to get push token for push notification!
         return;
       }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-      Toast.show({
-        type: 'success',
-        text1: token,
-      });
+      try {
+        token = (
+          await Notifications.getExpoPushTokenAsync({
+            experienceId: 'KonnectPet',
+          })
+        ).data;
+      } catch (e) {
+        token = "failed";
+      }
     } else {
+      //Must use physical device for Push Notifications
     }
 
     if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
+      await Notifications.setNotificationChannelAsync('default', {
         name: 'default',
         importance: Notifications.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],
@@ -129,13 +106,13 @@ export default function App() {
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
-      // await SplashScreen.hideAsync();
+      await SplashScreen.hideAsync();
     }
   }, [appIsReady]);
 
-  // if (!appIsReady) {
-  //   return null;
-  // }
+  if (!appIsReady) {
+    return null;
+  }
 
   return (
     <StoreProvider value={rootStore}>

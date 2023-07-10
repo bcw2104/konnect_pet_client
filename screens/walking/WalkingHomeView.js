@@ -10,7 +10,6 @@ import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
-import Toast from 'react-native-toast-message';
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
@@ -37,10 +36,6 @@ const WalkingHomeView = () => {
 
       if (status) {
         let { coords } = await Location.getCurrentPositionAsync({});
-        Toast.show({
-          type: 'success',
-          text1: coords.latitude + " " + coords.longitude,
-        });
         changeMyLocation(coords);
       } else {
         //TODO: 기본 위치 설정

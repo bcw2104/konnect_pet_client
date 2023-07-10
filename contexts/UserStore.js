@@ -1,6 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import serviceApis from './../utils/ServiceApis';
-import Toast from 'react-native-toast-message';
 import { asyncStorage } from '../storage/Storage';
 
 export default class UserStore {
@@ -23,10 +22,6 @@ export default class UserStore {
 
   async initUserInfo() {
     const accessToken = await asyncStorage.getItem('access_token');
-    Toast.show({
-      type: 'success',
-      text1: accessToken,
-    });
     if (!accessToken) return;
 
     try {
@@ -45,12 +40,7 @@ export default class UserStore {
         this._deviceOsVersion,
         this._deviceToken
       );
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'error7'  + error.message,
-      });
-    }
+    } catch (error) {}
   }
 
   setDeviceInfo(deviceModel, deviceOs, deviceOsVersion, deviceToken) {

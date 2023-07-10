@@ -12,7 +12,6 @@ import CustomText from '../../components/elements/CustomText';
 import Timer from '../../components/elements/Timer';
 import { FONT_WEIGHT } from '../../commons/constants';
 import { Navigator } from '../../navigations/Navigator';
-import Toast from 'react-native-toast-message';
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
@@ -45,10 +44,6 @@ const WalkingView = () => {
         watchPosition = await Location.watchPositionAsync(
           { accuracy: Location.Accuracy.High, distanceInterval: 10 },
           async ({ coords }) => {
-            Toast.show({
-              type: 'success',
-              text1: coords.latitude + " " + coords.longitude,
-            });
             setMeters((meters) => meters + 10);
             changeMyLocation(coords);
           }
