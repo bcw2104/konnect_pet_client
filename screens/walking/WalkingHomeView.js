@@ -39,7 +39,7 @@ const WalkingHomeView = () => {
         let { coords } = await Location.getCurrentPositionAsync({});
         Toast.show({
           type: 'success',
-          text1: coords,
+          text1: coords.latitude + " " + coords.longitude,
         });
         changeMyLocation(coords);
       } else {

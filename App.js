@@ -31,39 +31,38 @@ export default function App() {
   useBackPressHandler();
 
   useEffect(() => {
-    Toast.show({
-      type: 'success',
-      text1: fontsLoaded,
-    });
     if (!fontsLoaded) return;
     async function prepare() {
       try {
         Toast.show({
           type: 'error',
-          text1: 'error3' + e,
+          text1: 'error3',
         });
-        initFacebook();
+        await initFacebook();
         Toast.show({
           type: 'error',
-          text1: 'error4' + e,
+          text1: 'error4',
         });
         await initDeviceInfo();
         Toast.show({
           type: 'error',
-          text1: 'error5' + e,
+          text1: 'error5',
         });
         await rootStore.userStore.initUserInfo();
       } catch (e) {
         Toast.show({
           type: 'error',
-          text1: 'error1' + e,
+          text1: 'error1' + e.message,
         });
       } finally {
         // await new Promise((resolve) => setTimeout(resolve, 2000));
         setAppIsReady(true);
       }
     }
-
+    Toast.show({
+      type: 'success',
+      text1: 'start',
+    });
     prepare();
   }, [fontsLoaded]);
 
@@ -87,7 +86,7 @@ export default function App() {
     } catch (e) {
       Toast.show({
         type: 'error',
-        text1: 'error2' + e,
+        text1: 'error2' + e.message,
       });
 
       throw e;

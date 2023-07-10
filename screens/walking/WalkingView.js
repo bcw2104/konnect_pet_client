@@ -1,4 +1,4 @@
-import { BackHandler, Dimensions, StyleSheet, Text, View } from 'react-native';
+import {  Dimensions, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import Container from '../../components/layouts/Container';
@@ -47,7 +47,7 @@ const WalkingView = () => {
           async ({ coords }) => {
             Toast.show({
               type: 'success',
-              text1: coords,
+              text1: coords.latitude + " " + coords.longitude,
             });
             setMeters((meters) => meters + 10);
             changeMyLocation(coords);
@@ -77,7 +77,7 @@ const WalkingView = () => {
         watchPosition.remove();
       }
     };
-  }, []);
+  }, [isMapReady]);
 
   useInterval(() => {
     setSeconds((seconds) => seconds + 1);
