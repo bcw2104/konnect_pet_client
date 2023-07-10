@@ -10,6 +10,7 @@ import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
+import Toast from 'react-native-toast-message';
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
@@ -25,17 +26,21 @@ const WalkingHomeView = () => {
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
   });
-  
+
   const [isMapReady, setIsMapReady] = useState(false);
   const { systemStore, modalStore } = useStores();
 
   useEffect(() => {
-    if(!isMapReady) false;
+    if (!isMapReady) false;
     const fetchData = async () => {
       const status = await hasLocationPermissions();
 
       if (status) {
         let { coords } = await Location.getCurrentPositionAsync({});
+        Toast.show({
+          type: 'success',
+          text1: coords,
+        });
         changeMyLocation(coords);
       } else {
         //TODO: 기본 위치 설정
@@ -66,7 +71,8 @@ const WalkingHomeView = () => {
   const requestLocationPermissions = async () => {
     const existingStatus = await hasLocationPermissions();
     if (!existingStatus) {
-      const { status:finalStatus } = await Location.requestForegroundPermissionsAsync();
+      const { status: finalStatus } =
+        await Location.requestForegroundPermissionsAsync();
 
       if (finalStatus !== 'granted') {
         modalStore.openTwoButtonModal(
@@ -84,12 +90,12 @@ const WalkingHomeView = () => {
 
     return true;
   };
-  
+
   const getMyLocation = async () => {
     const status = await requestLocationPermissions();
 
     if (!status) return;
-    
+
     let { coords } = await Location.getCurrentPositionAsync({});
     changeMyLocation(coords);
   };
@@ -106,9 +112,7 @@ const WalkingHomeView = () => {
       console.log(e);
     }
   };
-  const onRegionChange = ({ latitude, longitude }) => {
-
-  };
+  const onRegionChange = ({ latitude, longitude }) => {};
 
   const onMapReady = () => {
     setIsMapReady(true);
@@ -119,7 +123,7 @@ const WalkingHomeView = () => {
       <View style={styles.section1}>
         <GoogleMap
           mapRef={mapRef}
-          region = {region}
+          region={region}
           onRegionChange={onRegionChange}
           onMapReady={onMapReady}
         />
@@ -128,7 +132,7 @@ const WalkingHomeView = () => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          text={<MaterialIcons name="my-location" size={30} color="black" />}
+          text={<MaterialIcons name='my-location' size={30} color='black' />}
           fontColor={COLORS.white}
           onPress={getMyLocation}
           width={60}
@@ -141,7 +145,7 @@ const WalkingHomeView = () => {
         <CustomButton
           bgColor={COLORS.dark}
           bgColorPress={COLORS.darkDeep}
-          text="산책 시작"
+          text='산책 시작'
           fontColor={COLORS.white}
           onPress={startWalking}
           height={50}

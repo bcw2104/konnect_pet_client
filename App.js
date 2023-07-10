@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StoreProvider } from './contexts/StoreContext';
 import { RootStore } from './contexts/RootStore';
@@ -31,19 +31,35 @@ export default function App() {
   useBackPressHandler();
 
   useEffect(() => {
+    Toast.show({
+      type: 'success',
+      text1: fontsLoaded,
+    });
     if (!fontsLoaded) return;
     async function prepare() {
       try {
+        Toast.show({
+          type: 'error',
+          text1: 'error3' + e,
+        });
         initFacebook();
+        Toast.show({
+          type: 'error',
+          text1: 'error4' + e,
+        });
         await initDeviceInfo();
+        Toast.show({
+          type: 'error',
+          text1: 'error5' + e,
+        });
         await rootStore.userStore.initUserInfo();
       } catch (e) {
         Toast.show({
           type: 'error',
-          text1: "error1" + e,
+          text1: 'error1' + e,
         });
       } finally {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
         setAppIsReady(true);
       }
     }
@@ -71,7 +87,7 @@ export default function App() {
     } catch (e) {
       Toast.show({
         type: 'error',
-        text1: "error2" + e,
+        text1: 'error2' + e,
       });
 
       throw e;
