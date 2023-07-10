@@ -38,7 +38,10 @@ export default function App() {
         await initDeviceInfo();
         await rootStore.userStore.initUserInfo();
       } catch (e) {
-        Alert.alert(e.message, e);
+        Toast.show({
+          type: 'error',
+          text1: "error1" + e,
+        });
       } finally {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         setAppIsReady(true);
@@ -66,7 +69,12 @@ export default function App() {
         deviceToken
       );
     } catch (e) {
-      Alert.alert(e.message, e);
+      Toast.show({
+        type: 'error',
+        text1: "error2" + e,
+      });
+
+      throw e;
     }
   };
 
@@ -81,13 +89,14 @@ export default function App() {
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {
-        Alert.alert('Failed to get push token for push notification!');
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      Alert.alert('token', token);
+      Toast.show({
+        type: 'success',
+        text1: token,
+      });
     } else {
-      Alert.alert('Must use physical device for Push Notifications');
     }
 
     if (Platform.OS === 'android') {

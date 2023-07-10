@@ -42,6 +42,12 @@ const WalkingView = () => {
 
       if (status) {
         let { coords } = await Location.getCurrentPositionAsync({});
+        setRegion({
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        });
         changeMyLocation(coords);
 
         watchPosition = await Location.watchPositionAsync(
@@ -66,7 +72,7 @@ const WalkingView = () => {
         );
       }
     };
-    
+
     fetchData();
 
     return () => {
