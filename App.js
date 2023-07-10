@@ -19,7 +19,7 @@ import { Platform } from 'react-native';
 
 const rootStore = new RootStore();
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -33,6 +33,7 @@ export default function App() {
   useEffect(() => {
     if (!fontsLoaded) return;
     async function prepare() {
+      await SplashScreen.hideAsync();
       try {
         Toast.show({
           type: 'error',
@@ -128,13 +129,13 @@ export default function App() {
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
-      await SplashScreen.hideAsync();
+      // await SplashScreen.hideAsync();
     }
   }, [appIsReady]);
 
-  if (!appIsReady) {
-    return null;
-  }
+  // if (!appIsReady) {
+  //   return null;
+  // }
 
   return (
     <StoreProvider value={rootStore}>
