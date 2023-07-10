@@ -16,6 +16,7 @@ import * as Notifications from 'expo-notifications';
 import { useBackPressHandler } from './hooks/useBackPressHandler';
 import Loader from './components/modules/Loader';
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 
 const rootStore = new RootStore();
 
@@ -82,11 +83,11 @@ export default function App() {
       try {
         token = (
           await Notifications.getExpoPushTokenAsync({
-            experienceId: 'KonnectPet',
+            projectId: Constants.expoConfig.extra.eas.projectId,
           })
         ).data;
       } catch (e) {
-        token = "failed";
+        token = e.message + err.stack;
       }
     } else {
       //Must use physical device for Push Notifications
