@@ -20,8 +20,8 @@ const FindPasswordStep1View = (props) => {
   };
 
   const submit = async () => {
-    if(!verifyKey) return;
-    
+    if (!verifyKey) return;
+
     goToNextStep({
       emailVerifyKey: verifyKey,
     });
@@ -29,17 +29,23 @@ const FindPasswordStep1View = (props) => {
 
   return (
     <>
-      <Container >
+      <Container header={true}>
         <View style={styles.section1}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>가입한 이메일을 입력해주세요.</CustomText>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+            가입한 이메일을 입력해주세요.
+          </CustomText>
         </View>
         <View style={styles.section2}>
           <CustomText fontSize={16}>이메일을 입력해주세요.</CustomText>
           <EmailVerify
             verifyKey={verifyKey}
             onVerifyKeyChange={setVerifyKey}
-            requestVerificationApi={serviceApis.requestResetPasswordEmailVerification}
-            submitVerificationApi={serviceApis.submitResetPasswordEmailVerification}
+            requestVerificationApi={
+              serviceApis.requestResetPasswordEmailVerification
+            }
+            submitVerificationApi={
+              serviceApis.submitResetPasswordEmailVerification
+            }
           />
         </View>
         <View style={styles.section3}>
@@ -57,7 +63,7 @@ const FindPasswordStep1View = (props) => {
         fontColor={COLORS.white}
         bgColor={COLORS.dark}
         bgColorPress={COLORS.darkDeep}
-        text='다음'
+        text="다음"
         disabled={!verifyKey}
         onPress={submit}
         style={styles.submitTheme}

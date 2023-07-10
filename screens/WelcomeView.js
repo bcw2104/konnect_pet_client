@@ -44,7 +44,7 @@ const WelcomeView = () => {
           </CustomText>
           <Pressable
             onPress={() => {
-              Navigator.navigate('signup_step1', { platform: SOCIAL_TYPE.EMAIL });
+              Navigator.navigate('signup_step4', { platform: SOCIAL_TYPE.EMAIL });
             }}
             hitSlop={10}
           >

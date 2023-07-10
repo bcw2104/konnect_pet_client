@@ -2,7 +2,7 @@ import { Platform, SafeAreaView, View } from 'react-native';
 import React from 'react';
 import { useStores } from '../../contexts/StoreContext';
 
-const Container = ({ children }) => {
+const Container = ({ header = false, children }) => {
   const { systemStore } = useStores();
 
   return (
@@ -15,8 +15,12 @@ const Container = ({ children }) => {
         style={{
           paddingHorizontal: 15,
           flex: 1,
-          marginTop: Platform.OS == 'ios' ? 0 : systemStore.statusBarHeight + 15,
-        }} 
+          marginTop: header
+            ? 20
+            : Platform.OS == 'ios'
+            ? 0
+            : systemStore.statusBarHeight + 15,
+        }}
       >
         {children}
       </View>

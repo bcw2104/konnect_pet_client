@@ -94,3 +94,7 @@ dist/
 
 #keys
 *key.*
+
+.env
+google-service.json
+GoogleService-Info.plist

@@ -34,7 +34,7 @@ const SignupStep1View = (props) => {
 
   return (
     <>
-      <Container>
+      <Container header={true}>
         <View style={styles.section1}>
           <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
             핸드폰 번호를 인증해주세요.

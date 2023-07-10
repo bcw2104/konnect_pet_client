@@ -31,7 +31,7 @@ const SignupStep2View = (props) => {
 
   return (
     <>
-      <Container>
+      <Container header={true}>
         <View style={styles.section1}>
           <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
             가입 정보를 입력해주세요.

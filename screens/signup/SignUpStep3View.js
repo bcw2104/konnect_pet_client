@@ -97,7 +97,7 @@ const SignupStep3View = (props) => {
     <>
       {!commonStore.isLoading && (
         <>
-          <Container>
+          <Container header={true}>
             <View style={styles.section1}>
               <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
                 약관 동의를 해주세요.

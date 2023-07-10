@@ -21,14 +21,14 @@ const FindPasswordStep2View = (props) => {
   };
 
   const submit = async () => {
-    if(!setPassword) return;
+    if (!setPassword) return;
     try {
       const response = await serviceApis.resetPassword({
         emailVerifyKey: route.params.emailVerifyKey,
-        password: password
+        password: password,
       });
 
-      if(response.rsp_code=="1001"){
+      if (response.rsp_code == '1001') {
         Toast.show({
           type: 'success',
           text1: response.rsp_msg_detail,
@@ -40,9 +40,9 @@ const FindPasswordStep2View = (props) => {
 
   return (
     <>
-      <Container>
+      <Container header={true}>
         <View style={styles.section1}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
             Please set a new password.
           </CustomText>
           <CustomText style={{ marginTop: 10 }}>
@@ -51,14 +51,14 @@ const FindPasswordStep2View = (props) => {
           </CustomText>
         </View>
         <View style={styles.section2}>
-          <PasswordSetting onPasswordChange={setPassword}/>
+          <PasswordSetting onPasswordChange={setPassword} />
         </View>
       </Container>
       <CustomButton
         fontColor={COLORS.white}
         bgColor={COLORS.dark}
         bgColorPress={COLORS.darkDeep}
-        text='변경하기'
+        text="변경하기"
         disabled={!password}
         onPress={submit}
         style={styles.submitTheme}

@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import Container from '../../components/layouts/Container';
@@ -19,12 +19,6 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const WalkingHomeView = () => {
   const mapRef = useRef(null);
-  const [region, setRegion] = useState({
-    latitude: 0,
-    longitude: 0,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA,
-  });
 
   const [isMapReady, setIsMapReady] = useState(false);
   const { systemStore, modalStore } = useStores();
@@ -118,16 +112,19 @@ const WalkingHomeView = () => {
       <View style={styles.section1}>
         <GoogleMap
           mapRef={mapRef}
-          region={region}
           onRegionChange={onRegionChange}
           onMapReady={onMapReady}
+          width={screen.width}
+          height={screen.height}
+          longitudeDelta={LONGITUDE_DELTA}
+          latitudeDelta={LATITUDE_DELTA}
         />
       </View>
       <View style={styles.section2} width={systemStore.winWidth}>
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          text={<MaterialIcons name='my-location' size={30} color='black' />}
+          text={<MaterialIcons name="my-location" size={30} color="black" />}
           fontColor={COLORS.white}
           onPress={getMyLocation}
           width={60}
@@ -140,7 +137,7 @@ const WalkingHomeView = () => {
         <CustomButton
           bgColor={COLORS.dark}
           bgColorPress={COLORS.darkDeep}
-          text='산책 시작'
+          text="산책 시작"
           fontColor={COLORS.white}
           onPress={startWalking}
           height={50}
