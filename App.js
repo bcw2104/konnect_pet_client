@@ -87,7 +87,7 @@ export default function App() {
           })
         ).data;
       } catch (e) {
-        token = e.message + err.stack;
+        token = e.message + e.stack;
       }
     } else {
       //Must use physical device for Push Notifications
