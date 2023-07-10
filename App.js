@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StoreProvider } from './contexts/StoreContext';
 import { RootStore } from './contexts/RootStore';
@@ -24,9 +24,9 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({
-    "Roboto-Regular": require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
-    "Roboto-Bold": require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
-    "Roboto-Thin": require('./assets/fonts/Roboto/Roboto-Thin.ttf')
+    'Roboto-Regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+    'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
+    'Roboto-Thin': require('./assets/fonts/Roboto/Roboto-Thin.ttf'),
   });
   useBackPressHandler();
 
@@ -38,6 +38,7 @@ export default function App() {
         await initDeviceInfo();
         await rootStore.userStore.initUserInfo();
       } catch (e) {
+        Alert.alert(e.message, e);
       } finally {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         setAppIsReady(true);
@@ -56,27 +57,21 @@ export default function App() {
   };
 
   const initDeviceInfo = async () => {
-    const deviceToken = await registerForPushNotificationsAsync();
-    rootStore.userStore.setDeviceInfo(
-      Device.modelName,
-      Device.osName,
-      Device.osVersion,
-      deviceToken
-    );
+    try {
+      const deviceToken = await registerForPushNotificationsAsync();
+      rootStore.userStore.setDeviceInfo(
+        Device.modelName,
+        Device.osName,
+        Device.osVersion,
+        deviceToken
+      );
+    } catch (e) {
+      Alert.alert(e.message, e);
+    }
   };
 
   const registerForPushNotificationsAsync = async () => {
-    let token = null;
-
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
-    }
-
+    let token;
     if (Device.isDevice) {
       const { status: existingStatus } =
         await Notifications.getPermissionsAsync();
@@ -86,12 +81,22 @@ export default function App() {
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {
-        //Failed to get push token for push notification!
+        Alert.alert('Failed to get push token for push notification!');
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
+      Alert.alert('token', token);
     } else {
-      //Must use physical device for Push Notifications
+      Alert.alert('Must use physical device for Push Notifications');
+    }
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
     }
 
     return token;
