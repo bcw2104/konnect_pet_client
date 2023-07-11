@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import Geolocation from '@react-native-community/geolocation';
 
 const GoogleMap = ({
   mapRef,
@@ -21,19 +20,12 @@ const GoogleMap = ({
 
   useEffect(() => {
     if (!defaultRegion) {
-      Geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setRegion({
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: latitudeDelta,
-            longitudeDelta: longitudeDelta,
-          });
-        },
-        (error) => {},
-        { enableHighAccuracy: true, timeout: 3000, maximumAge: 10000 }
-      );
+      setRegion({
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: latitudeDelta,
+        longitudeDelta: longitudeDelta,
+      });
     } else {
       setRegion({
         latitude: defaultRegion.latitude,

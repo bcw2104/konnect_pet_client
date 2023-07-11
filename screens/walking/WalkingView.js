@@ -19,13 +19,19 @@ const ASPECT_RATIO = screen.width / screen.height;
 const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const WalkingView = () => {
+const WalkingView = (props) => {
   const mapRef = useRef(null);
+  const { route } = props;
 
+  const [region, setRegion] = useState(null);
   const [isMapReady, setIsMapReady] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [meters, setMeters] = useState(-10);
   const { systemStore, modalStore } = useStores();
+
+  useEffect(()=>{
+    setRegion(route.params?.coords);
+  },[])
 
   useEffect(() => {
     if (!isMapReady) false;
@@ -140,6 +146,7 @@ const WalkingView = () => {
     <Container>
       <View style={styles.section1}>
         <GoogleMap
+          defaultRegion={region}
           mapRef={mapRef}
           onRegionChange={onRegionChange}
           onMapReady={onMapReady}

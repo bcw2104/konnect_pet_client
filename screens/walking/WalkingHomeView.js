@@ -20,6 +20,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const WalkingHomeView = () => {
   const mapRef = useRef(null);
 
+  const [region, setRegion] = useState(null);
   const [isMapReady, setIsMapReady] = useState(false);
   const { systemStore, modalStore } = useStores();
 
@@ -31,6 +32,7 @@ const WalkingHomeView = () => {
       if (status) {
         let { coords } = await Location.getCurrentPositionAsync({});
         changeMyLocation(coords);
+        setRegion(coords);
       } else {
         //TODO: 기본 위치 설정
       }
@@ -96,7 +98,10 @@ const WalkingHomeView = () => {
 
     try {
       const response = await serviceApis.startWalking();
-      goToNextStep({ walkingKey: response.result.key });
+      
+    let { coords } = await Location.getCurrentPositionAsync({});
+
+      goToNextStep({ walkingKey: response.result.key, coords:coords });
     } catch (e) {
       console.log(e);
     }
@@ -111,6 +116,7 @@ const WalkingHomeView = () => {
     <Container>
       <View style={styles.section1}>
         <GoogleMap
+          defaultRegion={region}
           mapRef={mapRef}
           onRegionChange={onRegionChange}
           onMapReady={onMapReady}
