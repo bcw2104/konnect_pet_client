@@ -156,7 +156,10 @@ const SmsVerify = ({
           value={nationCode}
           onValueChange={handleNationCodeChange}
           items={nationCodes}
-          wrapperStyle={styles.phoneNumCountry}
+          itemStyle={{ fontSize: 16 }}
+          wrapperStyle={{
+            marginTop: 20,
+          }}
         />
       )}
       <View style={styles.phoneInputWrap}>
@@ -166,10 +169,10 @@ const SmsVerify = ({
           editable={!fixedTel}
           onValueChange={handleTelChange}
           regex={REGEX.number}
-          keyboardType='number-pad'
-          placeholder='Phone number'
+          keyboardType="number-pad"
+          placeholder="Phone number"
           errorHandler={telError}
-          errorMsg='Invalid phone number.'
+          errorMsg="Invalid phone number."
         />
         <CustomButton
           fontColor={COLORS.white}
@@ -197,13 +200,18 @@ const SmsVerify = ({
             value={verifyCode}
             onValueChange={setVerifyCode}
             maxLength={10}
-            keyboardType='number-pad'
+            keyboardType="number-pad"
             wrapperStyle={styles.phoneVerifyInput}
-            placeholder='Verify code'
+            placeholder="Verify code"
             errorHandler={verifiyError}
-            errorMsg='Incorrect verify code.'
+            errorMsg="Incorrect verify code."
           />
-          <Timer style={styles.verifyTimer} remain={remain} fontColor={COLORS.danger} />
+          <Timer
+            style={styles.verifyTimer}
+            remain={remain}
+            fontColor={COLORS.danger}
+            fontSize={16}
+          />
           <CustomButton
             fontColor={COLORS.white}
             bgColor={COLORS.dark}
@@ -212,7 +220,7 @@ const SmsVerify = ({
             width={110}
             fontSize={15}
             onPress={submitVerifyCode}
-            text='인증하기'
+            text="인증하기"
           />
         </View>
       )}
@@ -223,9 +231,6 @@ const SmsVerify = ({
 export default SmsVerify;
 
 const styles = StyleSheet.create({
-  phoneNumCountry: {
-    marginTop: 20,
-  },
   phoneInputWrap: {
     marginTop: 10,
     position: 'relative',
@@ -244,7 +249,7 @@ const styles = StyleSheet.create({
   },
   verifyTimer: {
     position: 'absolute',
-    top: 13,
+    top: 16,
     right: 125,
   },
   verifySubmitButton: {

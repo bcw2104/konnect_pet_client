@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, View } from 'react-native';
+import { Dimensions, Platform, StyleSheet, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import COLORS from './../../commons/colors';
@@ -13,24 +13,40 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import GoogleMap from '../../components/map/GoogleMap';
 import { Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
+import Geocoder from 'react-native-geocoding';
 
-navigator.geolocation = require('@react-native-community/geolocation');
+const screen = Dimensions.get('window');
+const ASPECT_RATIO = screen.width / screen.height;
+
+const LATITUDE_DELTA = 0.007;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const SignupStep4View = (props) => {
   const { route } = props;
   const { userStore } = useStores();
   const mapRef = useRef(null);
   const [isMapReady, setIsMapReady] = useState(false);
-  const [searchCoord, setSearchCoord] = useState(null);
+  const [searchValue, setSearchValue] = useState(null);
 
   useEffect(() => {
     if (!isMapReady) return;
   }, [isMapReady]);
 
+  useEffect(() => {
+    Geocoder.init(Constants.expoConfig?.extra?.googleWewApiKey);
+  }, []);
+
   const submitSignupData = async () => {
+    if (!searchValue) return;
+
     try {
       const response = await serviceApis.join({
         ...route.params,
+        address: searchValue.address,
+        coords: JSON.stringify({
+          lat: searchValue?.coords?.latitude,
+          lng: searchValue?.coords?.longitude,
+        })
       });
       if (response?.rsp_code === '1002') {
         Toast.show({
@@ -83,13 +99,41 @@ const SignupStep4View = (props) => {
                 },
               }}
               query={{
-                key:Constants.expoConfig?.extra?.googleWewApiKey,
+                key: Constants.expoConfig?.extra?.googleWewApiKey,
                 language: 'en', // language of the results
+                types: 'geocode', // types of the results
               }}
-              currentLocation={true}
-              currentLocationLabel="Current location"
-              onPress={(data, details = null) => console.log(data, details)}
-              onFail={(error) => console.error(error)}
+              onPress={(data, details = null) => {
+                Geocoder.from(data.description)
+                  .then((json) => {
+                    var location = json.results[0].geometry.location;
+                    setSearchValue({
+                      coords: {
+                        latitude: location.lat,
+                        longitude: location.lng,
+                      },
+                      address: data.description,
+                    });
+                    mapRef?.current?.animateToRegion({
+                      latitude: location.lat,
+                      longitude: location.lng,
+                      latitudeDelta: LATITUDE_DELTA * 0.5,
+                      longitudeDelta: LONGITUDE_DELTA * 0.5,
+                    });
+                  })
+                  .catch((error) => {
+                    Toast.show({
+                      type: 'error',
+                      text1: '네트워크 상태를 확인해주세요.',
+                    });
+                  });
+              }}
+              onFail={(error) => {
+                Toast.show({
+                  type: 'error',
+                  text1: '네트워크 상태를 확인해주세요.',
+                });
+              }}
               timeout={5000}
               onTimeout={() => {
                 Toast.show({
@@ -108,8 +152,10 @@ const SignupStep4View = (props) => {
               }}
               onMapReady={onMapReady}
               userLocation={false}
+              longitudeDelta={LONGITUDE_DELTA}
+              latitudeDelta={LATITUDE_DELTA}
             >
-              {searchCoord && <Marker coordinate={searchCoord} />}
+              {searchValue && <Marker coordinate={searchValue?.coords} />}
             </GoogleMap>
           </View>
         </View>
@@ -119,6 +165,7 @@ const SignupStep4View = (props) => {
         bgColor={COLORS.dark}
         bgColorPress={COLORS.darkDeep}
         text="가입 완료"
+        disabled={!searchValue}
         onPress={submitSignupData}
         style={styles.submitTheme}
         height={50}

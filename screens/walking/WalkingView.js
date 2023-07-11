@@ -165,7 +165,7 @@ const WalkingView = () => {
         />
         <View style={styles.dashboard}>
           <View style={{ alignItems: 'center' }}>
-            <Timer remain={seconds} fontWeight={FONT_WEIGHT.BOLD} />
+            <Timer remain={seconds} fontWeight={FONT_WEIGHT.BOLD} fontSize={16}/>
             <CustomText
               fontSize={15}
               fontColor={COLORS.grayDeep}

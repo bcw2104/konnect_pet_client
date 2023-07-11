@@ -160,7 +160,7 @@ const EmailVerify = ({
             errorHandler={verifiyError}
             errorMsg='Incorrect verify code.'
           />
-          <Timer style={styles.verifyTimer} remain={remain} fontColor={COLORS.danger}/>
+          <Timer style={styles.verifyTimer} remain={remain} fontColor={COLORS.danger} fontSize={16}/>
           <CustomButton
             fontColor={COLORS.white}
             bgColor={COLORS.dark}
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   verifyTimer: {
     position: 'absolute',
-    top: 13,
+    top: 16,
     right: 125,
   },
   verifySubmitButton: {
