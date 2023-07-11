@@ -33,7 +33,7 @@ const SignupStep4View = (props) => {
   }, [isMapReady]);
 
   useEffect(() => {
-    Geocoder.init(Constants.expoConfig?.extra?.googleWewApiKey);
+    Geocoder.init(Constants.expoConfig?.extra?.googleWebApiKey);
   }, []);
 
   const submitSignupData = async () => {
@@ -99,7 +99,7 @@ const SignupStep4View = (props) => {
                 },
               }}
               query={{
-                key: Constants.expoConfig?.extra?.googleWewApiKey,
+                key: Constants.expoConfig?.extra?.googleWebApiKey,
                 language: 'en', // language of the results
                 types: 'geocode', // types of the results
               }}
