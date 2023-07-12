@@ -10,8 +10,10 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import { FONT_WEIGHT } from '../../commons/constants';
+import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 
 const LeaveView = () => {
+  useTabBarHandler();
   const { userStore } = useStores();
 
   const [nationCode, setNationCode] = useState('');
@@ -33,7 +35,7 @@ const LeaveView = () => {
 
   return (
     <>
-      <Container>
+      <Container header={true}>
         <View style={styles.section1}>
           <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
             핸드폰 번호를 인증해주세요.

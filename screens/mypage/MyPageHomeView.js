@@ -4,7 +4,7 @@ import Container from '../../components/layouts/Container'
 
 const MyPageHomeView = () => {
   return (
-    <Container>
+    <Container header={true}>
       <Text>MypageView</Text>
     </Container>
   )

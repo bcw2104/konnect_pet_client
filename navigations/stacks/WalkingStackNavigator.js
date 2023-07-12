@@ -12,14 +12,14 @@ const WalkingStackNavigator = () => {
     <WalkingStack.Navigator initialRouteName="walking_home">
       <WalkingStack.Screen
         name="walking_home"
-        component={WalkingHomeView} 
+        component={WalkingHomeView}
         options={{
           headerShown: false,
         }}
       ></WalkingStack.Screen>
       <WalkingStack.Screen
         name="walking"
-        component={WalkingView} 
+        component={WalkingView}
         options={{
           headerShown: false,
         }}
@@ -29,7 +29,13 @@ const WalkingStackNavigator = () => {
           headerTitle: '',
           headerBackVisible: false,
           headerLeft: () => (
-            <Pressable onPress={props.navigation.goBack}>
+            <Pressable
+              onPress={() => {
+                props.navigation.reset({
+                  routes: [{ name: 'walking_home', params: {} }],
+                });
+              }}
+            >
               <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),

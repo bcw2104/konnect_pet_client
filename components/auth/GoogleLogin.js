@@ -14,12 +14,12 @@ import { Image } from 'react-native';
 import COLORS from './../../commons/colors';
 
 const GoogleLogin = () => {
-  const { userStore, commonStore } = useStores();
+  const { userStore, systemStore } = useStores();
 
   GoogleSignin.configure({});
 
   const signIn = async () => {
-    commonStore.setIsLoading(true);
+    systemStore.setIsLoading(true);
     let tokens;
     try {
       await GoogleSignin.hasPlayServices();
@@ -35,7 +35,7 @@ const GoogleLogin = () => {
           text1: 'Please try again later',
         });
       }
-      commonStore.setIsLoading(false);
+      systemStore.setIsLoading(false);
       return;
     }
     try {
@@ -64,7 +64,7 @@ const GoogleLogin = () => {
       }
     } catch (error) {
     } finally {
-      commonStore.setIsLoading(false);
+      systemStore.setIsLoading(false);
     }
   };
 

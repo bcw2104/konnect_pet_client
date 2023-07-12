@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import Container from '../../components/layouts/Container';
 import GoogleMap from '../../components/map/GoogleMap';
@@ -13,9 +13,11 @@ import Timer from '../../components/elements/Timer';
 import { FONT_WEIGHT } from '../../commons/constants';
 import { Navigator } from '../../navigations/Navigator';
 
-const screen = Dimensions.get('window');
-const ASPECT_RATIO = screen.width / screen.height;
+const window = Dimensions.get('window');
+const screen = Dimensions.get('screen');
+const ASPECT_RATIO = window.width / window.height;
 
+const SPLASH_TIME = 3;
 const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
@@ -23,18 +25,18 @@ const WalkingView = (props) => {
   const mapRef = useRef(null);
   const { route } = props;
 
+  const [startCounter, setStartCounter] = useState(SPLASH_TIME);
   const [region, setRegion] = useState(null);
-  const [isMapReady, setIsMapReady] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [meters, setMeters] = useState(-10);
   const { systemStore, modalStore } = useStores();
 
-  useEffect(()=>{
+  useEffect(() => {
+    systemStore.setDisplayTabBar(false);
     setRegion(route.params?.coords);
-  },[])
+  }, []);
 
   useEffect(() => {
-    if (!isMapReady) false;
     let watchPosition = null;
 
     const fetchData = async () => {
@@ -68,14 +70,22 @@ const WalkingView = (props) => {
 
     return () => {
       if (!!watchPosition) {
-        console.log('watching position removed');
         watchPosition.remove();
       }
     };
-  }, [isMapReady]);
+  }, []);
 
   useInterval(() => {
-    setSeconds((seconds) => seconds + 1);
+    if (startCounter > 0) {
+      if (startCounter == 1) {
+        systemStore.setDisplayTabBar(true);
+      }
+      setStartCounter((startCounter) => startCounter - 1);
+    }
+
+    if (startCounter == 0) {
+      setSeconds((seconds) => seconds + 1);
+    }
   }, 1000);
 
   const goToHome = (params) => {
@@ -83,7 +93,7 @@ const WalkingView = (props) => {
   };
 
   const goToNextStep = (params) => {
-    Navigator.reset('walking_home', params);
+    Navigator.reset('walking_result', params);
   };
 
   const changeMyLocation = (coords) => {
@@ -133,91 +143,133 @@ const WalkingView = (props) => {
     changeMyLocation(coords);
   };
   const stopWalking = async () => {
-    goToNextStep();
+    modalStore.openTwoButtonModal(
+      '산책을 종료하시겠어요?',
+      '아니요',
+      () => {},
+      '네',
+      () => {
+        goToNextStep();
+      }
+    );
   };
 
   const onRegionChange = ({ latitude, longitude }) => {};
 
-  const onMapReady = () => {
-    setIsMapReady(true);
-  };
+  const onMapReady = () => {};
 
   return (
-    <Container>
-      <View style={styles.section1}>
-        <GoogleMap
-          defaultRegion={region}
-          mapRef={mapRef}
-          onRegionChange={onRegionChange}
-          onMapReady={onMapReady}
-          width={screen.width}
-          height={screen.height}
-          longitudeDelta={LONGITUDE_DELTA}
-          latitudeDelta={LATITUDE_DELTA}
-        />
-      </View>
-      <View style={styles.section2} width={systemStore.winWidth}>
-        <CustomButton
-          bgColor={COLORS.white}
-          bgColorPress={COLORS.lightDeep}
-          text={<MaterialIcons name="my-location" size={30} color="black" />}
-          fontColor={COLORS.white}
-          onPress={getMyLocation}
-          width={60}
-          height={60}
-          wrapperStyle={styles.location}
-          style={{
-            borderRadius: 30,
-          }}
-        />
-        <View style={styles.dashboard}>
-          <View style={{ alignItems: 'center' }}>
-            <Timer remain={seconds} fontWeight={FONT_WEIGHT.BOLD} fontSize={16}/>
-            <CustomText
-              fontSize={15}
-              fontColor={COLORS.grayDeep}
-              style={{ marginTop: 5 }}
-            >
-              시간
-            </CustomText>
-          </View>
-          <CustomButton
-            bgColor={COLORS.warning}
-            bgColorPress={COLORS.warningDeep}
-            text={<MaterialIcons name="pause" size={30} color="black" />}
+    <>
+      {startCounter > 0 && (
+        <View style={styles.startSplash}>
+          <CustomText
             fontColor={COLORS.white}
-            onPress={stopWalking}
+            fontSize={60}
+            fontWeight={FONT_WEIGHT.BOLD}
+          >
+            {startCounter}
+          </CustomText>
+          <CustomText
+            style={{ marginTop: 10 }}
+            fontColor={COLORS.white}
+            fontSize={30}
+            fontWeight={FONT_WEIGHT.BOLD}
+          >
+            산책 시작까지...
+          </CustomText>
+        </View>
+      )}
+      <Container>
+        <View style={styles.section1}>
+          <GoogleMap
+            defaultRegion={region}
+            mapRef={mapRef}
+            onRegionChange={onRegionChange}
+            onMapReady={onMapReady}
+            width={window.width}
+            height={window.height}
+            longitudeDelta={LONGITUDE_DELTA}
+            latitudeDelta={LATITUDE_DELTA}
+          />
+        </View>
+        <View style={styles.section2}>
+          <CustomButton
+            bgColor={COLORS.white}
+            bgColorPress={COLORS.lightDeep}
+            text={<MaterialIcons name="my-location" size={30} color="black" />}
+            fontColor={COLORS.white}
+            onPress={getMyLocation}
             width={60}
             height={60}
+            wrapperStyle={styles.location}
             style={{
               borderRadius: 30,
             }}
           />
-          <View style={{ alignItems: 'center' }}>
-            <CustomText fontWeight={FONT_WEIGHT.BOLD}>{meters} M</CustomText>
-            <CustomText
-              fontSize={15}
-              fontColor={COLORS.grayDeep}
-              style={{ marginTop: 5 }}
-            >
-              거리
-            </CustomText>
+          <View style={styles.dashboard}>
+            <View style={{ alignItems: 'center' }}>
+              <Timer
+                remain={seconds}
+                fontWeight={FONT_WEIGHT.BOLD}
+                fontSize={16}
+              />
+              <CustomText
+                fontSize={15}
+                fontColor={COLORS.grayDeep}
+                style={{ marginTop: 5 }}
+              >
+                시간
+              </CustomText>
+            </View>
+            <CustomButton
+              bgColor={COLORS.warning}
+              bgColorPress={COLORS.warningDeep}
+              text={<MaterialIcons name="pause" size={30} color="black" />}
+              fontColor={COLORS.white}
+              onPress={stopWalking}
+              width={60}
+              height={60}
+              style={{
+                borderRadius: 30,
+              }}
+            />
+            <View style={{ alignItems: 'center' }}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD}>{meters} M</CustomText>
+              <CustomText
+                fontSize={15}
+                fontColor={COLORS.grayDeep}
+                style={{ marginTop: 5 }}
+              >
+                거리
+              </CustomText>
+            </View>
           </View>
         </View>
-      </View>
-    </Container>
+      </Container>
+    </>
   );
 };
 
 export default WalkingView;
 
 const styles = StyleSheet.create({
+  startSplash: {
+    width: window.width,
+    height: screen.height,
+    backgroundColor: COLORS.warning,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    zIndex: 100,
+    elevation: 100,
+  },
   section1: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   section2: {
+    width: window.width,
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',

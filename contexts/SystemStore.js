@@ -1,19 +1,33 @@
-import { Dimensions } from "react-native";
-import { getStatusBarHeight } from "react-native-status-bar-height";
+import { makeAutoObservable } from 'mobx';
 
-
-export default class SystemStore{
-  rootStore = null;
-  winHeight = 0;
-  winWidth = 0;
-  statusBarHeight = 0;
+export default class SystemStore {
+  _rootStore = null;
+  _displayTabBar = true;
+  _isLoading = false;
 
   constructor(rootStore) {
-    const { width: WIN_WIDTH, height: WIN_HEIGHT } = Dimensions.get('window');
+    makeAutoObservable(this);
 
-    this.rootStore = rootStore;
-    this.winWidth = WIN_WIDTH;
-    this.winHeight = WIN_HEIGHT;
-    this.statusBarHeight = getStatusBarHeight();
+    this._rootStore = rootStore;
+  }
+
+  setDisplayTabBar(displayTabBar) {
+    this._displayTabBar = displayTabBar;
+  }
+
+  setIsLoading(isLoading) {
+    this._isLoading = isLoading;
+  }
+
+  get isLoading() {
+    return this._isLoading;
+  }
+
+  get displayTabBar() {
+    return this._displayTabBar;
+  }
+
+  get rootStore() {
+    return this._rootStore;
   }
 }

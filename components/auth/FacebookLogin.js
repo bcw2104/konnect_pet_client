@@ -11,10 +11,10 @@ import {
 } from "react-native-fbsdk-next";
 
 const FacebookLogin = () => {
-  const { userStore, commonStore } = useStores();
+  const { userStore, systemStore } = useStores();
 
   const signIn = async () => {
-    commonStore.setIsLoading(true);
+    systemStore.setIsLoading(true);
     try {
       const { isCancelled } = await LoginManager.logInWithPermissions([
         "email",
@@ -22,7 +22,7 @@ const FacebookLogin = () => {
       ]);
 
       if (isCancelled) {
-        commonStore.setIsLoading(false);
+        systemStore.setIsLoading(false);
         return;
       }
 
@@ -50,7 +50,7 @@ const FacebookLogin = () => {
       }
     } catch (error) {
     } finally {
-      commonStore.setIsLoading(false);
+      systemStore.setIsLoading(false);
     }
   };
 

@@ -13,7 +13,7 @@ import { KeyboardAvoidingView } from 'react-native';
 import { Platform } from 'react-native';
 
 const DefaultLogin = () => {
-  const { userStore, commonStore } = useStores();
+  const { userStore, systemStore } = useStores();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +30,7 @@ const DefaultLogin = () => {
       setPasswordError(true);
       return;
     }
-    commonStore.setIsLoading(true);
+    systemStore.setIsLoading(true);
 
     try {
       const response = await serviceApis.login(email, password);
@@ -52,7 +52,7 @@ const DefaultLogin = () => {
       }
     } catch (e) {
     } finally {
-      commonStore.setIsLoading(false);
+      systemStore.setIsLoading(false);
     }
   };
 

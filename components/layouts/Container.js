@@ -1,9 +1,9 @@
 import { Platform, SafeAreaView, View } from 'react-native';
 import React from 'react';
-import { useStores } from '../../contexts/StoreContext';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 const Container = ({ header = false, children }) => {
-  const { systemStore } = useStores();
+  const statusBarHeight = getStatusBarHeight();
 
   return (
     <SafeAreaView
@@ -19,7 +19,7 @@ const Container = ({ header = false, children }) => {
             ? 20
             : Platform.OS == 'ios'
             ? 0
-            : systemStore.statusBarHeight + 15,
+            : statusBarHeight + 15,
         }}
       >
         {children}

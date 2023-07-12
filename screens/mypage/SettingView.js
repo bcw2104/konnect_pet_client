@@ -5,10 +5,13 @@ import CustomText from '../../components/elements/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
 import { FONT_WEIGHT } from '../../commons/constants';
+import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 
 const SettingView = () => {
+  useTabBarHandler();
+  
   return (
-    <Container>
+    <Container header={true}>
       <View style={styles.section1}>
         <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={28}>
           Setting

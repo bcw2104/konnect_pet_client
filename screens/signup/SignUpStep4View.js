@@ -15,8 +15,8 @@ import { Marker } from 'react-native-maps';
 import Constants from 'expo-constants';
 import Geocoder from 'react-native-geocoding';
 
-const screen = Dimensions.get('window');
-const ASPECT_RATIO = screen.width / screen.height;
+const window = Dimensions.get('window');
+const ASPECT_RATIO = window.width / window.height;
 
 const LATITUDE_DELTA = 0.007;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;

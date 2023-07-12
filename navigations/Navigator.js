@@ -12,4 +12,5 @@ export const Navigator = {
   reset: (name, params) => {
     navigationRef.current?.reset({routes: [{name: name, params: params}]});
   },
+
 };

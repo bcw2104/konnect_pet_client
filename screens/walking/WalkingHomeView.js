@@ -11,8 +11,8 @@ import * as Location from 'expo-location';
 import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 
-const screen = Dimensions.get('window');
-const ASPECT_RATIO = screen.width / screen.height;
+const window = Dimensions.get('window');
+const ASPECT_RATIO = window.width / window.height;
 
 const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
@@ -21,11 +21,9 @@ const WalkingHomeView = () => {
   const mapRef = useRef(null);
 
   const [region, setRegion] = useState(null);
-  const [isMapReady, setIsMapReady] = useState(false);
-  const { systemStore, modalStore } = useStores();
+  const { modalStore, systemStore } = useStores();
 
   useEffect(() => {
-    if (!isMapReady) false;
     const fetchData = async () => {
       const status = await hasLocationPermissions();
 
@@ -34,11 +32,11 @@ const WalkingHomeView = () => {
         changeMyLocation(coords);
         setRegion(coords);
       } else {
-        //TODO: 기본 위치 설정
+        setRegion('residence');
       }
     };
     fetchData();
-  }, [isMapReady]);
+  }, []);
 
   const goToNextStep = (params) => {
     Navigator.reset('walking', params);
@@ -96,21 +94,22 @@ const WalkingHomeView = () => {
 
     if (!status) return;
 
+    systemStore.setIsLoading(true);
     try {
       const response = await serviceApis.startWalking();
-      
-    let { coords } = await Location.getCurrentPositionAsync({});
 
-      goToNextStep({ walkingKey: response.result.key, coords:coords });
+      let { coords } = await Location.getCurrentPositionAsync({});
+
+      goToNextStep({ walkingKey: response.result.key, coords: coords });
     } catch (e) {
       console.log(e);
+    } finally {
+      systemStore.setIsLoading(false);
     }
   };
   const onRegionChange = ({ latitude, longitude }) => {};
 
-  const onMapReady = () => {
-    setIsMapReady(true);
-  };
+  const onMapReady = () => {};
 
   return (
     <Container>
@@ -120,13 +119,13 @@ const WalkingHomeView = () => {
           mapRef={mapRef}
           onRegionChange={onRegionChange}
           onMapReady={onMapReady}
-          width={screen.width}
-          height={screen.height}
+          width={window.width}
+          height={window.height}
           longitudeDelta={LONGITUDE_DELTA}
           latitudeDelta={LATITUDE_DELTA}
         />
       </View>
-      <View style={styles.section2} width={systemStore.winWidth}>
+      <View style={styles.section2}>
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
@@ -163,6 +162,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   section2: {
+    width: window.width,
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',

@@ -12,15 +12,15 @@ import COLORS from '../../commons/colors';
 const { width: WIN_WIDTH, height: WIN_HEIGHT } = Dimensions.get('window');
 
 const Loader = () => {
-  const { commonStore } = useStores();
+  const { systemStore } = useStores();
   return (
     <>
-      {commonStore.isLoading && (
+      {systemStore.isLoading && (
         <View style={styles.container}>
           <ActivityIndicator
             size='large'
             color={COLORS.dark}
-            animating={commonStore.isLoading}
+            animating={systemStore.isLoading}
           />
         </View>
       )}

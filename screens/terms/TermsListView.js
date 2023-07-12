@@ -10,12 +10,12 @@ import { observer } from 'mobx-react-lite';
 import { FONT_WEIGHT } from '../../commons/constants';
 
 const TermsListView = () => {
-  const { commonStore } = useStores();
+  const { systemStore } = useStores();
   const [terms, setTerms] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      commonStore.setIsLoading(true);
+      systemStore.setIsLoading(true);
       try {
         const response = await serviceApis.getAllTerms();
         const termsGroups = response.result;
@@ -23,7 +23,7 @@ const TermsListView = () => {
       } catch (error) {
         Navigator.goBack();
       } finally {
-        commonStore.setIsLoading(false);
+        systemStore.setIsLoading(false);
       }
     };
 
@@ -32,7 +32,7 @@ const TermsListView = () => {
 
   return (
     <>
-      {!commonStore.isLoading && (
+      {!systemStore.isLoading && (
         <Container>
           <View style={styles.section1}>
             <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>

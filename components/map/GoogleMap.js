@@ -1,10 +1,11 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { useStores } from '../../contexts/StoreContext';
 
 const GoogleMap = ({
   mapRef,
-  defaultRegion = null,
+  defaultRegion = 'residence',
   onRegionChange = () => {},
   onMapReady = () => {},
   userLocation = true,
@@ -16,13 +17,17 @@ const GoogleMap = ({
   latitudeDelta,
   children,
 }) => {
+  const { userStore } = useStores();
   const [region, setRegion] = useState(null);
 
   useEffect(() => {
-    if (!defaultRegion) {
+    if(!defaultRegion) return;
+
+    if (defaultRegion === 'residence') {
+      const residenceCoords = userStore.residenceCoords;
       setRegion({
-        latitude: 0,
-        longitude: 0,
+        latitude: residenceCoords?.lat || 14.552,
+        longitude: residenceCoords?.lng || 121.047,
         latitudeDelta: latitudeDelta,
         longitudeDelta: longitudeDelta,
       });
@@ -34,7 +39,7 @@ const GoogleMap = ({
         longitudeDelta: longitudeDelta,
       });
     }
-  }, []);
+  }, [defaultRegion]);
 
   return (
     <View style={styles.container}>

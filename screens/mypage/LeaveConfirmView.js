@@ -6,8 +6,10 @@ import { Navigator } from '../../navigations/Navigator';
 import COLORS from '../../commons/colors';
 import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
+import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 
 const LeaveConfirmView = () => {
+  useTabBarHandler();
   const confirm = () => {
     Navigator.navigate('leave', {});
   };
@@ -17,7 +19,7 @@ const LeaveConfirmView = () => {
   };
 
   return (
-    <Container>
+    <Container header={true}>
       <View style={styles.section1}>
         <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
           정말 탈퇴하시겠습니까?

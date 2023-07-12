@@ -14,7 +14,7 @@ import { FONT_WEIGHT } from '../../commons/constants';
 
 const SignupStep3View = (props) => {
   const { route } = props;
-  const { commonStore } = useStores();
+  const { systemStore } = useStores();
 
   const [terms, setTerms] = useState([]);
   const [termsAgreed, setTermsAgreed] = useState({});
@@ -23,7 +23,7 @@ const SignupStep3View = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      commonStore.setIsLoading(true);
+      systemStore.setIsLoading(true);
       try {
         const response = await serviceApis.getSignUpTerms();
         const termsGroups = response.result;
@@ -41,7 +41,7 @@ const SignupStep3View = (props) => {
       } catch (error) {
         Navigator.goBack();
       } finally {
-        commonStore.setIsLoading(false);
+        systemStore.setIsLoading(false);
       }
     };
 
@@ -95,7 +95,7 @@ const SignupStep3View = (props) => {
 
   return (
     <>
-      {!commonStore.isLoading && (
+      {!systemStore.isLoading && (
         <>
           <Container header={true}>
             <View style={styles.section1}>

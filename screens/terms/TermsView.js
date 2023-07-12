@@ -15,12 +15,12 @@ import { FONT_WEIGHT } from '../../commons/constants';
 
 const TermsView = (props) => {
   const { route } = props;
-  const { commonStore } = useStores();
+  const { systemStore } = useStores();
   const [term, setTerm] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      commonStore.setIsLoading(true);
+      systemStore.setIsLoading(true);
       try {
         const response = await serviceApis.getTermsDetail(
           route.params.termsGroupId
@@ -30,7 +30,7 @@ const TermsView = (props) => {
       } catch (error) {
         Navigator.goBack();
       } finally {
-        commonStore.setIsLoading(false);
+        systemStore.setIsLoading(false);
       }
     };
     fetchData();
@@ -38,7 +38,7 @@ const TermsView = (props) => {
 
   return (
     <>
-      {!commonStore.isLoading && (
+      {!systemStore.isLoading && (
         <Container>
           <View style={styles.section1}>
             <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>

@@ -12,11 +12,12 @@ import TermsListView from '../../screens/terms/TermsListView';
 
 const MyPageStack = createNativeStackNavigator();
 
-const MyPageStackNavigator = () => {
+const MyPageStackNavigator = ({ navigation, route }) => {
+
   return (
-    <MyPageStack.Navigator initialRouteName='mypage'>
+    <MyPageStack.Navigator initialRouteName="mypage">
       <MyPageStack.Screen
-        name='mypage'
+        name="mypage"
         component={MyPageHomeView}
         options={(props) => ({
           headerTitle: '',
@@ -33,9 +34,9 @@ const MyPageStackNavigator = () => {
                 style={{ marginRight: 20 }}
               >
                 <Ionicons
-                  name='notifications-outline'
+                  name="notifications-outline"
                   size={24}
-                  color='black'
+                  color="black"
                 />
               </Pressable>
               <Pressable
@@ -44,7 +45,7 @@ const MyPageStackNavigator = () => {
                 }}
                 hitSlop={5}
               >
-                <Ionicons name='settings-outline' size={24} color='black' />
+                <Ionicons name="settings-outline" size={24} color="black" />
               </Pressable>
             </View>
           ),
@@ -57,26 +58,26 @@ const MyPageStackNavigator = () => {
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name='arrow-back-outline' size={24} color='black' />
+              <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
-          presentation: 'modal',
+          presentation: 'fullScreenModal',
         })}
       >
         <MyPageStack.Screen
-          name='setting'
+          name="setting"
           component={SettingView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          name='terms_list'
+          name="terms_list"
           component={TermsListView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          name='leave_confirm'
+          name="leave_confirm"
           component={LeaveConfirmView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          name='leave'
+          name="leave"
           component={LeaveView}
         ></MyPageStack.Screen>
       </MyPageStack.Group>
@@ -87,14 +88,14 @@ const MyPageStackNavigator = () => {
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name='arrow-back-outline' size={24} color='black' />
+              <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
           presentation: 'modal',
         })}
       >
         <MyPageStack.Screen
-          name='terms'
+          name="terms"
           component={TermsView}
         ></MyPageStack.Screen>
       </MyPageStack.Group>

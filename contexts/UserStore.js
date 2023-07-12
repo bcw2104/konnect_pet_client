@@ -8,6 +8,8 @@ export default class UserStore {
   _email = null;
   _tel = null;
   _platform = null;
+  _residenceAddress = null;
+  _residenceCoords = null;
   _isLogin = false;
 
   _deviceModel = null;
@@ -31,6 +33,8 @@ export default class UserStore {
         this._email = response.result.email;
         this._tel = response.result.tel;
         this._platform = response.result.platform;
+        this._residenceAddress = response.result.residenceAddress;
+        this._residenceCoords = response.result.residenceCoords;
         this._isLogin = true;
       });
 
@@ -76,6 +80,16 @@ export default class UserStore {
 
   get platform() {
     return this._platform;
+  }
+  get residenceAddress() {
+    return this._residenceAddress;
+  }
+  get residenceCoords() {
+    try {
+      return !this._residenceCoords ? null : JSON.parse(this._residenceCoords);
+    } catch (e) {
+      return null;
+    }
   }
 
   get isLogin() {
