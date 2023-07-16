@@ -1,4 +1,3 @@
-
 import ModalStore from './ModalStore';
 import SystemStore from './SystemStore';
 import UserStore from './UserStore';

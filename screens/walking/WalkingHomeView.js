@@ -10,6 +10,7 @@ import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
+import { asyncStorage } from '../../storage/Storage';
 
 const window = Dimensions.get('window');
 const ASPECT_RATIO = window.width / window.height;
@@ -27,6 +28,26 @@ const WalkingHomeView = () => {
     const fetchData = async () => {
       const status = await hasLocationPermissions();
 
+      try {
+        const walkingTempDate = JSON.parse(
+          await asyncStorage.getItem('walking_temp_data')
+        );
+
+        if (walkingTempDate) {
+          //제출
+          const params = {
+            walkingKey: walkingTempDate.key,
+            walkingRewardPolicies: walkingTempDate.rewardPolicies,
+            currentCoords: walkingTempDate.currentCoords,
+            walkingTime: walkingTempDate.seconds,
+            walkingMeters: walkingTempDate.meters,
+            walkingSavedCoords: walkingTempDate.savedCoords,
+            walkingFootprintCoords: walkingTempDate.footprintCoords,
+          };
+        }
+      } catch (e) {
+        await asyncStorage.removeItem('walking_temp_data');
+      }
       if (status) {
         let { coords } = await Location.getCurrentPositionAsync({});
         changeMyLocation(coords);
@@ -52,32 +73,38 @@ const WalkingHomeView = () => {
   };
 
   const hasLocationPermissions = async () => {
-    const { status: existingStatus } =
+    const { status: foregroundStatus } =
       await Location.getForegroundPermissionsAsync();
-
-    return existingStatus == 'granted';
-  };
-  const requestLocationPermissions = async () => {
-    const existingStatus = await hasLocationPermissions();
-    if (!existingStatus) {
-      const { status: finalStatus } =
-        await Location.requestForegroundPermissionsAsync();
-
-      if (finalStatus !== 'granted') {
-        modalStore.openTwoButtonModal(
-          '정상적인 산책 기록을 위해 위치 권한을 승인해주세요.',
-          '취소',
-          () => {},
-          '승인하러 가기',
-          () => {
-            Linking.openSettings();
-          }
-        );
-        return false;
+    if (foregroundStatus === 'granted') {
+      const { status: backgroundStatus } =
+        await Location.getBackgroundPermissionsAsync();
+      if (backgroundStatus === 'granted') {
+        return true;
       }
     }
+    return false;
+  };
 
-    return true;
+  const requestLocationPermissions = async () => {
+    const { status: foregroundStatus } =
+      await Location.requestForegroundPermissionsAsync();
+    if (foregroundStatus === 'granted') {
+      const { status: backgroundStatus } =
+        await Location.getBackgroundPermissionsAsync();
+      if (backgroundStatus === 'granted') {
+        return true;
+      }
+    }
+    modalStore.openTwoButtonModal(
+      '정상적인 산책 기록을 위해 위치 권한을 항상 사용으로 승인해주세요.',
+      '취소',
+      () => {},
+      '승인하러 가기',
+      () => {
+        Linking.openSettings();
+      }
+    );
+    return false;
   };
 
   const getMyLocation = async () => {
@@ -98,18 +125,24 @@ const WalkingHomeView = () => {
     try {
       const response = await serviceApis.startWalking();
 
-      let { coords } = await Location.getCurrentPositionAsync({});
+      const currentCoords = {
+        latitude: region.latitude,
+        longitude: region.longitude,
+      };
 
-      goToNextStep({ walkingKey: response.result.key, coords: coords });
+      goToNextStep({
+        walkingId:response.result.id,
+        walkingKey: response.result.key,
+        walkingPolicies : response.result.walkingPolicies,
+        walkingRewardPolicies: response.result.rewardPolicies,
+        currentCoords: currentCoords,
+      });
     } catch (e) {
       console.log(e);
     } finally {
       systemStore.setIsLoading(false);
     }
   };
-  const onRegionChange = ({ latitude, longitude }) => {};
-
-  const onMapReady = () => {};
 
   return (
     <Container>
@@ -117,8 +150,6 @@ const WalkingHomeView = () => {
         <GoogleMap
           defaultRegion={region}
           mapRef={mapRef}
-          onRegionChange={onRegionChange}
-          onMapReady={onMapReady}
           width={window.width}
           height={window.height}
           longitudeDelta={LONGITUDE_DELTA}

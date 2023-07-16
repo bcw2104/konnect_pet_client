@@ -9,9 +9,13 @@ import { Navigator } from '../navigations/Navigator';
 import { FONT_WEIGHT, SOCIAL_TYPE } from '../commons/constants';
 import FacebookLogin from '../components/auth/FacebookLogin';
 import CustomText from '../components/elements/CustomText';
+import { asyncStorage } from '../storage/Storage';
 
 const WelcomeView = () => {
-
+  useEffect(() => {
+    //산책 데이터 초기화
+    asyncStorage.removeItem('walking_temp_data');
+  }, []);
   return (
     <Container>
       <View style={styles.section1}>
@@ -26,7 +30,9 @@ const WelcomeView = () => {
         </View>
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
-          <CustomText style={styles.dividerText} fontSize={13}>OR</CustomText>
+          <CustomText style={styles.dividerText} fontSize={13}>
+            OR
+          </CustomText>
           <View style={styles.dividerLine} />
         </View>
         <View style={styles.socialWrap}>
@@ -44,7 +50,9 @@ const WelcomeView = () => {
           </CustomText>
           <Pressable
             onPress={() => {
-              Navigator.navigate('signup_step1', { platform: SOCIAL_TYPE.EMAIL });
+              Navigator.navigate('signup_step1', {
+                platform: SOCIAL_TYPE.EMAIL,
+              });
             }}
             hitSlop={10}
           >

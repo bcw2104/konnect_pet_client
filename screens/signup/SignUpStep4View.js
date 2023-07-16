@@ -18,7 +18,7 @@ import Geocoder from 'react-native-geocoding';
 const window = Dimensions.get('window');
 const ASPECT_RATIO = window.width / window.height;
 
-const LATITUDE_DELTA = 0.007;
+const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const SignupStep4View = (props) => {

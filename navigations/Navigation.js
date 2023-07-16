@@ -1,5 +1,4 @@
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import WalkingHomeView from '../screens/walking/WalkingHomeView';
 import { useStores } from '../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import { navigationRef } from './Navigator';
@@ -9,7 +8,6 @@ import COLORS from '../commons/colors';
 import MyPageStackNavigator from './stacks/MyPageStackNavigator';
 import WalkingStackNavigator from './stacks/WalkingStackNavigator';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Platform } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,15 +28,21 @@ const Navigation = () => {
           screenOptions={{
             tabBarStyle: {
               display: systemStore.displayTabBar ? 'flex' : 'none',
-              height: Platform.OS == 'ios' ? 100 : 75,
+              position: 'relative'
             },
             tabBarLabelStyle: {
-              fontSize: 16,
-              marginTop: 0,
+              position: 'relative',
+              top:0,
+              fontSize: 12,
               fontFamily: 'Roboto',
               fontWeight: 'bold',
-              height: 30,
+              paddingBottom: 5,
             },
+            tabBarIconStyle:{
+              position: 'relative',
+              top: 4,
+
+            }
           }}
         >
           <Tab.Screen
@@ -48,7 +52,7 @@ const Navigation = () => {
               headerShown: false,
               tabBarLabel: 'Walking',
               tabBarIcon: ({ color, size }) => (
-                <MaterialIcons name="pets" size={size} color={color} />
+                <MaterialIcons name="pets" size={20} color={color} />
               ),
             }}
           />
@@ -59,7 +63,7 @@ const Navigation = () => {
               headerShown: false,
               tabBarLabel: 'My Page',
               tabBarIcon: ({ color, size }) => (
-                <MaterialIcons name="person" size={size} color={color} />
+                <MaterialIcons name="person" size={20} color={color} />
               ),
             }}
           />

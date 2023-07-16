@@ -21,7 +21,7 @@ const GoogleMap = ({
   const [region, setRegion] = useState(null);
 
   useEffect(() => {
-    if(!defaultRegion) return;
+    if (!defaultRegion) return;
 
     if (defaultRegion === 'residence') {
       const residenceCoords = userStore.residenceCoords;
@@ -42,7 +42,7 @@ const GoogleMap = ({
   }, [defaultRegion]);
 
   return (
-    <View style={styles.container}>
+    <>
       {!!region && (
         <MapView
           ref={mapRef}
@@ -64,14 +64,12 @@ const GoogleMap = ({
           {children}
         </MapView>
       )}
-    </View>
+    </>
   );
 };
 
 export default GoogleMap;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: {},
 });

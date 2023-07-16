@@ -198,11 +198,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightDeep,
     borderRadius: 10,
     marginBottom: 20,
+    alignItems: 'center',
   },
   termsItem: {
     flexDirection: 'row',
     paddingHorizontal: 10,
     paddingVertical: 10,
+    alignItems: 'center',
   },
   submitTheme: { borderRadius: 0 },
 });
