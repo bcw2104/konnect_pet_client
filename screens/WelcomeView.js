@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import GoogleLogin from '../components/auth/GoogleLogin';
 import { observer } from 'mobx-react-lite';
@@ -16,6 +16,7 @@ const WelcomeView = () => {
     //산책 데이터 초기화
     asyncStorage.removeItem('walking_temp_data');
   }, []);
+  
   return (
     <Container>
       <View style={styles.section1}>

@@ -15,6 +15,7 @@ import { Navigator } from '../../navigations/Navigator';
 import * as TaskManager from 'expo-task-manager';
 import { observer } from 'mobx-react-lite';
 import { asyncStorage } from '../../storage/Storage';
+import serviceApis from '../../utils/ServiceApis';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -41,7 +42,6 @@ TaskManager.defineTask(LOCATION_FETCH_TASK, async ({ data, error }) => {
     return;
   }
   if (data) {
-    console.log(policies);
     // Extract location coordinates from data
     const { locations } = data;
     const location = locations[0];
@@ -56,7 +56,8 @@ TaskManager.defineTask(LOCATION_FETCH_TASK, async ({ data, error }) => {
       if (walkingMeters > 0) {
         if (
           walkingMeters % parseInt(policies['walking_footprint_unit']) == 0 &&
-          walkingFootprintCoords.length < parseInt(policies['walking_footprint_max_amount'])
+          walkingFootprintCoords.length <
+            parseInt(policies['walking_footprint_max_amount'])
         ) {
           walkingFootprintCoords.push([coords.latitude, coords.longitude]);
         }
@@ -122,7 +123,7 @@ const WalkingView = (props) => {
 
       //정책 정보 초기화
       walkingPolicies.map((ele) => {
-        policies[ele.pKey] = ele.pValue;
+        policies[ele.name] = ele.value;
       });
 
       //리워드 정보 초기화
@@ -175,7 +176,6 @@ const WalkingView = (props) => {
         walkingPrevCurrentCoords.latitude != walkingCurrentCoords.latitude ||
         walkingPrevCurrentCoords.longitude != walkingCurrentCoords.longitude
       ) {
-        console.log('AA');
         changeMyLocation(walkingCurrentCoords);
       }
       if (meters != walkingMeters) {
@@ -278,18 +278,6 @@ const WalkingView = (props) => {
     changeMyLocation(coords);
   };
 
-  const saveWalking = async () => {
-    const params = {
-      id: route.params?.walkingId,
-      key: route.params?.walkingKey,
-      meters: meters,
-      seconds: seconds,
-      reward: JSON.stringify(rewards.current),
-      footprintCoords: JSON.stringify(walkingFootprintCoords),
-      savedCoords: JSON.stringify(walkingSavedCoords),
-    };
-  };
-
   const stopWalking = async () => {
     modalStore.openTwoButtonModal(
       '산책을 종료하시겠어요?',
@@ -298,11 +286,27 @@ const WalkingView = (props) => {
       '네',
       async () => {
         calculateReward(rewards.current);
-        await saveWalking();
+        const params = {
+          id: route.params?.walkingId,
+          key: route.params?.walkingKey,
+          meters: meters,
+          seconds: seconds,
+          rewards: JSON.stringify(rewards.current),
+          footprintCoords: JSON.stringify(walkingFootprintCoords),
+          savedCoords: JSON.stringify(walkingSavedCoords),
+        };
 
-        await asyncStorage.removeItem('walking_temp_data');
+        try {
+          const response = await serviceApis.saveWalking(params);
 
-        goToNextStep({ walkingId: route.params?.walkingId });
+          if (response?.rsp_code === '1000') {
+            await asyncStorage.removeItem('walking_temp_data');
+
+            goToNextStep({ walkingId: route.params?.walkingId });
+          }
+        } catch (error) {
+          goToHome();
+        }
       }
     );
   };
