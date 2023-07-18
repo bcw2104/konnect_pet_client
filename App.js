@@ -17,6 +17,7 @@ import { useBackPressHandler } from './hooks/useBackPressHandler';
 import Loader from './components/modules/Loader';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
+import { Linking } from 'react-native';
 
 const rootStore = new RootStore();
 
@@ -30,6 +31,15 @@ export default function App() {
     'Roboto-Thin': require('./assets/fonts/Roboto/Roboto-Thin.ttf'),
   });
   useBackPressHandler();
+
+  useEffect(()=>{
+    Linking.addEventListener('url', (event)=>{
+      Toast.show({
+        type: 'success',
+        text1: event.url,
+      });
+    });
+  },[]);
 
   useEffect(() => {
     if (!fontsLoaded) return;

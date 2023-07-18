@@ -47,13 +47,14 @@ const WalkingView = (props) => {
   const { systemStore, modalStore } = useStores();
 
   const bgServiceOptions = {
-    taskName: 'Example',
-    taskTitle: 'ExampleTask title',
-    taskDesc: 'ExampleTask description',
+    taskName: 'walking_task',
+    taskTitle: '산책 중....',
+    taskDesc: '산책이 진행중입니다.',
     taskIcon: {
       name: 'ic_launcher',
       type: 'mipmap',
     },
+    linkingURI: 'konnect://chat/jane',
     color: '#ff00ff',
     parameters: {},
   };
@@ -97,21 +98,21 @@ const WalkingView = (props) => {
         };
       });
 
-      const status = await hasLocationPermissions();
-
-      if (status) {
-        await BackgroundService.start(locationTask, bgServiceOptions);
-        await BackgroundService.updateNotification({
-          taskDesc: 'New ExampleTask description',
-        });
-      }
+      // const status = await hasLocationPermissions(); 
+      // if (status) {
+      // }
+      await BackgroundService.start(locationTask, bgServiceOptions);
+      await BackgroundService.updateNotification({
+        taskDesc: 'New ExampleTask description',
+      });
+     
     };
     fetchData();
 
     return async () => {
       subscription.remove();
       await BackgroundService.stop();
-      
+
       console.log('all tasks unregistered');
     };
   }, []);
@@ -162,7 +163,8 @@ const WalkingView = (props) => {
   const updateLocation = async () => {
     try {
       let { coords } = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.High,
+        accuracy: Location.Accuracy.Highest,
+        distanceInterval:10
       });
       currentCoords.current = {
         latitude: coords.latitude,
@@ -194,7 +196,7 @@ const WalkingView = (props) => {
         }
       }
 
-      if (metersRef.current >= (50 * savedCoords.current.length)) {
+      if (metersRef.current >= 50 * savedCoords.current.length) {
         savedCoords.current.push([coords.latitude, coords.longitude]);
       }
     } catch (e) {
@@ -266,7 +268,7 @@ const WalkingView = (props) => {
     if (!status) return;
 
     let { coords } = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High,
+        accuracy: Location.Accuracy.Highest
     });
 
     currentCoords.current = {
