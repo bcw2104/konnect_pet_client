@@ -12,10 +12,10 @@ import CustomText from '../../components/elements/CustomText';
 import Timer from '../../components/elements/Timer';
 import { FONT_WEIGHT, WALKING_REWARD_TYPE } from '../../commons/constants';
 import { Navigator } from '../../navigations/Navigator';
-import * as TaskManager from 'expo-task-manager';
 import { observer } from 'mobx-react-lite';
 import { asyncStorage } from '../../storage/Storage';
 import serviceApis from '../../utils/ServiceApis';
+import BackgroundService from 'react-native-background-actions';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -25,61 +25,6 @@ const SPLASH_TIME = 3;
 const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const LOCATION_FETCH_TASK = 'background-location-fetch';
-
-let policies = {};
-let walkingMeters = 0;
-let walkingTime = new Date();
-let walkingCurrentCoords = {};
-let walkingPrevCurrentCoords = {};
-let walkingFootprintCoords = [];
-let walkingSavedCoords = [];
-
-TaskManager.defineTask(LOCATION_FETCH_TASK, async ({ data, error }) => {
-  console.log('GPS', 'defineTask called');
-  if (error) {
-    console.error(error);
-    return;
-  }
-  if (data) {
-    // Extract location coordinates from data
-    const { locations } = data;
-    const location = locations[0];
-    walkingMeters += 10;
-    if (location) {
-      const coords = location.coords;
-      walkingCurrentCoords = {
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-      };
-
-      if (walkingMeters > 0) {
-        if (
-          walkingMeters % parseInt(policies['walking_footprint_unit']) == 0 &&
-          walkingFootprintCoords.length <
-            parseInt(policies['walking_footprint_max_amount'])
-        ) {
-          walkingFootprintCoords.push([coords.latitude, coords.longitude]);
-        }
-      }
-
-      if (walkingMeters % 30 == 0) {
-        walkingSavedCoords.push([coords.latitude, coords.longitude]);
-      }
-    }
-  } else {
-    console.log('data not found', data);
-  }
-});
-
-async function stopLocationUpdatesAsync() {
-  const isRegistered = await TaskManager.isTaskRegisteredAsync(
-    LOCATION_FETCH_TASK
-  );
-  if (isRegistered) {
-    await Location.stopLocationUpdatesAsync(LOCATION_FETCH_TASK);
-  }
-}
 
 const WalkingView = (props) => {
   const mapRef = useRef(null);
@@ -87,11 +32,28 @@ const WalkingView = (props) => {
   const appState = useRef(AppState.currentState);
   const rewards = useRef({});
 
+  const policies = useRef({});
+  const currentCoords = useRef({});
+  const footprintCoords = useRef([]);
+  const savedCoords = useRef([]);
+  const prevTime = useRef(new Date());
   const [seconds, setSeconds] = useState(0);
   const [meters, setMeters] = useState(0);
   const [startCounter, setStartCounter] = useState(SPLASH_TIME);
   const [region, setRegion] = useState(null);
   const { systemStore, modalStore } = useStores();
+
+  const bgServiceOptions = {
+    taskName: 'Example',
+    taskTitle: 'ExampleTask title',
+    taskDesc: 'ExampleTask description',
+    taskIcon: {
+      name: 'ic_launcher',
+      type: 'mipmap',
+    },
+    color: '#ff00ff',
+    parameters: {},
+  };
 
   useEffect(() => {
     const subscription = AppState.addEventListener(
@@ -102,10 +64,10 @@ const WalkingView = (props) => {
           nextAppState === 'active'
         ) {
           const now = new Date();
-          const diffTime = Math.ceil(Math.abs(now - walkingTime) / 1000);
+          const diffTime = Math.ceil(Math.abs(now - prevTime.current) / 1000);
           setSeconds((seconds) => seconds + diffTime);
         } else {
-          walkingTime = new Date();
+          prevTime.current = new Date();
         }
 
         appState.current = nextAppState;
@@ -118,12 +80,11 @@ const WalkingView = (props) => {
       setRegion(route.params?.currentCoords);
       const rewardPolices = route.params?.walkingRewardPolicies;
       const walkingPolicies = route.params?.walkingPolicies;
-      walkingTime = new Date();
-      walkingMeters = -10;
+      setMeters(-10);
 
       //정책 정보 초기화
       walkingPolicies.map((ele) => {
-        policies[ele.name] = ele.value;
+        policies.current[ele.name] = ele.value;
       });
 
       //리워드 정보 초기화
@@ -137,15 +98,9 @@ const WalkingView = (props) => {
       const status = await hasLocationPermissions();
 
       if (status) {
-        await Location.startLocationUpdatesAsync(LOCATION_FETCH_TASK, {
-          accuracy: Location.Accuracy.High,
-          distanceInterval: 10,
-          showsBackgroundLocationIndicator: true,
-          foregroundService: {
-            notificationTitle: 'Location',
-            notificationBody: 'Location tracking in background',
-            notificationColor: '#fff',
-          },
+        await BackgroundService.start(locationTask, bgServiceOptions);
+        await BackgroundService.updateNotification({
+          taskDesc: 'New ExampleTask description',
         });
       }
     };
@@ -153,9 +108,7 @@ const WalkingView = (props) => {
 
     return async () => {
       subscription.remove();
-
-      await stopLocationUpdatesAsync();
-
+      await BackgroundService.stop();
       console.log('all tasks unregistered');
     };
   }, []);
@@ -172,31 +125,60 @@ const WalkingView = (props) => {
       const newSeconds = seconds + 1;
       setSeconds(newSeconds);
 
-      if (
-        walkingPrevCurrentCoords.latitude != walkingCurrentCoords.latitude ||
-        walkingPrevCurrentCoords.longitude != walkingCurrentCoords.longitude
-      ) {
-        changeMyLocation(walkingCurrentCoords);
-      }
-      if (meters != walkingMeters) {
-        setMeters(walkingMeters);
-      }
-
       //5초에 한번씩 산책 데이터 저장
       if (newSeconds > 0 && newSeconds % 5 == 0) {
         const params = {
           key: route.params?.walkingKey,
-          meters: walkingMeters,
+          meters: meters,
           seconds: newSeconds,
           rewardPolicies: route.params?.walkingRewardPolicies,
-          currentCoords: walkingCurrentCoords,
-          footprintCoords: walkingFootprintCoords,
-          savedCoords: walkingSavedCoords,
+          currentCoords: currentCoords.current,
+          footprintCoords: footprintCoords.current,
+          savedCoords: savedCoords.current,
         };
         asyncStorage.setItem('walking_temp_data', JSON.stringify(params));
       }
     }
   }, 1000);
+
+  const locationTask = async (taskDataArguments) => {
+    console.log('GPS', 'defineTask called');
+    Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.High,
+        distanceInterval: 10,
+      },
+      (location) => {
+        const coords = location.coords;
+        currentCoords.current = {
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        };
+
+        changeMyLocation(coords);
+
+        const newMeters = meters + 10;
+        meters(newMeters);
+
+        if (newMeters > 0) {
+          if (
+            newMeters % parseInt(policies.current['walking_footprint_unit']) == 0 &&
+            footprintCoords.current.length <  parseInt(policies.current['walking_footprint_max_amount'])
+          ) {
+            footprintCoords.current.push([coords.latitude, coords.longitude]);
+          }
+        }
+
+        if (newMeters % 30 == 0) {
+          savedCoords.current.push([coords.latitude, coords.longitude]);
+        }
+      }
+    );
+
+    await new Promise(async (resolve) => {
+      for (let i = 0; BackgroundService.isRunning(); i++) {}
+    });
+  };
 
   const calculateReward = (rewards) => {
     Object.keys(rewards).map((key) => {
@@ -226,10 +208,6 @@ const WalkingView = (props) => {
   };
 
   const changeMyLocation = (coords) => {
-    walkingPrevCurrentCoords = {
-      latitude: coords.latitude,
-      longitude: coords.longitude,
-    };
     mapRef?.current?.animateToRegion({
       latitude: coords.latitude,
       longitude: coords.longitude,
@@ -242,14 +220,10 @@ const WalkingView = (props) => {
     const { status: foregroundStatus } =
       await Location.getForegroundPermissionsAsync();
     if (foregroundStatus === 'granted') {
-      const { status: backgroundStatus } =
-        await Location.getBackgroundPermissionsAsync();
-      if (backgroundStatus === 'granted') {
-        return true;
-      }
+      return true;
     }
     modalStore.openTwoButtonModal(
-      '정상적인 산책 기록을 위해 위치 권한을 항상 사용으로 승인해주세요.',
+      '정상적인 산책 기록을 위해 위치 권한을 허용해주세요.',
       '취소',
       () => {
         goToHome();
@@ -270,7 +244,7 @@ const WalkingView = (props) => {
 
     let { coords } = await Location.getCurrentPositionAsync({});
 
-    walkingCurrentCoords = {
+    currentCoords.current = {
       latitude: coords.latitude,
       longitude: coords.longitude,
     };
@@ -292,8 +266,8 @@ const WalkingView = (props) => {
           meters: meters,
           seconds: seconds,
           rewards: JSON.stringify(rewards.current),
-          footprintCoords: JSON.stringify(walkingFootprintCoords),
-          savedCoords: JSON.stringify(walkingSavedCoords),
+          footprintCoords: JSON.stringify(footprintCoords.current),
+          savedCoords: JSON.stringify(savedCoords.current),
         };
 
         try {
@@ -347,7 +321,7 @@ const WalkingView = (props) => {
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            text={<MaterialIcons name="my-location" size={30} color="black" />}
+            text={<MaterialIcons name='my-location' size={30} color='black' />}
             fontColor={COLORS.white}
             onPress={getMyLocation}
             width={60}
@@ -375,7 +349,7 @@ const WalkingView = (props) => {
             <CustomButton
               bgColor={COLORS.warning}
               bgColorPress={COLORS.warningDeep}
-              text={<MaterialIcons name="pause" size={30} color="black" />}
+              text={<MaterialIcons name='pause' size={30} color='black' />}
               fontColor={COLORS.white}
               onPress={stopWalking}
               width={60}

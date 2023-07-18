@@ -76,11 +76,7 @@ const WalkingHomeView = () => {
     const { status: foregroundStatus } =
       await Location.getForegroundPermissionsAsync();
     if (foregroundStatus === 'granted') {
-      const { status: backgroundStatus } =
-        await Location.getBackgroundPermissionsAsync();
-      if (backgroundStatus === 'granted') {
-        return true;
-      }
+      return true;
     }
     return false;
   };
@@ -89,14 +85,10 @@ const WalkingHomeView = () => {
     const { status: foregroundStatus } =
       await Location.requestForegroundPermissionsAsync();
     if (foregroundStatus === 'granted') {
-      const { status: backgroundStatus } =
-        await Location.getBackgroundPermissionsAsync();
-      if (backgroundStatus === 'granted') {
-        return true;
-      }
+      return true;
     }
     modalStore.openTwoButtonModal(
-      '정상적인 산책 기록을 위해 위치 권한을 항상 사용으로 승인해주세요.',
+      '정상적인 산책 기록을 위해 위치 권한을 허용해주세요.',
       '취소',
       () => {},
       '승인하러 가기',
