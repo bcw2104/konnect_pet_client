@@ -21,6 +21,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const WalkingHomeView = () => {
   const mapRef = useRef(null);
 
+  const [permission, setPermission] = useState(false);
   const [region, setRegion] = useState(null);
   const { modalStore, systemStore } = useStores();
 
@@ -73,20 +74,20 @@ const WalkingHomeView = () => {
   };
 
   const hasLocationPermissions = async () => {
-    const { status: foregroundStatus } =
-      await Location.getForegroundPermissionsAsync();
-    if (foregroundStatus === 'granted') {
+    const status = await Location.getForegroundPermissionsAsync();
+    if (status === 'granted') {
       return true;
     }
     return false;
   };
 
   const requestLocationPermissions = async () => {
-    const { status: foregroundStatus } =
-      await Location.requestForegroundPermissionsAsync();
-    if (foregroundStatus === 'granted') {
+    const status = await Location.requestForegroundPermissionsAsync();
+    if (status === 'granted') {
+      setPermission(true);
       return true;
     }
+    setPermission(false);
     modalStore.openTwoButtonModal(
       '정상적인 산책 기록을 위해 위치 권한을 허용해주세요.',
       '취소',
@@ -123,9 +124,9 @@ const WalkingHomeView = () => {
       };
 
       goToNextStep({
-        walkingId:response.result.id,
+        walkingId: response.result.id,
         walkingKey: response.result.key,
-        walkingPolicies : response.result.walkingPolicies,
+        walkingPolicies: response.result.walkingPolicies,
         walkingRewardPolicies: response.result.rewardPolicies,
         currentCoords: currentCoords,
       });
@@ -140,6 +141,7 @@ const WalkingHomeView = () => {
     <Container>
       <View style={styles.section1}>
         <GoogleMap
+          userLocation={permission}
           defaultRegion={region}
           mapRef={mapRef}
           width={window.width}
@@ -152,7 +154,7 @@ const WalkingHomeView = () => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          text={<MaterialIcons name="my-location" size={30} color="black" />}
+          text={<MaterialIcons name='my-location' size={30} color='black' />}
           fontColor={COLORS.white}
           onPress={getMyLocation}
           width={60}
@@ -165,7 +167,7 @@ const WalkingHomeView = () => {
         <CustomButton
           bgColor={COLORS.dark}
           bgColorPress={COLORS.darkDeep}
-          text="산책 시작"
+          text='산책 시작'
           fontColor={COLORS.white}
           onPress={startWalking}
           height={50}

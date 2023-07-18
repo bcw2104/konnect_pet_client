@@ -43,6 +43,7 @@ const WalkingView = (props) => {
   const [meters, setMeters] = useState(0);
   const [startCounter, setStartCounter] = useState(SPLASH_TIME);
   const [region, setRegion] = useState(null);
+  const [permission, setPermission] = useState(false);
   const { systemStore, modalStore } = useStores();
 
   const bgServiceOptions = {
@@ -241,8 +242,10 @@ const WalkingView = (props) => {
     const { status: foregroundStatus } =
       await Location.getForegroundPermissionsAsync();
     if (foregroundStatus === 'granted') {
+      setPermission(true);
       return true;
     }
+    setPermission(false);
     modalStore.openTwoButtonModal(
       '정상적인 산책 기록을 위해 위치 권한을 허용해주세요.',
       '취소',
@@ -340,6 +343,7 @@ const WalkingView = (props) => {
             height={window.height}
             longitudeDelta={LONGITUDE_DELTA}
             latitudeDelta={LATITUDE_DELTA}
+            userLocation={permission}
           />
         </View>
         <View style={styles.section2}>
