@@ -152,8 +152,8 @@ const WalkingView = (props) => {
   const locationTask = async (taskDataArguments) => {
     await new Promise(async (resolve) => {
       while (BackgroundService.isRunning()) {
-        await sleep(10000);
         await updateLocation();
+        await sleep(10000);
       }
     });
   };
@@ -171,7 +171,6 @@ const WalkingView = (props) => {
         prevCoords.current = currentCoords.current;
       }
 
-      console.log(currentCoords.current);
       changeMyLocation(coords);
 
       metersRef.current += utils.coordsDist(
@@ -180,7 +179,6 @@ const WalkingView = (props) => {
         prevCoords.current.latitude,
         prevCoords.current.longitude
       );
-      console.log(metersRef.current);
       prevCoords.current = currentCoords.current;
 
       if (metersRef.current > 0) {
@@ -195,8 +193,7 @@ const WalkingView = (props) => {
         }
       }
 
-      console.log(metersRef.current >= (50 * (savedCoords.current.length + 1)))
-      if (metersRef.current >= (50 * (savedCoords.current.length + 1))) {
+      if (metersRef.current >= (50 * savedCoords.current.length)) {
         savedCoords.current.push([coords.latitude, coords.longitude]);
       }
     } catch (e) {
