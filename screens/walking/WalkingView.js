@@ -16,6 +16,7 @@ import { observer } from 'mobx-react-lite';
 import { asyncStorage } from '../../storage/Storage';
 import serviceApis from '../../utils/ServiceApis';
 import BackgroundService from 'react-native-background-actions';
+import { utils } from '../../utils/Utils';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -25,7 +26,6 @@ const SPLASH_TIME = 3;
 const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-
 const WalkingView = (props) => {
   const mapRef = useRef(null);
   const { route } = props;
@@ -33,9 +33,11 @@ const WalkingView = (props) => {
   const rewards = useRef({});
 
   const policies = useRef({});
-  const currentCoords = useRef({});
+  const prevCoords = useRef(null);
+  const currentCoords = useRef(null);
   const footprintCoords = useRef([]);
   const savedCoords = useRef([]);
+  const metersRef = useRef(0);
   const prevTime = useRef(new Date());
   const [seconds, setSeconds] = useState(0);
   const [meters, setMeters] = useState(0);
@@ -80,7 +82,6 @@ const WalkingView = (props) => {
       setRegion(route.params?.currentCoords);
       const rewardPolices = route.params?.walkingRewardPolicies;
       const walkingPolicies = route.params?.walkingPolicies;
-      setMeters(-10);
 
       //정책 정보 초기화
       walkingPolicies.map((ele) => {
@@ -109,6 +110,7 @@ const WalkingView = (props) => {
     return async () => {
       subscription.remove();
       await BackgroundService.stop();
+      
       console.log('all tasks unregistered');
     };
   }, []);
@@ -125,6 +127,9 @@ const WalkingView = (props) => {
       const newSeconds = seconds + 1;
       setSeconds(newSeconds);
 
+      if (meters != metersRef.current && metersRef.current >= 0) {
+        setMeters(metersRef.current);
+      }
       //5초에 한번씩 산책 데이터 저장
       if (newSeconds > 0 && newSeconds % 5 == 0) {
         const params = {
@@ -141,43 +146,62 @@ const WalkingView = (props) => {
     }
   }, 1000);
 
+  const sleep = (time) =>
+    new Promise((resolve) => setTimeout(() => resolve(), time));
+
   const locationTask = async (taskDataArguments) => {
-    console.log('GPS', 'defineTask called');
-    Location.watchPositionAsync(
-      {
+    await new Promise(async (resolve) => {
+      while (BackgroundService.isRunning()) {
+        await sleep(10000);
+        await updateLocation();
+      }
+    });
+  };
+
+  const updateLocation = async () => {
+    try {
+      let { coords } = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High,
-        distanceInterval: 10,
-      },
-      (location) => {
-        const coords = location.coords;
-        currentCoords.current = {
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-        };
+      });
+      currentCoords.current = {
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+      };
+      if (!prevCoords.current) {
+        prevCoords.current = currentCoords.current;
+      }
 
-        changeMyLocation(coords);
+      console.log(currentCoords.current);
+      changeMyLocation(coords);
 
-        const newMeters = meters + 10;
-        meters(newMeters);
+      metersRef.current += utils.coordsDist(
+        currentCoords.current.latitude,
+        currentCoords.current.longitude,
+        prevCoords.current.latitude,
+        prevCoords.current.longitude
+      );
+      console.log(metersRef.current);
+      prevCoords.current = currentCoords.current;
 
-        if (newMeters > 0) {
-          if (
-            newMeters % parseInt(policies.current['walking_footprint_unit']) == 0 &&
-            footprintCoords.current.length <  parseInt(policies.current['walking_footprint_max_amount'])
-          ) {
-            footprintCoords.current.push([coords.latitude, coords.longitude]);
-          }
-        }
-
-        if (newMeters % 30 == 0) {
-          savedCoords.current.push([coords.latitude, coords.longitude]);
+      if (metersRef.current > 0) {
+        if (
+          metersRef.current >=
+            parseInt(policies.current['walking_footprint_unit']) *
+              (footprintCoords.current.length + 1) &&
+          footprintCoords.current.length <
+            parseInt(policies.current['walking_footprint_max_amount'])
+        ) {
+          footprintCoords.current.push([coords.latitude, coords.longitude]);
         }
       }
-    );
 
-    await new Promise(async (resolve) => {
-      for (let i = 0; BackgroundService.isRunning(); i++) {}
-    });
+      console.log(metersRef.current >= (50 * (savedCoords.current.length + 1)))
+      if (metersRef.current >= (50 * (savedCoords.current.length + 1))) {
+        savedCoords.current.push([coords.latitude, coords.longitude]);
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   const calculateReward = (rewards) => {
@@ -242,7 +266,9 @@ const WalkingView = (props) => {
 
     if (!status) return;
 
-    let { coords } = await Location.getCurrentPositionAsync({});
+    let { coords } = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.High,
+    });
 
     currentCoords.current = {
       latitude: coords.latitude,
@@ -269,6 +295,8 @@ const WalkingView = (props) => {
           footprintCoords: JSON.stringify(footprintCoords.current),
           savedCoords: JSON.stringify(savedCoords.current),
         };
+
+        console.log(params);
 
         try {
           const response = await serviceApis.saveWalking(params);

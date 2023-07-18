@@ -24,7 +24,7 @@ const WalkingResultView = (props) => {
   useTabBarHandler();
   const { route } = props;
   const mapRef = useRef(null);
-  const [region, setRegion] = useState({});
+  const [region, setRegion] = useState(null);
   const [rewards, setRewards] = useState({});
   const [routes, setRoutes] = useState([]);
   const [report, setReport] = useState({});
@@ -138,7 +138,7 @@ const WalkingResultView = (props) => {
                 </View>
                 <View style={styles.reportItem}>
                   <CustomText fontSize={18}>산책 거리</CustomText>
-                  <CustomText fontSize={18}>{report?.meters} km</CustomText>
+                  <CustomText fontSize={18}>{report?.meters} m</CustomText>
                 </View>
                 <View style={styles.reportItem}>
                   <CustomText fontSize={18}>활동량</CustomText>
