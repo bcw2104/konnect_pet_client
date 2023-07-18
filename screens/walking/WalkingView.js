@@ -239,9 +239,8 @@ const WalkingView = (props) => {
   };
 
   const hasLocationPermissions = async () => {
-    const { status: foregroundStatus } =
-      await Location.getForegroundPermissionsAsync();
-    if (foregroundStatus === 'granted') {
+    const { status } = await Location.getForegroundPermissionsAsync();
+    if (status === 'granted') {
       setPermission(true);
       return true;
     }

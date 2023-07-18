@@ -74,7 +74,7 @@ const WalkingHomeView = () => {
   };
 
   const hasLocationPermissions = async () => {
-    const status = await Location.getForegroundPermissionsAsync();
+    const {status} = await Location.getForegroundPermissionsAsync();
     if (status === 'granted') {
       return true;
     }
@@ -82,7 +82,7 @@ const WalkingHomeView = () => {
   };
 
   const requestLocationPermissions = async () => {
-    const status = await Location.requestForegroundPermissionsAsync();
+    const {status} = await Location.requestForegroundPermissionsAsync();
     if (status === 'granted') {
       setPermission(true);
       return true;
