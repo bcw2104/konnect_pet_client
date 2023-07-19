@@ -97,15 +97,19 @@ const WalkingView = (props) => {
           rewardAmount: 0,
         };
       });
-
-      // const status = await hasLocationPermissions(); 
-      // if (status) {
-      // }
-      await BackgroundService.start(locationTask, bgServiceOptions);
-      await BackgroundService.updateNotification({
-        taskDesc: 'New ExampleTask description',
-      });
-     
+      const status = await hasLocationPermissions();
+      if (status) {
+        modalStore.openOneButtonModal(
+          '권한 허용 완료',
+          '확인',
+          () => {
+          },
+        );
+      //   await BackgroundService.start(locationTask, bgServiceOptions);
+      //   await BackgroundService.updateNotification({
+      //     taskDesc: 'New ExampleTask description',
+      //   });
+      }
     };
     fetchData();
 
@@ -164,7 +168,7 @@ const WalkingView = (props) => {
     try {
       let { coords } = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Highest,
-        distanceInterval:10
+        distanceInterval: 10,
       });
       currentCoords.current = {
         latitude: coords.latitude,
@@ -268,7 +272,7 @@ const WalkingView = (props) => {
     if (!status) return;
 
     let { coords } = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Highest
+      accuracy: Location.Accuracy.Highest,
     });
 
     currentCoords.current = {

@@ -27,8 +27,6 @@ const WalkingHomeView = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const status = await hasLocationPermissions();
-
       try {
         const walkingTempDate = JSON.parse(
           await asyncStorage.getItem('walking_temp_data')
@@ -49,6 +47,8 @@ const WalkingHomeView = () => {
       } catch (e) {
         await asyncStorage.removeItem('walking_temp_data');
       }
+
+      const status = await hasLocationPermissions();
       if (status) {
         let { coords } = await Location.getCurrentPositionAsync({});
         changeMyLocation(coords);
