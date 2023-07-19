@@ -99,16 +99,7 @@ const WalkingView = (props) => {
       });
       const status = await hasLocationPermissions();
       if (status) {
-        modalStore.openOneButtonModal(
-          '권한 허용 완료',
-          '확인',
-          () => {
-          },
-        );
-      //   await BackgroundService.start(locationTask, bgServiceOptions);
-      //   await BackgroundService.updateNotification({
-      //     taskDesc: 'New ExampleTask description',
-      //   });
+        await BackgroundService.start(locationTask, bgServiceOptions);
       }
     };
     fetchData();
@@ -341,15 +332,17 @@ const WalkingView = (props) => {
       )}
       <Container>
         <View style={styles.section1}>
-          <GoogleMap
-            defaultRegion={region}
-            mapRef={mapRef}
-            width={window.width}
-            height={window.height}
-            longitudeDelta={LONGITUDE_DELTA}
-            latitudeDelta={LATITUDE_DELTA}
-            userLocation={permission}
-          />
+          {permission && (
+            <GoogleMap
+              defaultRegion={region}
+              mapRef={mapRef}
+              width={window.width}
+              height={window.height}
+              longitudeDelta={LONGITUDE_DELTA}
+              latitudeDelta={LATITUDE_DELTA}
+              userLocation={permission}
+            />
+          )}
         </View>
         <View style={styles.section2}>
           <CustomButton
