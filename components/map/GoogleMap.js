@@ -26,8 +26,8 @@ const GoogleMap = ({
     if (defaultRegion === 'residence') {
       const residenceCoords = userStore.residenceCoords;
       setRegion({
-        latitude: residenceCoords?.lat || 14.552,
-        longitude: residenceCoords?.lng || 121.047,
+        latitude: residenceCoords?.lat,
+        longitude: residenceCoords?.lng,
         latitudeDelta: latitudeDelta,
         longitudeDelta: longitudeDelta,
       });
@@ -45,6 +45,7 @@ const GoogleMap = ({
     <>
       {!!region && (
         <MapView
+          customMapStyle={mapStyle}
           ref={mapRef}
           region={region}
           provider={PROVIDER_GOOGLE}
@@ -73,3 +74,50 @@ export default GoogleMap;
 const styles = StyleSheet.create({
   container: {},
 });
+
+const mapStyle =[
+  {
+    "featureType": "administrative.land_parcel",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.business",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  }
+];

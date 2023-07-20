@@ -47,4 +47,7 @@ export default serviceApis = {
   startWalking: () => baseAxios.post(`/api/walking/v1/start`),
   saveWalking: (payload) => baseAxios.post(`/api/walking/v1/save`,payload),
   getWalkingReport: (walkingId) => baseAxios.get(`/api/walking/v1/report/${walkingId}`),
+  getAroundFootprints: (lat,lng) => baseAxios.get(`/api/walking/v1/footprints/around`,{
+    params: {lat,lng}
+  }),
 }

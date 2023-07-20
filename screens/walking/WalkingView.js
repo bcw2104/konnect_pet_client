@@ -17,6 +17,10 @@ import { asyncStorage } from '../../storage/Storage';
 import serviceApis from '../../utils/ServiceApis';
 import BackgroundService from 'react-native-background-actions';
 import { utils } from '../../utils/Utils';
+import { Marker, Polyline } from 'react-native-maps';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -44,6 +48,11 @@ const WalkingView = (props) => {
   const [startCounter, setStartCounter] = useState(SPLASH_TIME);
   const [region, setRegion] = useState(null);
   const [permission, setPermission] = useState(false);
+
+  const [routes, setRoutes] = useState([]);
+  const [myFootprints, setMyFootprints] = useState([]);
+  const [footprints, setFootprints] = useState([]);
+
   const { systemStore, modalStore } = useStores();
 
   const bgServiceOptions = {
@@ -82,6 +91,7 @@ const WalkingView = (props) => {
     const fetchData = async () => {
       systemStore.setDisplayTabBar(false);
       setRegion(route.params?.currentCoords);
+      await getAroundFootprints(route.params?.currentCoords);
       const rewardPolices = route.params?.walkingRewardPolicies;
       const walkingPolicies = route.params?.walkingPolicies;
 
@@ -127,6 +137,23 @@ const WalkingView = (props) => {
       if (meters != metersRef.current && metersRef.current >= 0) {
         setMeters(metersRef.current);
       }
+
+      if (savedCoords.current.length != routes.length) {
+        setRoutes(
+          savedCoords.current.map((coords) => ({
+            latitude: coords[0],
+            longitude: coords[1],
+          }))
+        );
+      }
+      if (footprintCoords.current.length != myFootprints.length) {
+        setMyFootprints(
+          footprintCoords.current.map((coords) => ({
+            latitude: coords[0],
+            longitude: coords[1],
+          }))
+        );
+      }
       //5초에 한번씩 산책 데이터 저장
       if (newSeconds > 0 && newSeconds % 5 == 0) {
         const params = {
@@ -150,11 +177,21 @@ const WalkingView = (props) => {
     await new Promise(async (resolve) => {
       while (BackgroundService.isRunning()) {
         await updateLocation();
-        await sleep(10000);
+        await sleep(5000);
       }
     });
   };
 
+  const getAroundFootprints = async (coords) => {
+    try {
+      const response = await serviceApis.getAroundFootprints(
+        coords.latitude,
+        coords.longitude
+      );
+      setFootprints(response.result);
+      
+    } catch (e) {}
+  };
   const updateLocation = async () => {
     try {
       let { coords } = await Location.getCurrentPositionAsync({
@@ -281,6 +318,12 @@ const WalkingView = (props) => {
       () => {},
       '네',
       async () => {
+        let { coords } = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Highest,
+        });
+        changeMyLocation(coords);
+        savedCoords.current.push([coords.latitude, coords.longitude]);
+
         calculateReward(rewards.current);
         const params = {
           id: route.params?.walkingId,
@@ -291,8 +334,6 @@ const WalkingView = (props) => {
           footprintCoords: JSON.stringify(footprintCoords.current),
           savedCoords: JSON.stringify(savedCoords.current),
         };
-
-        console.log(params);
 
         try {
           const response = await serviceApis.saveWalking(params);
@@ -341,14 +382,42 @@ const WalkingView = (props) => {
               longitudeDelta={LONGITUDE_DELTA}
               latitudeDelta={LATITUDE_DELTA}
               userLocation={permission}
-            />
+            >
+              {footprints.map((ele, idx) => (
+                <Marker
+                  key={ele.id}
+                  coordinate={{
+                    latitude: ele.latitude,
+                    longitude: ele.longitude,
+                  }}
+                  onPress={() => {
+                    Toast.show({
+                      type: 'success',
+                      text1: "id: " + ele.id,
+                    });
+                  }}
+                >
+                  <MaterialCommunityIcons name="dog" size={24} color="black" />
+                </Marker>
+              ))}
+              {myFootprints.map((coords, index) => (
+                <Marker key={index} coordinate={coords}>
+                  <FontAwesome5 name="stamp" size={24} color="black" />
+                </Marker>
+              ))}
+              <Polyline
+                coordinates={routes}
+                strokeColor="#e23dff"
+                strokeWidth={6}
+              />
+            </GoogleMap>
           )}
         </View>
         <View style={styles.section2}>
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            text={<MaterialIcons name='my-location' size={30} color='black' />}
+            text={<MaterialIcons name="my-location" size={30} color="black" />}
             fontColor={COLORS.white}
             onPress={getMyLocation}
             width={60}
@@ -376,7 +445,7 @@ const WalkingView = (props) => {
             <CustomButton
               bgColor={COLORS.warning}
               bgColorPress={COLORS.warningDeep}
-              text={<MaterialIcons name='pause' size={30} color='black' />}
+              text={<MaterialIcons name="pause" size={30} color="black" />}
               fontColor={COLORS.white}
               onPress={stopWalking}
               width={60}

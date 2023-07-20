@@ -85,10 +85,16 @@ export default class UserStore {
     return this._residenceAddress;
   }
   get residenceCoords() {
+    const defaultCoords = {
+      lat: 14.552,
+      lng: 121.047,
+    };
     try {
-      return !this._residenceCoords ? null : JSON.parse(this._residenceCoords);
+      return !this._residenceCoords
+        ? defaultCoords
+        : JSON.parse(this._residenceCoords);
     } catch (e) {
-      return null;
+      return defaultCoords;
     }
   }
 

@@ -11,6 +11,9 @@ import * as Location from 'expo-location';
 import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import { asyncStorage } from '../../storage/Storage';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Marker } from 'react-native-maps';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 const window = Dimensions.get('window');
 const ASPECT_RATIO = window.width / window.height;
@@ -23,7 +26,8 @@ const WalkingHomeView = () => {
 
   const [permission, setPermission] = useState(false);
   const [region, setRegion] = useState(null);
-  const { modalStore, systemStore } = useStores();
+  const { modalStore, systemStore, userStore } = useStores();
+  const [footprints, setFootprints] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,19 +53,43 @@ const WalkingHomeView = () => {
       }
 
       const status = await hasLocationPermissions();
+      let currentCoords = {};
       if (status) {
         let { coords } = await Location.getCurrentPositionAsync({});
         changeMyLocation(coords);
         setRegion(coords);
+        currentCoords = coords;
       } else {
+        const residenceCoords = userStore.residenceCoords;
         setRegion('residence');
+        currentCoords = {
+          latitude: residenceCoords?.lat,
+          longitude: residenceCoords?.lng,
+        };
       }
+
+      await getAroundFootprints(currentCoords);
     };
     fetchData();
   }, []);
 
   const goToNextStep = (params) => {
     Navigator.reset('walking', params);
+  };
+
+  const getAroundFootprints = async (coords) => {
+    try {
+      const response = await serviceApis.getAroundFootprints(
+        coords.latitude,
+        coords.longitude
+      );
+      setFootprints(response.result);
+
+      Toast.show({
+        type: 'success',
+        text1: 'ele: ' + response.result.length,
+      });
+    } catch (e) {}
   };
 
   const changeMyLocation = (coords) => {
@@ -74,7 +102,7 @@ const WalkingHomeView = () => {
   };
 
   const hasLocationPermissions = async () => {
-    const {status} = await Location.getForegroundPermissionsAsync();
+    const { status } = await Location.getForegroundPermissionsAsync();
     if (status === 'granted') {
       setPermission(true);
       return true;
@@ -84,7 +112,7 @@ const WalkingHomeView = () => {
   };
 
   const requestLocationPermissions = async () => {
-    const {status} = await Location.requestForegroundPermissionsAsync();
+    const { status } = await Location.requestForegroundPermissionsAsync();
     if (status === 'granted') {
       setPermission(true);
       return true;
@@ -120,9 +148,13 @@ const WalkingHomeView = () => {
     try {
       const response = await serviceApis.startWalking();
 
+      let { coords } = await Location.getCurrentPositionAsync({});
+
+      changeMyLocation(coords);
+
       const currentCoords = {
-        latitude: region.latitude,
-        longitude: region.longitude,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
       };
 
       goToNextStep({
@@ -150,13 +182,31 @@ const WalkingHomeView = () => {
           height={window.height}
           longitudeDelta={LONGITUDE_DELTA}
           latitudeDelta={LATITUDE_DELTA}
-        />
+        >
+          {footprints.map((ele) => (
+            <Marker
+              key={ele.id}
+              coordinate={{
+                latitude: ele.latitude,
+                longitude: ele.longitude,
+              }}
+              onPress={() => {
+                Toast.show({
+                  type: 'success',
+                  text1: 'id: ' + ele.id,
+                });
+              }}
+            >
+              <MaterialCommunityIcons name="dog" size={24} color="black" />
+            </Marker>
+          ))}
+        </GoogleMap>
       </View>
       <View style={styles.section2}>
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          text={<MaterialIcons name='my-location' size={30} color='black' />}
+          text={<MaterialIcons name="my-location" size={30} color="black" />}
           fontColor={COLORS.white}
           onPress={getMyLocation}
           width={60}
@@ -169,7 +219,7 @@ const WalkingHomeView = () => {
         <CustomButton
           bgColor={COLORS.dark}
           bgColorPress={COLORS.darkDeep}
-          text='산책 시작'
+          text="산책 시작"
           fontColor={COLORS.white}
           onPress={startWalking}
           height={50}

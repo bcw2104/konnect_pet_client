@@ -38,7 +38,6 @@ const WalkingResultView = (props) => {
         const response = await serviceApis.getWalkingReport(
           route.params?.walkingId
         );
-        console.log(response.result);
         const routes = JSON.parse(response.result.routes);
         setRoutes(
           routes.map((ele) => ({ latitude: ele[0], longitude: ele[1] }))
@@ -59,25 +58,20 @@ const WalkingResultView = (props) => {
           }
           rewardObj[ele.pointTypeName].push(ele);
         });
-        console.log(rewardObj);
         setRewards(rewardObj);
 
-        console.log({
+        setReport({
           startDate: moment(response.result?.startDate).format(
             'YYYY.MM.DD (ddd)'
           ),
-          seconds: response.result?.seconds,
-          meters: response.result?.meters,
-        });
-        setReport({
-          startDate: moment(response.result?.startDate).format(
+          endDate: moment(response.result?.endDate).format(
             'YYYY.MM.DD (ddd)'
           ),
           seconds: response.result?.seconds,
           meters: response.result?.meters,
         });
       } catch (e) {
-        // goToHome();
+        goToHome();
       } finally {
         systemStore.setIsLoading(false);
       }
@@ -95,7 +89,7 @@ const WalkingResultView = (props) => {
         <ScrollView contentContainerStyle={{ flex: 1 }}>
           <View style={styles.section1}>
             <CustomText fontSize={18} style={{ marginBottom: 10 }}>
-              {report?.startDate}
+              {report?.endDate}
             </CustomText>
             <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
               산책 리포트
