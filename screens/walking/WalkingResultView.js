@@ -26,6 +26,7 @@ const WalkingResultView = (props) => {
   const mapRef = useRef(null);
   const [region, setRegion] = useState(null);
   const [rewards, setRewards] = useState({});
+  const [footprints, setFootprints] = useState({});
   const [routes, setRoutes] = useState([]);
   const [report, setReport] = useState({});
 
@@ -64,11 +65,13 @@ const WalkingResultView = (props) => {
           startDate: moment(response.result?.startDate).format(
             'YYYY.MM.DD (ddd)'
           ),
-          endDate: moment(response.result?.endDate).format(
-            'YYYY.MM.DD (ddd)'
-          ),
+          endDate: moment(response.result?.endDate).format('YYYY.MM.DD (ddd)'),
           seconds: response.result?.seconds,
           meters: response.result?.meters,
+        });
+
+        setFootprints({
+          catched: response.result?.footprintCatchHistories,
         });
       } catch (e) {
         goToHome();
@@ -86,7 +89,7 @@ const WalkingResultView = (props) => {
   return (
     <Container header={true}>
       {!systemStore.isLoading && (
-        <ScrollView contentContainerStyle={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ }}>
           <View style={styles.section1}>
             <CustomText fontSize={18} style={{ marginBottom: 10 }}>
               {report?.endDate}
@@ -140,7 +143,7 @@ const WalkingResultView = (props) => {
                 </View>
               </View>
             </View>
-            <View style={styles.reward}>
+            <View style={styles.reportSection}>
               {Object.keys(rewards)?.map((k) => (
                 <View key={k}>
                   <CustomText
@@ -163,6 +166,27 @@ const WalkingResultView = (props) => {
                   </View>
                 </View>
               ))}
+            </View>
+            <View style={styles.reportSection}>
+              <CustomText
+                fontSize={20}
+                style={{ marginBottom: 10 }}
+                fontWeight={FONT_WEIGHT.BOLD}
+              >
+                획득 발자국 ({footprints?.catched?.length || 0}개)
+              </CustomText>
+              <View style={styles.reportItemWrap}>
+                {footprints?.catched?.map((ele, idx) => (
+                  <View style={styles.reportItem} key={idx}>
+                    <CustomText fontSize={18}>{ele.nickname}</CustomText>
+                    <CustomText fontSize={18}>
+                      {moment(ele.createdDate).format(
+                        'YYYY.MM.DD (ddd)'
+                      )}
+                    </CustomText>
+                  </View>
+                ))}
+              </View>
             </View>
           </View>
         </ScrollView>

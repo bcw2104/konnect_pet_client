@@ -1,5 +1,5 @@
 import { AppState, Dimensions, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import Container from '../../components/layouts/Container';
 import GoogleMap from '../../components/map/GoogleMap';
@@ -10,7 +10,11 @@ import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import CustomText from '../../components/elements/CustomText';
 import Timer from '../../components/elements/Timer';
-import { FONT_WEIGHT, WALKING_REWARD_TYPE } from '../../commons/constants';
+import {
+  DEEP_LINK_PREFIX,
+  FONT_WEIGHT,
+  WALKING_REWARD_TYPE,
+} from '../../commons/constants';
 import { Navigator } from '../../navigations/Navigator';
 import { observer } from 'mobx-react-lite';
 import { asyncStorage } from '../../storage/Storage';
@@ -41,8 +45,12 @@ const WalkingView = (props) => {
   const currentCoords = useRef(null);
   const footprintCoords = useRef([]);
   const savedCoords = useRef([]);
+  const catchedFootprints = useRef([]);
   const metersRef = useRef(0);
+  const footprintsRef = useRef([]);
   const prevTime = useRef(new Date());
+  const updateFootprints = useRef(false);
+
   const [seconds, setSeconds] = useState(0);
   const [meters, setMeters] = useState(0);
   const [startCounter, setStartCounter] = useState(SPLASH_TIME);
@@ -63,7 +71,7 @@ const WalkingView = (props) => {
       name: 'ic_launcher',
       type: 'mipmap',
     },
-    linkingURI: 'konnect://chat/jane',
+    linkingURI: DEEP_LINK_PREFIX.DEFAULT + 'walking',
     color: '#ff00ff',
     parameters: {},
   };
@@ -84,7 +92,6 @@ const WalkingView = (props) => {
         }
 
         appState.current = nextAppState;
-        console.log('AppState', appState.current);
       }
     );
 
@@ -146,6 +153,12 @@ const WalkingView = (props) => {
           }))
         );
       }
+
+      if (updateFootprints.current) {
+        setFootprints(footprintsRef.current);
+        updateFootprints.current = false;
+      }
+
       if (footprintCoords.current.length != myFootprints.length) {
         setMyFootprints(
           footprintCoords.current.map((coords) => ({
@@ -188,11 +201,37 @@ const WalkingView = (props) => {
         coords.latitude,
         coords.longitude
       );
-      setFootprints(response.result);
-      
+      const catchedFootprints = response.result?.catchedFootprints;
+      const footprints = {};
+
+      response.result?.radiusFootprints?.forEach((ele) => {
+        footprints[ele.id] = { ...ele, catched: catchedFootprints.includes(ele.id)};
+      });
+      footprintsRef.current = footprints;
+      setFootprints(footprints);
     } catch (e) {}
   };
-  const updateLocation = async () => {
+
+  const getAroundCoords = (coords, meters) => {
+    const lat = coords.latitude;
+    const lng = coords.longitude;
+    const kmInLongitudeDegree = 111.32 * Math.cos((lat / 180.0) * Math.PI);
+    const km = meters / 1000;
+
+    let deltaLat = km / 111.1;
+    let deltaLng = km / kmInLongitudeDegree;
+
+    const aroundCoords = {
+      minLat: lat - deltaLat,
+      maxLat: lat + deltaLat,
+      minLng: lng - deltaLng,
+      maxLng: lng + deltaLng,
+    };
+
+    return aroundCoords;
+  };
+
+  const updateLocation = useCallback(async () => {
     try {
       let { coords } = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Highest,
@@ -216,6 +255,44 @@ const WalkingView = (props) => {
       );
       prevCoords.current = currentCoords.current;
 
+      const aroundCoords = utils.getAroundCoord(
+        coords.latitude,
+        coords.longitude,
+        10
+      );
+
+      //발자국 획득 로직
+      if(policies.current['walking_footprint_catch_amount'] > catchedFootprints.current.length){
+        const catchableFootprints = Object.values(footprintsRef.current).filter(
+          (f) =>
+            f.catched == false &&
+            f.latitude >= aroundCoords.minLat &&
+            f.latitude <= aroundCoords.maxLat &&
+            f.longitude >= aroundCoords.minLng &&
+            f.longitude <= aroundCoords.maxLng
+        );
+
+        const currentCatchableCount = Math.min(
+          catchableFootprints.length,
+          policies.current['walking_footprint_catch_amount'] -
+            catchedFootprints.current.length
+        );
+
+        let catchCount = 0;
+        for (let i = 0; i < currentCatchableCount; i++) {
+          const target = catchableFootprints[i].id;
+          if (target) {
+            catchedFootprints.current.push(target);
+            footprintsRef.current[target].catched = true;
+            catchCount++;
+          }
+        }
+
+        if (catchCount > 0) {
+          updateFootprints.current = false;
+        }
+      }
+
       if (metersRef.current > 0) {
         if (
           metersRef.current >=
@@ -225,6 +302,11 @@ const WalkingView = (props) => {
             parseInt(policies.current['walking_footprint_max_amount'])
         ) {
           footprintCoords.current.push([coords.latitude, coords.longitude]);
+          utils.defaultNotification(
+            '발자국 기록!',
+            `${footprintCoords.current.length}"번째 발자국을 기록했어요!`,
+            'walking'
+          );
         }
       }
 
@@ -234,7 +316,7 @@ const WalkingView = (props) => {
     } catch (e) {
       console.log(e.message);
     }
-  };
+  }, []);
 
   const calculateReward = (rewards) => {
     Object.keys(rewards).map((key) => {
@@ -263,14 +345,14 @@ const WalkingView = (props) => {
     Navigator.reset('walking_result', params);
   };
 
-  const changeMyLocation = (coords) => {
+  const changeMyLocation = useCallback((coords) => {
     mapRef?.current?.animateToRegion({
       latitude: coords.latitude,
       longitude: coords.longitude,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     });
-  };
+  }, []);
 
   const hasLocationPermissions = async () => {
     const { status } = await Location.getForegroundPermissionsAsync();
@@ -333,6 +415,7 @@ const WalkingView = (props) => {
           rewards: JSON.stringify(rewards.current),
           footprintCoords: JSON.stringify(footprintCoords.current),
           savedCoords: JSON.stringify(savedCoords.current),
+          catchedFootprints: JSON.stringify(catchedFootprints.current),
         };
 
         try {
@@ -383,23 +466,52 @@ const WalkingView = (props) => {
               latitudeDelta={LATITUDE_DELTA}
               userLocation={permission}
             >
-              {footprints.map((ele, idx) => (
-                <Marker
-                  key={ele.id}
-                  coordinate={{
-                    latitude: ele.latitude,
-                    longitude: ele.longitude,
-                  }}
-                  onPress={() => {
-                    Toast.show({
-                      type: 'success',
-                      text1: "id: " + ele.id,
-                    });
-                  }}
-                >
-                  <MaterialCommunityIcons name="dog" size={24} color="black" />
-                </Marker>
-              ))}
+              {Object.values(footprints)
+                .filter((e) => !e.catched)
+                .map((ele, idx) => (
+                  <Marker
+                    key={ele.id}
+                    coordinate={{
+                      latitude: ele.latitude,
+                      longitude: ele.longitude,
+                    }}
+                    onPress={() => {
+                      Toast.show({
+                        type: 'success',
+                        text1: 'id: ' + ele.id,
+                      });
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="dog"
+                      size={24}
+                      color="black"
+                    />
+                  </Marker>
+                ))}
+                {Object.values(footprints)
+                .filter((e) => e.catched)
+                .map((ele, idx) => (
+                  <Marker
+                    key={ele.id}
+                    coordinate={{
+                      latitude: ele.latitude,
+                      longitude: ele.longitude,
+                    }}
+                    onPress={() => {
+                      Toast.show({
+                        type: 'success',
+                        text1: 'id: ' + ele.id,
+                      });
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="dog"
+                      size={24}
+                      color="red"
+                    />
+                  </Marker>
+                ))}
               {myFootprints.map((coords, index) => (
                 <Marker key={index} coordinate={coords}>
                   <FontAwesome5 name="stamp" size={24} color="black" />

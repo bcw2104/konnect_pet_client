@@ -18,6 +18,8 @@ import Loader from './components/modules/Loader';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import { Linking } from 'react-native';
+import { Navigator } from './navigations/Navigator';
+import { DEEP_LINK_PREFIX } from './commons/constants';
 
 const rootStore = new RootStore();
 
@@ -33,11 +35,18 @@ export default function App() {
   useBackPressHandler();
 
   useEffect(()=>{
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+      }),
+    });
+
     Linking.addEventListener('url', (event)=>{
-      Toast.show({
-        type: 'success',
-        text1: event.url,
-      });
+      if(event.url == DEEP_LINK_PREFIX.DEFAULT + 'walking'){
+        Navigator.navigate('walking', {});
+      }
     });
   },[]);
 
@@ -65,6 +74,7 @@ export default function App() {
       await Settings.setAdvertiserTrackingEnabled(true);
     }
   };
+
 
   const initDeviceInfo = async () => {
     const deviceToken = await registerForPushNotificationsAsync();

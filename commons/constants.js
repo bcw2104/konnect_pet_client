@@ -25,3 +25,7 @@ export const FONT_WEIGHT = {
 export const FONT_FAMILY = {
   ROBOTO: 'Roboto',
 };
+
+export const DEEP_LINK_PREFIX={
+  DEFAULT:"konnect://"
+}

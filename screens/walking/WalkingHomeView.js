@@ -83,12 +83,14 @@ const WalkingHomeView = () => {
         coords.latitude,
         coords.longitude
       );
-      setFootprints(response.result);
+      
+      const catchedFootprints = response.result?.catchedFootprints;
+      const footprints = {};
 
-      Toast.show({
-        type: 'success',
-        text1: 'ele: ' + response.result.length,
+      response.result?.radiusFootprints?.forEach((ele) => {
+        footprints[ele.id] = { ...ele, catched: catchedFootprints.includes(ele.id)};
       });
+      setFootprints(footprints);
     } catch (e) {}
   };
 
@@ -140,12 +142,13 @@ const WalkingHomeView = () => {
   };
 
   const startWalking = async () => {
-    const status = await requestLocationPermissions();
-
-    if (!status) return;
-
     systemStore.setIsLoading(true);
+    
     try {
+      const status = await requestLocationPermissions();
+
+      if (!status) return;
+
       const response = await serviceApis.startWalking();
 
       let { coords } = await Location.getCurrentPositionAsync({});
@@ -183,23 +186,52 @@ const WalkingHomeView = () => {
           longitudeDelta={LONGITUDE_DELTA}
           latitudeDelta={LATITUDE_DELTA}
         >
-          {footprints.map((ele) => (
-            <Marker
-              key={ele.id}
-              coordinate={{
-                latitude: ele.latitude,
-                longitude: ele.longitude,
-              }}
-              onPress={() => {
-                Toast.show({
-                  type: 'success',
-                  text1: 'id: ' + ele.id,
-                });
-              }}
-            >
-              <MaterialCommunityIcons name="dog" size={24} color="black" />
-            </Marker>
-          ))}
+          {Object.values(footprints)
+                .filter((e) => !e.catched)
+                .map((ele, idx) => (
+                  <Marker
+                    key={ele.id}
+                    coordinate={{
+                      latitude: ele.latitude,
+                      longitude: ele.longitude,
+                    }}
+                    onPress={() => {
+                      Toast.show({
+                        type: 'success',
+                        text1: 'id: ' + ele.id,
+                      });
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="dog"
+                      size={24}
+                      color="black"
+                    />
+                  </Marker>
+                ))}
+                {Object.values(footprints)
+                .filter((e) => e.catched)
+                .map((ele, idx) => (
+                  <Marker
+                    key={ele.id}
+                    coordinate={{
+                      latitude: ele.latitude,
+                      longitude: ele.longitude,
+                    }}
+                    onPress={() => {
+                      Toast.show({
+                        type: 'success',
+                        text1: 'id: ' + ele.id,
+                      });
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="dog"
+                      size={24}
+                      color="red"
+                    />
+                  </Marker>
+                ))}
         </GoogleMap>
       </View>
       <View style={styles.section2}>
