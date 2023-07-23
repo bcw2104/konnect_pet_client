@@ -1,47 +1,50 @@
-import { StyleSheet, View } from 'react-native';
-import React from 'react';
-import { Modal } from 'native-base';
+import {  StyleSheet, View } from 'react-native';
+import React, { useImperativeHandle } from 'react';
 import CustomButton from './CustomButton';
 import COLORS from '../../commons/colors';
 import { useState } from 'react';
 import { forwardRef } from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import CustomText from './CustomText';
+import { FONT_WEIGHT } from '../../commons/constants';
+import Modal from "react-native-modal";
 
-const CustomModal = ({
-  content = '',
-  closeText = null,
-  okText = null,
-  closeCallback = null,
-  okCallback = null,
-  ref,
-}) => {
+const CustomModal = (
+  {
+    title = '',
+    closeText = '',
+    okText = '',
+    closeCallback = null,
+    okCallback = null,
+    children,
+  },
+  ref
+) => {
   const [open, setOpen] = useState(false);
-  const { systemStore } = useStores();
 
   useImperativeHandle(
     ref,
     () => {
       return {
-        openModal: openModal,
+        openModal: handleOpen,
       };
     },
     []
   );
 
-  const openModal = () => {
+  const handleOpen = () => {
     setOpen(true);
   };
 
-  const closeModal = () => {
-    if (closeCallback) {
+  const handleClose = () => {
+    if (!!closeCallback) {
       closeCallback();
     }
     setOpen(false);
   };
 
-  const confirm = () => {
-    if (okCallback) {
+  const handleConfirm = () => {
+    if (!!okCallback) {
       okCallback();
     }
     setOpen(false);
@@ -49,32 +52,47 @@ const CustomModal = ({
 
   return (
     <Modal
-      animationType='none'
+      animationType="none"
       transparent={true}
-      visible={open}
-      onRequestClose={closeModal}
+      isVisible={open}
+      animationInTiming={500}
+      animationOutTiming={500}
+      backdropTransitionInTiming={500}
+      backdropTransitionOutTiming={500}
+      onBackButtonPress={handleClose}
+      onBackdropPress={handleClose}
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <CustomText style={styles.modalText}>{content}</CustomText>
-          <View stlye={styles.buttonWrap}>
+          {title && (
+            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
+              {title}
+            </CustomText>
+          )}
+          <View style={styles.modalContent}>{children}</View>
+          <View style={styles.buttonWrap}>
             <CustomButton
-              bgColor={COLORS.light}
-              bgColorPress={COLORS.lightDeep}
-              fontColor={COLORS.black}
-              fontSize={14}
-              onPress={closeModal}
+              bgColor={!!okText ? COLORS.light : COLORS.dark}
+              bgColorPress={!!okText ? COLORS.lightDeep : COLORS.darkDeep}
+              fontColor={!!okText ? COLORS.black : COLORS.white}
+              wrapperStyle={{ flex: 1 }}
+              fontSize={16}
+              onPress={handleClose}
               text={closeText}
             />
             {!!okText && (
-              <CustomButton
-                bgColor={COLORS.dark}
-                bgColorPress={COLORS.darkDeep}
-                fontColor={COLORS.white}
-                fontSize={14}
-                onPress={confirm}
-                text={okText}
-              />
+              <>
+                <View style={{ marginHorizontal: 5 }}></View>
+                <CustomButton
+                  bgColor={COLORS.dark}
+                  bgColorPress={COLORS.darkDeep}
+                  fontColor={COLORS.white}
+                  fontSize={16}
+                  wrapperStyle={{ flex: 1 }}
+                  onPress={handleConfirm}
+                  text={okText}
+                />
+              </>
             )}
           </View>
         </View>
@@ -90,14 +108,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
   },
   modalView: {
     margin: 20,
+    width: '95%',
     backgroundColor: COLORS.white,
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -108,10 +125,11 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonWrap: {
-
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
+  modalContent: {
+    marginTop: 15,
+    marginBottom: 25,
   },
 });

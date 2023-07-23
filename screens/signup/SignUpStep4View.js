@@ -25,15 +25,17 @@ const SignupStep4View = (props) => {
   const { route } = props;
   const { userStore } = useStores();
   const mapRef = useRef(null);
-  const [isMapReady, setIsMapReady] = useState(false);
   const [searchValue, setSearchValue] = useState(null);
-
-  useEffect(() => {
-    if (!isMapReady) return;
-  }, [isMapReady]);
+  const [region, setRegion] = useState(null);
 
   useEffect(() => {
     Geocoder.init(Constants.expoConfig?.extra?.googleWebApiKey);
+    const residenceCoords = userStore.residenceCoords;
+    currentCoords = {
+      latitude: residenceCoords?.lat,
+      longitude: residenceCoords?.lng,
+    };
+    setRegion(currentCoords);
   }, []);
 
   const submitSignupData = async () => {
@@ -46,7 +48,7 @@ const SignupStep4View = (props) => {
         coords: JSON.stringify({
           lat: searchValue?.coords?.latitude,
           lng: searchValue?.coords?.longitude,
-        })
+        }),
       });
       if (response?.rsp_code === '1002') {
         Toast.show({
@@ -69,10 +71,6 @@ const SignupStep4View = (props) => {
       console.log(error);
       //Navigator.reset('welcome', {});
     }
-  };
-
-  const onMapReady = () => {
-    setIsMapReady(true);
   };
 
   return (
@@ -146,11 +144,11 @@ const SignupStep4View = (props) => {
           <View style={styles.mapWrap}>
             <GoogleMap
               mapRef={mapRef}
+              defaultRegion={region}
               style={{
                 flex: 1,
                 marginVertical: 20,
               }}
-              onMapReady={onMapReady}
               userLocation={false}
               longitudeDelta={LONGITUDE_DELTA}
               latitudeDelta={LATITUDE_DELTA}

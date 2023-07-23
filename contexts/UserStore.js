@@ -86,8 +86,8 @@ export default class UserStore {
   }
   get residenceCoords() {
     const defaultCoords = {
-      lat: 14.552,
-      lng: 121.047,
+      lat: 14.5995124,
+      lng: 120.9842195,
     };
     try {
       return !this._residenceCoords

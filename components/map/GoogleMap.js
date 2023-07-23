@@ -5,7 +5,7 @@ import { useStores } from '../../contexts/StoreContext';
 
 const GoogleMap = ({
   mapRef,
-  defaultRegion = 'residence',
+  defaultRegion = null,
   onRegionChange = () => {},
   onMapReady = () => {},
   userLocation = true,
@@ -17,28 +17,16 @@ const GoogleMap = ({
   latitudeDelta,
   children,
 }) => {
-  const { userStore } = useStores();
   const [region, setRegion] = useState(null);
 
   useEffect(() => {
     if (!defaultRegion) return;
-
-    if (defaultRegion === 'residence') {
-      const residenceCoords = userStore.residenceCoords;
-      setRegion({
-        latitude: residenceCoords?.lat,
-        longitude: residenceCoords?.lng,
-        latitudeDelta: latitudeDelta,
-        longitudeDelta: longitudeDelta,
-      });
-    } else {
-      setRegion({
-        latitude: defaultRegion.latitude,
-        longitude: defaultRegion.longitude,
-        latitudeDelta: latitudeDelta,
-        longitudeDelta: longitudeDelta,
-      });
-    }
+    setRegion({
+      latitude: defaultRegion.latitude,
+      longitude: defaultRegion.longitude,
+      latitudeDelta: latitudeDelta,
+      longitudeDelta: longitudeDelta,
+    });
   }, [defaultRegion]);
 
   return (
