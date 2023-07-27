@@ -14,6 +14,7 @@ export default COLORS = {
   light: '#fafafa',
   lightDeep: '#eeeeee',
 
+  grayLight:'#d9d9d9',
   gray: '#bdbdbd',
   grayDeep: '#6b6b6b',
 

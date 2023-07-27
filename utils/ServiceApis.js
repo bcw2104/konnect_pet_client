@@ -50,4 +50,13 @@ export default serviceApis = {
   getAroundFootprints: (lat,lng) => baseAxios.get(`/api/walking/v1/footprints/around`,{
     params: {lat,lng}
   }),
+
+  uploadFiles: (payload) => baseAxios.post(`/api/upload/v1/images/profile/pet`,payload,{
+    headers: {
+      "Content-Type": `multipart/form-data`,
+    },
+  }),
+
+  //pet
+  savePet : (payload) => baseAxios.put(`/api/user/v1/pet`,payload)
 }

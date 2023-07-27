@@ -13,6 +13,7 @@ const CustomInput = ({
   onValueChange = () => {},
   width = 'auto',
   height = 50,
+  fontSize = 18,
   wrapperStyle = {},
   style = {},
   placeholder = '',
@@ -21,6 +22,7 @@ const CustomInput = ({
   regex = '',
   errorHandler = false,
   errorMsg = '',
+  outline = false,
 }) => {
   const [error, setError] = useState(false);
 
@@ -65,8 +67,9 @@ const CustomInput = ({
           style={{
             width: width,
             height: height,
+            fontSize: fontSize,
             paddingHorizontal: 10,
-            borderWidth: 1,
+            borderWidth: outline ? 0 : 1,
             borderColor: error ? COLORS.danger : COLORS.gray,
             borderRadius: 5,
             borderStyle: 'solid',

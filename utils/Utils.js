@@ -1,5 +1,7 @@
 import * as Notifications from 'expo-notifications';
+import * as FileSystem from 'expo-file-system';
 import { DEEP_LINK_PREFIX } from '../commons/constants';
+import { asyncStorage } from '../storage/Storage';
 
 export const utils = {
   coordsDist: (lat1, lon1, lat2, lon2) => {
@@ -23,7 +25,7 @@ export const utils = {
     return parseInt(d); //Return 3 decimals
   },
 
-  getAroundCoord : (lat,lng, meters) => {
+  getAroundCoord: (lat, lng, meters) => {
     const kmInLongitudeDegree = 111.32 * Math.cos((lat / 180.0) * Math.PI);
     const km = meters / 1000;
 
@@ -54,5 +56,42 @@ export const utils = {
     });
 
     console.log('send notification');
+  },
+
+  /**
+   *
+   * @param {*} imageUri
+   * @param {*} path
+   * @returns upload image function
+   */
+  uploadImage: async (imageUri, path) => {
+    const BASE_API_URL =
+      process.env.NODE_ENV == 'development'
+        ? Platform.OS == 'ios'
+          ? 'http://127.0.0.1:8080'
+          : 'http://10.0.2.2:8080'
+        : process.env.EXPO_PUBLIC_BASE_API_URL;
+
+    try {
+      const accessToken = await asyncStorage.getItem('access_token');
+
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+      };
+
+      const response = await FileSystem.uploadAsync(
+        BASE_API_URL + path,
+        imageUri,
+        {
+          headers: headers,
+          httpMethod: 'POST',
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          fieldName: 'image',
+        }
+      );
+      return JSON.parse(response.body).result;
+    } catch (e) {
+      throw new Error(e);
+    }
   },
 };

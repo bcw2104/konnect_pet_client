@@ -49,11 +49,17 @@ const WalkingView = (props) => {
   const currentCoords = useRef(null);
   const footprintCoords = useRef([]);
   const savedCoords = useRef([]);
+  const savedCoordsProps = useRef({
+    balancer: 1,
+    counter: 0,
+    updated: false,
+  });
   const catchedFootprints = useRef([]);
   const metersRef = useRef(0);
   const footprintsRef = useRef([]);
   const prevTime = useRef(new Date());
   const updateFootprints = useRef(false);
+  const aroundStandardCoords = useRef(null);
 
   const [seconds, setSeconds] = useState(0);
   const [meters, setMeters] = useState(0);
@@ -150,7 +156,8 @@ const WalkingView = (props) => {
         setMeters(metersRef.current);
       }
 
-      if (savedCoords.current.length != routes.length) {
+      if (savedCoordsProps.current.updated) {
+        savedCoordsProps.current.updated = false;
         setRoutes(
           savedCoords.current.map((coords) => ({
             latitude: coords[0],
@@ -205,6 +212,7 @@ const WalkingView = (props) => {
   };
 
   const getAroundFootprints = async (coords) => {
+    aroundStandardCoords.current = coords;
     try {
       const response = await serviceApis.getAroundFootprints(
         coords.latitude,
@@ -222,25 +230,6 @@ const WalkingView = (props) => {
       footprintsRef.current = footprints;
       setFootprints(footprints);
     } catch (e) {}
-  };
-
-  const getAroundCoords = (coords, meters) => {
-    const lat = coords.latitude;
-    const lng = coords.longitude;
-    const kmInLongitudeDegree = 111.32 * Math.cos((lat / 180.0) * Math.PI);
-    const km = meters / 1000;
-
-    let deltaLat = km / 111.1;
-    let deltaLng = km / kmInLongitudeDegree;
-
-    const aroundCoords = {
-      minLat: lat - deltaLat,
-      maxLat: lat + deltaLat,
-      minLng: lng - deltaLng,
-      maxLng: lng + deltaLng,
-    };
-
-    return aroundCoords;
   };
 
   const updateLocation = useCallback(async () => {
@@ -325,8 +314,38 @@ const WalkingView = (props) => {
         }
       }
 
-      if (metersRef.current >= 50 * savedCoords.current.length) {
-        savedCoords.current.push([coords.latitude, coords.longitude]);
+      if (metersRef.current >= 70 * savedCoordsProps.current.counter) {
+        if (savedCoords.current.length >= 25) {
+          if (savedCoordsProps.current.balancer % 2 == 0) {
+            savedCoords.current.splice(
+              savedCoordsProps.current.balancer - 1,
+              1
+            );
+            savedCoords.current.push([coords.latitude, coords.longitude]);
+            savedCoordsProps.current.updated = true;
+          }
+          savedCoordsProps.current.balancer += 1;
+          if (savedCoordsProps.current.balancer == 25) {
+            savedCoordsProps.current.balancer = 1;
+          }
+        } else {
+          savedCoords.current.push([coords.latitude, coords.longitude]);
+          savedCoordsProps.current.updated = true;
+        }
+        savedCoordsProps.current.counter += 1;
+      }
+
+      const standardCoords = aroundStandardCoords.current;
+
+      const dist = utils.coordsDist(
+        coords.latitude,
+        coords.longitude,
+        standardCoords.latitude,
+        standardCoords.longitude
+      );
+
+      if (dist >= 2500) {
+        getAroundFootprints(coords);
       }
     } catch (e) {
       console.log(e.message);
@@ -415,25 +434,26 @@ const WalkingView = (props) => {
       () => {},
       '네',
       async () => {
-        let { coords } = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Highest,
-        });
-        changeMyLocation(coords);
-        savedCoords.current.push([coords.latitude, coords.longitude]);
-
-        calculateReward(rewards.current);
-        const params = {
-          id: route.params?.walkingId,
-          key: route.params?.walkingKey,
-          meters: meters,
-          seconds: seconds,
-          rewards: JSON.stringify(rewards.current),
-          footprintCoords: JSON.stringify(footprintCoords.current),
-          savedCoords: JSON.stringify(savedCoords.current),
-          catchedFootprints: JSON.stringify(catchedFootprints.current),
-        };
-
+        systemStore.setIsLoading(true);
         try {
+          let { coords } = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Highest,
+          });
+          changeMyLocation(coords);
+          savedCoords.current.push([coords.latitude, coords.longitude]);
+        } catch (error) {}
+        try {
+          calculateReward(rewards.current);
+          const params = {
+            id: route.params?.walkingId,
+            key: route.params?.walkingKey,
+            meters: meters,
+            seconds: seconds,
+            rewards: JSON.stringify(rewards.current),
+            footprintCoords: JSON.stringify(footprintCoords.current),
+            savedCoords: JSON.stringify(savedCoords.current),
+            catchedFootprints: JSON.stringify(catchedFootprints.current),
+          };
           const response = await serviceApis.saveWalking(params);
 
           if (response?.rsp_code === '1000') {
@@ -443,6 +463,8 @@ const WalkingView = (props) => {
           }
         } catch (error) {
           goToHome();
+        } finally {
+          systemStore.setIsLoading(false);
         }
       }
     );

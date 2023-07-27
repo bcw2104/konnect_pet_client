@@ -89,7 +89,7 @@ const WalkingResultView = (props) => {
   return (
     <Container header={true}>
       {!systemStore.isLoading && (
-        <ScrollView contentContainerStyle={{ }}>
+        <ScrollView>
           <View style={styles.section1}>
             <CustomText fontSize={18} style={{ marginBottom: 10 }}>
               {report?.endDate}
@@ -180,12 +180,15 @@ const WalkingResultView = (props) => {
                   <View style={styles.reportItem} key={idx}>
                     <CustomText fontSize={18}>{ele.nickname}</CustomText>
                     <CustomText fontSize={18}>
-                      {moment(ele.createdDate).format(
-                        'YYYY.MM.DD (ddd)'
-                      )}
+                      {moment(ele.createdDate).format('YYYY.MM.DD (ddd)')}
                     </CustomText>
                   </View>
                 ))}
+                {footprints?.catched.length == 0 && (
+                  <View style={styles.reportItem}>
+                    <CustomText fontSize={18}>획득한 발자국이 없어요.</CustomText>
+                  </View>
+                )}
               </View>
             </View>
           </View>

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import CustomButton from './CustomButton';
 import COLORS from '../../commons/colors';
@@ -38,34 +38,23 @@ const GlobalModal = () => {
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <CustomText style={styles.modalText}>{modalStore.content}</CustomText>
+          <View style={styles.contentWrap}>
+            <CustomText style={styles.contentText}>
+              {modalStore.content}
+            </CustomText>
+          </View>
           <View style={styles.buttonWrap}>
-            <CustomButton
-              bgColor={!!modalStore.secondBtnText ? COLORS.light : COLORS.dark}
-              bgColorPress={
-                !!modalStore.secondBtnText ? COLORS.lightDeep : COLORS.darkDeep
-              }
-              fontColor={
-                !!modalStore.secondBtnText ? COLORS.black : COLORS.white
-              }
-              wrapperStyle={{ flex: 1 }}
-              fontSize={16}
-              onPress={handleClose}
-              text={modalStore.firstBtnText}
-            />
+            <Pressable onPress={handleClose} style={styles.button}>
+              <CustomText>{modalStore.firstBtnText}</CustomText>
+            </Pressable>
+
             {!!modalStore.secondBtnText && (
-              <>
-                <View style={{ marginHorizontal: 5 }}></View>
-                <CustomButton
-                  bgColor={COLORS.dark}
-                  bgColorPress={COLORS.darkDeep}
-                  fontColor={COLORS.white}
-                  fontSize={16}
-                  wrapperStyle={{ flex: 1 }}
-                  onPress={handleConfirm}
-                  text={modalStore.secondBtnText}
-                />
-              </>
+              <Pressable
+                onPress={handleConfirm}
+                style={[styles.button, styles.secondButton]}
+              >
+                <CustomText>{modalStore.secondBtnText}</CustomText>
+              </Pressable>
             )}
           </View>
         </View>
@@ -83,12 +72,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalView: {
-    margin: 20,
-    width: '95%',
+    width: '90%',
     backgroundColor: COLORS.white,
     borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -102,10 +88,26 @@ const styles = StyleSheet.create({
   buttonWrap: {
     flexDirection: 'row',
     alignItems: 'center',
+    borderTopColor: COLORS.grayLight,
+    borderTopWidth: 1,
   },
 
-  modalText: {
-    marginBottom: 35,
-    textAlign: 'center',
+  button: {
+    flex: 1,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  secondButton: {
+    borderLeftColor: COLORS.grayLight,
+    borderLeftWidth: 1,
+  },
+
+  contentWrap: {
+    paddingVertical:40,
+    paddingHorizontal:20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -1,4 +1,4 @@
-import {  StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import React, { useImperativeHandle } from 'react';
 import CustomButton from './CustomButton';
 import COLORS from '../../commons/colors';
@@ -7,7 +7,7 @@ import { forwardRef } from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import CustomText from './CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
-import Modal from "react-native-modal";
+import Modal from 'react-native-modal';
 
 const CustomModal = (
   {
@@ -65,34 +65,25 @@ const CustomModal = (
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           {title && (
-            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
-              {title}
-            </CustomText>
+            <View style={styles.titleWrap}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
+                {title}
+              </CustomText>
+            </View>
           )}
-          <View style={styles.modalContent}>{children}</View>
+          <View style={styles.contentWrap}>{children}</View>
           <View style={styles.buttonWrap}>
-            <CustomButton
-              bgColor={!!okText ? COLORS.light : COLORS.dark}
-              bgColorPress={!!okText ? COLORS.lightDeep : COLORS.darkDeep}
-              fontColor={!!okText ? COLORS.black : COLORS.white}
-              wrapperStyle={{ flex: 1 }}
-              fontSize={16}
-              onPress={handleClose}
-              text={closeText}
-            />
+            <Pressable onPress={handleClose} style={styles.button}>
+              <CustomText>{closeText}</CustomText>
+            </Pressable>
+
             {!!okText && (
-              <>
-                <View style={{ marginHorizontal: 5 }}></View>
-                <CustomButton
-                  bgColor={COLORS.dark}
-                  bgColorPress={COLORS.darkDeep}
-                  fontColor={COLORS.white}
-                  fontSize={16}
-                  wrapperStyle={{ flex: 1 }}
-                  onPress={handleConfirm}
-                  text={okText}
-                />
-              </>
+              <Pressable
+                onPress={handleConfirm}
+                style={[styles.button, styles.secondButton]}
+              >
+                <CustomText>{okText}</CustomText>
+              </Pressable>
             )}
           </View>
         </View>
@@ -110,11 +101,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalView: {
-    margin: 20,
-    width: '95%',
+    width: '90%',
     backgroundColor: COLORS.white,
     borderRadius: 20,
-    padding: 35,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -124,12 +113,33 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+
   buttonWrap: {
     flexDirection: 'row',
     alignItems: 'center',
+    borderTopColor: COLORS.grayLight,
+    borderTopWidth: 1,
   },
-  modalContent: {
-    marginTop: 15,
-    marginBottom: 25,
+
+  button: {
+    flex: 1,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  secondButton: {
+    borderLeftColor: COLORS.grayLight,
+    borderLeftWidth: 1,
+  },
+
+  titleWrap: {
+    paddingTop: 20,
+    paddingHorizontal:20,
+    justifyContent: 'flex-start',
+  },
+  contentWrap: {
+    paddingVertical: 30,
+    paddingHorizontal:20,
   },
 });

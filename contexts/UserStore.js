@@ -10,7 +10,10 @@ export default class UserStore {
   _platform = null;
   _residenceAddress = null;
   _residenceCoords = null;
+  _profileImgUrl = null;
   _isLogin = false;
+
+  _pets = null;
 
   _deviceModel = null;
   _deviceOs = null;
@@ -35,7 +38,9 @@ export default class UserStore {
         this._platform = response.result.platform;
         this._residenceAddress = response.result.residenceAddress;
         this._residenceCoords = response.result.residenceCoords;
+        this._profileImgUrl = response.result.profileImgUrl;
         this._isLogin = true;
+        this._pets = response.result.pets;
       });
 
       await serviceApis.updateDeviceInfo(
@@ -44,7 +49,9 @@ export default class UserStore {
         this._deviceOsVersion,
         this._deviceToken
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   setDeviceInfo(deviceModel, deviceOs, deviceOsVersion, deviceToken) {
@@ -56,6 +63,16 @@ export default class UserStore {
 
   setLoginStatus(isLogin) {
     this._isLogin = isLogin;
+  }
+
+  addPet(pet) {
+    let pets = [];
+    if (this._pets != null) {
+      pets = [...this._pets];
+    }
+    pets.push(pet);
+
+    this._pets = pets;
   }
 
   async logout() {
@@ -100,6 +117,14 @@ export default class UserStore {
 
   get isLogin() {
     return this._isLogin;
+  }
+
+  get pets() {
+    return this._pets;
+  }
+
+  get profileImgUrl() {
+    return this._profileImgUrl;
   }
 
   get rootStore() {

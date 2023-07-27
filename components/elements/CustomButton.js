@@ -34,7 +34,7 @@ const CustomButton = ({
             width: width,
             height: height,
             borderRadius: 5,
-            borderColor: COLORS.dark,
+            borderColor: COLORS.gray,
             borderWidth: bgColor == COLORS.light ? 1 : 0,
             backgroundColor: pressed ? bgColorPress : bgColor,
             justifyContent:'center',

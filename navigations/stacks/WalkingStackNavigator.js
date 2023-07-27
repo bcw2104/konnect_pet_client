@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import WalkingHomeView from '../../screens/walking/WalkingHomeView';
 import WalkingView from '../../screens/walking/WalkingView';
 import WalkingResultView from '../../screens/walking/WalkingResultView';
+import PetAddView from '../../screens/user/PetAddView';
 
 const WalkingStack = createNativeStackNavigator();
 
@@ -42,6 +43,10 @@ const WalkingStackNavigator = () => {
           presentation: 'modal',
         })}
       >
+        <WalkingStack.Screen
+          name="pet_add"
+          component={PetAddView}
+        ></WalkingStack.Screen>
         <WalkingStack.Screen
           name="walking_result"
           component={WalkingResultView}

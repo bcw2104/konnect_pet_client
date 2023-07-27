@@ -18,6 +18,7 @@ import { Ionicons } from '@expo/vector-icons';
 import CustomText from '../../components/elements/CustomText';
 import CustomModal from '../../components/elements/CustomModal';
 import CustomSwitch from '../../components/elements/CustomSwitch';
+import { utils } from '../../utils/Utils';
 
 const window = Dimensions.get('window');
 const ASPECT_RATIO = window.width / window.height;
@@ -152,10 +153,37 @@ const WalkingHomeView = () => {
     if (!status) return;
 
     let { coords } = await Location.getCurrentPositionAsync({});
+
+    const standardCoords = aroundStandardCoords.current;
+
+    const dist = utils.coordsDist(
+      coords.latitude,
+      coords.longitude,
+      standardCoords.latitude,
+      standardCoords.longitude
+    );
+
+    if (dist >= 2500) {
+      getAroundFootprints(coords);
+    }
+
     changeMyLocation(coords);
   };
 
   const startWalking = async () => {
+    if (userStore.pets.length == 0) {
+      modalStore.openTwoButtonModal(
+        '산책 전 반려동물을 등록해주세요.',
+        '취소',
+        null,
+        '추가하기',
+        () => {
+          Navigator.reset('pet_add', { prevPage : 'walking_home' });
+        }
+      );
+      return;
+    }
+
     systemStore.setIsLoading(true);
 
     try {

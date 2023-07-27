@@ -13,7 +13,7 @@ const CustomSwitch = ({
       value={value}
       style={{ transform: [{ scaleX: scale }, { scaleY: scale }] }}
       trackColor={{ false: COLORS.dark, true: COLORS.warning }}
-      thumbColor={value ? COLORS.warning : COLORS.gray}
+      thumbColor={value ? COLORS.warning : COLORS.grayLight}
     />
   );
 };
