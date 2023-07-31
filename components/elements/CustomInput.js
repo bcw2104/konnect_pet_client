@@ -23,6 +23,7 @@ const CustomInput = ({
   errorHandler = false,
   errorMsg = '',
   outline = false,
+  multiline = false,
 }) => {
   const [error, setError] = useState(false);
 
@@ -59,11 +60,13 @@ const CustomInput = ({
           autoFocus={autoFocus}
           secureTextEntry={secureTextEntry}
           maxLength={maxLength}
+          textAlignVertical={multiline ? 'top' : 'center'}
           value={value}
           onChangeText={onValueChangeWithRegex}
           keyboardType={keyboardType}
           placeholder={placeholder}
           editable={editable}
+          multiline={multiline}
           style={{
             width: width,
             height: height,
@@ -83,6 +86,7 @@ const CustomInput = ({
         <CustomText
           fontColor={COLORS.danger}
           fontSize={14}
+          multiline={multiline}
           style={{
             marginTop: 5,
             textAlign: 'left',

@@ -13,7 +13,7 @@ import { FONT_WEIGHT } from '../../commons/constants';
 import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 
 const LeaveView = () => {
-  useTabBarHandler();
+  useTabBarHandler(false);
   const { userStore } = useStores();
 
   const [nationCode, setNationCode] = useState('');
@@ -71,7 +71,7 @@ const LeaveView = () => {
         disabled={!verifyKey}
         onPress={submit}
         style={styles.submitTheme}
-        height={50}
+        height={60}
       />
     </>
   );

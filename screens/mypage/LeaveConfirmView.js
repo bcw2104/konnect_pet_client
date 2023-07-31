@@ -9,7 +9,7 @@ import { FONT_WEIGHT } from '../../commons/constants';
 import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 
 const LeaveConfirmView = () => {
-  useTabBarHandler();
+  useTabBarHandler(false);
   const confirm = () => {
     Navigator.navigate('leave', {});
   };

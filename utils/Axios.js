@@ -35,8 +35,9 @@ baseAxios.interceptors.response.use(
   async function (error) {
     const { config: originConfig, response } = error;
     // 토큰 갱신 로직
+
     if (response.data.rsp_code === '9202') {
-      if (originConfig.attempt >= 3) {
+      if (originConfig?.attempt >= 3) {
         return Promise.reject(error);
       }
       const refreshToken = await asyncStorage.getItem('refresh_token');

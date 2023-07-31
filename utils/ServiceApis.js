@@ -42,6 +42,7 @@ export default serviceApis = {
   logout: () =>  baseAxios.post(`/api/user/v1/logout`),
   getUserInfo: () =>  baseAxios.get(`/api/user/v1/info`),
   updateDeviceInfo: (deviceModel, deviceOs, deviceOsVersion, deviceToken) => baseAxios.post(`/api/user/v1/device`,{deviceModel, deviceOs, deviceOsVersion, deviceToken}),
+  saveProfile : (payload) => baseAxios.post(`/api/user/v1/profile`,payload),
 
   //walking
   startWalking: () => baseAxios.post(`/api/walking/v1/start`),

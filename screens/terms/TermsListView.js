@@ -8,10 +8,12 @@ import serviceApis from './../../utils/ServiceApis';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import { FONT_WEIGHT } from '../../commons/constants';
+import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 
 const TermsListView = () => {
   const { systemStore } = useStores();
   const [terms, setTerms] = useState([]);
+  useTabBarHandler(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,9 +35,9 @@ const TermsListView = () => {
   return (
     <>
       {!systemStore.isLoading && (
-        <Container>
+        <Container header={true}>
           <View style={styles.section1}>
-            <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
+            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
               이용약관
             </CustomText>
           </View>
@@ -50,13 +52,13 @@ const TermsListView = () => {
                 }}
                 style={styles.menuItem}
               >
-                <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD} >
+                <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
                   {ele.termsGroupName}
                 </CustomText>
                 <Ionicons
-                  name='chevron-forward-outline'
+                  name="chevron-forward-outline"
                   size={28}
-                  color='black'
+                  color="black"
                 />
               </Pressable>
             ))}

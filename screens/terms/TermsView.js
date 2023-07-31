@@ -12,11 +12,13 @@ import COLORS from '../../commons/colors';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import { FONT_WEIGHT } from '../../commons/constants';
+import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 
 const TermsView = (props) => {
   const { route } = props;
   const { systemStore } = useStores();
   const [term, setTerm] = useState(null);
+  useTabBarHandler(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +41,7 @@ const TermsView = (props) => {
   return (
     <>
       {!systemStore.isLoading && (
-        <Container>
+        <Container header={true}>
           <View style={styles.section1}>
             <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
               {term?.termsName}

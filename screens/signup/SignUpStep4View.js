@@ -166,7 +166,7 @@ const SignupStep4View = (props) => {
         disabled={!searchValue}
         onPress={submitSignupData}
         style={styles.submitTheme}
-        height={50}
+        height={60}
       />
     </>
   );

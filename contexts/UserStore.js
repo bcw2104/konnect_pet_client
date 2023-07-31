@@ -10,7 +10,8 @@ export default class UserStore {
   _platform = null;
   _residenceAddress = null;
   _residenceCoords = null;
-  _profileImgUrl = null;
+
+  _profile = null
   _isLogin = false;
 
   _pets = null;
@@ -38,9 +39,9 @@ export default class UserStore {
         this._platform = response.result.platform;
         this._residenceAddress = response.result.residenceAddress;
         this._residenceCoords = response.result.residenceCoords;
-        this._profileImgUrl = response.result.profileImgUrl;
         this._isLogin = true;
         this._pets = response.result.pets;
+        this._profile = response.result.profile;
       });
 
       await serviceApis.updateDeviceInfo(
@@ -73,6 +74,10 @@ export default class UserStore {
     pets.push(pet);
 
     this._pets = pets;
+  }
+
+  setProfile(profile) {
+    this._profile = profile;
   }
 
   async logout() {
@@ -123,8 +128,8 @@ export default class UserStore {
     return this._pets;
   }
 
-  get profileImgUrl() {
-    return this._profileImgUrl;
+  get profile() {
+    return this._profile;
   }
 
   get rootStore() {

@@ -9,15 +9,16 @@ import MyPageHomeView from '../../screens/mypage/MyPageHomeView';
 import CustomText from '../../components/elements/CustomText';
 import SettingView from '../../screens/mypage/SettingView';
 import TermsListView from '../../screens/terms/TermsListView';
+import PetAddFormView from '../../screens/user/PetAddFormView';
+import UserInfoFormView from '../../screens/user/UserInfoFormView';
 
 const MyPageStack = createNativeStackNavigator();
 
 const MyPageStackNavigator = ({ navigation, route }) => {
-
   return (
-    <MyPageStack.Navigator initialRouteName="mypage">
+    <MyPageStack.Navigator initialRouteName="mypage_home">
       <MyPageStack.Screen
-        name="mypage"
+        name="mypage_home"
         component={MyPageHomeView}
         options={(props) => ({
           headerTitle: '',
@@ -51,7 +52,6 @@ const MyPageStackNavigator = ({ navigation, route }) => {
           ),
         })}
       ></MyPageStack.Screen>
-
       <MyPageStack.Group
         screenOptions={(props) => ({
           headerTitle: '',
@@ -61,7 +61,7 @@ const MyPageStackNavigator = ({ navigation, route }) => {
               <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
-          presentation: 'fullScreenModal',
+          presentation: 'containedModal',
         })}
       >
         <MyPageStack.Screen
@@ -80,6 +80,14 @@ const MyPageStackNavigator = ({ navigation, route }) => {
           name="leave"
           component={LeaveView}
         ></MyPageStack.Screen>
+        <MyPageStack.Screen
+          name="pet_add_form"
+          component={PetAddFormView}
+        ></MyPageStack.Screen>
+        <MyPageStack.Screen
+          name="profile_form"
+          component={UserInfoFormView}
+        ></MyPageStack.Screen>
       </MyPageStack.Group>
 
       <MyPageStack.Group
@@ -91,7 +99,7 @@ const MyPageStackNavigator = ({ navigation, route }) => {
               <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
-          presentation: 'modal',
+          presentation: 'fullScreenModal',
         })}
       >
         <MyPageStack.Screen

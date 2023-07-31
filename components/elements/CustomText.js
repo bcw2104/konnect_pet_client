@@ -10,11 +10,15 @@ const CustomText = ({
   fontColor = COLORS.dark,
   fontSize = 18,
   children,
+  numberOfLines = undefined,
+  ellipsizeMode = undefined,
 }) => {
   return (
     <Text
+      numberOfLines={numberOfLines}
+      ellipsizeMode={ellipsizeMode}
       style={{
-        fontFamily: fontFamily + "-" + fontWeight,
+        fontFamily: fontFamily + '-' + fontWeight,
         fontSize: fontSize,
         color: fontColor,
         ...style,

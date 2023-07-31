@@ -62,7 +62,7 @@ const FindPasswordStep2View = (props) => {
         disabled={!password}
         onPress={submit}
         style={styles.submitTheme}
-        height={50}
+        height={60}
       />
     </>
   );

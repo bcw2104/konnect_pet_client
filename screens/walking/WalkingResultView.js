@@ -4,7 +4,7 @@ import Container from '../../components/layouts/Container';
 import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 import moment from 'moment';
 import CustomText from '../../components/elements/CustomText';
-import { FONT_WEIGHT } from '../../commons/constants';
+import { FONT_WEIGHT, NUMBER_TO_LANG } from '../../commons/constants';
 import GoogleMap from '../../components/map/GoogleMap';
 import { Polyline } from 'react-native-maps';
 import COLORS from '../../commons/colors';
@@ -21,7 +21,7 @@ const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const WalkingResultView = (props) => {
-  useTabBarHandler();
+  useTabBarHandler(false);
   const { route } = props;
   const mapRef = useRef(null);
   const [region, setRegion] = useState(null);
@@ -178,7 +178,9 @@ const WalkingResultView = (props) => {
               <View style={styles.reportItemWrap}>
                 {footprints?.catched?.map((ele, idx) => (
                   <View style={styles.reportItem} key={idx}>
-                    <CustomText fontSize={18}>{ele.nickname}</CustomText>
+                    <CustomText fontSize={18}>
+                      {`${NUMBER_TO_LANG[idx + 1]} 획득`}
+                    </CustomText>
                     <CustomText fontSize={18}>
                       {moment(ele.createdDate).format('YYYY.MM.DD (ddd)')}
                     </CustomText>
@@ -186,7 +188,9 @@ const WalkingResultView = (props) => {
                 ))}
                 {footprints?.catched.length == 0 && (
                   <View style={styles.reportItem}>
-                    <CustomText fontSize={18}>획득한 발자국이 없어요.</CustomText>
+                    <CustomText fontSize={18}>
+                      획득한 발자국이 없어요.
+                    </CustomText>
                   </View>
                 )}
               </View>

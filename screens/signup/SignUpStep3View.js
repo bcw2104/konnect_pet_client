@@ -174,7 +174,7 @@ const SignupStep3View = (props) => {
             disabled={!isRequiredAllChecked}
             onPress={submitSignupData}
             style={styles.submitTheme}
-            height={50}
+            height={60}
           />
         </>
       )}

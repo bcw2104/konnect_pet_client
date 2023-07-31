@@ -39,6 +39,16 @@ const WalkingHomeView = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!userStore.profile) {
+        modalStore.openOneButtonModal(
+          '이용 전 프로필을 등록해주세요.',
+          '등록하기',
+          () => {
+            Navigator.reset('walking_profile_form', { prevPage: 'walking_home' });
+          }
+        );
+        return;
+      }
       try {
         const walkingTempDate = JSON.parse(
           await asyncStorage.getItem('walking_temp_data')
@@ -178,7 +188,7 @@ const WalkingHomeView = () => {
         null,
         '추가하기',
         () => {
-          Navigator.reset('pet_add', { prevPage : 'walking_home' });
+          Navigator.reset('walking_pet_add_form', { prevPage: 'walking_home' });
         }
       );
       return;

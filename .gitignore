@@ -94,3 +94,8 @@ dist/
 
 #keys
 *key.*
+
+# Expo
+.expo
+dist/
+web-build/

@@ -4,7 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import WalkingHomeView from '../../screens/walking/WalkingHomeView';
 import WalkingView from '../../screens/walking/WalkingView';
 import WalkingResultView from '../../screens/walking/WalkingResultView';
-import PetAddView from '../../screens/user/PetAddView';
+import PetAddFormView from '../../screens/user/PetAddFormView';
+import UserInfoFormView from '../../screens/user/UserInfoFormView';
 
 const WalkingStack = createNativeStackNavigator();
 
@@ -40,12 +41,16 @@ const WalkingStackNavigator = () => {
               <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
-          presentation: 'modal',
+          presentation: 'containedModal',
         })}
       >
         <WalkingStack.Screen
-          name="pet_add"
-          component={PetAddView}
+          name="walking_pet_add_form"
+          component={PetAddFormView}
+        ></WalkingStack.Screen>
+         <WalkingStack.Screen
+          name="walking_profile_form"
+          component={UserInfoFormView}
         ></WalkingStack.Screen>
         <WalkingStack.Screen
           name="walking_result"

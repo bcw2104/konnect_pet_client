@@ -2,6 +2,7 @@ import * as Notifications from 'expo-notifications';
 import * as FileSystem from 'expo-file-system';
 import { DEEP_LINK_PREFIX } from '../commons/constants';
 import { asyncStorage } from '../storage/Storage';
+import ImageResizer from 'react-native-image-resizer';
 
 export const utils = {
   coordsDist: (lat1, lon1, lat2, lon2) => {
@@ -65,6 +66,19 @@ export const utils = {
    * @returns upload image function
    */
   uploadImage: async (imageUri, path) => {
+    try {
+      const resize = await ImageResizer.createResizedImage(
+        imageUri,
+        250,
+        250,
+        'PNG',
+        80,
+        0,
+        0
+      );
+      imageUri = resize.uri;
+    } catch (e) {}
+
     const BASE_API_URL =
       process.env.NODE_ENV == 'development'
         ? Platform.OS == 'ios'
@@ -93,5 +107,18 @@ export const utils = {
     } catch (e) {
       throw new Error(e);
     }
+  },
+  getAge: (d1) => {
+    var now = new Date();
+    var d2 = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      23,
+      59,
+      59
+    );
+    var diff = d2.getTime() - d1.getTime();
+    return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
   },
 };

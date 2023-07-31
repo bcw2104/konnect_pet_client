@@ -38,6 +38,7 @@ const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const WalkingView = (props) => {
+
   const mapRef = useRef(null);
   const settingModalRef = useRef(null);
   const { route } = props;

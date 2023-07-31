@@ -34,7 +34,7 @@ export default function App() {
   });
   useBackPressHandler();
 
-  useEffect(()=>{
+  useEffect(() => {
     Notifications.setNotificationHandler({
       handleNotification: async () => ({
         shouldShowAlert: true,
@@ -43,12 +43,12 @@ export default function App() {
       }),
     });
 
-    Linking.addEventListener('url', (event)=>{
-      if(event.url == DEEP_LINK_PREFIX.DEFAULT + 'walking'){
+    Linking.addEventListener('url', (event) => {
+      if (event.url == DEEP_LINK_PREFIX.DEFAULT + 'walking') {
         Navigator.navigate('walking', {});
       }
     });
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (!fontsLoaded) return;
@@ -60,6 +60,7 @@ export default function App() {
       } catch (e) {
       } finally {
         await new Promise((resolve) => setTimeout(resolve, 2000));
+        await SplashScreen.hideAsync();
         setAppIsReady(true);
       }
     }
@@ -74,7 +75,6 @@ export default function App() {
       await Settings.setAdvertiserTrackingEnabled(true);
     }
   };
-
 
   const initDeviceInfo = async () => {
     const deviceToken = await registerForPushNotificationsAsync();
@@ -125,20 +125,14 @@ export default function App() {
     return token;
   };
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
   if (!appIsReady) {
     return null;
   }
 
   return (
     <StoreProvider value={rootStore}>
-      <View onLayout={onLayoutRootView} style={styles.container}>
-        <StatusBar style='dark' />
+      <View style={styles.container}>
+        <StatusBar style="dark" />
         <Navigation />
       </View>
       <Loader />
