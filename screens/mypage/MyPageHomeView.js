@@ -16,6 +16,7 @@ import moment from 'moment';
 import COLORS from '../../commons/colors';
 import { AntDesign } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
+import { observer } from 'mobx-react-lite';
 
 const MyPageHomeView = () => {
   const { userStore } = useStores();
@@ -147,7 +148,7 @@ const MyPageHomeView = () => {
   );
 };
 
-export default MyPageHomeView;
+export default observer(MyPageHomeView);
 
 const styles = StyleSheet.create({
   section1: {

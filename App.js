@@ -45,7 +45,10 @@ export default function App() {
 
     Linking.addEventListener('url', (event) => {
       if (event.url == DEEP_LINK_PREFIX.DEFAULT + 'walking') {
-        Navigator.navigate('walking', {});
+        Navigator.navigate('home_tabs', {
+          screen: 'walking_tab',
+          params: { screen: 'walking' },
+        });
       }
     });
   }, []);
@@ -132,7 +135,7 @@ export default function App() {
   return (
     <StoreProvider value={rootStore}>
       <View style={styles.container}>
-        <StatusBar style="dark" />
+        <StatusBar style='dark' />
         <Navigation />
       </View>
       <Loader />

@@ -3,6 +3,7 @@ import * as FileSystem from 'expo-file-system';
 import { DEEP_LINK_PREFIX } from '../commons/constants';
 import { asyncStorage } from '../storage/Storage';
 import ImageResizer from 'react-native-image-resizer';
+import { Platform } from 'react-native';
 
 export const utils = {
   coordsDist: (lat1, lon1, lat2, lon2) => {

@@ -1,6 +1,7 @@
 import {
   Image,
   KeyboardAvoidingView,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -26,7 +27,6 @@ import { Navigator } from '../../navigations/Navigator';
 import { observer } from 'mobx-react-lite';
 
 const PetAddFormView = (props) => {
-
   const { route } = props;
   const { userStore, modalStore, systemStore } = useStores();
   const imageUploaderRef = useRef();
@@ -117,8 +117,7 @@ const PetAddFormView = (props) => {
         <ScrollView>
           <KeyboardAvoidingView
             style={{ flex: 1 }}
-            keyboardVerticalOffset={10}
-            behavior={'position'}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           >
             <View style={styles.section1}>
               <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>

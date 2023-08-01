@@ -33,7 +33,9 @@ const MyPageTabStackNavigator = ({ navigation, route }) => {
               </Pressable>
               <Pressable
                 onPress={() => {
-                  props.navigation.navigate('setting', {});
+                  props.navigation.navigate('mypage_nav', {
+                    screen: 'setting',
+                  });
                 }}
                 hitSlop={5}
               >

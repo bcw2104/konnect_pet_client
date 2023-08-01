@@ -7,6 +7,7 @@ import HomeTabs from './HomeTabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MyPageStackNavigator from './stacks/MyPageStackNavigator';
 import WalkingStackNavigator from './stacks/WalkingStackNavigator';
+import { observer } from 'mobx-react-lite';
 
 const navTheme = {
   ...DefaultTheme,
@@ -23,7 +24,7 @@ const Navigation = () => {
   return (
     <NavigationContainer ref={navigationRef} theme={navTheme}>
       {userStore.isLogin ? (
-        <Stack.Navigator initialRouteName='home_tabs'>
+        <Stack.Navigator initialRouteName='walking_home'>
           <Stack.Screen
             name='home_tabs'
             component={HomeTabs}
@@ -46,4 +47,4 @@ const Navigation = () => {
     </NavigationContainer>
   );
 };
-export default Navigation;
+export default observer(Navigation);

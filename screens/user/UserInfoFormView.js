@@ -1,6 +1,7 @@
 import {
   Image,
   KeyboardAvoidingView,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -105,8 +106,7 @@ const UserInfoFormView = (props) => {
         <ScrollView>
           <KeyboardAvoidingView
             style={{ flex: 1 }}
-            keyboardVerticalOffset={10}
-            behavior={'position'}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           >
             <View style={styles.section1}>
               <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
