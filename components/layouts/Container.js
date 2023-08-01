@@ -15,7 +15,7 @@ const Container = ({ header = false, children }) => {
         style={{
           paddingHorizontal: 15,
           flex: 1,
-          marginTop: header
+          paddingTop: header
             ? 20
             : Platform.OS == 'ios'
             ? 0

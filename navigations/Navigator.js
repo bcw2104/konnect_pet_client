@@ -9,7 +9,33 @@ export const Navigator = {
     navigationRef.current?.navigate(name, params);
   },
 
-  reset: (name, params) => {
-    navigationRef.current?.reset({ routes: [{ name: name, params: params }] });
+  reset: (params, lvl1, lvl2, lvl3) => {
+    navigationRef.current?.reset({
+      index: 0,
+      routes: [
+        !!lvl2
+          ? {
+              name: lvl1,
+              state: {
+                routes: [
+                  !!lvl3
+                    ? {
+                        name: lvl2,
+                        state: {
+                          routes: [
+                            {
+                              name: lvl3,
+                              params: params,
+                            },
+                          ],
+                        },
+                      }
+                    : { name: lvl3, params: params },
+                ],
+              },
+            }
+          : { name: lvl1, params: params },
+      ],
+    });
   },
 };

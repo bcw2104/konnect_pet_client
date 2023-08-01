@@ -81,7 +81,7 @@ const WalkingResultView = (props) => {
   }, []);
 
   const goToHome = (params) => {
-    Navigator.reset('walking_home', params);
+    Navigator.reset(params, 'walking_home');
   };
 
   return (

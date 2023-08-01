@@ -69,7 +69,6 @@ const SignupStep4View = (props) => {
       }
     } catch (error) {
       console.log(error);
-      //Navigator.reset('welcome', {});
     }
   };
 

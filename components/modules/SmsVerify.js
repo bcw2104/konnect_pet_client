@@ -46,7 +46,7 @@ const SmsVerify = ({
         setNationCodes(nationCodes);
         onNationCodeChange(nationCodes[0].value);
       } catch (error) {
-        Navigator.reset('welcome', {});
+        Navigator.reset({}, 'welcome');
       }
     };
 

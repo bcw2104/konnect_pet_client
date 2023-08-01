@@ -38,7 +38,6 @@ const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const WalkingView = (props) => {
-
   const mapRef = useRef(null);
   const settingModalRef = useRef(null);
   const { route } = props;
@@ -373,11 +372,14 @@ const WalkingView = (props) => {
   };
 
   const goToHome = (params) => {
-    Navigator.reset('walking_home', params);
+    Navigator.reset( params,'walking_home');
   };
 
   const goToNextStep = (params) => {
-    Navigator.reset('walking_result', params);
+    Navigator.navigate('walking_nav', {
+      screen: 'walking_result',
+      params: params,
+    });
   };
 
   const changeMyLocation = useCallback((coords) => {

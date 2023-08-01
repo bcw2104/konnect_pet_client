@@ -11,7 +11,7 @@ export default class UserStore {
   _residenceAddress = null;
   _residenceCoords = null;
 
-  _profile = null
+  _profile = null;
   _isLogin = false;
 
   _pets = null;
@@ -66,7 +66,11 @@ export default class UserStore {
     this._isLogin = isLogin;
   }
 
-  addPet(pet) {
+  setPets(pets) {
+    this._pets = pets;
+  }
+  
+  addPets(pet) {
     let pets = [];
     if (this._pets != null) {
       pets = [...this._pets];

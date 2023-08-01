@@ -18,6 +18,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import CustomRadio from '../../components/elements/CustomRadio';
+import { Feather } from '@expo/vector-icons';
 
 import ImageUploader from '../../components/modules/ImageUploader';
 import { utils } from '../../utils/Utils';
@@ -26,7 +27,6 @@ import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 
 const UserInfoFormView = (props) => {
-
   const { userStore, modalStore, systemStore } = useStores();
   const imageUploaderRef = useRef();
   const [datePickerOpen, setDatePickerOpen] = useState(false);
@@ -90,7 +90,8 @@ const UserInfoFormView = (props) => {
           '프로필 등록이 완료되었습니다.',
           '확인',
           () => {
-            Navigator.goBack();}
+            Navigator.goBack();
+          }
         );
       }
     } catch (e) {
@@ -106,51 +107,44 @@ const UserInfoFormView = (props) => {
         <ScrollView>
           <KeyboardAvoidingView
             style={{ flex: 1 }}
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            behavior={Platform.OS === 'ios' ? 'position' : 'height' }
+            keyboardVerticalOffset={20}
           >
             <View style={styles.section1}>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-                내 프로필
-              </CustomText>
-            </View>
-            <View style={styles.section2}>
               <View style={styles.profileImgWrap}>
-                <Image
-                  source={
-                    !!profileImage
-                      ? {
-                          uri: profileImage,
-                        }
-                      : require('../../assets/images/profile/user_default.png')
-                  }
-                  style={styles.profileImg}
-                />
                 <ImageUploader
                   onImageChange={handleImageChange}
                   ref={imageUploaderRef}
                 >
-                  <CustomButton
-                    bgColor={COLORS.warning}
-                    bgColorPress={COLORS.warning}
+                  <Pressable
                     onPress={() => {
                       imageUploaderRef.current.pickImage();
                     }}
-                    text={'Pick an image'}
-                    fontColor={COLORS.white}
-                    fontSize={18}
-                    width={150}
-                    height={45}
-                  />
+                  >
+                    <View style={styles.upload}>
+                      <Feather name="camera" size={20} color="black" />
+                    </View>
+                    <Image
+                      source={
+                        !!profileImage
+                          ? {
+                              uri: profileImage,
+                            }
+                          : require('../../assets/images/profile/user_default.png')
+                      }
+                      style={styles.profileImg}
+                    />
+                  </Pressable>
                 </ImageUploader>
               </View>
 
               <View style={styles.inputWrap}>
                 <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={18}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     Nickname
                   </CustomText>
                   <FontAwesome5
-                    name='star-of-life'
+                    name="star-of-life"
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -162,20 +156,21 @@ const UserInfoFormView = (props) => {
                     if (value.length > 30) return;
                     serProfile({ ...profile, nickname: value });
                   }}
-                  fontSize={18}
+                  fontSize={16}
+                  height={40}
                   wrapperStyle={styles.input}
-                  placeholder='닉네임을 입력해 주세요.'
-                  keyboardType='default'
+                  placeholder="닉네임을 입력해 주세요."
+                  keyboardType="default"
                   outline={true}
                 />
               </View>
               <View style={styles.inputWrap}>
                 <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={18}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     Gender
                   </CustomText>
                   <FontAwesome5
-                    name='star-of-life'
+                    name="star-of-life"
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -183,7 +178,7 @@ const UserInfoFormView = (props) => {
                 </View>
                 <CustomRadio
                   fontSize={20}
-                  height={45}
+                  height={40}
                   items={[
                     { label: 'Male', value: 'M' },
                     { label: 'Female', value: 'F' },
@@ -196,11 +191,11 @@ const UserInfoFormView = (props) => {
               </View>
               <View style={styles.inputWrap}>
                 <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={18}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     BirthDate
                   </CustomText>
                   <FontAwesome5
-                    name='star-of-life'
+                    name="star-of-life"
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -214,7 +209,7 @@ const UserInfoFormView = (props) => {
                     padding: 10,
                   }}
                 >
-                  <CustomText fontSize={18}>
+                  <CustomText fontSize={16}>
                     {moment(profile.birthDate).format('YYYY.MM.DD')}
                   </CustomText>
                 </Pressable>
@@ -239,7 +234,7 @@ const UserInfoFormView = (props) => {
               >
                 <CustomText
                   fontWeight={FONT_WEIGHT.BOLD}
-                  fontSize={18}
+                  fontSize={16}
                   style={{ marginBottom: 20 }}
                 >
                   Comment
@@ -251,10 +246,10 @@ const UserInfoFormView = (props) => {
                     serProfile({ ...profile, comment: value });
                   }}
                   multiline={true}
-                  fontSize={18}
+                  fontSize={16}
                   wrapperStyle={styles.input}
-                  placeholder='자기소개를 해주세요.'
-                  keyboardType='default'
+                  placeholder="자기소개를 해주세요."
+                  keyboardType="default"
                   outline={true}
                   height={100}
                 />
@@ -268,7 +263,7 @@ const UserInfoFormView = (props) => {
         bgColor={COLORS.dark}
         bgColorPress={COLORS.darkDeep}
         onPress={saveProfileInfo}
-        text='등록하기'
+        text="등록하기"
         style={styles.submitTheme}
         height={60}
       />
@@ -280,10 +275,21 @@ export default UserInfoFormView;
 
 const styles = StyleSheet.create({
   section1: {
+    marginTop: 10,
     marginBottom: 30,
   },
-  section2: {
-    marginBottom: 50,
+
+  upload: {
+    position: 'absolute',
+    zIndex: 100,
+    height: 30,
+    width: 30,
+    backgroundColor: COLORS.grayLight,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 45,
+    left: 45,
   },
   profileImgWrap: {
     alignItems: 'center',
@@ -291,10 +297,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   profileImg: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
   },
   inputWrap: {
     flexDirection: 'row',

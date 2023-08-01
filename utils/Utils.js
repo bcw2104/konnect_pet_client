@@ -74,11 +74,11 @@ export const utils = {
         250,
         'PNG',
         80,
-        0,
         0
       );
       imageUri = resize.uri;
-    } catch (e) {}
+    } catch (e) {
+    }
 
     const BASE_API_URL =
       process.env.NODE_ENV == 'development'

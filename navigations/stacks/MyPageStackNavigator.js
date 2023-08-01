@@ -15,42 +15,43 @@ const MyPageStack = createNativeStackNavigator();
 const MyPageStackNavigator = ({ navigation, route }) => {
   return (
     <MyPageStack.Navigator>
-      
       <MyPageStack.Group
         screenOptions={(props) => ({
           headerTitle: '',
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name='arrow-back-outline' size={24} color='black' />
+              <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
           presentation: 'containedModal',
         })}
       >
         <MyPageStack.Screen
-          name='setting'
+          name="setting"
           component={SettingView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          name='terms_list'
+          name="terms_list"
           component={TermsListView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          name='leave_confirm'
+          name="leave_confirm"
           component={LeaveConfirmView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          name='leave'
+          name="leave"
           component={LeaveView}
         ></MyPageStack.Screen>
 
         <MyPageStack.Screen
-          name='pet_add_form'
+          options={{ headerTitle: '내 반려견', headerTitleAlign: 'center' }}
+          name="pet_add_form"
           component={PetAddFormView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          name='profile_form'
+          options={{ headerTitle: '내 프로필', headerTitleAlign: 'center' }}
+          name="profile_form"
           component={UserInfoFormView}
         ></MyPageStack.Screen>
       </MyPageStack.Group>
@@ -61,14 +62,14 @@ const MyPageStackNavigator = ({ navigation, route }) => {
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name='arrow-back-outline' size={24} color='black' />
+              <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
           presentation: 'fullScreenModal',
         })}
       >
         <MyPageStack.Screen
-          name='terms'
+          name="terms"
           component={TermsView}
         ></MyPageStack.Screen>
       </MyPageStack.Group>

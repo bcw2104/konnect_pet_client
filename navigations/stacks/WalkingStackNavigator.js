@@ -7,24 +7,7 @@ const WalkingStack = createNativeStackNavigator();
 
 const WalkingStackNavigator = () => {
   return (
-    <WalkingStack.Navigator
-      screenOptions={(props) => ({
-        headerTitle: '',
-        headerBackVisible: false,
-        headerLeft: () => (
-          <Pressable
-            onPress={() => {
-              props.navigation.reset({
-                routes: [{ name: 'walking_home', params: {} }],
-              });
-            }}
-          >
-            <Ionicons name='arrow-back-outline' size={24} color='black' />
-          </Pressable>
-        ),
-        presentation: 'containedModal',
-      })}
-    >
+    <WalkingStack.Navigator>
       <WalkingStack.Group
         screenOptions={(props) => ({
           headerTitle: '',
@@ -33,18 +16,33 @@ const WalkingStackNavigator = () => {
             <Pressable
               onPress={() => {
                 props.navigation.reset({
-                  routes: [{ name: 'walking_home', params: {} }],
+                  index: 0,
+                  routes: [
+                    {
+                      name: 'home_tabs',
+                      state: {
+                        routes: [
+                          {
+                            name: 'walking_tab',
+                            state: {
+                              routes: [{ name: 'walking_home', params: {} }],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
                 });
               }}
             >
-              <Ionicons name='arrow-back-outline' size={24} color='black' />
+              <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
           presentation: 'containedModal',
         })}
       >
         <WalkingStack.Screen
-          name='walking_result'
+          name="walking_result"
           component={WalkingResultView}
         ></WalkingStack.Screen>
       </WalkingStack.Group>
