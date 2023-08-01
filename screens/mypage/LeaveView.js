@@ -10,10 +10,8 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import { FONT_WEIGHT } from '../../commons/constants';
-import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 
 const LeaveView = () => {
-  useTabBarHandler(false);
   const { userStore } = useStores();
 
   const [nationCode, setNationCode] = useState('');

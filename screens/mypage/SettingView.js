@@ -5,12 +5,10 @@ import CustomText from '../../components/elements/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
 import { FONT_WEIGHT } from '../../commons/constants';
-import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 import { useStores } from '../../contexts/StoreContext';
 
 const SettingView = () => {
   const { userStore, modalStore } = useStores();
-  useTabBarHandler(false);
 
   const logout = () => {
     modalStore.openTwoButtonModal(

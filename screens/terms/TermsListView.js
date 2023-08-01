@@ -8,12 +8,10 @@ import serviceApis from './../../utils/ServiceApis';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import { FONT_WEIGHT } from '../../commons/constants';
-import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 
 const TermsListView = () => {
   const { systemStore } = useStores();
   const [terms, setTerms] = useState([]);
-  useTabBarHandler(false);
 
   useEffect(() => {
     const fetchData = async () => {

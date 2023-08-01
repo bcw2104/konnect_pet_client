@@ -11,7 +11,6 @@ import CustomText from '../../components/elements/CustomText';
 import Container from '../../components/layouts/Container';
 import { FONT_WEIGHT } from '../../commons/constants';
 import CustomButton from '../../components/elements/CustomButton';
-import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 import COLORS from '../../commons/colors';
 import CustomInput from '../../components/elements/CustomInput';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -27,7 +26,6 @@ import { Navigator } from '../../navigations/Navigator';
 import { observer } from 'mobx-react-lite';
 
 const PetAddFormView = (props) => {
-  useTabBarHandler(false);
 
   const { route } = props;
   const { userStore, modalStore, systemStore } = useStores();

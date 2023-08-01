@@ -1,7 +1,6 @@
 import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import Container from '../../components/layouts/Container';
-import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 import moment from 'moment';
 import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT, NUMBER_TO_LANG } from '../../commons/constants';
@@ -21,7 +20,6 @@ const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const WalkingResultView = (props) => {
-  useTabBarHandler(false);
   const { route } = props;
   const mapRef = useRef(null);
   const [region, setRegion] = useState(null);

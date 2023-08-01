@@ -4,16 +4,20 @@ import WalkingTabStackNavigator from './stacks/WalkingTabStackNavigator';
 import MyPageTabStackNavigator from './stacks/MyPageTabStackNavigator';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
+import { observer } from 'mobx-react-lite';
+import { useStores } from '../contexts/StoreContext';
 
 const Tab = createBottomTabNavigator();
 
 const HomeTabs = () => {
+  const { systemStore } = useStores();
+
   return (
     <Tab.Navigator
       initialRouteName='walking_tab'
       screenOptions={{
         tabBarStyle: {
-          display: 'flex',
+          display: systemStore.displayTabBar ? 'flex' : 'none',
           position: 'relative',
         },
         tabBarLabelStyle: {
@@ -56,6 +60,6 @@ const HomeTabs = () => {
   );
 };
 
-export default HomeTabs;
+export default observer(HomeTabs);
 
 const styles = StyleSheet.create({});

@@ -6,10 +6,8 @@ import { Navigator } from '../../navigations/Navigator';
 import COLORS from '../../commons/colors';
 import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
-import { useTabBarHandler } from '../../hooks/useTabBarHandler';
 
 const LeaveConfirmView = () => {
-  useTabBarHandler(false);
   const confirm = () => {
     Navigator.navigate('leave', {});
   };
