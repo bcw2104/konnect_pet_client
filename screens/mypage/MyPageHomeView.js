@@ -21,7 +21,9 @@ const MyPageHomeView = () => {
   const { userStore } = useStores();
 
   const addNewPet = () => {
-    Navigator.navigate('pet_add_form', { prevPage: 'mypage_home' });
+    Navigator.navigate('mypage_nav', {
+      screen: 'pet_add_form',
+    });
   };
   return (
     <Container header={true}>
@@ -36,8 +38,11 @@ const MyPageHomeView = () => {
           </CustomText>
           <View style={styles.profileWrap}>
             <Image
-              src={userStore.profile?.profileImgUrl}
-              defaultSource={require('../../assets/images/profile/user_default.png')}
+              source={
+                !!userStore.profile?.profileImgUrl
+                  ? { uri: userStore.profile.profileImgUrl }
+                  : require('../../assets/images/profile/user_default.png')
+              }
               style={styles.profileImg}
             />
             <View style={styles.profile}>
@@ -83,8 +88,11 @@ const MyPageHomeView = () => {
                   {item.id >= 0 ? (
                     <View style={styles.petItem}>
                       <Image
-                        src={item?.petImgUrl}
-                        defaultSource={require('../../assets/images/profile/pet_default.png')}
+                        source={
+                          !!item?.petImgUrl
+                            ? { uri: item?.petImgUrl }
+                            : require('../../assets/images/profile/pet_default.png')
+                        }
                         style={styles.petImg}
                       />
                       <View style={styles.pet}>
@@ -107,9 +115,9 @@ const MyPageHomeView = () => {
                   ) : (
                     <Pressable style={styles.petItem} onPress={addNewPet}>
                       <AntDesign
-                        name="pluscircleo"
+                        name='pluscircleo'
                         size={40}
-                        color="black"
+                        color='black'
                         style={styles.petImg}
                       />
                       <View style={styles.pet}>

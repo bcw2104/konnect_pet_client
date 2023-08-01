@@ -68,13 +68,16 @@ const UserInfoFormView = (props) => {
       systemStore.setIsLoading(true);
 
       let imageUrl = '';
-      try {
-        const upload = await utils.uploadImage(
-          profileImage,
-          '/api/upload/v1/images/profile/user'
-        );
-        imageUrl = upload.imageUrl;
-      } catch (err) {}
+
+      if (!!profileImage) {
+        try {
+          const upload = await utils.uploadImage(
+            profileImage,
+            '/api/upload/v1/images/profile/user'
+          );
+          imageUrl = upload.imageUrl;
+        } catch (err) {}
+      }
 
       const data = {
         ...profile,
@@ -85,7 +88,12 @@ const UserInfoFormView = (props) => {
 
       if (response.rsp_code == '1000') {
         userStore.setProfile(response.result);
-        Navigator.reset(route.params.prevPage, {});
+        modalStore.openOneButtonModal(
+          '프로필 등록이 완료되었습니다.',
+          '확인',
+          () => {
+            Navigator.goBack();}
+        );
       }
     } catch (e) {
       console.log(e);
@@ -145,7 +153,7 @@ const UserInfoFormView = (props) => {
                     Nickname
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -159,8 +167,8 @@ const UserInfoFormView = (props) => {
                   }}
                   fontSize={18}
                   wrapperStyle={styles.input}
-                  placeholder="닉네임을 입력해 주세요."
-                  keyboardType="default"
+                  placeholder='닉네임을 입력해 주세요.'
+                  keyboardType='default'
                   outline={true}
                 />
               </View>
@@ -170,7 +178,7 @@ const UserInfoFormView = (props) => {
                     Gender
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -195,7 +203,7 @@ const UserInfoFormView = (props) => {
                     BirthDate
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -248,8 +256,8 @@ const UserInfoFormView = (props) => {
                   multiline={true}
                   fontSize={18}
                   wrapperStyle={styles.input}
-                  placeholder="자기소개를 해주세요."
-                  keyboardType="default"
+                  placeholder='자기소개를 해주세요.'
+                  keyboardType='default'
                   outline={true}
                   height={100}
                 />
@@ -263,7 +271,7 @@ const UserInfoFormView = (props) => {
         bgColor={COLORS.dark}
         bgColorPress={COLORS.darkDeep}
         onPress={saveProfileInfo}
-        text="등록하기"
+        text='등록하기'
         style={styles.submitTheme}
         height={60}
       />

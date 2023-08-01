@@ -73,13 +73,16 @@ const PetAddFormView = (props) => {
       systemStore.setIsLoading(true);
 
       let imageUrl = '';
-      try {
-        const upload = await utils.uploadImage(
-          petImage,
-          '/api/upload/v1/images/profile/pet'
-        );
-        imageUrl = upload.imageUrl;
-      } catch (err) {}
+
+      if (!!petImage) {
+        try {
+          const upload = await utils.uploadImage(
+            petImage,
+            '/api/upload/v1/images/profile/pet'
+          );
+          imageUrl = upload.imageUrl;
+        } catch (err) {}
+      }
 
       const data = {
         ...petInfo,
@@ -90,10 +93,17 @@ const PetAddFormView = (props) => {
 
       if (response.rsp_code == '1000') {
         userStore.addPet(response.result);
-        Navigator.reset(route.params.prevPage, {});
+
+        modalStore.openOneButtonModal(
+          '반려동물 등록이 완료되었습니다.',
+          '확인',
+          () => {
+            Navigator.goBack();
+          }
+        );
       } else if (response.rsp_code == '9400') {
         modalStore.openOneButtonModal(response.rsp_msg_detail, '확인', () => {
-          Navigator.reset(route.params.prevPage, {});
+          Navigator.goBack();
         });
       }
     } catch (e) {
@@ -154,7 +164,7 @@ const PetAddFormView = (props) => {
                     Name
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -168,8 +178,8 @@ const PetAddFormView = (props) => {
                   }}
                   fontSize={18}
                   wrapperStyle={styles.input}
-                  placeholder="이름을 입력해 주세요."
-                  keyboardType="default"
+                  placeholder='이름을 입력해 주세요.'
+                  keyboardType='default'
                   outline={true}
                 />
               </View>
@@ -179,7 +189,7 @@ const PetAddFormView = (props) => {
                     Species
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -193,8 +203,8 @@ const PetAddFormView = (props) => {
                   }}
                   fontSize={18}
                   wrapperStyle={styles.input}
-                  placeholder="견종을 입력해 주세요."
-                  keyboardType="default"
+                  placeholder='견종을 입력해 주세요.'
+                  keyboardType='default'
                   outline={true}
                 />
               </View>
@@ -204,7 +214,7 @@ const PetAddFormView = (props) => {
                     Gender
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -229,7 +239,7 @@ const PetAddFormView = (props) => {
                     BirthDate
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -267,7 +277,7 @@ const PetAddFormView = (props) => {
                     중성화 여부
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -293,7 +303,7 @@ const PetAddFormView = (props) => {
                     접종 여부
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -334,8 +344,8 @@ const PetAddFormView = (props) => {
                   multiline={true}
                   fontSize={18}
                   wrapperStyle={styles.input}
-                  placeholder="반려견을 소개해 주세요."
-                  keyboardType="default"
+                  placeholder='반려견을 소개해 주세요.'
+                  keyboardType='default'
                   outline={true}
                   height={100}
                 />
@@ -349,7 +359,7 @@ const PetAddFormView = (props) => {
         bgColor={COLORS.dark}
         bgColorPress={COLORS.darkDeep}
         onPress={savePetInfo}
-        text="등록하기"
+        text='등록하기'
         style={styles.submitTheme}
         height={60}
       />

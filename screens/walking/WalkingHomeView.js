@@ -19,6 +19,7 @@ import CustomText from '../../components/elements/CustomText';
 import CustomModal from '../../components/elements/CustomModal';
 import CustomSwitch from '../../components/elements/CustomSwitch';
 import { utils } from '../../utils/Utils';
+import { useIsFocused } from '@react-navigation/native';
 
 const window = Dimensions.get('window');
 const ASPECT_RATIO = window.width / window.height;
@@ -26,10 +27,12 @@ const ASPECT_RATIO = window.width / window.height;
 const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const WalkingHomeView = () => {
+const WalkingHomeView = (props) => {
+  const { route } = props;
   const mapRef = useRef(null);
   const settingModalRef = useRef(null);
   const aroundStandardCoords = useRef(null);
+  const isFocused = useIsFocused();
 
   const [permission, setPermission] = useState(false);
   const [region, setRegion] = useState(null);
@@ -38,17 +41,22 @@ const WalkingHomeView = () => {
   const [footprintsToggle, setFootprintsToggle] = useState(true);
 
   useEffect(() => {
+    if (isFocused && !userStore.profile) {
+      modalStore.openOneButtonModal(
+        '이용 전 프로필을 등록해주세요.',
+        '등록하기',
+        () => {
+          Navigator.navigate('mypage_nav', {
+            screen: 'profile_form',
+          });
+        }
+      );
+      return;
+    }
+  }, [isFocused]);
+  
+  useEffect(() => {
     const fetchData = async () => {
-      if (!userStore.profile) {
-        modalStore.openOneButtonModal(
-          '이용 전 프로필을 등록해주세요.',
-          '등록하기',
-          () => {
-            Navigator.reset('walking_profile_form', { prevPage: 'walking_home' });
-          }
-        );
-        return;
-      }
       try {
         const walkingTempDate = JSON.parse(
           await asyncStorage.getItem('walking_temp_data')
@@ -188,7 +196,9 @@ const WalkingHomeView = () => {
         null,
         '추가하기',
         () => {
-          Navigator.reset('walking_pet_add_form', { prevPage: 'walking_home' });
+          Navigator.navigate('mypage_nav', {
+            screen: 'pet_add_form',
+          });
         }
       );
       return;
@@ -232,7 +242,7 @@ const WalkingHomeView = () => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          text={<Ionicons name="options" size={30} color="black" />}
+          text={<Ionicons name='options' size={30} color='black' />}
           fontColor={COLORS.white}
           onPress={handleOpenSetting}
           width={60}
@@ -270,9 +280,9 @@ const WalkingHomeView = () => {
                     }}
                   >
                     <MaterialCommunityIcons
-                      name="dog"
+                      name='dog'
                       size={24}
-                      color="black"
+                      color='black'
                     />
                   </Marker>
                 ))}
@@ -292,7 +302,7 @@ const WalkingHomeView = () => {
                       });
                     }}
                   >
-                    <MaterialCommunityIcons name="dog" size={24} color="red" />
+                    <MaterialCommunityIcons name='dog' size={24} color='red' />
                   </Marker>
                 ))}
             </>
@@ -303,7 +313,7 @@ const WalkingHomeView = () => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          text={<MaterialIcons name="my-location" size={30} color="black" />}
+          text={<MaterialIcons name='my-location' size={30} color='black' />}
           fontColor={COLORS.white}
           onPress={getMyLocation}
           width={60}
@@ -316,7 +326,7 @@ const WalkingHomeView = () => {
         <CustomButton
           bgColor={COLORS.dark}
           bgColorPress={COLORS.darkDeep}
-          text="산책 시작"
+          text='산책 시작'
           fontColor={COLORS.white}
           onPress={startWalking}
           height={50}
@@ -330,7 +340,7 @@ const WalkingHomeView = () => {
       >
         <View style={styles.settingItemWrap}>
           <View style={{ flexDirection: 'row' }}>
-            <MaterialCommunityIcons name="dog" size={27} color="black" />
+            <MaterialCommunityIcons name='dog' size={27} color='black' />
             <CustomText style={{ marginLeft: 7 }}>발자국</CustomText>
           </View>
           <CustomSwitch
