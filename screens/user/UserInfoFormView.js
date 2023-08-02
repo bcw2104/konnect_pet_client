@@ -153,9 +153,9 @@ const UserInfoFormView = (props) => {
                 <CustomInput
                   value={profile.nickname}
                   onValueChange={(value) => {
-                    if (value.length > 30) return;
                     serProfile({ ...profile, nickname: value });
                   }}
+                  maxLength={30}
                   fontSize={16}
                   height={40}
                   wrapperStyle={styles.input}
@@ -242,9 +242,9 @@ const UserInfoFormView = (props) => {
                 <CustomInput
                   value={profile.comment}
                   onValueChange={(value) => {
-                    if (value.length > 150) return;
                     serProfile({ ...profile, comment: value });
                   }}
+                  maxLength={150}
                   multiline={true}
                   fontSize={16}
                   wrapperStyle={styles.input}

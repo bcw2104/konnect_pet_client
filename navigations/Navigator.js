@@ -5,8 +5,18 @@ export const Navigator = {
   goBack: () => {
     navigationRef.current?.goBack();
   },
-  navigate: (name, params) => {
-    navigationRef.current?.navigate(name, params);
+  navigate: (params, lvl1, lvl2, lvl3) => {
+    navigationRef.current?.navigate(
+      lvl1,
+      !!lvl2
+        ? {
+            screen: lvl2,
+            params: !!lvl3
+              ? { screen: lvl3, params: params }
+              : params,
+          }
+        : params
+    );
   },
 
   reset: (params, lvl1, lvl2, lvl3) => {
@@ -30,7 +40,7 @@ export const Navigator = {
                           ],
                         },
                       }
-                    : { name: lvl3, params: params },
+                    : { name: lvl2, params: params },
                 ],
               },
             }

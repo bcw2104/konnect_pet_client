@@ -44,9 +44,12 @@ const TermsListView = () => {
               <Pressable
                 key={ele.termsGroupId}
                 onPress={() => {
-                  Navigator.navigate('terms', {
-                    termsGroupId: ele.termsGroupId,
-                  });
+                  Navigator.navigate(
+                    {
+                      termsGroupId: ele.termsGroupId,
+                    },
+                    'terms'
+                  );
                 }}
                 style={styles.menuItem}
               >
@@ -54,9 +57,9 @@ const TermsListView = () => {
                   {ele.termsGroupName}
                 </CustomText>
                 <Ionicons
-                  name="chevron-forward-outline"
+                  name='chevron-forward-outline'
                   size={28}
-                  color="black"
+                  color='black'
                 />
               </Pressable>
             ))}

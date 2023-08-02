@@ -16,7 +16,7 @@ const FindPasswordStep1View = (props) => {
   const [verifyKey, setVerifyKey] = useState(null);
 
   const goToNextStep = (params) => {
-    Navigator.navigate('find_password_step2', { ...params, ...route.params });
+    Navigator.navigate({ ...params, ...route.params }, 'find_password_step2');
   };
 
   const submit = async () => {
@@ -63,7 +63,7 @@ const FindPasswordStep1View = (props) => {
         fontColor={COLORS.white}
         bgColor={COLORS.dark}
         bgColorPress={COLORS.darkDeep}
-        text="다음"
+        text='다음'
         disabled={!verifyKey}
         onPress={submit}
         style={styles.submitTheme}

@@ -11,7 +11,7 @@ const CustomPicker = ({
   onValueChange = () => {},
   items = [],
   width = "auto",
-  height = 50,
+  height = 45,
   wrapperStyle = {},
   style = {},
   itemStyle = {},

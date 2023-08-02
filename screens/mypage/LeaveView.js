@@ -106,12 +106,6 @@ const styles = StyleSheet.create({
   phoneVerifyInput: {
     marginTop: 10,
   },
-  verifyTimer: {
-    position: 'absolute',
-    top: 23,
-    right: 15,
-    color: COLORS.danger,
-  },
 
   submitTheme: { borderRadius: 0 },
 });

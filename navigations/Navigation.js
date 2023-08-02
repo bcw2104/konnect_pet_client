@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MyPageStackNavigator from './stacks/MyPageStackNavigator';
 import WalkingStackNavigator from './stacks/WalkingStackNavigator';
 import { observer } from 'mobx-react-lite';
+import { useBackPressHandler } from '../hooks/useBackPressHandler';
 
 const navTheme = {
   ...DefaultTheme,
@@ -20,7 +21,9 @@ const navTheme = {
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-  const { userStore, systemStore } = useStores();
+  useBackPressHandler();
+
+  const { userStore } = useStores();
   return (
     <NavigationContainer ref={navigationRef} theme={navTheme}>
       {userStore.isLogin ? (

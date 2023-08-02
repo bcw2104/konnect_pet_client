@@ -57,10 +57,13 @@ const GoogleLogin = () => {
         );
         userStore.initUserInfo();
       } else if (response.rsp_code === '9216') {
-        Navigator.navigate('signup_step1', {
-          platform: SOCIAL_TYPE.GOOGLE,
-          emailVerifyKey: response.result.key,
-        });
+        Navigator.navigate(
+          {
+            platform: SOCIAL_TYPE.GOOGLE,
+            emailVerifyKey: response.result.key,
+          },
+          'signup_step1'
+        );
       }
     } catch (error) {
     } finally {

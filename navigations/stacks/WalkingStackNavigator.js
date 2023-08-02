@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Pressable, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import WalkingResultView from '../../screens/walking/WalkingResultView';
+import { Navigator } from '../Navigator';
 
 const WalkingStack = createNativeStackNavigator();
 
@@ -15,24 +16,7 @@ const WalkingStackNavigator = () => {
           headerLeft: () => (
             <Pressable
               onPress={() => {
-                props.navigation.reset({
-                  index: 0,
-                  routes: [
-                    {
-                      name: 'home_tabs',
-                      state: {
-                        routes: [
-                          {
-                            name: 'walking_tab',
-                            state: {
-                              routes: [{ name: 'walking_home', params: {} }],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                });
+                Navigator.reset({},'home_tabs','walking_tab','walking_home');
               }}
             >
               <Ionicons name="arrow-back-outline" size={24} color="black" />

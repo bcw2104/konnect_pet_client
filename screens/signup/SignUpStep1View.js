@@ -17,9 +17,9 @@ const SignupStep1View = (props) => {
 
   const goToNextStep = (params) => {
     if (route.params.platform != SOCIAL_TYPE.EMAIL) {
-      Navigator.navigate('signup_step3', { ...params, ...route.params });
+      Navigator.navigate({ ...params, ...route.params }, 'signup_step3');
     } else {
-      Navigator.navigate('signup_step2', { ...params, ...route.params });
+      Navigator.navigate({ ...params, ...route.params }, 'signup_step2');
     }
   };
 

@@ -121,7 +121,7 @@ const EmailVerify = ({
         <CustomInput
           value={email}
           editable={!fixedEmail}
-          maxLength={20}
+          maxLength={50}
           onValueChange={handleEmailChange}
           keyboardType='email-address'
           placeholder='Email address'
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   verifyTimer: {
     position: 'absolute',
-    top: 16,
+    top: 11,
     right: 125,
   },
   verifySubmitButton: {

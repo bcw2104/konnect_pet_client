@@ -32,7 +32,7 @@ const SettingView = () => {
       <View style={styles.section2}>
         <Pressable
           onPress={() => {
-            Navigator.navigate('leave_confirm');
+            Navigator.navigate({}, 'leave_confirm');
           }}
           style={styles.menuItem}
         >
@@ -43,7 +43,7 @@ const SettingView = () => {
         </Pressable>
         <Pressable
           onPress={() => {
-            Navigator.navigate('leave_confirm');
+            Navigator.navigate({}, 'leave_confirm');
           }}
           style={styles.menuItem}
         >
@@ -54,7 +54,7 @@ const SettingView = () => {
         </Pressable>
         <Pressable
           onPress={() => {
-            Navigator.navigate('leave_confirm');
+            Navigator.navigate({}, 'leave_confirm');
           }}
           style={styles.menuItem}
         >
@@ -65,7 +65,7 @@ const SettingView = () => {
         </Pressable>
         <Pressable
           onPress={() => {
-            Navigator.navigate('terms_list');
+            Navigator.navigate({}, 'terms_list');
           }}
           style={styles.menuItem}
         >
@@ -76,7 +76,7 @@ const SettingView = () => {
         </Pressable>
         <Pressable
           onPress={() => {
-            Navigator.navigate('leave_confirm');
+            Navigator.navigate({}, 'leave_confirm');
           }}
           style={styles.menuItem}
         >
@@ -93,7 +93,7 @@ const SettingView = () => {
         </Pressable>
         <Pressable
           onPress={() => {
-            Navigator.navigate('leave_confirm');
+            Navigator.navigate({}, 'leave_confirm');
           }}
           style={styles.menuItem}
         >

@@ -17,7 +17,7 @@ const FindPasswordStep2View = (props) => {
   const [password, setPassword] = useState(null);
 
   const goToNextStep = (params) => {
-    Navigator.navigate('welcome', params);
+    Navigator.navigate(params, 'welcome');
   };
 
   const submit = async () => {
@@ -58,7 +58,7 @@ const FindPasswordStep2View = (props) => {
         fontColor={COLORS.white}
         bgColor={COLORS.dark}
         bgColorPress={COLORS.darkDeep}
-        text="변경하기"
+        text='변경하기'
         disabled={!password}
         onPress={submit}
         style={styles.submitTheme}

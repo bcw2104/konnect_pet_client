@@ -32,7 +32,6 @@ export default function App() {
     'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
     'Roboto-Thin': require('./assets/fonts/Roboto/Roboto-Thin.ttf'),
   });
-  useBackPressHandler();
 
   useEffect(() => {
     Notifications.setNotificationHandler({
@@ -45,10 +44,7 @@ export default function App() {
 
     Linking.addEventListener('url', (event) => {
       if (event.url == DEEP_LINK_PREFIX.DEFAULT + 'walking') {
-        Navigator.navigate('home_tabs', {
-          screen: 'walking_tab',
-          params: { screen: 'walking' },
-        });
+        Navigator.navigate(params,'home_tabs', "walking_tab","walking");
       }
     });
   }, []);

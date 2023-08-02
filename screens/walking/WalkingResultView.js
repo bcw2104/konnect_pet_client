@@ -31,6 +31,10 @@ const WalkingResultView = (props) => {
   const { systemStore } = useStores();
 
   useEffect(() => {
+    systemStore.setBackHandlerCallback(() => {
+      Navigator.reset({}, 'home_tabs', 'walking_tab', 'walking_home');
+    });
+
     const fetchData = async () => {
       systemStore.setIsLoading(true);
       try {
@@ -78,10 +82,14 @@ const WalkingResultView = (props) => {
       }
     };
     fetchData();
+
+    return () => {
+      systemStore.setBackHandlerCallback(null);
+    };
   }, []);
 
   const goToHome = (params) => {
-    Navigator.reset(params, 'walking_home');
+    Navigator.reset({params}, 'home_tabs', 'walking_tab', 'walking_home');
   };
 
   return (
@@ -108,7 +116,7 @@ const WalkingResultView = (props) => {
             >
               <Polyline
                 coordinates={routes}
-                strokeColor="#e23dff"
+                strokeColor='#e23dff'
                 strokeWidth={6}
               />
             </GoogleMap>

@@ -9,7 +9,7 @@ import { FONT_WEIGHT } from '../../commons/constants';
 
 const LeaveConfirmView = () => {
   const confirm = () => {
-    Navigator.navigate('leave', {});
+    Navigator.navigate({}, 'leave');
   };
 
   const cancel = () => {
@@ -19,10 +19,10 @@ const LeaveConfirmView = () => {
   return (
     <Container header={true}>
       <View style={styles.section1}>
-        <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
+        <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
           정말 탈퇴하시겠습니까?
         </CustomText>
-        <CustomText style={{ marginTop:20 }} fontSize={18}>
+        <CustomText style={{ marginTop: 20 }} fontSize={18}>
           탈퇴하시면 모든 정보가 삭제됩니다.{'\n'}
           그래도 탈퇴하시겠습니까?
         </CustomText>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   section2: {
-    paddingBottom:20,
+    paddingBottom: 20,
     flexDirection: 'row',
   },
 });

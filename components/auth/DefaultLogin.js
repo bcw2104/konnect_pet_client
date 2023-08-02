@@ -63,6 +63,7 @@ const DefaultLogin = () => {
     >
       <CustomInput
         value={email}
+        maxLength={50}
         onValueChange={setEmail}
         wrapperStyle={styles.input}
         placeholder='Email'
@@ -73,6 +74,7 @@ const DefaultLogin = () => {
       <CustomInput
         secureTextEntry={true}
         value={password}
+        maxLength={50}
         onValueChange={setPassword}
         wrapperStyle={styles.input}
         placeholder='Password'
@@ -101,7 +103,7 @@ const DefaultLogin = () => {
       >
         <Pressable
           onPress={() => {
-            Navigator.navigate('find_password_step1', {});
+            Navigator.navigate({}, 'find_password_step1');
           }}
           hitSlop={10}
         >

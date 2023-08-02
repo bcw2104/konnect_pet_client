@@ -57,7 +57,6 @@ const WalkingView = (props) => {
   const catchedFootprints = useRef([]);
   const metersRef = useRef(0);
   const footprintsRef = useRef([]);
-  const prevTime = useRef(new Date());
   const updateFootprints = useRef(false);
   const aroundStandardCoords = useRef(null);
 
@@ -88,23 +87,23 @@ const WalkingView = (props) => {
   };
 
   useEffect(() => {
-    const subscription = AppState.addEventListener(
-      'change',
-      async (nextAppState) => {
-        if (
-          appState.current.match(/inactive|background/) &&
-          nextAppState === 'active'
-        ) {
-          const now = new Date();
-          const diffTime = Math.ceil(Math.abs(now - prevTime.current) / 1000);
-          setSeconds((seconds) => seconds + diffTime);
-        } else {
-          prevTime.current = new Date();
-        }
+    // const subscription = AppState.addEventListener(
+    //   'change',
+    //   async (nextAppState) => {
+    //     if (
+    //       appState.current.match(/inactive|background/) &&
+    //       nextAppState === 'active'
+    //     ) {
+    //       const now = new Date();
+    //       const diffTime = Math.ceil(Math.abs(now - prevTime.current) / 1000);
+    //       setSeconds((seconds) => seconds + diffTime);
+    //     } else {
+    //       prevTime.current = new Date();
+    //     }
 
-        appState.current = nextAppState;
-      }
-    );
+    //     appState.current = nextAppState;
+    //   }
+    // );
 
     const fetchData = async () => {
       systemStore.setDisplayTabBar(false);
@@ -133,7 +132,7 @@ const WalkingView = (props) => {
     fetchData();
 
     return async () => {
-      subscription.remove();
+      // subscription.remove();
       await BackgroundService.stop();
 
       console.log('all tasks unregistered');
@@ -150,6 +149,7 @@ const WalkingView = (props) => {
 
     if (startCounter == 0) {
       const newSeconds = seconds + 1;
+
       setSeconds(newSeconds);
 
       if (meters != metersRef.current && metersRef.current >= 0) {
@@ -372,14 +372,11 @@ const WalkingView = (props) => {
   };
 
   const goToHome = (params) => {
-    Navigator.reset( params,'walking_home');
+    Navigator.reset(params, 'walking_home');
   };
 
   const goToNextStep = (params) => {
-    Navigator.navigate('walking_nav', {
-      screen: 'walking_result',
-      params: params,
-    });
+    Navigator.reset(params, 'walking_nav', 'walking_result');
   };
 
   const changeMyLocation = useCallback((coords) => {
@@ -499,7 +496,7 @@ const WalkingView = (props) => {
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            text={<Ionicons name="options" size={30} color="black" />}
+            text={<Ionicons name='options' size={30} color='black' />}
             fontColor={COLORS.white}
             onPress={handleOpenSetting}
             width={60}
@@ -538,9 +535,9 @@ const WalkingView = (props) => {
                         }}
                       >
                         <MaterialCommunityIcons
-                          name="dog"
+                          name='dog'
                           size={24}
-                          color="black"
+                          color='black'
                         />
                       </Marker>
                     ))}
@@ -561,9 +558,9 @@ const WalkingView = (props) => {
                         }}
                       >
                         <MaterialCommunityIcons
-                          name="dog"
+                          name='dog'
                           size={24}
-                          color="red"
+                          color='red'
                         />
                       </Marker>
                     ))}
@@ -571,12 +568,12 @@ const WalkingView = (props) => {
               )}
               {myFootprints.map((coords, index) => (
                 <Marker key={index} coordinate={coords}>
-                  <FontAwesome5 name="stamp" size={24} color="black" />
+                  <FontAwesome5 name='stamp' size={24} color='black' />
                 </Marker>
               ))}
               <Polyline
                 coordinates={routes}
-                strokeColor="#e23dff"
+                strokeColor='#e23dff'
                 strokeWidth={6}
               />
             </GoogleMap>
@@ -586,7 +583,7 @@ const WalkingView = (props) => {
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            text={<MaterialIcons name="my-location" size={30} color="black" />}
+            text={<MaterialIcons name='my-location' size={30} color='black' />}
             fontColor={COLORS.white}
             onPress={getMyLocation}
             width={60}
@@ -614,7 +611,7 @@ const WalkingView = (props) => {
             <CustomButton
               bgColor={COLORS.warning}
               bgColorPress={COLORS.warningDeep}
-              text={<MaterialIcons name="pause" size={30} color="black" />}
+              text={<MaterialIcons name='pause' size={30} color='black' />}
               fontColor={COLORS.white}
               onPress={stopWalking}
               width={60}
@@ -642,7 +639,7 @@ const WalkingView = (props) => {
         >
           <View style={styles.settingItemWrap}>
             <View style={{ flexDirection: 'row' }}>
-              <MaterialCommunityIcons name="dog" size={27} color="black" />
+              <MaterialCommunityIcons name='dog' size={27} color='black' />
               <CustomText style={{ marginLeft: 7 }}>발자국</CustomText>
             </View>
             <CustomSwitch

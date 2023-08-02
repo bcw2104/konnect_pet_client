@@ -49,7 +49,7 @@ const SignupStep3View = (props) => {
   }, []);
 
   const goToNextStep = (params) => {
-    Navigator.navigate('signup_step4', { ...params, ...route.params });
+    Navigator.navigate({ ...params, ...route.params }, 'signup_step4');
   };
 
   const toggleAll = () => {
@@ -99,7 +99,7 @@ const SignupStep3View = (props) => {
         <>
           <Container header={true}>
             <View style={styles.section1}>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
                 약관 동의를 해주세요.
               </CustomText>
             </View>
@@ -130,9 +130,12 @@ const SignupStep3View = (props) => {
                     />
                     <Pressable
                       onPress={() => {
-                        Navigator.navigate('terms', {
-                          termsGroupId: ele.termsGroupId,
-                        });
+                        Navigator.navigate(
+                          {
+                            termsGroupId: ele.termsGroupId,
+                          },
+                          'terms'
+                        );
                       }}
                     >
                       <View style={{ marginLeft: 20, flexDirection: 'row' }}>

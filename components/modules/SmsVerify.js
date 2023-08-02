@@ -199,7 +199,7 @@ const SmsVerify = ({
           <CustomInput
             value={verifyCode}
             onValueChange={setVerifyCode}
-            maxLength={10}
+            maxLength={6}
             keyboardType="number-pad"
             wrapperStyle={styles.phoneVerifyInput}
             placeholder="Verify code"
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   },
   verifyTimer: {
     position: 'absolute',
-    top: 16,
+    top: 11,
     right: 125,
   },
   verifySubmitButton: {

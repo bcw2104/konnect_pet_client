@@ -17,7 +17,7 @@ const SignupStep2View = (props) => {
   const [verifyKey, setVerifyKey] = useState(null);
 
   const goToNextStep = (params) => {
-    Navigator.navigate('signup_step3', { ...params, ...route.params });
+    Navigator.navigate({ ...params, ...route.params }, 'signup_step3');
   };
 
   const submit = async () => {

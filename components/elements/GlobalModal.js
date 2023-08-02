@@ -84,6 +84,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  contentText:{
+    textAlign:'center',
+  },
 
   buttonWrap: {
     flexDirection: 'row',

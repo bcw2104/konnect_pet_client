@@ -160,7 +160,7 @@ const PetAddFormView = (props) => {
                     }}
                   >
                     <View style={styles.upload}>
-                      <Feather name="camera" size={20} color="black" />
+                      <Feather name='camera' size={20} color='black' />
                     </View>
                     <Image
                       source={
@@ -182,7 +182,7 @@ const PetAddFormView = (props) => {
                     Name
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -191,14 +191,14 @@ const PetAddFormView = (props) => {
                 <CustomInput
                   value={petInfo.petName}
                   onValueChange={(value) => {
-                    if (value.length > 30) return;
                     setPetInfo({ ...petInfo, petName: value });
                   }}
+                  maxLength={30}
                   fontSize={16}
                   height={40}
                   wrapperStyle={styles.input}
-                  placeholder="이름을 입력해 주세요."
-                  keyboardType="default"
+                  placeholder='이름을 입력해 주세요.'
+                  keyboardType='default'
                   outline={true}
                 />
               </View>
@@ -208,7 +208,7 @@ const PetAddFormView = (props) => {
                     Species
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -217,14 +217,14 @@ const PetAddFormView = (props) => {
                 <CustomInput
                   value={petInfo.petSpecies}
                   onValueChange={(value) => {
-                    if (value.length > 30) return;
                     setPetInfo({ ...petInfo, petSpecies: value });
                   }}
+                  maxLength={30}
                   fontSize={16}
                   height={40}
                   wrapperStyle={styles.input}
-                  placeholder="견종을 입력해 주세요."
-                  keyboardType="default"
+                  placeholder='견종을 입력해 주세요.'
+                  keyboardType='default'
                   outline={true}
                 />
               </View>
@@ -234,7 +234,7 @@ const PetAddFormView = (props) => {
                     Gender
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -259,7 +259,7 @@ const PetAddFormView = (props) => {
                     BirthDate
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -297,7 +297,7 @@ const PetAddFormView = (props) => {
                     중성화 여부
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -323,7 +323,7 @@ const PetAddFormView = (props) => {
                     접종 여부
                   </CustomText>
                   <FontAwesome5
-                    name="star-of-life"
+                    name='star-of-life'
                     size={10}
                     color={COLORS.warningDeep}
                     style={styles.required}
@@ -358,14 +358,14 @@ const PetAddFormView = (props) => {
                 <CustomInput
                   value={petInfo.petDescription}
                   onValueChange={(value) => {
-                    if (value.length > 150) return;
                     setPetInfo({ ...petInfo, petDescription: value });
                   }}
+                  maxLength={150}
                   multiline={true}
                   fontSize={16}
                   wrapperStyle={styles.input}
-                  placeholder="반려견을 소개해 주세요."
-                  keyboardType="default"
+                  placeholder='반려견을 소개해 주세요.'
+                  keyboardType='default'
                   outline={true}
                   height={100}
                 />
@@ -379,7 +379,7 @@ const PetAddFormView = (props) => {
         bgColor={COLORS.dark}
         bgColorPress={COLORS.darkDeep}
         onPress={savePetInfo}
-        text="등록하기"
+        text='등록하기'
         style={styles.submitTheme}
         height={60}
       />

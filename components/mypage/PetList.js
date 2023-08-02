@@ -21,16 +21,11 @@ const PetList = ({ items }) => {
   const { userStore } = useStores();
 
   const addNewPet = () => {
-    Navigator.navigate('mypage_nav', {
-      screen: 'pet_add_form',
-    });
+    Navigator.navigate({}, 'mypage_nav', 'pet_add_form');
   };
 
   const editPet = (pet) => {
-    Navigator.navigate('mypage_nav', {
-      screen: 'pet_add_form',
-      params: { pet: pet },
-    });
+    Navigator.navigate({ pet: pet }, 'mypage_nav', 'pet_add_form');
   };
 
   return (
@@ -72,9 +67,9 @@ const PetList = ({ items }) => {
           ) : (
             <Pressable style={styles.petItem} onPress={addNewPet}>
               <AntDesign
-                name="pluscircleo"
+                name='pluscircleo'
                 size={40}
-                color="black"
+                color='black'
                 style={styles.petImg}
               />
               <View style={styles.pet}>

@@ -16,7 +16,7 @@ const WelcomeView = () => {
     //산책 데이터 초기화
     asyncStorage.removeItem('walking_temp_data');
   }, []);
-  
+
   return (
     <Container>
       <View style={styles.section1}>
@@ -51,9 +51,12 @@ const WelcomeView = () => {
           </CustomText>
           <Pressable
             onPress={() => {
-              Navigator.navigate('signup_step1', {
-                platform: SOCIAL_TYPE.EMAIL,
-              });
+              Navigator.navigate(
+                {
+                  platform: SOCIAL_TYPE.EMAIL,
+                },
+                'signup_step1'
+              );
             }}
             hitSlop={10}
           >

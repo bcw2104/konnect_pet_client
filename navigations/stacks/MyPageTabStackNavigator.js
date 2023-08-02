@@ -3,13 +3,14 @@ import { Pressable, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import MyPageHomeView from '../../screens/mypage/MyPageHomeView';
 import CustomText from '../../components/elements/CustomText';
+import { Navigator } from '../Navigator';
 const MyPageTabStack = createNativeStackNavigator();
 
 const MyPageTabStackNavigator = ({ navigation, route }) => {
   return (
-    <MyPageTabStack.Navigator initialRouteName="mypage_home">
+    <MyPageTabStack.Navigator initialRouteName='mypage_home'>
       <MyPageTabStack.Screen
-        name="mypage_home"
+        name='mypage_home'
         component={MyPageHomeView}
         options={(props) => ({
           headerTitle: '',
@@ -26,20 +27,18 @@ const MyPageTabStackNavigator = ({ navigation, route }) => {
                 style={{ marginRight: 20 }}
               >
                 <Ionicons
-                  name="notifications-outline"
+                  name='notifications-outline'
                   size={24}
-                  color="black"
+                  color='black'
                 />
               </Pressable>
               <Pressable
                 onPress={() => {
-                  props.navigation.navigate('mypage_nav', {
-                    screen: 'setting',
-                  });
+                  Navigator.navigate({}, 'mypage_nav', 'setting');
                 }}
                 hitSlop={5}
               >
-                <Ionicons name="settings-outline" size={24} color="black" />
+                <Ionicons name='settings-outline' size={24} color='black' />
               </Pressable>
             </View>
           ),
