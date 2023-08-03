@@ -22,7 +22,7 @@ const WalkingStackNavigator = () => {
               <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
-          presentation: 'containedModal',
+          animation: 'slide_from_bottom',
         })}
       >
         <WalkingStack.Screen

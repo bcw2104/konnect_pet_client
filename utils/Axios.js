@@ -4,11 +4,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import * as Update from 'expo-updates';
 import { Platform } from 'react-native';
 
-const BASE_API_URL = process.env.NODE_ENV=='development'
-          ? Platform.OS == 'ios'
-            ? 'http://127.0.0.1:8080'
-            : 'http://10.0.2.2:8080'
-          : process.env.EXPO_PUBLIC_BASE_API_URL;
+const BASE_API_URL = process.env.NODE_ENV == 'development' ? (Platform.OS == 'ios' ? 'http://127.0.0.1:8080' : 'http://10.0.2.2:8080') : process.env.EXPO_PUBLIC_BASE_API_URL;
 
 export const baseAxios = axios.create({
   baseURL: BASE_API_URL,
@@ -48,31 +44,16 @@ baseAxios.interceptors.response.use(
       };
 
       try {
-        const result = await axios.post(
-          `${BASE_API_URL}/api/auth/v1/token/refresh`,
-          {},
-          config
-        );
+        const result = await axios.post(`${BASE_API_URL}/api/v1/auth/token/refresh`, {}, config);
 
         if (result.data.rsp_code == '1000') {
           asyncStorage.setItem('access_token', result.data.result.accessToken);
-          asyncStorage.setItem(
-            'access_token_expire_at',
-            result.data.result.accessTokenExpireAt
-          );
-          asyncStorage.setItem(
-            'refresh_token',
-            result.data.result.refreshToken
-          );
-          asyncStorage.setItem(
-            'refresh_token_expire_at',
-            result.data.result.refreshTokenExpireAt
-          );
+          asyncStorage.setItem('access_token_expire_at', result.data.result.accessTokenExpireAt);
+          asyncStorage.setItem('refresh_token', result.data.result.refreshToken);
+          asyncStorage.setItem('refresh_token_expire_at', result.data.result.refreshTokenExpireAt);
 
           originConfig.headers.Authorization = `Bearer ${result.data.result.accessToken}`;
-          originConfig.attempt = !originConfig.attempt
-            ? 1
-            : originConfig.attempt++;
+          originConfig.attempt = !originConfig.attempt ? 1 : originConfig.attempt++;
 
           const rerespone = await axios.request(originConfig);
           return rerespone.data;

@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import { useStores } from '../../contexts/StoreContext';
 import CustomText from '../../components/elements/CustomText';
@@ -8,18 +8,28 @@ import COLORS from '../../commons/colors';
 import { observer } from 'mobx-react-lite';
 import PetList from '../../components/mypage/PetList';
 import Profile from '../../components/mypage/Profile';
+import serviceApis from '../../utils/ServiceApis';
 
 const MyPageHomeView = () => {
+  const [points, setPoints] = useState({});
+
+  useEffect(() => {
+    const fetchDate = async () => {
+      try {
+        const response = await serviceApis.getMyData();
+
+        setPoints(response.result?.points);
+      } catch (error) {}
+    };
+    fetchDate();
+  }, []);
+
   return (
     <Container header={true}>
       <ScrollView>
         <View style={styles.section1}>
           <View style={styles.element}>
-            <CustomText
-              style={styles.title}
-              fontSize={20}
-              fontWeight={FONT_WEIGHT.BOLD}
-            >
+            <CustomText style={styles.title} fontSize={20} fontWeight={FONT_WEIGHT.BOLD}>
               내 프로필
             </CustomText>
             <View style={styles.profileWrap}>
@@ -27,11 +37,7 @@ const MyPageHomeView = () => {
             </View>
           </View>
           <View style={styles.element}>
-            <CustomText
-              style={styles.title}
-              fontSize={20}
-              fontWeight={FONT_WEIGHT.BOLD}
-            >
+            <CustomText style={styles.title} fontSize={20} fontWeight={FONT_WEIGHT.BOLD}>
               내 반려견
             </CustomText>
             <View style={styles.petWrap}>
@@ -40,7 +46,7 @@ const MyPageHomeView = () => {
           </View>
         </View>
 
-        <View style={styles.section2}>{/* 내 누적 정보 및 포인트 */}</View>
+        <View style={styles.section2}></View>
 
         <View style={styles.section3}>{/* 쇼핑,산책,커뮤니티 등등... */}</View>
       </ScrollView>

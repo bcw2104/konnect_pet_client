@@ -15,13 +15,11 @@ const AuthStack = createNativeStackNavigator();
 
 const AuthStackNavigator = () => {
   return (
-    <AuthStack.Navigator
-      initialRouteName='welcome'
-    >
+    <AuthStack.Navigator initialRouteName="welcome">
       <AuthStack.Screen
-        name='welcome'
+        name="welcome"
         component={WelcomeView}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, animation: 'slide_from_bottom' }}
       ></AuthStack.Screen>
       <AuthStack.Group
         screenOptions={(props) => ({
@@ -33,22 +31,23 @@ const AuthStackNavigator = () => {
               <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
+          animation: 'slide_from_right',
         })}
       >
         <AuthStack.Screen
-          name='signup_step1'
+          name="signup_step1"
           component={SignupStep1View}
         ></AuthStack.Screen>
         <AuthStack.Screen
-          name='signup_step2'
+          name="signup_step2"
           component={SignupStep2View}
         ></AuthStack.Screen>
         <AuthStack.Screen
-          name='signup_step3'
+          name="signup_step3"
           component={SignupStep3View}
         ></AuthStack.Screen>
         <AuthStack.Screen
-          name='signup_step4'
+          name="signup_step4"
           component={SignupStep4View}
         ></AuthStack.Screen>
       </AuthStack.Group>
@@ -61,14 +60,15 @@ const AuthStackNavigator = () => {
               <Ionicons name="arrow-back-outline" size={24} color="black" />
             </Pressable>
           ),
+          animation: 'slide_from_right',
         })}
       >
         <AuthStack.Screen
-          name='find_password_step1'
+          name="find_password_step1"
           component={FindPasswordStep1View}
         ></AuthStack.Screen>
         <AuthStack.Screen
-          name='find_password_step2'
+          name="find_password_step2"
           component={FindPasswordStep2View}
         ></AuthStack.Screen>
       </AuthStack.Group>
@@ -82,9 +82,10 @@ const AuthStackNavigator = () => {
             </Pressable>
           ),
           presentation: 'modal',
+          animation: 'slide_from_bottom',
         })}
       >
-        <AuthStack.Screen name='terms' component={TermsView}></AuthStack.Screen>
+        <AuthStack.Screen name="terms" component={TermsView}></AuthStack.Screen>
       </AuthStack.Group>
     </AuthStack.Navigator>
   );

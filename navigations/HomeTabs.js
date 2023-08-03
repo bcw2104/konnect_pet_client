@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../contexts/StoreContext';
+import COLORS from '../commons/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,8 +15,9 @@ const HomeTabs = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName='walking_tab'
+      initialRouteName="walking_tab"
       screenOptions={{
+        tabBarActiveTintColor: COLORS.warningDeep,
         tabBarStyle: {
           display: systemStore.displayTabBar ? 'flex' : 'none',
           position: 'relative',
@@ -35,24 +37,24 @@ const HomeTabs = () => {
       }}
     >
       <Tab.Screen
-        name='walking_tab'
+        name="walking_tab"
         component={WalkingTabStackNavigator}
         options={{
           headerShown: false,
           tabBarLabel: 'Walking',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name='pets' size={20} color={color} />
+            <MaterialIcons name="pets" size={20} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name='mypage_tab'
+        name="mypage_tab"
         component={MyPageTabStackNavigator}
         options={{
           headerShown: false,
           tabBarLabel: 'My Page',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name='person' size={20} color={color} />
+            <MaterialIcons name="person" size={20} color={color} />
           ),
         }}
       />

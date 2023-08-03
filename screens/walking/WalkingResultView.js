@@ -165,7 +165,7 @@ const WalkingResultView = (props) => {
                         <CustomText fontSize={18}>{ele.policyName}</CustomText>
                         <CustomText fontSize={18}>
                           {!ele.paymentYn && '(지급 예정)'} {ele.amount}
-                          {ele.pointType}
+                          {ele.pointTypeSymbol}
                         </CustomText>
                       </View>
                     ))}

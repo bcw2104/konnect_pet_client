@@ -1,13 +1,5 @@
-import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
-import React, { useRef, useState } from 'react';
+import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
 import Container from '../../components/layouts/Container';
 import { FONT_WEIGHT } from '../../commons/constants';
@@ -26,9 +18,11 @@ import { useStores } from '../../contexts/StoreContext';
 import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 
-const UserInfoFormView = (props) => {
+const ProfileFormView = (props) => {
+  const { route } = props;
   const { userStore, modalStore, systemStore } = useStores();
   const imageUploaderRef = useRef();
+  const isImageChanged = useRef(false);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [profile, serProfile] = useState({
@@ -38,8 +32,20 @@ const UserInfoFormView = (props) => {
     comment: '',
   });
 
+  useEffect(() => {
+    const profile = route.params?.profile;
+    if (!!profile) {
+      serProfile({
+        ...profile,
+        birthDate: moment(profile.birthDate, 'YYYYMMDD').toDate(),
+      });
+      setProfileImage(profile.profileImgUrl);
+    }
+  }, [route.params]);
+
   const handleImageChange = (image) => {
     setProfileImage(image.uri);
+    isImageChanged.current = true;
   };
 
   const validation = (data) => {
@@ -55,26 +61,21 @@ const UserInfoFormView = (props) => {
       const valid = validation(profile);
 
       if (!valid) {
-        modalStore.openOneButtonModal(
-          '필수 항목을 전부 채워주세요.',
-          '확인',
-          () => {}
-        );
+        modalStore.openOneButtonModal('필수 항목을 전부 채워주세요.', '확인', () => {});
         return;
       }
 
       systemStore.setIsLoading(true);
 
-      let imageUrl = '';
+      let imageUrl = null;
 
-      if (!!profileImage) {
+      if (isImageChanged.current && !!profileImage) {
         try {
-          const upload = await utils.uploadImage(
-            profileImage,
-            '/api/upload/v1/images/profile/user'
-          );
+          const upload = await utils.uploadImage(profileImage, '/api/v1/upload/images/profile/user');
           imageUrl = upload.imageUrl;
         } catch (err) {}
+      } else if (!isImageChanged.current && !!profileImage) {
+        imageUrl = profileImage;
       }
 
       const data = {
@@ -86,13 +87,9 @@ const UserInfoFormView = (props) => {
 
       if (response.rsp_code == '1000') {
         userStore.setProfile(response.result);
-        modalStore.openOneButtonModal(
-          '프로필 등록이 완료되었습니다.',
-          '확인',
-          () => {
-            Navigator.goBack();
-          }
-        );
+        modalStore.openOneButtonModal('프로필 등록이 완료되었습니다.', '확인', () => {
+          Navigator.goBack();
+        });
       }
     } catch (e) {
       console.log(e);
@@ -105,17 +102,10 @@ const UserInfoFormView = (props) => {
     <>
       <Container header={true}>
         <ScrollView>
-          <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === 'ios' ? 'position' : 'height' }
-            keyboardVerticalOffset={20}
-          >
+          <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'position' : 'height'} keyboardVerticalOffset={20}>
             <View style={styles.section1}>
               <View style={styles.profileImgWrap}>
-                <ImageUploader
-                  onImageChange={handleImageChange}
-                  ref={imageUploaderRef}
-                >
+                <ImageUploader onImageChange={handleImageChange} ref={imageUploaderRef}>
                   <Pressable
                     onPress={() => {
                       imageUploaderRef.current.pickImage();
@@ -143,12 +133,7 @@ const UserInfoFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     Nickname
                   </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.warningDeep}
-                    style={styles.required}
-                  />
+                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.warningDeep} style={styles.required} />
                 </View>
                 <CustomInput
                   value={profile.nickname}
@@ -169,12 +154,7 @@ const UserInfoFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     Gender
                   </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.warningDeep}
-                    style={styles.required}
-                  />
+                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.warningDeep} style={styles.required} />
                 </View>
                 <CustomRadio
                   fontSize={20}
@@ -194,12 +174,7 @@ const UserInfoFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     BirthDate
                   </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.warningDeep}
-                    style={styles.required}
-                  />
+                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.warningDeep} style={styles.required} />
                 </View>
                 <Pressable
                   onPress={() => {
@@ -209,9 +184,7 @@ const UserInfoFormView = (props) => {
                     padding: 10,
                   }}
                 >
-                  <CustomText fontSize={16}>
-                    {moment(profile.birthDate).format('YYYY.MM.DD')}
-                  </CustomText>
+                  <CustomText fontSize={16}>{moment(profile.birthDate).format('YYYY.MM.DD')}</CustomText>
                 </Pressable>
                 <DatePicker
                   modal
@@ -232,11 +205,7 @@ const UserInfoFormView = (props) => {
                   paddingVertical: 20,
                 }}
               >
-                <CustomText
-                  fontWeight={FONT_WEIGHT.BOLD}
-                  fontSize={16}
-                  style={{ marginBottom: 20 }}
-                >
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16} style={{ marginBottom: 20 }}>
                   Comment
                 </CustomText>
                 <CustomInput
@@ -258,20 +227,12 @@ const UserInfoFormView = (props) => {
           </KeyboardAvoidingView>
         </ScrollView>
       </Container>
-      <CustomButton
-        fontColor={COLORS.white}
-        bgColor={COLORS.dark}
-        bgColorPress={COLORS.darkDeep}
-        onPress={saveProfileInfo}
-        text="등록하기"
-        style={styles.submitTheme}
-        height={60}
-      />
+      <CustomButton fontColor={COLORS.white} bgColor={COLORS.dark} bgColorPress={COLORS.darkDeep} onPress={saveProfileInfo} text="등록하기" style={styles.submitTheme} height={60} />
     </>
   );
 };
 
-export default UserInfoFormView;
+export default ProfileFormView;
 
 const styles = StyleSheet.create({
   section1: {

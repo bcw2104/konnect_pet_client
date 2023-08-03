@@ -5,13 +5,18 @@ import WalkingHomeView from '../../screens/walking/WalkingHomeView';
 import WalkingView from '../../screens/walking/WalkingView';
 import WalkingResultView from '../../screens/walking/WalkingResultView';
 import PetAddFormView from '../../screens/user/PetAddFormView';
-import UserInfoFormView from '../../screens/user/UserInfoFormView';
+import ProfileFormView from '../../screens/user/ProfileFormView';
 
 const WalkingTabStack = createNativeStackNavigator();
 
 const WalkingTabStackNavigator = () => {
   return (
-    <WalkingTabStack.Navigator initialRouteName="walking_home">
+    <WalkingTabStack.Navigator
+      initialRouteName="walking_home"
+      screenOptions={{
+        animation: 'slide_from_right',
+      }}
+    >
       <WalkingTabStack.Screen
         name="walking_home"
         component={WalkingHomeView}

@@ -1,74 +1,68 @@
 import { baseAxios } from './Axios';
 
 export default serviceApis = {
-  //screen
-  screenNations: () => baseAxios.get(`/api/screen/public/v1/nations`),
+  //common
+  telNations: () => baseAxios.get(`/api/v1/common/public/nations`),
 
   //auth
-  login: (email, password) =>
-    baseAxios.post(`/api/auth/v1/login`, { email, password }),
+  login: (email, password) => baseAxios.post(`/api/v1/auth/login`, { email, password }),
   socialLogin: (token, type) =>
-    baseAxios.post(`/api/auth/v1/login/social`, {
+    baseAxios.post(`/api/v1/auth/login/social`, {
       token: token,
       type: type,
     }),
-  join: (payload) => baseAxios.post(`/api/auth/v1/join`, payload),
-  resetPassword: (payload) =>
-    baseAxios.post(`/api/auth/v1/password/reset`, payload),
+  join: (payload) => baseAxios.post(`/api/v1/auth/join`, payload),
+  resetPassword: (payload) => baseAxios.post(`/api/v1/auth/password/reset`, payload),
 
-  tokenRefresh: () => baseAxios.post(`/api/auth/v1/token/refresh`),
+  tokenRefresh: () => baseAxios.post(`/api/v1/auth/token/refresh`),
 
   //mypage
-  leaveUser: (smsVerifyKey) =>
-    baseAxios.post(`/api/user/v1/mypage/leave`, { smsVerifyKey }),
+  getMyData: () => baseAxios.get(`/api/v1/user/mypage`),
+  leaveUser: (smsVerifyKey) => baseAxios.post(`/api/v1/user/mypage/leave`, { smsVerifyKey }),
 
   //terms
-  getTermsDetail: (groupId) =>
-    baseAxios.get(`/api/terms/v1/group/${groupId}/lastest`),
-  getSignUpTerms: () => baseAxios.get(`/api/terms/v1/group/signup`),
-  getAllTerms: () => baseAxios.get(`/api/terms/v1/group/all`),
+  getTermsDetail: (groupId) => baseAxios.get(`/api/v1/terms/group/${groupId}/lastest`),
+  getSignUpTerms: () => baseAxios.get(`/api/v1/terms/group/signup`),
+  getAllTerms: () => baseAxios.get(`/api/v1/terms/group/all`),
 
   //verification
-  requestJoinSmsVerification: (tel) =>
-    baseAxios.post(`/api/auth/v1/join/verify/sms`, { tel }),
+  requestJoinSmsVerification: (tel) => baseAxios.post(`/api/v1/auth/join/verify/sms`, { tel }),
   submitJoinSmsVerification: (reqId, timestamp, tel, verify) =>
-    baseAxios.post(`/api/auth/v1/join/verify/sms/check`, {
+    baseAxios.post(`/api/v1/auth/join/verify/sms/check`, {
       reqId,
       timestamp,
       tel,
       verify,
     }),
-  requestJoinEmailVerification: (email) =>
-    baseAxios.post(`/api/auth/v1/join/verify/email`, { email }),
+  requestJoinEmailVerification: (email) => baseAxios.post(`/api/v1/auth/join/verify/email`, { email }),
   submitJoinEmailVerification: (reqId, timestamp, email, verify) =>
-    baseAxios.post(`/api/auth/v1/join/verify/email/check`, {
+    baseAxios.post(`/api/v1/auth/join/verify/email/check`, {
       reqId,
       timestamp,
       email,
       verify,
     }),
 
-  requestResetPasswordEmailVerification: (email) =>
-    baseAxios.post(`/api/auth/v1/password/reset/verify/email`, { email }),
+  requestResetPasswordEmailVerification: (email) => baseAxios.post(`/api/v1/auth/password/reset/verify/email`, { email }),
   submitResetPasswordEmailVerification: (reqId, timestamp, email, verify) =>
-    baseAxios.post(`/api/auth/v1/password/reset/verify/email/check`, {
+    baseAxios.post(`/api/v1/auth/password/reset/verify/email/check`, {
       reqId,
       timestamp,
       email,
       verify,
     }),
 
-  requestSmsVerification: () => baseAxios.post(`/api/user/v1/verify/sms`),
+  requestSmsVerification: () => baseAxios.post(`/api/v1/user/verify/sms`),
   submitSmsVerification: (reqId, timestamp, tel, verify) =>
-    baseAxios.post(`/api/user/v1/verify/sms/check`, {
+    baseAxios.post(`/api/v1/user/verify/sms/check`, {
       reqId,
       timestamp,
       tel,
       verify,
     }),
-  requestEmailVerification: () => baseAxios.post(`/api/user/v1/verify/email`),
+  requestEmailVerification: () => baseAxios.post(`/api/v1/user/verify/email`),
   submitEmailVerification: (reqId, timestamp, email, verify) =>
-    baseAxios.post(`/api/user/v1/verify/email/check`, {
+    baseAxios.post(`/api/v1/user/verify/email/check`, {
       reqId,
       timestamp,
       email,
@@ -76,35 +70,27 @@ export default serviceApis = {
     }),
 
   //user
-  logout: () => baseAxios.post(`/api/user/v1/logout`),
-  getUserInfo: () => baseAxios.get(`/api/user/v1/info`),
+  logout: () => baseAxios.post(`/api/v1/user/logout`),
+  getUserInfo: () => baseAxios.get(`/api/v1/user/info`),
   updateDeviceInfo: (deviceModel, deviceOs, deviceOsVersion, deviceToken) =>
-    baseAxios.post(`/api/user/v1/device`, {
+    baseAxios.post(`/api/v1/user/device`, {
       deviceModel,
       deviceOs,
       deviceOsVersion,
       deviceToken,
     }),
-  saveProfile: (payload) => baseAxios.post(`/api/user/v1/profile`, payload),
+  saveProfile: (payload) => baseAxios.post(`/api/v1/user/profile`, payload),
 
   //walking
-  startWalking: () => baseAxios.post(`/api/walking/v1/start`),
-  saveWalking: (payload) => baseAxios.post(`/api/walking/v1/save`, payload),
-  getWalkingReport: (walkingId) =>
-    baseAxios.get(`/api/walking/v1/report/${walkingId}`),
+  startWalking: () => baseAxios.post(`/api/v1/walking/start`),
+  saveWalking: (payload) => baseAxios.post(`/api/v1/walking/save`, payload),
+  getWalkingReport: (walkingId) => baseAxios.get(`/api/v1/walking/report/${walkingId}`),
   getAroundFootprints: (lat, lng) =>
-    baseAxios.get(`/api/walking/v1/footprints/around`, {
+    baseAxios.get(`/api/v1/walking/footprints/around`, {
       params: { lat, lng },
     }),
 
-  uploadFiles: (payload) =>
-    baseAxios.post(`/api/upload/v1/images/profile/pet`, payload, {
-      headers: {
-        'Content-Type': `multipart/form-data`,
-      },
-    }),
-
   //pet
-  savePet: (payload) => baseAxios.put(`/api/user/v1/pet`, payload),
-  editPet: (id, payload) => baseAxios.patch(`/api/user/v1/pet/${id}`, payload),
+  savePet: (payload) => baseAxios.put(`/api/v1/user/pet`, payload),
+  editPet: (id, payload) => baseAxios.patch(`/api/v1/user/pet/${id}`, payload),
 };

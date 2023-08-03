@@ -41,7 +41,7 @@ const SmsVerify = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await serviceApis.screenNations();
+        const response = await serviceApis.telNations();
         const nationCodes = response.result.nationCodes;
         setNationCodes(nationCodes);
         onNationCodeChange(nationCodes[0].value);

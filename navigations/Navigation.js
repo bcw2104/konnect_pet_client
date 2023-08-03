@@ -27,21 +27,24 @@ const Navigation = () => {
   return (
     <NavigationContainer ref={navigationRef} theme={navTheme}>
       {userStore.isLogin ? (
-        <Stack.Navigator initialRouteName='walking_home'>
+        <Stack.Navigator
+          initialRouteName="walking_home"
+          screenOptions={{ animation: 'slide_from_right' }}
+        >
           <Stack.Screen
-            name='home_tabs'
+            name="home_tabs"
             component={HomeTabs}
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name='mypage_nav'
+            name="mypage_nav"
             component={MyPageStackNavigator}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, animation: 'slide_from_bottom' }}
           />
           <Stack.Screen
-            name='walking_nav'
+            name="walking_nav"
             component={WalkingStackNavigator}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, animation: 'slide_from_bottom' }}
           />
         </Stack.Navigator>
       ) : (
