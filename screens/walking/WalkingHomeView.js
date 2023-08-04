@@ -55,26 +55,7 @@ const WalkingHomeView = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const walkingTempDate = JSON.parse(
-          await asyncStorage.getItem('walking_temp_data')
-        );
-
-        if (walkingTempDate) {
-          //제출
-          const params = {
-            walkingKey: walkingTempDate.key,
-            walkingRewardPolicies: walkingTempDate.rewardPolicies,
-            currentCoords: walkingTempDate.currentCoords,
-            walkingTime: walkingTempDate.seconds,
-            walkingMeters: walkingTempDate.meters,
-            walkingSavedCoords: walkingTempDate.savedCoords,
-            walkingFootprintCoords: walkingTempDate.footprintCoords,
-          };
-        }
-      } catch (e) {
-        await asyncStorage.removeItem('walking_temp_data');
-      }
+      checkAndSaveAdnormalFinishedWalking();
 
       const status = await hasLocationPermissions();
       let currentCoords = {};
@@ -94,8 +75,48 @@ const WalkingHomeView = (props) => {
     fetchData();
   }, []);
 
+  const checkAndSaveAdnormalFinishedWalking = async () => {
+    let walkingTempData = null;
+    try {
+      walkingTempData = JSON.parse(
+        await asyncStorage.getItem('walking_temp_data')
+      );
+    } catch (error) {}
+
+    asyncStorage.removeItem('walking_temp_data');
+    if (!!walkingTempData) {
+      modalStore.openTwoButtonModal(
+        '중단된 산책 기록이 있어요.\n기록을 저장하시겠어요?',
+        '삭제하기',
+        () => {},
+        '저장하기',
+        async () => {
+          systemStore.setIsLoading(true);
+          //제출
+          try {
+            const response = await serviceApis.saveWalking(walkingTempData);
+            if (response?.rsp_code === '1000') {
+              goToResult({ walkingId: route.params?.walkingId });
+            }
+          } catch (err) {
+            Toast.show({
+              type: 'error',
+              text1: 'Failed to save walk history.',
+            });
+          } finally {
+            systemStore.setIsLoading(false);
+          }
+        }
+      );
+    }
+  };
+
   const goToNextStep = (params) => {
     Navigator.reset(params, 'walking');
+  };
+
+  const goToResult = (params) => {
+    Navigator.reset(params, 'walking_nav', 'walking_result');
   };
 
   const handleOpenSetting = () => {

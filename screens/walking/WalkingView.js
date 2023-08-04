@@ -28,6 +28,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { Ionicons } from '@expo/vector-icons';
 import CustomModal from '../../components/elements/CustomModal';
 import CustomSwitch from '../../components/elements/CustomSwitch';
+import moment from 'moment';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -157,13 +158,13 @@ const WalkingView = (props) => {
       }
 
       if (savedCoordsProps.current.updated) {
-        savedCoordsProps.current.updated = false;
         setRoutes(
           savedCoords.current.map((coords) => ({
             latitude: coords[0],
             longitude: coords[1],
           }))
         );
+        savedCoordsProps.current.updated = false;
       }
 
       if (updateFootprints.current) {
@@ -179,21 +180,34 @@ const WalkingView = (props) => {
           }))
         );
       }
-      //5초에 한번씩 산책 데이터 저장
-      if (newSeconds > 0 && newSeconds % 5 == 0) {
-        const params = {
-          key: route.params?.walkingKey,
-          meters: meters,
-          seconds: newSeconds,
-          rewardPolicies: route.params?.walkingRewardPolicies,
-          currentCoords: currentCoords.current,
-          footprintCoords: footprintCoords.current,
-          savedCoords: savedCoords.current,
-        };
-        asyncStorage.setItem('walking_temp_data', JSON.stringify(params));
+      //10초에 한번씩 산책 데이터 저장
+      if (newSeconds > 0 && newSeconds % 10 == 0) {
+        saveTempWalkingData();
       }
     }
   }, 1000);
+
+  const generateWalkingParams = () => {
+    const params = {
+      id: route.params?.walkingId,
+      key: route.params?.walkingKey,
+      meters: meters,
+      seconds: seconds,
+      rewards: JSON.stringify(rewards.current),
+      footprintCoords: JSON.stringify(footprintCoords.current),
+      savedCoords: JSON.stringify(savedCoords.current),
+      catchedFootprints: JSON.stringify(catchedFootprints.current),
+      endDate: moment().toISOString(),
+    };
+    return params;
+  };
+
+  const saveTempWalkingData = () => {
+    asyncStorage.setItem(
+      'walking_temp_data',
+      JSON.stringify(generateWalkingParams())
+    );
+  };
 
   const sleep = (time) =>
     new Promise((resolve) => setTimeout(() => resolve(), time));
@@ -235,7 +249,7 @@ const WalkingView = (props) => {
   const updateLocation = useCallback(async () => {
     try {
       let { coords } = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Highest,
+        accuracy: Location.Accuracy.BestForNavigation,
         distanceInterval: 10,
       });
       currentCoords.current = {
@@ -264,7 +278,7 @@ const WalkingView = (props) => {
 
       //발자국 획득 로직
       if (
-        policies.current['walking_footprint_catch_amount'] >
+        parseInt(policies.current['walking_footprint_catch_amount']) >
         catchedFootprints.current.length
       ) {
         const catchableFootprints = Object.values(footprintsRef.current).filter(
@@ -278,7 +292,7 @@ const WalkingView = (props) => {
 
         const currentCatchableCount = Math.min(
           catchableFootprints.length,
-          policies.current['walking_footprint_catch_amount'] -
+          parseInt(policies.current['walking_footprint_catch_amount']) -
             catchedFootprints.current.length
         );
 
@@ -289,11 +303,17 @@ const WalkingView = (props) => {
             catchedFootprints.current.push(target);
             footprintsRef.current[target].catched = true;
             catchCount++;
+
+            utils.defaultNotification(
+              '발자국 획득!',
+              `${catchedFootprints.current.length}"번째 발자국을 획득했어요!`,
+              'walking'
+            );
           }
         }
 
         if (catchCount > 0) {
-          updateFootprints.current = false;
+          updateFootprints.current = true;
         }
       }
 
@@ -416,7 +436,7 @@ const WalkingView = (props) => {
     if (!status) return;
 
     let { coords } = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Highest,
+      accuracy: Location.Accuracy.BestForNavigation,
     });
 
     currentCoords.current = {
@@ -437,23 +457,14 @@ const WalkingView = (props) => {
         systemStore.setIsLoading(true);
         try {
           let { coords } = await Location.getCurrentPositionAsync({
-            accuracy: Location.Accuracy.Highest,
+            accuracy: Location.Accuracy.BestForNavigation,
           });
           changeMyLocation(coords);
           savedCoords.current.push([coords.latitude, coords.longitude]);
         } catch (error) {}
         try {
           calculateReward(rewards.current);
-          const params = {
-            id: route.params?.walkingId,
-            key: route.params?.walkingKey,
-            meters: meters,
-            seconds: seconds,
-            rewards: JSON.stringify(rewards.current),
-            footprintCoords: JSON.stringify(footprintCoords.current),
-            savedCoords: JSON.stringify(savedCoords.current),
-            catchedFootprints: JSON.stringify(catchedFootprints.current),
-          };
+          const params = generateWalkingParams();
           const response = await serviceApis.saveWalking(params);
 
           if (response?.rsp_code === '1000') {
@@ -462,6 +473,10 @@ const WalkingView = (props) => {
             goToNextStep({ walkingId: route.params?.walkingId });
           }
         } catch (error) {
+          Toast.show({
+            type: 'error',
+            text1: 'Failed to save walking data',
+          });
           goToHome();
         } finally {
           systemStore.setIsLoading(false);

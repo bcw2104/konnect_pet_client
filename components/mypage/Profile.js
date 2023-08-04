@@ -32,10 +32,10 @@ const Profile = () => {
           style={styles.profileImg}
         />
         <View style={styles.profile}>
-          <CustomText fontSize={24} fontWeight={FONT_WEIGHT.BOLD} style={{}}>
+          <CustomText fontSize={20} fontWeight={FONT_WEIGHT.BOLD} style={{}}>
             {userStore.profile?.nickname}
           </CustomText>
-          <CustomText fontSize={17} style={{ marginTop: 5 }}>
+          <CustomText fontSize={16} style={{ marginTop: 5 }}>
             {utils.getAge(
               moment(userStore.profile?.birthDate, 'YYYYMMDD').toDate()
             )}
@@ -48,23 +48,21 @@ const Profile = () => {
           onPress={editProfile}
         >
           <AntDesign
-            name="edit"
+            name='edit'
             size={20}
-            color="black"
-            style={{ marginRight: 8 }}
+            color='black'
           />
-          <CustomText>Edit</CustomText>
         </Pressable>
       </View>
       <View style={{ marginTop: 7 }}>
         <CustomText
           style={styles.title}
-          fontSize={17}
+          fontSize={16}
           fontWeight={FONT_WEIGHT.BOLD}
         >
           내 소개
         </CustomText>
-        <CustomText fontSize={16}>{userStore.profile?.comment}</CustomText>
+        <CustomText fontSize={15}>{userStore.profile?.comment}</CustomText>
       </View>
     </>
   );
@@ -78,11 +76,10 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   profileEditBtn: {
-    flexDirection: 'row',
     alignItems: 'center',
-    height: 40,
     justifyContent: 'center',
-    paddingHorizontal: 10,
+    height: 40,
+    paddingHorizontal: 15,
     borderRadius: 10,
     borderColor: COLORS.grayLight,
     borderWidth: 1,

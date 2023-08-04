@@ -29,7 +29,7 @@ const MyPageHomeView = () => {
       <ScrollView>
         <View style={styles.section1}>
           <View style={styles.element}>
-            <CustomText style={styles.title} fontSize={20} fontWeight={FONT_WEIGHT.BOLD}>
+            <CustomText style={styles.title} fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
               내 프로필
             </CustomText>
             <View style={styles.profileWrap}>
@@ -37,7 +37,7 @@ const MyPageHomeView = () => {
             </View>
           </View>
           <View style={styles.element}>
-            <CustomText style={styles.title} fontSize={20} fontWeight={FONT_WEIGHT.BOLD}>
+            <CustomText style={styles.title} fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
               내 반려견
             </CustomText>
             <View style={styles.petWrap}>

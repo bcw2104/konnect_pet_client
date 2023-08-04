@@ -19,7 +19,7 @@ export default serviceApis = {
   //mypage
   getMyData: () => baseAxios.get(`/api/v1/user/mypage`),
   leaveUser: (smsVerifyKey) => baseAxios.post(`/api/v1/user/mypage/leave`, { smsVerifyKey }),
-
+  getNotifications: () => baseAxios.get(`/api/v1/user/noti`),
   //terms
   getTermsDetail: (groupId) => baseAxios.get(`/api/v1/terms/group/${groupId}/lastest`),
   getSignUpTerms: () => baseAxios.get(`/api/v1/terms/group/signup`),
