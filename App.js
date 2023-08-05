@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
 import { StoreProvider } from './contexts/StoreContext';
 import { RootStore } from './contexts/RootStore';
 import { StatusBar } from 'expo-status-bar';
@@ -18,9 +19,10 @@ import Constants from 'expo-constants';
 import { Linking } from 'react-native';
 import { Navigator } from './navigations/Navigator';
 import { DEEP_LINK_PREFIX } from './commons/constants';
-import Splash from './screens/Splash';
 
 const rootStore = new RootStore();
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -55,6 +57,7 @@ export default function App() {
       } catch (e) {
       } finally {
         await new Promise((resolve) => setTimeout(resolve, 2000));
+        await SplashScreen.hideAsync();
         setAppIsReady(true);
       }
     }
@@ -114,7 +117,7 @@ export default function App() {
   };
 
   if (!appIsReady) {
-    return <Splash/>;
+    return null;
   }
 
   return (
