@@ -51,14 +51,14 @@ const PetList = ({ items }) => {
               />
               <View style={styles.pet}>
                 <CustomText
-                  fontSize={15}
+                  fontSize={14}
                   fontWeight={FONT_WEIGHT.BOLD}
                   numberOfLines={1}
                   ellipsizeMode={'tail'}
                 >
                   {item?.petName}
                 </CustomText>
-                <CustomText fontSize={13} style={{ marginTop: 5 }}>
+                <CustomText fontSize={12}>
                   {utils.getAge(moment(item?.birthDate, 'YYYYMMDD').toDate())}
                   {'Y '}({item?.petGender == 'M' ? 'Male' : 'Female'})
                 </CustomText>
@@ -103,8 +103,9 @@ const styles = StyleSheet.create({
     borderColor: COLORS.warningDeep,
     borderWidth: 2,
     borderRadius: 15,
-    padding: 8,
-    margin: 5,
+    paddingVertical: 5,
+    paddingHorizontal:7,
+    margin: 3,
     flex: 1,
   },
   petImg: {

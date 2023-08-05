@@ -48,6 +48,7 @@ project.xcworkspace
 
 # Android/IntelliJ
 #
+android/
 build/
 .idea
 .gradle
@@ -57,6 +58,7 @@ local.properties
 .cxx/
 *.keystore
 !debug.keystore
+
 
 # node.js
 #

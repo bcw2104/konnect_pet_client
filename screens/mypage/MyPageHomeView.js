@@ -17,7 +17,7 @@ const MyPageHomeView = () => {
     const fetchDate = async () => {
       try {
         const response = await serviceApis.getMyData();
-
+        console.log(response);
         setPoints(response.result?.points);
       } catch (error) {}
     };
