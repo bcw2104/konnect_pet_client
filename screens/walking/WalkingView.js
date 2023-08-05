@@ -636,7 +636,7 @@ const WalkingView = (props) => {
               }}
             />
             <View style={{ alignItems: 'center' }}>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD}>{meters} M</CustomText>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD}>{meters.toLocaleString('ko-KR')} m</CustomText>
               <CustomText
                 fontSize={15}
                 fontColor={COLORS.grayDeep}

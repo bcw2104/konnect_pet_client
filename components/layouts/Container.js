@@ -2,7 +2,13 @@ import { Platform, SafeAreaView, View } from 'react-native';
 import React from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-const Container = ({ header = false, children }) => {
+const Container = ({
+  header = false,
+  paddingHorizontal = 15,
+  headerPaddingTop = 20,
+  bgColor = '#ffffff',
+  children,
+}) => {
   const statusBarHeight = getStatusBarHeight();
 
   return (
@@ -13,10 +19,11 @@ const Container = ({ header = false, children }) => {
     >
       <View
         style={{
-          paddingHorizontal: 15,
+          backgroundColor: bgColor,
+          paddingHorizontal: paddingHorizontal,
           flex: 1,
           paddingTop: header
-            ? 20
+            ? headerPaddingTop
             : Platform.OS == 'ios'
             ? 0
             : statusBarHeight + 15,

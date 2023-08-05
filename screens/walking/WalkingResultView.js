@@ -89,11 +89,11 @@ const WalkingResultView = (props) => {
   }, []);
 
   const goToHome = (params) => {
-    Navigator.reset({params}, 'home_tabs', 'walking_tab', 'walking_home');
+    Navigator.reset({ params }, 'home_tabs', 'walking_tab', 'walking_home');
   };
 
   return (
-    <Container header={true}>
+    <Container header={true} headerPaddingTop={0}>
       {!systemStore.isLoading && (
         <ScrollView>
           <View style={styles.section1}>
@@ -116,7 +116,7 @@ const WalkingResultView = (props) => {
             >
               <Polyline
                 coordinates={routes}
-                strokeColor='#e23dff'
+                strokeColor="#e23dff"
                 strokeWidth={6}
               />
             </GoogleMap>
@@ -141,7 +141,9 @@ const WalkingResultView = (props) => {
                 </View>
                 <View style={styles.reportItem}>
                   <CustomText fontSize={18}>산책 거리</CustomText>
-                  <CustomText fontSize={18}>{report?.meters} m</CustomText>
+                  <CustomText fontSize={18}>
+                    {report?.meters.toLocaleString('ko-KR')} m
+                  </CustomText>
                 </View>
                 <View style={styles.reportItem}>
                   <CustomText fontSize={18}>활동량</CustomText>
@@ -212,6 +214,7 @@ export default observer(WalkingResultView);
 
 const styles = StyleSheet.create({
   section1: {
+    marginTop: 20,
     marginBottom: 30,
   },
   section2: {

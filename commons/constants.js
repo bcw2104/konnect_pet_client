@@ -26,8 +26,12 @@ export const FONT_FAMILY = {
   ROBOTO: 'Roboto',
 };
 
-export const NUMBER_TO_LANG = ["ZERO", "첫 번째","두 번째","세 번째","네 번째","다섯 번째"]
+export const NUMBER_TO_LANG = ['ZERO', '첫 번째', '두 번째', '세 번째', '네 번째', '다섯 번째'];
 
 export const DEEP_LINK_PREFIX = {
-  DEFAULT:"konnect://"
-}
+  DEFAULT: 'konnect://',
+};
+
+export const POINT_TYPE_CODE = {
+  POINT: '001',
+};

@@ -100,7 +100,7 @@ const ProfileFormView = (props) => {
 
   return (
     <>
-      <Container header={true}>
+      <Container header={true} headerPaddingTop={0}>
         <ScrollView>
           <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'position' : 'height'} keyboardVerticalOffset={20}>
             <View style={styles.section1}>
@@ -236,8 +236,7 @@ export default ProfileFormView;
 
 const styles = StyleSheet.create({
   section1: {
-    marginTop: 10,
-    marginBottom: 30,
+    marginVertical:30
   },
 
   upload: {

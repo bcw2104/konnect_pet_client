@@ -13,54 +13,29 @@ const Profile = () => {
   const { userStore } = useStores();
 
   const editProfile = () => {
-    Navigator.navigate(
-      { profile: userStore.profile },
-      'mypage_nav',
-      'profile_form'
-    );
+    Navigator.navigate({ profile: userStore.profile }, 'mypage_nav', 'profile_form');
   };
 
   return (
     <>
       <View style={styles.profileCard}>
-        <Image
-          source={
-            !!userStore.profile?.profileImgUrl
-              ? { uri: userStore.profile.profileImgUrl }
-              : require('../../assets/images/profile/user_default.png')
-          }
-          style={styles.profileImg}
-        />
+        <Image source={!!userStore.profile?.profileImgUrl ? { uri: userStore.profile.profileImgUrl } : require('../../assets/images/profile/user_default.png')} style={styles.profileImg} />
         <View style={styles.profile}>
           <CustomText fontSize={20} fontWeight={FONT_WEIGHT.BOLD} style={{}}>
             {userStore.profile?.nickname}
           </CustomText>
           <CustomText fontSize={16} style={{ marginTop: 5 }}>
-            {utils.getAge(
-              moment(userStore.profile?.birthDate, 'YYYYMMDD').toDate()
-            )}
+            {utils.getAge(moment(userStore.profile?.birthDate, 'YYYYMMDD').toDate())}
             {'Y '}({userStore.profile?.gender == 'M' ? 'Male' : 'Female'})
           </CustomText>
         </View>
-        <Pressable
-          style={styles.profileEditBtn}
-          hitSlop={5}
-          onPress={editProfile}
-        >
-          <AntDesign
-            name='edit'
-            size={20}
-            color='black'
-          />
+        <Pressable style={styles.profileEditBtn} hitSlop={5} onPress={editProfile}>
+          <AntDesign name="edit" size={20} color="black" />
         </Pressable>
       </View>
       <View style={{ marginTop: 7 }}>
-        <CustomText
-          style={styles.title}
-          fontSize={16}
-          fontWeight={FONT_WEIGHT.BOLD}
-        >
-          내 소개
+        <CustomText style={{ marginBottom: 5 }} fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+          Comment
         </CustomText>
         <CustomText fontSize={15}>{userStore.profile?.comment}</CustomText>
       </View>

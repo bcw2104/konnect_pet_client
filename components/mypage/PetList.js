@@ -1,11 +1,4 @@
-import {
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import CustomText from '../elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
@@ -41,21 +34,9 @@ const PetList = ({ items }) => {
                 editPet(item);
               }}
             >
-              <Image
-                source={
-                  !!item?.petImgUrl
-                    ? { uri: item?.petImgUrl }
-                    : require('../../assets/images/profile/pet_default.png')
-                }
-                style={styles.petImg}
-              />
+              <Image source={!!item?.petImgUrl ? { uri: item?.petImgUrl } : require('../../assets/images/profile/pet_default.png')} style={styles.petImg} />
               <View style={styles.pet}>
-                <CustomText
-                  fontSize={14}
-                  fontWeight={FONT_WEIGHT.BOLD}
-                  numberOfLines={1}
-                  ellipsizeMode={'tail'}
-                >
+                <CustomText fontSize={14} fontWeight={FONT_WEIGHT.BOLD} numberOfLines={1} ellipsizeMode={'tail'}>
                   {item?.petName}
                 </CustomText>
                 <CustomText fontSize={12}>
@@ -66,19 +47,10 @@ const PetList = ({ items }) => {
             </Pressable>
           ) : (
             <Pressable style={styles.petItem} onPress={addNewPet}>
-              <AntDesign
-                name='pluscircleo'
-                size={40}
-                color='black'
-                style={styles.petImg}
-              />
+              <AntDesign name="pluscircleo" size={40} color={COLORS.dark} style={styles.petImg} />
               <View style={styles.pet}>
-                <CustomText
-                  fontSize={15}
-                  fontWeight={FONT_WEIGHT.BOLD}
-                  numberOfLines={1}
-                >
-                  반려동물 추가
+                <CustomText fontSize={15} fontWeight={FONT_WEIGHT.BOLD} numberOfLines={1}>
+                  Add Pet
                 </CustomText>
               </View>
             </Pressable>
@@ -104,7 +76,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     paddingVertical: 5,
-    paddingHorizontal:7,
+    paddingHorizontal: 7,
     margin: 3,
     flex: 1,
   },

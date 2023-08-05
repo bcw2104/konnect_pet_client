@@ -10,6 +10,7 @@ import TermsListView from '../../screens/terms/TermsListView';
 import PetAddFormView from '../../screens/user/PetAddFormView';
 import ProfileFormView from '../../screens/user/ProfileFormView';
 import { CardStyleInterpolators } from '@react-navigation/stack';
+import MyPointHistory from '../../screens/mypage/MyPointHistory';
 
 const MyPageStack = createNativeStackNavigator();
 
@@ -44,7 +45,7 @@ const MyPageStackNavigator = ({ navigation, route }) => {
           name="setting"
           component={SettingView}
         ></MyPageStack.Screen>
-        
+
         <MyPageStack.Group
           screenOptions={{
             animation: 'slide_from_right',
@@ -69,17 +70,19 @@ const MyPageStackNavigator = ({ navigation, route }) => {
         </MyPageStack.Group>
 
         <MyPageStack.Screen
-          options={{ headerTitle: '내 반려견', headerTitleAlign: 'center' }}
+          options={{ headerTitle: 'My Pet', headerTitleAlign: 'center' }}
           name="pet_add_form"
           component={PetAddFormView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          options={{
-            headerTitle: '내 프로필',
-            headerTitleAlign: 'center',
-          }}
+          options={{ headerTitle: 'My Profile', headerTitleAlign: 'center' }}
           name="profile_form"
           component={ProfileFormView}
+        ></MyPageStack.Screen>
+        <MyPageStack.Screen
+          options={{ headerTitle: 'Point History', headerTitleAlign: 'center' }}
+          name="point_history"
+          component={MyPointHistory}
         ></MyPageStack.Screen>
       </MyPageStack.Group>
     </MyPageStack.Navigator>

@@ -1,4 +1,12 @@
-import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
 import Container from '../../components/layouts/Container';
@@ -67,7 +75,11 @@ const PetAddFormView = (props) => {
       const valid = validation(petInfo);
 
       if (!valid) {
-        modalStore.openOneButtonModal('필수 항목을 전부 채워주세요.', '확인', () => {});
+        modalStore.openOneButtonModal(
+          '필수 항목을 전부 채워주세요.',
+          '확인',
+          () => {}
+        );
         return;
       }
 
@@ -76,7 +88,10 @@ const PetAddFormView = (props) => {
       let imageUrl = null;
       if (isImageChanged.current && !!petImage) {
         try {
-          const upload = await utils.uploadImage(petImage, '/api/v1/upload/images/profile/pet');
+          const upload = await utils.uploadImage(
+            petImage,
+            '/api/v1/upload/images/profile/pet'
+          );
           imageUrl = upload.imageUrl;
         } catch (err) {}
       } else if (!isImageChanged.current && !!petImage) {
@@ -89,7 +104,9 @@ const PetAddFormView = (props) => {
         petImgUrl: imageUrl,
       };
       const isNew = !petInfo.petId;
-      const response = !isNew ? await serviceApis.editPet(petInfo.petId, data) : await serviceApis.savePet(data);
+      const response = !isNew
+        ? await serviceApis.editPet(petInfo.petId, data)
+        : await serviceApis.savePet(data);
 
       if (response.rsp_code == '1000') {
         let successMsg = '';
@@ -124,12 +141,19 @@ const PetAddFormView = (props) => {
 
   return (
     <>
-      <Container header={true}>
+      <Container header={true} headerPaddingTop={0}>
         <ScrollView>
-          <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'position' : 'height'} keyboardVerticalOffset={20}>
+          <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+            keyboardVerticalOffset={20}
+          >
             <View style={styles.section1}>
               <View style={styles.petImgWrap}>
-                <ImageUploader onImageChange={handleImageChange} ref={imageUploaderRef}>
+                <ImageUploader
+                  onImageChange={handleImageChange}
+                  ref={imageUploaderRef}
+                >
                   <Pressable
                     onPress={() => {
                       imageUploaderRef.current.pickImage();
@@ -157,7 +181,12 @@ const PetAddFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     Name
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.warningDeep} style={styles.required} />
+                  <FontAwesome5
+                    name="star-of-life"
+                    size={10}
+                    color={COLORS.warningDeep}
+                    style={styles.required}
+                  />
                 </View>
                 <CustomInput
                   value={petInfo.petName}
@@ -178,7 +207,12 @@ const PetAddFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     Species
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.warningDeep} style={styles.required} />
+                  <FontAwesome5
+                    name="star-of-life"
+                    size={10}
+                    color={COLORS.warningDeep}
+                    style={styles.required}
+                  />
                 </View>
                 <CustomInput
                   value={petInfo.petSpecies}
@@ -199,7 +233,12 @@ const PetAddFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     Gender
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.warningDeep} style={styles.required} />
+                  <FontAwesome5
+                    name="star-of-life"
+                    size={10}
+                    color={COLORS.warningDeep}
+                    style={styles.required}
+                  />
                 </View>
                 <CustomRadio
                   fontSize={20}
@@ -219,7 +258,12 @@ const PetAddFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     BirthDate
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.warningDeep} style={styles.required} />
+                  <FontAwesome5
+                    name="star-of-life"
+                    size={10}
+                    color={COLORS.warningDeep}
+                    style={styles.required}
+                  />
                 </View>
                 <Pressable
                   onPress={() => {
@@ -229,7 +273,9 @@ const PetAddFormView = (props) => {
                     padding: 10,
                   }}
                 >
-                  <CustomText fontSize={16}>{moment(petInfo.birthDate).format('YYYY.MM.DD')}</CustomText>
+                  <CustomText fontSize={16}>
+                    {moment(petInfo.birthDate).format('YYYY.MM.DD')}
+                  </CustomText>
                 </Pressable>
                 <DatePicker
                   modal
@@ -250,7 +296,12 @@ const PetAddFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     중성화 여부
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.warningDeep} style={styles.required} />
+                  <FontAwesome5
+                    name="star-of-life"
+                    size={10}
+                    color={COLORS.warningDeep}
+                    style={styles.required}
+                  />
                 </View>
 
                 <CustomRadio
@@ -271,7 +322,12 @@ const PetAddFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     접종 여부
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.warningDeep} style={styles.required} />
+                  <FontAwesome5
+                    name="star-of-life"
+                    size={10}
+                    color={COLORS.warningDeep}
+                    style={styles.required}
+                  />
                 </View>
 
                 <CustomRadio
@@ -292,7 +348,11 @@ const PetAddFormView = (props) => {
                   paddingVertical: 20,
                 }}
               >
-                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16} style={{ marginBottom: 20 }}>
+                <CustomText
+                  fontWeight={FONT_WEIGHT.BOLD}
+                  fontSize={16}
+                  style={{ marginBottom: 20 }}
+                >
                   반려견 소개
                 </CustomText>
                 <CustomInput
@@ -314,7 +374,15 @@ const PetAddFormView = (props) => {
           </KeyboardAvoidingView>
         </ScrollView>
       </Container>
-      <CustomButton fontColor={COLORS.white} bgColor={COLORS.dark} bgColorPress={COLORS.darkDeep} onPress={savePetInfo} text="등록하기" style={styles.submitTheme} height={60} />
+      <CustomButton
+        fontColor={COLORS.white}
+        bgColor={COLORS.dark}
+        bgColorPress={COLORS.darkDeep}
+        onPress={savePetInfo}
+        text="등록하기"
+        style={styles.submitTheme}
+        height={60}
+      />
     </>
   );
 };
@@ -323,8 +391,7 @@ export default observer(PetAddFormView);
 
 const styles = StyleSheet.create({
   section1: {
-    paddingTop: 10,
-    marginBottom: 30,
+    marginVertical:30
   },
   upload: {
     position: 'absolute',

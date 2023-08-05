@@ -1,6 +1,6 @@
 {
   "name": "konnect_pet_app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "start": "NODE_ENV=development npx expo start",
     "android": "NODE_ENV=development npx expo run:android",
@@ -30,20 +30,20 @@
     "expo-background-fetch": "~11.3.0",
     "expo-constants": "~14.4.2",
     "expo-crypto": "~12.4.1",
-    "expo-dev-client": "~2.4.4",
+    "expo-dev-client": "~2.4.6",
     "expo-device": "~5.4.0",
     "expo-file-system": "~15.4.2",
     "expo-font": "^11.1.1",
     "expo-image-picker": "~14.3.2",
     "expo-linking": "~5.0.2",
-    "expo-location": "~16.0.0",
+    "expo-location": "~16.1.0",
     "expo-modules-autolinking": "^1.5.0",
     "expo-notifications": "~0.20.1",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "expo-task-manager": "~11.3.0",
     "expo-tracking-transparency": "~3.1.0",
-    "expo-updates": "~0.18.8",
+    "expo-updates": "~0.18.11",
     "expo-web-browser": "~12.3.2",
     "firebase": "^9.22.1",
     "install": "^0.13.0",
@@ -55,7 +55,7 @@
     "native-base": "^3.4.28",
     "node": "^20.3.1",
     "react": "18.2.0",
-    "react-native": "0.72.1",
+    "react-native": "0.72.3",
     "react-native-background-actions": "^3.0.0",
     "react-native-date-picker": "^4.2.13",
     "react-native-dotenv": "^3.4.8",
@@ -71,9 +71,11 @@
     "react-native-screens": "~3.22.0",
     "react-native-status-bar-height": "^2.6.0",
     "react-native-svg": "13.9.0",
+    "react-native-tab-view": "^3.5.2",
     "react-native-toast-message": "^2.1.6",
     "react-native-web": "~0.19.6",
-    "react-native-webview": "13.2.2"
+    "react-native-webview": "13.2.2",
+    "react-native-pager-view": "6.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

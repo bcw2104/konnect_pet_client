@@ -11,11 +11,11 @@ export default COLORS = {
   dark: '#363636',
   darkDeep: '#212121',
 
-  light: '#fafafa',
+  light: '#f8f8f8',
   lightDeep: '#eeeeee',
 
-  grayLight:'#d9d9d9',
-  gray: '#bdbdbd',
+  grayLight: '#d9d9d9',
+  gray: '#b3b3b3',
   grayDeep: '#6b6b6b',
 
   black: '#000000',
