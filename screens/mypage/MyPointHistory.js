@@ -51,7 +51,7 @@ const MyPointHistory = (props) => {
           color={COLORS.dangerDeep}
           style={{ marginRight: 5 }}
         />
-        <CustomText fontColor={COLORS.dangerDeep} fontSize={16}>
+        <CustomText fontColor={COLORS.danger} fontSize={14} fontWeight={FONT_WEIGHT.BOLD}>
           History is displayed up to 5 months ago.
         </CustomText>
       </View>

@@ -97,10 +97,10 @@ const WalkingResultView = (props) => {
       {!systemStore.isLoading && (
         <ScrollView>
           <View style={styles.section1}>
-            <CustomText fontSize={18} style={{ marginBottom: 10 }}>
+            <CustomText fontSize={16} style={{ marginBottom: 10 }}>
               {report?.endDate}
             </CustomText>
-            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={18}>
               산책 리포트
             </CustomText>
           </View>
@@ -124,7 +124,7 @@ const WalkingResultView = (props) => {
           <View style={styles.section3}>
             <View style={styles.reportSection}>
               <CustomText
-                fontSize={20}
+                fontSize={18}
                 style={{ marginBottom: 10 }}
                 fontWeight={FONT_WEIGHT.BOLD}
               >
@@ -132,22 +132,30 @@ const WalkingResultView = (props) => {
               </CustomText>
               <View style={styles.reportItemWrap}>
                 <View style={styles.reportItem}>
-                  <CustomText fontSize={18}>산책 시간</CustomText>
+                  <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                    산책 시간
+                  </CustomText>
                   <Timer
                     remain={report?.seconds}
                     fontWeight={FONT_WEIGHT.BOLD}
-                    fontSize={18}
+                    fontSize={16}
                   />
                 </View>
                 <View style={styles.reportItem}>
-                  <CustomText fontSize={18}>산책 거리</CustomText>
-                  <CustomText fontSize={18}>
+                  <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                    산책 거리
+                  </CustomText>
+                  <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
                     {report?.meters.toLocaleString('ko-KR')} m
                   </CustomText>
                 </View>
                 <View style={styles.reportItem}>
-                  <CustomText fontSize={18}>활동량</CustomText>
-                  <CustomText fontSize={18}>100 kcal</CustomText>
+                  <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                    활동량
+                  </CustomText>
+                  <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                    100 kcal
+                  </CustomText>
                 </View>
               </View>
             </View>
@@ -155,7 +163,7 @@ const WalkingResultView = (props) => {
               {Object.keys(rewards)?.map((k) => (
                 <View key={k}>
                   <CustomText
-                    fontSize={20}
+                    fontSize={18}
                     style={{ marginBottom: 10 }}
                     fontWeight={FONT_WEIGHT.BOLD}
                   >
@@ -164,8 +172,10 @@ const WalkingResultView = (props) => {
                   <View style={styles.reportItemWrap}>
                     {rewards[k].map((ele, idx) => (
                       <View style={styles.reportItem} key={idx}>
-                        <CustomText fontSize={18}>{ele.policyName}</CustomText>
-                        <CustomText fontSize={18}>
+                        <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                          {ele.policyName}
+                        </CustomText>
+                        <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
                           {!ele.paymentYn && '(지급 예정)'} {ele.amount}
                           {ele.pointTypeSymbol}
                         </CustomText>
@@ -177,7 +187,7 @@ const WalkingResultView = (props) => {
             </View>
             <View style={styles.reportSection}>
               <CustomText
-                fontSize={20}
+                fontSize={18}
                 style={{ marginBottom: 10 }}
                 fontWeight={FONT_WEIGHT.BOLD}
               >
@@ -186,17 +196,17 @@ const WalkingResultView = (props) => {
               <View style={styles.reportItemWrap}>
                 {footprints?.catched?.map((ele, idx) => (
                   <View style={styles.reportItem} key={idx}>
-                    <CustomText fontSize={18}>
+                    <CustomText fontSize={16}>
                       {`${NUMBER_TO_LANG[idx + 1]} 획득`}
                     </CustomText>
-                    <CustomText fontSize={18}>
+                    <CustomText fontSize={16}>
                       {moment(ele.createdDate).format('YYYY.MM.DD (ddd)')}
                     </CustomText>
                   </View>
                 ))}
                 {footprints?.catched.length == 0 && (
                   <View style={styles.reportItem}>
-                    <CustomText fontSize={18}>
+                    <CustomText fontSize={16}>
                       획득한 발자국이 없어요.
                     </CustomText>
                   </View>
@@ -215,17 +225,17 @@ export default observer(WalkingResultView);
 const styles = StyleSheet.create({
   section1: {
     marginTop: 20,
-    marginBottom: 30,
+    marginBottom: 20,
   },
   section2: {
-    marginBottom: 50,
+    marginBottom: 20,
   },
   section3: {
     paddingHorizontal: 5,
   },
 
   reportSection: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   reportItemWrap: {
     backgroundColor: COLORS.lightDeep,

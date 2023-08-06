@@ -96,7 +96,7 @@ const WalkingHomeView = (props) => {
           try {
             const response = await serviceApis.saveWalking(walkingTempData);
             if (response?.rsp_code === '1000') {
-              goToResult({ walkingId: route.params?.walkingId });
+              goToResult({ walkingId: walkingTempData.id });
             }
           } catch (err) {
             Toast.show({
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   },
   mapSetting: {
     alignSelf: 'flex-end',
-    top: 80,
+    top: 90,
     zIndex: 10,
     elevation: 10,
   },

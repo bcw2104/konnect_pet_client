@@ -27,6 +27,8 @@ import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import { observer } from 'mobx-react-lite';
 
+const WEIGHT_REGEX = /^([1-9]{0,2}\d{0,1}|0{1})(\.{1}\d{0,2})?$/;
+
 const PetAddFormView = (props) => {
   const { route } = props;
   const { userStore, modalStore, systemStore } = useStores();
@@ -40,6 +42,7 @@ const PetAddFormView = (props) => {
     petType: '001',
     petSpecies: null,
     petGender: 'M',
+    petWeight: '',
     birthDate: new Date(),
     neuteredYn: false,
     inoculatedYn: false,
@@ -64,7 +67,12 @@ const PetAddFormView = (props) => {
 
   const validation = (data) => {
     let valid = true;
-    if (!data.petName || !data.petSpecies || !data.birthDate) {
+    if (
+      !data.petName ||
+      !data.petSpecies ||
+      !data.birthDate ||
+      !(data.petWeight > 0 && WEIGHT_REGEX.test(data.petWeight))
+    ) {
       valid = false;
     }
 
@@ -256,6 +264,33 @@ const PetAddFormView = (props) => {
               <View style={styles.inputWrap}>
                 <View style={styles.title}>
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                    Weight(kg)
+                  </CustomText>
+                  <FontAwesome5
+                    name="star-of-life"
+                    size={10}
+                    color={COLORS.warningDeep}
+                    style={styles.required}
+                  />
+                </View>
+                <CustomInput
+                  value={petInfo.petWeight.toString()}
+                  onValueChange={(value) => {
+                    if (!WEIGHT_REGEX.test(value)) return;
+                    setPetInfo({ ...petInfo, petWeight: value });
+                  }}
+                  keyboardType="numeric"
+                  maxLength={30}
+                  fontSize={16}
+                  height={40}
+                  wrapperStyle={styles.input}
+                  placeholder="몸무게를 입력해 주세요."
+                  outline={true}
+                />
+              </View>
+              <View style={styles.inputWrap}>
+                <View style={styles.title}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     BirthDate
                   </CustomText>
                   <FontAwesome5
@@ -391,7 +426,7 @@ export default observer(PetAddFormView);
 
 const styles = StyleSheet.create({
   section1: {
-    marginVertical:30
+    marginVertical: 30,
   },
   upload: {
     position: 'absolute',

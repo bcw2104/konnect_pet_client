@@ -26,7 +26,7 @@ const Container = ({
             ? headerPaddingTop
             : Platform.OS == 'ios'
             ? 0
-            : statusBarHeight + 15,
+            : statusBarHeight + 5,
         }}
       >
         {children}
