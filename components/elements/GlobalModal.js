@@ -6,6 +6,7 @@ import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import Modal from 'react-native-modal';
 import CustomText from './CustomText';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const GlobalModal = () => {
   const { systemStore, modalStore } = useStores();
@@ -26,7 +27,7 @@ const GlobalModal = () => {
 
   return (
     <Modal
-      animationType="none"
+      animationType='none'
       transparent={true}
       isVisible={modalStore.open}
       animationInTiming={500}
@@ -39,13 +40,19 @@ const GlobalModal = () => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <View style={styles.contentWrap}>
-            <CustomText style={styles.contentText}>
+            <CustomText
+              fontSize={18}
+              style={styles.contentText}
+              fontWeight={FONT_WEIGHT.BOLD}
+            >
               {modalStore.content}
             </CustomText>
           </View>
           <View style={styles.buttonWrap}>
             <Pressable onPress={handleClose} style={styles.button}>
-              <CustomText>{modalStore.firstBtnText}</CustomText>
+              <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                {modalStore.firstBtnText}
+              </CustomText>
             </Pressable>
 
             {!!modalStore.secondBtnText && (
@@ -53,7 +60,9 @@ const GlobalModal = () => {
                 onPress={handleConfirm}
                 style={[styles.button, styles.secondButton]}
               >
-                <CustomText>{modalStore.secondBtnText}</CustomText>
+                <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                  {modalStore.secondBtnText}
+                </CustomText>
               </Pressable>
             )}
           </View>
@@ -84,8 +93,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  contentText:{
-    textAlign:'center',
+  contentText: {
+    textAlign: 'center',
   },
 
   buttonWrap: {
@@ -108,8 +117,8 @@ const styles = StyleSheet.create({
   },
 
   contentWrap: {
-    paddingVertical:40,
-    paddingHorizontal:20,
+    paddingVertical: 40,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },

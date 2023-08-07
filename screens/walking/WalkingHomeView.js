@@ -358,7 +358,7 @@ const WalkingHomeView = (props) => {
         <View style={styles.settingItemWrap}>
           <View style={{ flexDirection: 'row' }}>
             <MaterialCommunityIcons name='dog' size={27} color='black' />
-            <CustomText style={{ marginLeft: 7 }}>발자국</CustomText>
+            <CustomText fontSize={18} style={{ marginLeft: 7 }}>발자국</CustomText>
           </View>
           <CustomSwitch
             onValueChange={() => setFootprintsToggle(!footprintsToggle)}

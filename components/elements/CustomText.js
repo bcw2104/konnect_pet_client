@@ -8,7 +8,7 @@ const CustomText = ({
   fontFamily = FONT_FAMILY.ROBOTO,
   fontWeight = FONT_WEIGHT.REGULAR,
   fontColor = COLORS.dark,
-  fontSize = 18,
+  fontSize = 16,
   children,
   numberOfLines = undefined,
   ellipsizeMode = undefined,

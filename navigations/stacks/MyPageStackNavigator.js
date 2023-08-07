@@ -32,17 +32,21 @@ const MyPageStackNavigator = ({ navigation, route }) => {
       <MyPageStack.Group
         screenOptions={(props) => ({
           headerTitle: '',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name="arrow-back-outline" size={24} color="black" />
+              <Ionicons name='arrow-back-outline' size={24} color='black' />
             </Pressable>
           ),
           animation: 'slide_from_bottom',
         })}
       >
         <MyPageStack.Screen
-          name="setting"
+          name='setting'
           component={SettingView}
         ></MyPageStack.Screen>
 
@@ -52,36 +56,36 @@ const MyPageStackNavigator = ({ navigation, route }) => {
           }}
         >
           <MyPageStack.Screen
-            name="terms_list"
+            name='terms_list'
             component={TermsListView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
-            name="terms"
+            name='terms'
             component={TermsView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
-            name="leave_confirm"
+            name='leave_confirm'
             component={LeaveConfirmView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
-            name="leave"
+            name='leave'
             component={LeaveView}
           ></MyPageStack.Screen>
         </MyPageStack.Group>
 
         <MyPageStack.Screen
-          options={{ headerTitle: 'My Pet', headerTitleAlign: 'center' }}
-          name="pet_add_form"
+          options={{ headerTitle: 'My Pet' }}
+          name='pet_add_form'
           component={PetAddFormView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          options={{ headerTitle: 'My Profile', headerTitleAlign: 'center' }}
-          name="profile_form"
+          options={{ headerTitle: 'My Profile' }}
+          name='profile_form'
           component={ProfileFormView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          options={{ headerTitle: 'Point History', headerTitleAlign: 'center' }}
-          name="point_history"
+          options={{ headerTitle: 'Point History' }}
+          name='point_history'
           component={MyPointHistory}
         ></MyPageStack.Screen>
       </MyPageStack.Group>

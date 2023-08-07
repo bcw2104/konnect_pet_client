@@ -52,7 +52,7 @@ const CustomModal = (
 
   return (
     <Modal
-      animationType="none"
+      animationType='none'
       transparent={true}
       isVisible={open}
       animationInTiming={500}
@@ -74,7 +74,9 @@ const CustomModal = (
           <View style={styles.contentWrap}>{children}</View>
           <View style={styles.buttonWrap}>
             <Pressable onPress={handleClose} style={styles.button}>
-              <CustomText>{closeText}</CustomText>
+              <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                {closeText}
+              </CustomText>
             </Pressable>
 
             {!!okText && (
@@ -82,7 +84,9 @@ const CustomModal = (
                 onPress={handleConfirm}
                 style={[styles.button, styles.secondButton]}
               >
-                <CustomText>{okText}</CustomText>
+                <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                  {okText}
+                </CustomText>
               </Pressable>
             )}
           </View>
@@ -135,11 +139,11 @@ const styles = StyleSheet.create({
 
   titleWrap: {
     paddingTop: 20,
-    paddingHorizontal:20,
+    paddingHorizontal: 20,
     justifyContent: 'flex-start',
   },
   contentWrap: {
     paddingVertical: 30,
-    paddingHorizontal:20,
+    paddingHorizontal: 20,
   },
 });

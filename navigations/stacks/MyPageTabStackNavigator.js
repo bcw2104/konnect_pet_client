@@ -4,24 +4,25 @@ import { Ionicons } from '@expo/vector-icons';
 import MyPageHomeView from '../../screens/mypage/MyPageHomeView';
 import CustomText from '../../components/elements/CustomText';
 import { Navigator } from '../Navigator';
+import { FONT_WEIGHT } from '../../commons/constants';
 const MyPageTabStack = createNativeStackNavigator();
 
 const MyPageTabStackNavigator = ({ navigation, route }) => {
   return (
     <MyPageTabStack.Navigator
-      initialRouteName="mypage_home"
+      initialRouteName='mypage_home'
       screenOptions={{
         animation: 'slide_from_right',
       }}
     >
       <MyPageTabStack.Screen
-        name="mypage_home"
+        name='mypage_home'
         component={MyPageHomeView}
         options={(props) => ({
           headerTitle: '',
           headerLeft: () => (
             <View style={{ flexDirection: 'row', paddingLeft: 15 }}>
-              <CustomText>My Page</CustomText>
+              <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>My Page</CustomText>
             </View>
           ),
           headerRight: () => (
@@ -32,9 +33,9 @@ const MyPageTabStackNavigator = ({ navigation, route }) => {
                 style={{ marginRight: 20 }}
               >
                 <Ionicons
-                  name="notifications-outline"
+                  name='notifications-outline'
                   size={24}
-                  color="black"
+                  color='black'
                 />
               </Pressable>
               <Pressable
@@ -43,7 +44,7 @@ const MyPageTabStackNavigator = ({ navigation, route }) => {
                 }}
                 hitSlop={5}
               >
-                <Ionicons name="settings-outline" size={24} color="black" />
+                <Ionicons name='settings-outline' size={24} color='black' />
               </Pressable>
             </View>
           ),

@@ -5,7 +5,7 @@ import CustomButton from './CustomButton';
 const CustomRadio = ({
   items = [],
   height = 50,
-  fontSize = 18,
+  fontSize = 16,
   value = null,
   onPress = () => {},
 }) => {

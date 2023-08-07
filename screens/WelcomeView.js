@@ -23,7 +23,7 @@ const WelcomeView = () => {
         <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={30}>
           반가워요!
         </CustomText>
-        <CustomText style={{ marginTop: 10 }}>산책을 시작해볼까요?</CustomText>
+        <CustomText style={{ marginTop: 10 }} fontSize={18}>산책을 시작해볼까요?</CustomText>
       </View>
       <View style={styles.section2}>
         <View style={styles.loginWrap}>
