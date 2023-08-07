@@ -17,6 +17,7 @@ import { utils } from '../../utils/Utils';
 import { useStores } from '../../contexts/StoreContext';
 import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
+import ProfileImage from '../../components/modules/ProfileImage';
 
 const ProfileFormView = (props) => {
   const { route } = props;
@@ -114,14 +115,8 @@ const ProfileFormView = (props) => {
                     <View style={styles.upload}>
                       <Feather name="camera" size={20} color="black" />
                     </View>
-                    <Image
-                      source={
-                        !!profileImage
-                          ? {
-                              uri: profileImage,
-                            }
-                          : require('../../assets/images/profile/user_default.png')
-                      }
+                    <ProfileImage
+                      uri={profileImage}
                       style={styles.profileImg}
                     />
                   </Pressable>

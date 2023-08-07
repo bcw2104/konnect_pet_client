@@ -1,6 +1,5 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import React, { useImperativeHandle } from 'react';
-import CustomButton from './CustomButton';
 import COLORS from '../../commons/colors';
 import { useState } from 'react';
 import { forwardRef } from 'react';

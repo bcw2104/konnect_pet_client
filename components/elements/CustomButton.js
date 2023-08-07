@@ -15,6 +15,7 @@ const CustomButton = ({
   height = 45,
   wrapperStyle = {},
   style = {},
+  render = null,
 }) => {
   return (
     <View
@@ -37,22 +38,28 @@ const CustomButton = ({
             borderColor: COLORS.gray,
             borderWidth: bgColor == COLORS.light ? 1 : 0,
             backgroundColor: pressed ? bgColorPress : bgColor,
-            justifyContent:'center',
             flex: 1,
             opacity: disabled ? 0.7 : 1,
+            flexDirection:'row',
+            alignItems: 'center',
+            justifyContent: 'center',
             ...style,
           },
         ]}
       >
-        <CustomText
-          style={{
-            textAlign: 'center',
-          }}
-          fontSize={fontSize}
-          fontColor={fontColor}
-        >
-          {text}
-        </CustomText>
+        {!!render ? (
+          render
+        ) : (
+          <CustomText
+            style={{
+              textAlign: 'center',
+            }}
+            fontSize={fontSize}
+            fontColor={fontColor}
+          >
+            {text}
+          </CustomText>
+        )}
       </Pressable>
     </View>
   );

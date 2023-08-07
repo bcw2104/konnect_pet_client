@@ -25,7 +25,6 @@ const MyPointHistory = (props) => {
         const response = await serviceApis.getPointHistory(
           route.params.pointType
         );
-
         setHistory({
           saved: response.result?.filter((ele) => ele.balance > 0),
           used: response.result?.filter((ele) => ele.balance < 0),
@@ -48,10 +47,10 @@ const MyPointHistory = (props) => {
         <Feather
           name="alert-circle"
           size={20}
-          color={COLORS.dangerDeep}
+          color={COLORS.warningDeep}
           style={{ marginRight: 5 }}
         />
-        <CustomText fontColor={COLORS.danger} fontSize={14} fontWeight={FONT_WEIGHT.BOLD}>
+        <CustomText fontColor={COLORS.warningDeep} fontSize={14} fontWeight={FONT_WEIGHT.BOLD}>
           History is displayed up to 5 months ago.
         </CustomText>
       </View>

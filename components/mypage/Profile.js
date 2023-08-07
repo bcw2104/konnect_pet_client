@@ -8,6 +8,7 @@ import { FONT_WEIGHT } from '../../commons/constants';
 import moment from 'moment';
 import { AntDesign } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
+import ProfileImage from '../modules/ProfileImage';
 
 const Profile = () => {
   const { userStore } = useStores();
@@ -19,7 +20,10 @@ const Profile = () => {
   return (
     <>
       <View style={styles.profileCard}>
-        <Image source={!!userStore.profile?.profileImgUrl ? { uri: userStore.profile.profileImgUrl } : require('../../assets/images/profile/user_default.png')} style={styles.profileImg} />
+        <ProfileImage
+          uri={userStore.profile?.profileImgUrl}
+          style={styles.profileImg}
+        />
         <View style={styles.profile}>
           <CustomText fontSize={20} fontWeight={FONT_WEIGHT.BOLD} style={{}}>
             {userStore.profile?.nickname}

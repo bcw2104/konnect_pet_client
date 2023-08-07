@@ -9,6 +9,7 @@ import { utils } from '../../utils/Utils';
 import moment from 'moment';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
+import PetImage from '../modules/PetImage';
 
 const PetList = ({ items }) => {
   const { userStore } = useStores();
@@ -34,7 +35,10 @@ const PetList = ({ items }) => {
                 editPet(item);
               }}
             >
-              <Image source={!!item?.petImgUrl ? { uri: item?.petImgUrl } : require('../../assets/images/profile/pet_default.png')} style={styles.petImg} />
+              <PetImage
+                uri={item?.petImgUrl}
+                style={styles.petImg}
+              />
               <View style={styles.pet}>
                 <CustomText fontSize={14} fontWeight={FONT_WEIGHT.BOLD} numberOfLines={1} ellipsizeMode={'tail'}>
                   {item?.petName}

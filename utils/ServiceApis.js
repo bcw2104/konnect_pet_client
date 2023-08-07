@@ -92,6 +92,8 @@ export default serviceApis = {
     baseAxios.get(`/api/v1/walking/footprints/around`, {
       params: { lat, lng },
     }),
+  getFootprintDetail: (footprintId) =>
+    baseAxios.get(`/api/v1/walking/footprints/${footprintId}`),
 
   //pet
   savePet: (payload) => baseAxios.put(`/api/v1/user/pet`, payload),

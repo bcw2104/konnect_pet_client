@@ -15,11 +15,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Marker } from 'react-native-maps';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { Ionicons } from '@expo/vector-icons';
-import CustomText from '../../components/elements/CustomText';
-import CustomModal from '../../components/elements/CustomModal';
-import CustomSwitch from '../../components/elements/CustomSwitch';
 import { utils } from '../../utils/Utils';
 import { useIsFocused } from '@react-navigation/native';
+import FootprintDetailModal from '../../components/walking/FootprintDetailModal';
+import WalkingSettingModal from '../../components/walking/WalkingSettingModal';
 
 const window = Dimensions.get('window');
 const ASPECT_RATIO = window.width / window.height;
@@ -30,15 +29,20 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const WalkingHomeView = (props) => {
   const { route } = props;
   const mapRef = useRef(null);
+  const footprintDetailModalRef = useRef(null);
   const settingModalRef = useRef(null);
   const aroundStandardCoords = useRef(null);
   const isFocused = useIsFocused();
 
+  const [selectedFootprintId, setSelectedFootprintId] = useState(null);
   const [permission, setPermission] = useState(false);
   const [region, setRegion] = useState(null);
   const { modalStore, systemStore, userStore } = useStores();
   const [footprints, setFootprints] = useState([]);
-  const [footprintsToggle, setFootprintsToggle] = useState(true);
+
+  const [setting, setSetting] = useState({
+    footprintYn: true,
+  });
 
   useEffect(() => {
     if (isFocused && !userStore.profile) {
@@ -119,8 +123,15 @@ const WalkingHomeView = (props) => {
     Navigator.reset(params, 'walking_nav', 'walking_result');
   };
 
+  const handleChangeSetting = (setting) => {
+    setSetting(setting);
+  };
   const handleOpenSetting = () => {
     settingModalRef.current.openModal(true);
+  };
+  const handleOpenFootprintDetail = (footprintId) => {
+    setSelectedFootprintId(footprintId);
+    footprintDetailModalRef.current.openModal(true);
   };
 
   const getAroundFootprints = async (coords) => {
@@ -259,7 +270,7 @@ const WalkingHomeView = (props) => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          text={<Ionicons name='options' size={30} color='black' />}
+          render={<Ionicons name='options' size={30} color='black' />}
           fontColor={COLORS.white}
           onPress={handleOpenSetting}
           width={60}
@@ -278,7 +289,7 @@ const WalkingHomeView = (props) => {
           longitudeDelta={LONGITUDE_DELTA}
           latitudeDelta={LATITUDE_DELTA}
         >
-          {footprintsToggle && (
+          {!!setting.footprintYn && (
             <>
               {Object.values(footprints)
                 .filter((e) => !e.catched)
@@ -290,10 +301,7 @@ const WalkingHomeView = (props) => {
                       longitude: ele.longitude,
                     }}
                     onPress={() => {
-                      Toast.show({
-                        type: 'success',
-                        text1: 'id: ' + ele.id,
-                      });
+                      handleOpenFootprintDetail(ele.id);
                     }}
                   >
                     <MaterialCommunityIcons
@@ -330,7 +338,7 @@ const WalkingHomeView = (props) => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          text={<MaterialIcons name='my-location' size={30} color='black' />}
+          render={<MaterialIcons name='my-location' size={30} color='black' />}
           fontColor={COLORS.white}
           onPress={getMyLocation}
           width={60}
@@ -350,22 +358,15 @@ const WalkingHomeView = (props) => {
           wrapperStyle={styles.start}
         />
       </View>
-      <CustomModal
-        ref={settingModalRef}
-        closeText={'닫기'}
-        title={'Map Setting'}
-      >
-        <View style={styles.settingItemWrap}>
-          <View style={{ flexDirection: 'row' }}>
-            <MaterialCommunityIcons name='dog' size={27} color='black' />
-            <CustomText fontSize={18} style={{ marginLeft: 7 }}>발자국</CustomText>
-          </View>
-          <CustomSwitch
-            onValueChange={() => setFootprintsToggle(!footprintsToggle)}
-            value={footprintsToggle}
-          />
-        </View>
-      </CustomModal>
+      <FootprintDetailModal
+        modalRef={footprintDetailModalRef}
+        footprintId={selectedFootprintId}
+      />
+      <WalkingSettingModal
+        modalRef={settingModalRef}
+        setting={setting}
+        handleChangeSetting={handleChangeSetting}
+      />
     </Container>
   );
 };
@@ -384,10 +385,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
     elevation: 10,
   },
-  settingItemWrap: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
+
   section2: {
     width: window.width,
     position: 'absolute',

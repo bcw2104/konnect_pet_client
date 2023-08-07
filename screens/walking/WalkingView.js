@@ -511,7 +511,7 @@ const WalkingView = (props) => {
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            text={<Ionicons name='options' size={30} color='black' />}
+            render={<Ionicons name='options' size={30} color='black' />}
             fontColor={COLORS.white}
             onPress={handleOpenSetting}
             width={60}
@@ -598,7 +598,7 @@ const WalkingView = (props) => {
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            text={<MaterialIcons name='my-location' size={30} color='black' />}
+            render={<MaterialIcons name='my-location' size={30} color='black' />}
             fontColor={COLORS.white}
             onPress={getMyLocation}
             width={60}
@@ -626,7 +626,7 @@ const WalkingView = (props) => {
             <CustomButton
               bgColor={COLORS.warning}
               bgColorPress={COLORS.warningDeep}
-              text={<MaterialIcons name='pause' size={30} color='black' />}
+              render={<MaterialIcons name='pause' size={30} color='black' />}
               fontColor={COLORS.white}
               onPress={stopWalking}
               width={60}

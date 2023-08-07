@@ -26,6 +26,7 @@ import { useStores } from '../../contexts/StoreContext';
 import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import { observer } from 'mobx-react-lite';
+import PetImage from '../../components/modules/PetImage';
 
 const WEIGHT_REGEX = /^([1-9]{0,2}\d{0,1}|0{1})(\.{1}\d{0,2})?$/;
 
@@ -170,14 +171,8 @@ const PetAddFormView = (props) => {
                     <View style={styles.upload}>
                       <Feather name="camera" size={20} color="black" />
                     </View>
-                    <Image
-                      source={
-                        !!petImage
-                          ? {
-                              uri: petImage,
-                            }
-                          : require('../../assets/images/profile/pet_default.png')
-                      }
+                    <PetImage
+                      uri={petImage}
                       style={styles.petImg}
                     />
                   </Pressable>
