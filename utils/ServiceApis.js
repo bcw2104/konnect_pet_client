@@ -98,4 +98,7 @@ export default serviceApis = {
   //pet
   savePet: (payload) => baseAxios.put(`/api/v1/user/pet`, payload),
   editPet: (id, payload) => baseAxios.patch(`/api/v1/user/pet/${id}`, payload),
+
+  //community
+  requestFriend:(toUserId) => baseAxios.put(`/api/v1/community/friend/${toUserId}`),
 };

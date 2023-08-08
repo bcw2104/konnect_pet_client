@@ -31,9 +31,9 @@ const TermsListView = () => {
   }, []);
 
   return (
-    <>
+    <Container header={true}>
       {!systemStore.isLoading && (
-        <Container header={true}>
+        <>
           <View style={styles.section1}>
             <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
               이용약관
@@ -57,16 +57,16 @@ const TermsListView = () => {
                   {ele.termsGroupName}
                 </CustomText>
                 <Ionicons
-                  name='chevron-forward-outline'
+                  name="chevron-forward-outline"
                   size={28}
-                  color='black'
+                  color="black"
                 />
               </Pressable>
             ))}
           </View>
-        </Container>
+        </>
       )}
-    </>
+    </Container>
   );
 };
 

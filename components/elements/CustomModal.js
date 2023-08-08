@@ -7,6 +7,7 @@ import { useStores } from '../../contexts/StoreContext';
 import CustomText from './CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
 import Modal from 'react-native-modal';
+import Loader from '../modules/Loader';
 
 const CustomModal = (
   {
@@ -51,7 +52,7 @@ const CustomModal = (
 
   return (
     <Modal
-      animationType='none'
+      animationType="none"
       transparent={true}
       isVisible={open}
       animationInTiming={500}
@@ -61,6 +62,7 @@ const CustomModal = (
       onBackButtonPress={handleClose}
       onBackdropPress={handleClose}
     >
+      <Loader />
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           {title && (

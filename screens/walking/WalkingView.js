@@ -23,12 +23,12 @@ import BackgroundService from 'react-native-background-actions';
 import { utils } from '../../utils/Utils';
 import { Marker, Polyline } from 'react-native-maps';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { Ionicons } from '@expo/vector-icons';
-import CustomModal from '../../components/elements/CustomModal';
-import CustomSwitch from '../../components/elements/CustomSwitch';
 import moment from 'moment';
+import FootprintDetailModal from '../../components/walking/FootprintDetailModal';
+import WalkingSettingModal from '../../components/walking/WalkingSettingModal';
+import FootprintMarker from '../../components/walking/FootprintMarker';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -60,7 +60,9 @@ const WalkingView = (props) => {
   const footprintsRef = useRef([]);
   const updateFootprints = useRef(false);
   const aroundStandardCoords = useRef(null);
+  const footprintDetailModalRef = useRef(null);
 
+  const [selectedFootprintId, setSelectedFootprintId] = useState(null);
   const [seconds, setSeconds] = useState(0);
   const [meters, setMeters] = useState(0);
   const [startCounter, setStartCounter] = useState(SPLASH_TIME);
@@ -70,9 +72,11 @@ const WalkingView = (props) => {
   const [routes, setRoutes] = useState([]);
   const [myFootprints, setMyFootprints] = useState([]);
   const [footprints, setFootprints] = useState([]);
-  const [footprintsToggle, setFootprintsToggle] = useState(true);
 
-  const { systemStore, modalStore } = useStores();
+  const { systemStore, modalStore, userStore } = useStores();
+  const [setting, setSetting] = useState({
+    footprintYn: true,
+  });
 
   const bgServiceOptions = {
     taskName: 'walking_task',
@@ -88,24 +92,6 @@ const WalkingView = (props) => {
   };
 
   useEffect(() => {
-    // const subscription = AppState.addEventListener(
-    //   'change',
-    //   async (nextAppState) => {
-    //     if (
-    //       appState.current.match(/inactive|background/) &&
-    //       nextAppState === 'active'
-    //     ) {
-    //       const now = new Date();
-    //       const diffTime = Math.ceil(Math.abs(now - prevTime.current) / 1000);
-    //       setSeconds((seconds) => seconds + diffTime);
-    //     } else {
-    //       prevTime.current = new Date();
-    //     }
-
-    //     appState.current = nextAppState;
-    //   }
-    // );
-
     const fetchData = async () => {
       systemStore.setDisplayTabBar(false);
       setRegion(route.params?.currentCoords);
@@ -221,10 +207,6 @@ const WalkingView = (props) => {
     });
   };
 
-  const handleOpenSetting = () => {
-    settingModalRef.current.openModal(true);
-  };
-
   const getAroundFootprints = async (coords) => {
     aroundStandardCoords.current = coords;
     try {
@@ -246,6 +228,18 @@ const WalkingView = (props) => {
     } catch (e) {}
   };
 
+  const handleChangeSetting = (setting) => {
+    setSetting(setting);
+  };
+  const handleOpenSetting = () => {
+    settingModalRef.current.openModal(true);
+  };
+  
+  const handleOpenFootprintDetail = useCallback((footprintId) => {
+    setSelectedFootprintId(footprintId);
+    footprintDetailModalRef.current.openModal(true);
+  }, []);
+  
   const updateLocation = useCallback(async () => {
     try {
       let { coords } = await Location.getCurrentPositionAsync({
@@ -511,7 +505,7 @@ const WalkingView = (props) => {
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            render={<Ionicons name='options' size={30} color='black' />}
+            render={<Ionicons name="options" size={30} color="black" />}
             fontColor={COLORS.white}
             onPress={handleOpenSetting}
             width={60}
@@ -531,64 +525,21 @@ const WalkingView = (props) => {
               latitudeDelta={LATITUDE_DELTA}
               userLocation={permission}
             >
-              {footprintsToggle && (
-                <>
-                  {Object.values(footprints)
-                    .filter((e) => !e.catched)
-                    .map((ele, idx) => (
-                      <Marker
-                        key={ele.id}
-                        coordinate={{
-                          latitude: ele.latitude,
-                          longitude: ele.longitude,
-                        }}
-                        onPress={() => {
-                          Toast.show({
-                            type: 'success',
-                            text1: 'id: ' + ele.id,
-                          });
-                        }}
-                      >
-                        <MaterialCommunityIcons
-                          name='dog'
-                          size={24}
-                          color='black'
-                        />
-                      </Marker>
-                    ))}
-                  {Object.values(footprints)
-                    .filter((e) => e.catched)
-                    .map((ele, idx) => (
-                      <Marker
-                        key={ele.id}
-                        coordinate={{
-                          latitude: ele.latitude,
-                          longitude: ele.longitude,
-                        }}
-                        onPress={() => {
-                          Toast.show({
-                            type: 'success',
-                            text1: 'id: ' + ele.id,
-                          });
-                        }}
-                      >
-                        <MaterialCommunityIcons
-                          name='dog'
-                          size={24}
-                          color='red'
-                        />
-                      </Marker>
-                    ))}
-                </>
+              {!!setting.footprintYn && (
+                <FootprintMarker
+                  userId={userStore.userId}
+                  footprints={footprints}
+                  handleOpenFootprintDetail={handleOpenFootprintDetail}
+                />
               )}
               {myFootprints.map((coords, index) => (
                 <Marker key={index} coordinate={coords}>
-                  <FontAwesome5 name='stamp' size={24} color='black' />
+                  <FontAwesome5 name="stamp" size={24} color="black" />
                 </Marker>
               ))}
               <Polyline
                 coordinates={routes}
-                strokeColor='#e23dff'
+                strokeColor="#e23dff"
                 strokeWidth={6}
               />
             </GoogleMap>
@@ -598,7 +549,9 @@ const WalkingView = (props) => {
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            render={<MaterialIcons name='my-location' size={30} color='black' />}
+            render={
+              <MaterialIcons name="my-location" size={30} color="black" />
+            }
             fontColor={COLORS.white}
             onPress={getMyLocation}
             width={60}
@@ -626,7 +579,7 @@ const WalkingView = (props) => {
             <CustomButton
               bgColor={COLORS.warning}
               bgColorPress={COLORS.warningDeep}
-              render={<MaterialIcons name='pause' size={30} color='black' />}
+              render={<MaterialIcons name="pause" size={30} color="black" />}
               fontColor={COLORS.white}
               onPress={stopWalking}
               width={60}
@@ -636,7 +589,9 @@ const WalkingView = (props) => {
               }}
             />
             <View style={{ alignItems: 'center' }}>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD}>{meters.toLocaleString('ko-KR')} m</CustomText>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD}>
+                {meters.toLocaleString('ko-KR')} m
+              </CustomText>
               <CustomText
                 fontSize={15}
                 fontColor={COLORS.grayDeep}
@@ -647,22 +602,15 @@ const WalkingView = (props) => {
             </View>
           </View>
         </View>
-        <CustomModal
-          ref={settingModalRef}
-          closeText={'닫기'}
-          title={'Map Setting'}
-        >
-          <View style={styles.settingItemWrap}>
-            <View style={{ flexDirection: 'row' }}>
-              <MaterialCommunityIcons name='dog' size={27} color='black' />
-              <CustomText style={{ marginLeft: 7 }}>발자국</CustomText>
-            </View>
-            <CustomSwitch
-              onValueChange={() => setFootprintsToggle(!footprintsToggle)}
-              value={footprintsToggle}
-            />
-          </View>
-        </CustomModal>
+        <FootprintDetailModal
+          modalRef={footprintDetailModalRef}
+          footprintId={selectedFootprintId}
+        />
+        <WalkingSettingModal
+          modalRef={settingModalRef}
+          setting={setting}
+          handleChangeSetting={handleChangeSetting}
+        />
       </Container>
     </>
   );

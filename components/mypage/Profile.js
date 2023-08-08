@@ -14,12 +14,16 @@ const Profile = () => {
   const { userStore } = useStores();
 
   const editProfile = () => {
-    Navigator.navigate({ profile: userStore.profile }, 'mypage_nav', 'profile_form');
+    Navigator.navigate(
+      { profile: userStore.profile },
+      'mypage_nav',
+      'profile_form'
+    );
   };
 
   return (
     <>
-      <View style={styles.profileCard}>
+      <View style={styles.profileWrap}>
         <ProfileImage
           uri={userStore.profile?.profileImgUrl}
           style={styles.profileImg}
@@ -29,19 +33,31 @@ const Profile = () => {
             {userStore.profile?.nickname}
           </CustomText>
           <CustomText fontSize={16} style={{ marginTop: 5 }}>
-            {utils.getAge(moment(userStore.profile?.birthDate, 'YYYYMMDD').toDate())}
+            {utils.getAge(
+              moment(userStore.profile?.birthDate, 'YYYYMMDD').toDate()
+            )}
             {'Y '}({userStore.profile?.gender == 'M' ? 'Male' : 'Female'})
           </CustomText>
         </View>
-        <Pressable style={styles.profileEditBtn} hitSlop={5} onPress={editProfile}>
+        <Pressable
+          style={styles.profileEditBtn}
+          hitSlop={5}
+          onPress={editProfile}
+        >
           <AntDesign name="edit" size={20} color="black" />
         </Pressable>
       </View>
       <View style={{ marginTop: 7 }}>
-        <CustomText style={{ marginBottom: 5 }} fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+        <CustomText
+          style={{ marginBottom: 5 }}
+          fontSize={16}
+          fontWeight={FONT_WEIGHT.BOLD}
+        >
           Comment
         </CustomText>
-        <CustomText fontSize={15}>{userStore.profile?.comment}</CustomText>
+        <CustomText fontSize={15}>
+          {userStore.profile?.comment || '-'}
+        </CustomText>
       </View>
     </>
   );
@@ -50,9 +66,10 @@ const Profile = () => {
 export default observer(Profile);
 
 const styles = StyleSheet.create({
-  profileCard: {
+  profileWrap: {
     flexDirection: 'row',
-    alignContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   profileEditBtn: {
     alignItems: 'center',
@@ -67,7 +84,6 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    marginBottom: 10,
     marginRight: 20,
   },
   profile: {

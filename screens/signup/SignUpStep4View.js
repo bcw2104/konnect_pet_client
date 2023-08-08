@@ -23,7 +23,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const SignupStep4View = (props) => {
   const { route } = props;
-  const { userStore } = useStores();
+  const { userStore, systemStore } = useStores();
   const mapRef = useRef(null);
   const [searchValue, setSearchValue] = useState(null);
   const [region, setRegion] = useState(null);
@@ -40,10 +40,11 @@ const SignupStep4View = (props) => {
 
   const submitSignupData = async () => {
     if (!searchValue) return;
-
+    systemStore.setIsLoading(true);
     try {
       const response = await serviceApis.join({
         ...route.params,
+        city: searchValue.city,
         address: searchValue.address,
         coords: JSON.stringify({
           lat: searchValue?.coords?.latitude,
@@ -69,6 +70,8 @@ const SignupStep4View = (props) => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      systemStore.setIsLoading(false);
     }
   };
 
@@ -110,6 +113,7 @@ const SignupStep4View = (props) => {
                         longitude: location.lng,
                       },
                       address: data.description,
+                      city: data.structured_formatting?.secondary_text,
                     });
                     mapRef?.current?.animateToRegion({
                       latitude: location.lat,

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import { useStores } from '../../contexts/StoreContext';
 import CustomText from '../../components/elements/CustomText';
-import { FONT_WEIGHT, POINT_TYPE_CODE } from '../../commons/constants';
+import { FONT_WEIGHT } from '../../commons/constants';
 import COLORS from '../../commons/colors';
 import { observer } from 'mobx-react-lite';
 import PetList from '../../components/mypage/PetList';
@@ -49,9 +49,7 @@ const MyPageHomeView = () => {
             >
               My Profile
             </CustomText>
-            <View style={styles.profileWrap}>
-              <Profile />
-            </View>
+            <Profile />
           </View>
           <View style={styles.element}>
             <CustomText
@@ -149,7 +147,7 @@ const styles = StyleSheet.create({
   pointWrap: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignContent: 'center',
+    alignItems: 'center',
   },
   point: {
     alignItems: 'center',

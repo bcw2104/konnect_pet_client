@@ -1,9 +1,4 @@
-import {
-  ActivityIndicator,
-  Dimensions,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
@@ -18,7 +13,7 @@ const Loader = () => {
       {systemStore.isLoading && (
         <View style={styles.container}>
           <ActivityIndicator
-            size='large'
+            size="large"
             color={COLORS.dark}
             animating={systemStore.isLoading}
           />
@@ -32,12 +27,13 @@ export default observer(Loader);
 
 const styles = StyleSheet.create({
   container: {
-    zIndex:9999,
+    zIndex: 9999,
     width: WIN_WIDTH,
-    height: WIN_HEIGHT,
+    height: '100%',
     position: 'absolute',
+    top: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(217, 217, 217, 0.5)',
+    backgroundColor: COLORS.semiTransparent,
   },
 });

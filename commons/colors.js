@@ -20,4 +20,6 @@ export default COLORS = {
 
   black: '#000000',
   white: '#ffffff',
+  transparent: 'rgba(255, 255, 255, 0)',
+  semiTransparent: 'rgba(255, 255, 255, 0.5)'
 };

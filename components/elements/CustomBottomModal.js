@@ -31,13 +31,13 @@ const CustomBottomModal = ({ closeCallback = null, children }, ref) => {
 
   return (
     <Modal
-      animationType='none'
-      transparent={true}
+      animationType="none"
       isVisible={open}
       animationInTiming={300}
       animationOutTiming={300}
       backdropTransitionInTiming={300}
       backdropTransitionOutTiming={300}
+      backdropColor={COLORS.transparent}
       onBackButtonPress={handleClose}
       onBackdropPress={handleClose}
       style={styles.bottomHalf}

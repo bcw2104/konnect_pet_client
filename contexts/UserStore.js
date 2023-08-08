@@ -9,6 +9,7 @@ export default class UserStore {
   _tel = null;
   _platform = null;
   _residenceAddress = null;
+  _residenceCity = null;
   _residenceCoords = null;
 
   _profile = null;
@@ -38,6 +39,7 @@ export default class UserStore {
         this._tel = response.result.tel;
         this._platform = response.result.platform;
         this._residenceAddress = response.result.residenceAddress;
+        this._residenceCity = response.result.residenceCity;
         this._residenceCoords = response.result.residenceCoords;
         this._isLogin = true;
         this._pets = response.result.pets;
@@ -69,7 +71,7 @@ export default class UserStore {
   setPets(pets) {
     this._pets = pets;
   }
-  
+
   addPets(pet) {
     let pets = [];
     if (this._pets != null) {
@@ -95,7 +97,9 @@ export default class UserStore {
       asyncStorage.resetToken();
     }
   }
-
+  get userId() {
+    return this._userId;
+  }
   get email() {
     return this._email;
   }
@@ -106,6 +110,9 @@ export default class UserStore {
 
   get platform() {
     return this._platform;
+  }
+  get residenceCity() {
+    return this._residenceCity;
   }
   get residenceAddress() {
     return this._residenceAddress;

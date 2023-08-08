@@ -1,5 +1,5 @@
 import { Dimensions, Modal, StyleSheet, View } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import Container from '../../components/layouts/Container';
 import GoogleMap from '../../components/map/GoogleMap';
@@ -19,6 +19,8 @@ import { utils } from '../../utils/Utils';
 import { useIsFocused } from '@react-navigation/native';
 import FootprintDetailModal from '../../components/walking/FootprintDetailModal';
 import WalkingSettingModal from '../../components/walking/WalkingSettingModal';
+import FootprintMarker from '../../components/walking/FootprintMarker';
+import { observer } from 'mobx-react-lite';
 
 const window = Dimensions.get('window');
 const ASPECT_RATIO = window.width / window.height;
@@ -129,10 +131,10 @@ const WalkingHomeView = (props) => {
   const handleOpenSetting = () => {
     settingModalRef.current.openModal(true);
   };
-  const handleOpenFootprintDetail = (footprintId) => {
+  const handleOpenFootprintDetail = useCallback((footprintId) => {
     setSelectedFootprintId(footprintId);
     footprintDetailModalRef.current.openModal(true);
-  };
+  }, []);
 
   const getAroundFootprints = async (coords) => {
     //이후 주변 발자국 갱신시 비교할 위치 기록
@@ -270,7 +272,7 @@ const WalkingHomeView = (props) => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          render={<Ionicons name='options' size={30} color='black' />}
+          render={<Ionicons name="options" size={30} color="black" />}
           fontColor={COLORS.white}
           onPress={handleOpenSetting}
           width={60}
@@ -290,47 +292,11 @@ const WalkingHomeView = (props) => {
           latitudeDelta={LATITUDE_DELTA}
         >
           {!!setting.footprintYn && (
-            <>
-              {Object.values(footprints)
-                .filter((e) => !e.catched)
-                .map((ele, idx) => (
-                  <Marker
-                    key={ele.id}
-                    coordinate={{
-                      latitude: ele.latitude,
-                      longitude: ele.longitude,
-                    }}
-                    onPress={() => {
-                      handleOpenFootprintDetail(ele.id);
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      name='dog'
-                      size={24}
-                      color='black'
-                    />
-                  </Marker>
-                ))}
-              {Object.values(footprints)
-                .filter((e) => e.catched)
-                .map((ele, idx) => (
-                  <Marker
-                    key={ele.id}
-                    coordinate={{
-                      latitude: ele.latitude,
-                      longitude: ele.longitude,
-                    }}
-                    onPress={() => {
-                      Toast.show({
-                        type: 'success',
-                        text1: 'id: ' + ele.id,
-                      });
-                    }}
-                  >
-                    <MaterialCommunityIcons name='dog' size={24} color='red' />
-                  </Marker>
-                ))}
-            </>
+            <FootprintMarker
+              userId={userStore.userId}
+              footprints={footprints}
+              handleOpenFootprintDetail={handleOpenFootprintDetail}
+            />
           )}
         </GoogleMap>
       </View>
@@ -338,7 +304,7 @@ const WalkingHomeView = (props) => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          render={<MaterialIcons name='my-location' size={30} color='black' />}
+          render={<MaterialIcons name="my-location" size={30} color="black" />}
           fontColor={COLORS.white}
           onPress={getMyLocation}
           width={60}
@@ -351,7 +317,7 @@ const WalkingHomeView = (props) => {
         <CustomButton
           bgColor={COLORS.dark}
           bgColorPress={COLORS.darkDeep}
-          text='산책 시작'
+          text="산책 시작"
           fontColor={COLORS.white}
           onPress={startWalking}
           height={50}
@@ -371,7 +337,7 @@ const WalkingHomeView = (props) => {
   );
 };
 
-export default WalkingHomeView;
+export default observer(WalkingHomeView);
 
 const styles = StyleSheet.create({
   section1: {

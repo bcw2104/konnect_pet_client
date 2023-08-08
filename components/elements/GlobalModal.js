@@ -7,9 +7,10 @@ import { observer } from 'mobx-react-lite';
 import Modal from 'react-native-modal';
 import CustomText from './CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
+import Loader from '../modules/Loader';
 
 const GlobalModal = () => {
-  const { systemStore, modalStore } = useStores();
+  const { modalStore } = useStores();
 
   const handleClose = () => {
     if (!!modalStore.firstBtnCallback) {
@@ -27,7 +28,7 @@ const GlobalModal = () => {
 
   return (
     <Modal
-      animationType='none'
+      animationType="none"
       transparent={true}
       isVisible={modalStore.open}
       animationInTiming={500}
@@ -37,6 +38,7 @@ const GlobalModal = () => {
       onBackButtonPress={handleClose}
       onBackdropPress={handleClose}
     >
+      <Loader />
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <View style={styles.contentWrap}>

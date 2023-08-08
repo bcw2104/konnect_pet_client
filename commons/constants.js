@@ -39,8 +39,5 @@ export const DEEP_LINK_PREFIX = {
   DEFAULT: 'konnect://',
 };
 
-export const POINT_TYPE_CODE = {
-  POINT: '001',
-};
-
 export const IMAGE_EXT_TYPE = ['png', 'jpg', 'jpeg', 'webp'];
+

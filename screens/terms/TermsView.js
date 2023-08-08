@@ -37,16 +37,15 @@ const TermsView = (props) => {
   }, []);
 
   return (
-    <>
+    <Container header={true}>
       {!systemStore.isLoading && (
-        <Container header={true}>
+        <>
           <View style={styles.section1}>
-            <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
+            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
               {term?.termsName}
             </CustomText>
             <CustomText style={{ marginTop: 5 }} fontSize={16}>
-              created:{' '}
-              {moment(term?.createdDate).format('yyyy-MM-DD HH:mm:ss')}
+              created: {moment(term?.createdDate).format('yyyy-MM-DD HH:mm:ss')}
             </CustomText>
           </View>
           <View style={styles.section2}>
@@ -64,9 +63,9 @@ const TermsView = (props) => {
               }}
             />
           </View>
-        </Container>
+        </>
       )}
-    </>
+    </Container>
   );
 };
 
