@@ -95,11 +95,13 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                       detail?.friendStatus == PROCESS_STATUS_CODE.PENDING
                     }
                     onPress={() => {
-                      if (detail?.friendStatus != PROCESS_STATUS_CODE.PENDING) {
-                        requestFriend(detail?.userId);
-                      } else if (
+                      if (
                         detail?.friendStatus == PROCESS_STATUS_CODE.PERMITTED
                       ) {
+                      } else if (
+                        detail?.friendStatus != PROCESS_STATUS_CODE.PENDING
+                      ) {
+                        requestFriend(detail?.userId);
                       }
                     }}
                     render={
@@ -122,10 +124,10 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                         >
                           {detail?.friendStatus == PROCESS_STATUS_CODE.PERMITTED
                             ? 'Message'
-                            : detail?.friendStatus !=
+                            : detail?.friendStatus ==
                               PROCESS_STATUS_CODE.PENDING
-                            ? 'Friend'
-                            : 'Waiting'}
+                            ? 'Waiting'
+                            : 'Friend'}
                         </CustomText>
                       </>
                     }
@@ -135,7 +137,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
             </View>
             <View style={styles.locationWrap}>
               <Entypo
-                name="location-pin"
+                name='location-pin'
                 size={22}
                 color={COLORS.dark}
                 style={{ marginRight: 5 }}
