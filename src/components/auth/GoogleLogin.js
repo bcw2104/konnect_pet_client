@@ -5,7 +5,7 @@ import {
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import { SOCIAL_TYPE } from '../../commons/constants';
 import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';

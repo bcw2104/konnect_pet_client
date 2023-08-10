@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import CustomButton from '../../components/elements/CustomButton';
 import {COLORS} from '../../commons/colors';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT, SOCIAL_TYPE } from '../../commons/constants';

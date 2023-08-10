@@ -1,6 +1,6 @@
 import { baseAxios } from './Axios';
 
-export default serviceApis = {
+export const serviceApis = {
   //common
   telNations: () => baseAxios.get(`/api/v1/common/public/nations`),
 

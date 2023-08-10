@@ -10,7 +10,7 @@ import Container from '../../components/layouts/Container';
 import CustomText from '../../components/elements/CustomText';
 import { COLORS } from '../../commons/colors';
 import { FONT_WEIGHT } from '../../commons/constants';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useStores } from '../../contexts/StoreContext';
 import NotificationItem from '../../components/mypage/NotificationItem';

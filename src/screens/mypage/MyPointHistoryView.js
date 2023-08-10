@@ -11,7 +11,7 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import CustomText from '../../components/elements/CustomText';
 import { COLORS } from '../../commons/colors';
 import { FONT_WEIGHT } from '../../commons/constants';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import { useStores } from '../../contexts/StoreContext';
 import { MaterialIcons } from '@expo/vector-icons';
 import PointHistoryItem from '../../components/mypage/PointHistoryItem';

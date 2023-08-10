@@ -18,7 +18,7 @@ import {
 import { Navigator } from '../../navigations/Navigator';
 import { observer } from 'mobx-react-lite';
 import { asyncStorage } from '../../storage/Storage';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import BackgroundService from 'react-native-background-actions';
 import { utils } from '../../utils/Utils';
 import { Marker, Polyline } from 'react-native-maps';

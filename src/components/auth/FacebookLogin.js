@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import { SOCIAL_TYPE } from '../../commons/constants';
 import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';

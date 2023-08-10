@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import serviceApis from './../utils/ServiceApis';
+import { serviceApis } from './../utils/ServiceApis';
 import { asyncStorage } from '../storage/Storage';
 
 export default class UserStore {

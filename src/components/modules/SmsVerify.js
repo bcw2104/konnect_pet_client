@@ -10,7 +10,7 @@ import useInterval from './../../hooks/useInertval';
 import { KeyboardAvoidingView } from 'react-native';
 import { Platform } from 'react-native';
 import {REGEX} from '../../commons/regex';
-import serviceApis from './../../utils/ServiceApis';
+import { serviceApis } from './../../utils/ServiceApis';
 import { useEffect } from 'react';
 import { Navigator } from '../../navigations/Navigator';
 import {COLORS} from '../../commons/colors';

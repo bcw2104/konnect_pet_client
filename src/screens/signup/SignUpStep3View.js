@@ -2,7 +2,7 @@ import { StyleSheet, View, Pressable } from 'react-native';
 import React from 'react';
 import Container from '../../components/layouts/Container';
 import { useState, useEffect } from 'react';
-import serviceApis from './../../utils/ServiceApis';
+import { serviceApis } from './../../utils/ServiceApis';
 import CustomButton from '../../components/elements/CustomButton';
 import {COLORS} from '../../commons/colors';
 import CheckBox from '../../components/elements/CheckBox';

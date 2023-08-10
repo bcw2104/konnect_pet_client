@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import CustomButton from '../../components/elements/CustomButton';
 import {COLORS} from '../../commons/colors';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import CustomText from '../../components/elements/CustomText';
 import SmsVerify from '../../components/modules/SmsVerify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';

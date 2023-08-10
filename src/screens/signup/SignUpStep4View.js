@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import {COLORS} from './../../commons/colors';
 import CustomButton from './../../components/elements/CustomButton';
-import serviceApis from './../../utils/ServiceApis';
+import { serviceApis } from './../../utils/ServiceApis';
 import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
 import CustomText from '../../components/elements/CustomText';

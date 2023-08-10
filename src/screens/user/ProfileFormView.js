@@ -1,10 +1,16 @@
-import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
 import Container from '../../components/layouts/Container';
 import { FONT_WEIGHT } from '../../commons/constants';
 import CustomButton from '../../components/elements/CustomButton';
-import {COLORS} from '../../commons/colors';
 import CustomInput from '../../components/elements/CustomInput';
 import { FontAwesome5 } from '@expo/vector-icons';
 import DatePicker from 'react-native-date-picker';
@@ -15,9 +21,10 @@ import { Feather } from '@expo/vector-icons';
 import ImageUploader from '../../components/modules/ImageUploader';
 import { utils } from '../../utils/Utils';
 import { useStores } from '../../contexts/StoreContext';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import ProfileImage from '../../components/modules/ProfileImage';
+import { COLORS } from '../../commons/colors';
 
 const ProfileFormView = (props) => {
   const { route } = props;
@@ -62,7 +69,11 @@ const ProfileFormView = (props) => {
       const valid = validation(profile);
 
       if (!valid) {
-        modalStore.openOneButtonModal('필수 항목을 전부 채워주세요.', '확인', () => {});
+        modalStore.openOneButtonModal(
+          '필수 항목을 전부 채워주세요.',
+          '확인',
+          () => {}
+        );
         return;
       }
 
@@ -72,7 +83,10 @@ const ProfileFormView = (props) => {
 
       if (isImageChanged.current && !!profileImage) {
         try {
-          const upload = await utils.uploadImage(profileImage, '/api/v1/upload/images/profile/user');
+          const upload = await utils.uploadImage(
+            profileImage,
+            '/api/v1/upload/images/profile/user'
+          );
           imageUrl = upload.imageUrl;
         } catch (err) {}
       } else if (!isImageChanged.current && !!profileImage) {
@@ -88,9 +102,13 @@ const ProfileFormView = (props) => {
 
       if (response.rsp_code == '1000') {
         userStore.setProfile(response.result);
-        modalStore.openOneButtonModal('프로필 등록이 완료되었습니다.', '확인', () => {
-          Navigator.goBack();
-        });
+        modalStore.openOneButtonModal(
+          '프로필 등록이 완료되었습니다.',
+          '확인',
+          () => {
+            Navigator.goBack();
+          }
+        );
       }
     } catch (e) {
       console.log(e);
@@ -103,17 +121,24 @@ const ProfileFormView = (props) => {
     <>
       <Container header={true} headerPaddingTop={0}>
         <ScrollView>
-          <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'position' : 'height'} keyboardVerticalOffset={20}>
+          <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+            keyboardVerticalOffset={20}
+          >
             <View style={styles.section1}>
               <View style={styles.profileImgWrap}>
-                <ImageUploader onImageChange={handleImageChange} ref={imageUploaderRef}>
+                <ImageUploader
+                  onImageChange={handleImageChange}
+                  ref={imageUploaderRef}
+                >
                   <Pressable
                     onPress={() => {
                       imageUploaderRef.current.pickImage();
                     }}
                   >
                     <View style={styles.upload}>
-                      <Feather name="camera" size={20} color="black" />
+                      <Feather name='camera' size={20} color='black' />
                     </View>
                     <ProfileImage
                       uri={profileImage}
@@ -128,7 +153,12 @@ const ProfileFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     Nickname
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.main} style={styles.required} />
+                  <FontAwesome5
+                    name='star-of-life'
+                    size={10}
+                    color={COLORS.main}
+                    style={styles.required}
+                  />
                 </View>
                 <CustomInput
                   value={profile.nickname}
@@ -139,8 +169,8 @@ const ProfileFormView = (props) => {
                   fontSize={16}
                   height={40}
                   wrapperStyle={styles.input}
-                  placeholder="닉네임을 입력해 주세요."
-                  keyboardType="default"
+                  placeholder='닉네임을 입력해 주세요.'
+                  keyboardType='default'
                   outline={true}
                 />
               </View>
@@ -149,7 +179,12 @@ const ProfileFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     Gender
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.main} style={styles.required} />
+                  <FontAwesome5
+                    name='star-of-life'
+                    size={10}
+                    color={COLORS.main}
+                    style={styles.required}
+                  />
                 </View>
                 <CustomRadio
                   fontSize={16}
@@ -169,7 +204,12 @@ const ProfileFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     BirthDate
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.main} style={styles.required} />
+                  <FontAwesome5
+                    name='star-of-life'
+                    size={10}
+                    color={COLORS.main}
+                    style={styles.required}
+                  />
                 </View>
                 <Pressable
                   onPress={() => {
@@ -179,7 +219,9 @@ const ProfileFormView = (props) => {
                     padding: 10,
                   }}
                 >
-                  <CustomText fontSize={16}>{moment(profile.birthDate).format('YYYY.MM.DD')}</CustomText>
+                  <CustomText fontSize={16}>
+                    {moment(profile.birthDate).format('YYYY.MM.DD')}
+                  </CustomText>
                 </Pressable>
                 <DatePicker
                   modal
@@ -200,7 +242,11 @@ const ProfileFormView = (props) => {
                   paddingVertical: 20,
                 }}
               >
-                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16} style={{ marginBottom: 20 }}>
+                <CustomText
+                  fontWeight={FONT_WEIGHT.BOLD}
+                  fontSize={16}
+                  style={{ marginBottom: 20 }}
+                >
                   Comment
                 </CustomText>
                 <CustomInput
@@ -212,8 +258,8 @@ const ProfileFormView = (props) => {
                   multiline={true}
                   fontSize={16}
                   wrapperStyle={styles.input}
-                  placeholder="자기소개를 해주세요."
-                  keyboardType="default"
+                  placeholder='자기소개를 해주세요.'
+                  keyboardType='default'
                   outline={true}
                   height={100}
                 />
@@ -222,7 +268,15 @@ const ProfileFormView = (props) => {
           </KeyboardAvoidingView>
         </ScrollView>
       </Container>
-      <CustomButton fontColor={COLORS.white} bgColor={COLORS.dark} bgColorPress={COLORS.darkDeep} onPress={saveProfileInfo} text="등록하기" style={styles.submitTheme} height={60} />
+      <CustomButton
+        fontColor={COLORS.white}
+        bgColor={COLORS.dark}
+        bgColorPress={COLORS.darkDeep}
+        onPress={saveProfileInfo}
+        text='등록하기'
+        style={styles.submitTheme}
+        height={60}
+      />
     </>
   );
 };
@@ -231,7 +285,7 @@ export default ProfileFormView;
 
 const styles = StyleSheet.create({
   section1: {
-    marginVertical:30
+    marginVertical: 30,
   },
 
   upload: {

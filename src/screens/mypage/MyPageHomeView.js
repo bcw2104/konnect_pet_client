@@ -8,8 +8,8 @@ import {COLORS} from '../../commons/colors';
 import { observer } from 'mobx-react-lite';
 import PetList from '../../components/mypage/PetList';
 import Profile from '../../components/mypage/Profile';
-import serviceApis from '../../utils/ServiceApis';
-import { Navigator, navigationRef } from '../../navigations/Navigator';
+import { serviceApis } from '../../utils/ServiceApis';
+import { Navigator } from '../../navigations/Navigator';
 import { useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 

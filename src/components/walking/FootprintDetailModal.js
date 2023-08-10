@@ -2,7 +2,7 @@ import { StyleSheet, View, Pressable, ScrollView } from 'react-native';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import CustomBottomModal from '../elements/CustomBottomModal';
 import ProfileImage from '../modules/ProfileImage';
 import PetImage from '../modules/PetImage';

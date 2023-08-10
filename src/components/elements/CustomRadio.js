@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import CustomButton from './CustomButton';
+import { COLORS } from '../../commons/colors';
 
 const CustomRadio = ({
   items = [],

@@ -8,7 +8,7 @@ import GoogleMap from '../../components/map/GoogleMap';
 import { Polyline } from 'react-native-maps';
 import {COLORS} from '../../commons/colors';
 import Timer from '../../components/elements/Timer';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';

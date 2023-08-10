@@ -8,7 +8,7 @@ import {COLORS} from '../../commons/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import { asyncStorage } from '../../storage/Storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';

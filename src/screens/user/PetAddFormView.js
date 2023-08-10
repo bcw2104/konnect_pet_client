@@ -12,7 +12,6 @@ import CustomText from '../../components/elements/CustomText';
 import Container from '../../components/layouts/Container';
 import { FONT_WEIGHT } from '../../commons/constants';
 import CustomButton from '../../components/elements/CustomButton';
-import {COLORS} from '../../commons/colors';
 import CustomInput from '../../components/elements/CustomInput';
 import { FontAwesome5 } from '@expo/vector-icons';
 import DatePicker from 'react-native-date-picker';
@@ -23,10 +22,11 @@ import { Feather } from '@expo/vector-icons';
 import ImageUploader from '../../components/modules/ImageUploader';
 import { utils } from '../../utils/Utils';
 import { useStores } from '../../contexts/StoreContext';
-import serviceApis from '../../utils/ServiceApis';
+import { serviceApis } from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import { observer } from 'mobx-react-lite';
 import PetImage from '../../components/modules/PetImage';
+import { COLORS } from '../../commons/colors';
 
 const WEIGHT_REGEX = /^([1-9]{0,2}\d{0,1}|0{1})(\.{1}\d{0,2})?$/;
 

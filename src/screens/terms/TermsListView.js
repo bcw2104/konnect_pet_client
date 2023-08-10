@@ -4,7 +4,7 @@ import Container from '../../components/layouts/Container';
 import CustomText from '../../components/elements/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
-import serviceApis from './../../utils/ServiceApis';
+import { serviceApis } from './../../utils/ServiceApis';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import { FONT_WEIGHT } from '../../commons/constants';

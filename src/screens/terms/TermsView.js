@@ -3,7 +3,7 @@ import React from 'react';
 import Container from '../../components/layouts/Container';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import serviceApis from './../../utils/ServiceApis';
+import { serviceApis } from './../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import moment from 'moment';
 import { WebView } from 'react-native-webview';
