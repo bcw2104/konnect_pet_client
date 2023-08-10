@@ -7,8 +7,8 @@ import CustomInput from '../elements/CustomInput';
 import Timer from '../elements/Timer';
 import { Platform } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native';
-import REGEX from '../../commons/regex';
-import COLORS from '../../commons/colors';
+import {REGEX} from '../../commons/regex';
+import {COLORS} from '../../commons/colors';
 
 const VERIFY_TIMEOUT = 600;
 

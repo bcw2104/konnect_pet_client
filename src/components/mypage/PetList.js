@@ -1,9 +1,16 @@
-import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React from 'react';
 import CustomText from '../elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
 import { AntDesign } from '@expo/vector-icons';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import { Navigator } from '../../navigations/Navigator';
 import { utils } from '../../utils/Utils';
 import moment from 'moment';
@@ -30,17 +37,24 @@ const PetList = ({ items }) => {
         <>
           {item.petId >= 0 ? (
             <Pressable
-              style={styles.petItem}
+              style={({ pressed }) => [
+                styles.petItem,
+                {
+                  backgroundColor: pressed ? COLORS.lightDeep : COLORS.white,
+                },
+              ]}
               onPress={() => {
                 editPet(item);
               }}
             >
-              <PetImage
-                uri={item?.petImgUrl}
-                style={styles.petImg}
-              />
+              <PetImage uri={item?.petImgUrl} style={styles.petImg} />
               <View style={styles.pet}>
-                <CustomText fontSize={14} fontWeight={FONT_WEIGHT.BOLD} numberOfLines={1} ellipsizeMode={'tail'}>
+                <CustomText
+                  fontSize={14}
+                  fontWeight={FONT_WEIGHT.BOLD}
+                  numberOfLines={1}
+                  ellipsizeMode={'tail'}
+                >
                   {item?.petName}
                 </CustomText>
                 <CustomText fontSize={12}>
@@ -50,10 +64,27 @@ const PetList = ({ items }) => {
               </View>
             </Pressable>
           ) : (
-            <Pressable style={styles.petItem} onPress={addNewPet}>
-              <AntDesign name="pluscircleo" size={40} color={COLORS.dark} style={styles.petImg} />
+            <Pressable
+              style={({ pressed }) => [
+                styles.petItem,
+                {
+                  backgroundColor: pressed ? COLORS.lightDeep : COLORS.white,
+                },
+              ]}
+              onPress={addNewPet}
+            >
+              <AntDesign
+                name="pluscircleo"
+                size={40}
+                color={COLORS.dark}
+                style={styles.petImg}
+              />
               <View style={styles.pet}>
-                <CustomText fontSize={15} fontWeight={FONT_WEIGHT.BOLD} numberOfLines={1}>
+                <CustomText
+                  fontSize={15}
+                  fontWeight={FONT_WEIGHT.BOLD}
+                  numberOfLines={1}
+                >
                   Add Pet
                 </CustomText>
               </View>
@@ -76,7 +107,7 @@ const styles = StyleSheet.create({
   petItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: COLORS.mainDeep,
+    borderColor: COLORS.main,
     borderWidth: 2,
     borderRadius: 15,
     paddingVertical: 5,

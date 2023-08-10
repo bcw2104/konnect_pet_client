@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../contexts/StoreContext';
-import COLORS from '../commons/colors';
+import {COLORS} from '../commons/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +17,7 @@ const HomeTabs = () => {
     <Tab.Navigator
       initialRouteName="walking_tab"
       screenOptions={{
-        tabBarActiveTintColor: COLORS.mainDeep,
+        tabBarActiveTintColor: COLORS.main,
         tabBarStyle: {
           display: systemStore.displayTabBar ? 'flex' : 'none',
           position: 'relative',

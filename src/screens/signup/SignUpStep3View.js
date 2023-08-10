@@ -4,7 +4,7 @@ import Container from '../../components/layouts/Container';
 import { useState, useEffect } from 'react';
 import serviceApis from './../../utils/ServiceApis';
 import CustomButton from '../../components/elements/CustomButton';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import CheckBox from '../../components/elements/CheckBox';
 import { Navigator } from './../../navigations/Navigator';
 import CustomText from '../../components/elements/CustomText';

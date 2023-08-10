@@ -8,7 +8,7 @@ import { Navigator } from '../../navigations/Navigator';
 import moment from 'moment';
 import { WebView } from 'react-native-webview';
 import CustomText from '../../components/elements/CustomText';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import { FONT_WEIGHT } from '../../commons/constants';

@@ -1,6 +1,6 @@
 import { Text } from 'react-native';
 import React from 'react';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import { FONT_FAMILY, FONT_WEIGHT } from '../../commons/constants';
 
 const CustomText = ({

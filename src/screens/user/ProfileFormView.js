@@ -4,7 +4,7 @@ import CustomText from '../../components/elements/CustomText';
 import Container from '../../components/layouts/Container';
 import { FONT_WEIGHT } from '../../commons/constants';
 import CustomButton from '../../components/elements/CustomButton';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import CustomInput from '../../components/elements/CustomInput';
 import { FontAwesome5 } from '@expo/vector-icons';
 import DatePicker from 'react-native-date-picker';
@@ -128,7 +128,7 @@ const ProfileFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     Nickname
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.mainDeep} style={styles.required} />
+                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.main} style={styles.required} />
                 </View>
                 <CustomInput
                   value={profile.nickname}
@@ -149,10 +149,10 @@ const ProfileFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     Gender
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.mainDeep} style={styles.required} />
+                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.main} style={styles.required} />
                 </View>
                 <CustomRadio
-                  fontSize={20}
+                  fontSize={16}
                   height={40}
                   items={[
                     { label: 'Male', value: 'M' },
@@ -169,7 +169,7 @@ const ProfileFormView = (props) => {
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
                     BirthDate
                   </CustomText>
-                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.mainDeep} style={styles.required} />
+                  <FontAwesome5 name="star-of-life" size={10} color={COLORS.main} style={styles.required} />
                 </View>
                 <Pressable
                   onPress={() => {

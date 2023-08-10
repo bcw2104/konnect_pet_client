@@ -6,7 +6,7 @@ import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT, NUMBER_TO_LANG } from '../../commons/constants';
 import GoogleMap from '../../components/map/GoogleMap';
 import { Polyline } from 'react-native-maps';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import Timer from '../../components/elements/Timer';
 import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';

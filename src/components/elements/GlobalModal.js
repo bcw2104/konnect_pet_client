@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import CustomButton from './CustomButton';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import Modal from 'react-native-modal';

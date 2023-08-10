@@ -4,7 +4,7 @@ import { useStores } from '../../contexts/StoreContext';
 import Container from '../../components/layouts/Container';
 import GoogleMap from '../../components/map/GoogleMap';
 import CustomButton from '../../components/elements/CustomButton';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';

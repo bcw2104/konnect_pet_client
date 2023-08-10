@@ -1,7 +1,7 @@
 import { Text, TextInput, View } from 'react-native';
 import React from 'react';
 import { useState } from 'react';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import { useEffect } from 'react';
 import CustomText from './CustomText';
 

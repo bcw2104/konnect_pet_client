@@ -20,7 +20,7 @@ export default serviceApis = {
   getMyData: () => baseAxios.get(`/api/v1/user/mypage`),
   leaveUser: (smsVerifyKey) => baseAxios.post(`/api/v1/user/mypage/leave`, { smsVerifyKey }),
   getNotifications: () => baseAxios.get(`/api/v1/user/noti`),
-  getPointHistory : (pointType) => baseAxios.get(`/api/v1/user/point/history`, { params:{ point:pointType } }),
+  getPointHistories : (pointType,type,size,page,) => baseAxios.get(`/api/v1/user/point/history`, { params:{ point:pointType,type: type, size:size, page:page  } }),
   getNotifications : (size,page) => baseAxios.get(`/api/v1/user/noti`,{ params:{ size:size, page:page }}),
 
 

@@ -1,13 +1,26 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import CustomText from '../../components/elements/CustomText';
-import COLORS from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import { FONT_WEIGHT } from '../../commons/constants';
-import moment from 'moment';
 import serviceApis from '../../utils/ServiceApis';
-import { Feather } from '@expo/vector-icons';
+import { useStores } from '../../contexts/StoreContext';
+import { MaterialIcons } from '@expo/vector-icons';
+import PointHistoryItem from '../../components/mypage/PointHistoryItem';
+
+const PAGE_SIZE = 20;
+const TAB_TYPE = {
+  first: 'plus',
+  second: 'minus',
+};
 
 const MyPointHistoryView = (props) => {
   const { route } = props;
@@ -17,24 +30,19 @@ const MyPointHistoryView = (props) => {
     { key: 'first', title: '적립 내역' },
     { key: 'second', title: '사용 내역' },
   ]);
-  const [history, setHistory] = useState({});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await serviceApis.getPointHistory(
-          route.params.pointType
-        );
-        setHistory({
-          saved: response.result?.filter((ele) => ele.balance > 0),
-          used: response.result?.filter((ele) => ele.balance < 0),
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, []);
+  const FirstRoute = useCallback(
+    () => (
+      <PointHist type={TAB_TYPE.first} pointType={route.params.pointType} />
+    ),
+    []
+  );
+  const SecondRoute = useCallback(
+    () => (
+      <PointHist type={TAB_TYPE.second} pointType={route.params.pointType} />
+    ),
+    []
+  );
 
   return (
     <Container
@@ -43,22 +51,8 @@ const MyPointHistoryView = (props) => {
       headerPaddingTop={0}
       bgColor={COLORS.light}
     >
-      <View style={styles.summaryWrap}>
-        <Feather
-          name="alert-circle"
-          size={20}
-          color={COLORS.mainDeep}
-          style={{ marginRight: 5 }}
-        />
-        <CustomText
-          fontColor={COLORS.mainDeep}
-          fontSize={14}
-          fontWeight={FONT_WEIGHT.BOLD}
-        >
-          History is displayed up to 5 months ago.
-        </CustomText>
-      </View>
       <TabView
+        lazy
         renderTabBar={(props) => (
           <TabBar
             {...props}
@@ -74,14 +68,14 @@ const MyPointHistoryView = (props) => {
             )}
             indicatorStyle={{
               height: 3,
-              backgroundColor: COLORS.mainDeep,
+              backgroundColor: COLORS.main,
             }}
           />
         )}
         navigationState={{ index, routes }}
         renderScene={SceneMap({
-          first: () => <PointHist items={history?.saved} />,
-          second: () => <PointHist items={history?.used} />,
+          first: FirstRoute,
+          second: SecondRoute,
         })}
         onIndexChange={setIndex}
       />
@@ -90,34 +84,101 @@ const MyPointHistoryView = (props) => {
 };
 
 const PointHist = (props) => {
-  const { items } = props;
+  const { type, pointType } = props;
+
+  const { systemStore } = useStores();
+  const page = useRef(1);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const [history, setHistory] = useState(null);
+  const [hasNext, setHasNext] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      systemStore.setIsLoading(true);
+      try {
+        const response = await serviceApis.getPointHistories(
+          pointType,
+          type,
+          PAGE_SIZE,
+          page.current
+        );
+        setHistory(response.result?.histories);
+        setHasNext(response.result?.hasNext);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        systemStore.setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const getNextData = async () => {
+    page.current += 1;
+
+    systemStore.setIsLoading(true);
+    try {
+      const response = await serviceApis.getPointHistories(
+        pointType,
+        type,
+        PAGE_SIZE,
+        page.current
+      );
+
+      setHistory([...history, ...response.result?.histories]);
+      setHasNext(response.result?.hasNext);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      systemStore.setIsLoading(false);
+    }
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    page.current = 1;
+    try {
+      const response = await serviceApis.getPointHistories(
+        pointType,
+        type,
+        PAGE_SIZE,
+        page.current
+      );
+      setHistory(response.result?.histories);
+      setHasNext(response.result?.hasNext);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   return (
-    <ScrollView style={{ flex: 1 }}>
-      {!!items &&
-        (items.length > 0 ? (
-          items?.map((item) => (
-            <View key={item.id} style={styles.historyWrap}>
-              <View>
-                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
-                  {item.historyTypeName}
-                </CustomText>
-                <CustomText
-                  fontSize={14}
-                  fontWeight={FONT_WEIGHT.BOLD}
-                  fontColor={COLORS.gray}
-                  style={{ marginTop: 5 }}
-                >
-                  {moment(item.createdDate).format('YYYY.MM.DD')}
-                </CustomText>
-              </View>
-              <View>
-                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
-                  {item.balance}
-                  {item.pointTypeSymbol}
-                </CustomText>
-              </View>
-            </View>
-          ))
+    <ScrollView
+      style={{ flex: 1 }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
+      {!!history &&
+        (history.length > 0 ? (
+          <>
+            {history?.map((item) => (
+              <PointHistoryItem key={item.id} item={item} />
+            ))}
+            {hasNext && (
+              <Pressable style={styles.more} onPress={getNextData}>
+                <MaterialIcons
+                  name="expand-more"
+                  size={28}
+                  color={COLORS.dark}
+                  style={{ marginRight: 5 }}
+                />
+                <CustomText fontSize={16}>more</CustomText>
+              </Pressable>
+            )}
+          </>
         ) : (
           <View style={styles.notExistWrap}>
             <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
@@ -132,25 +193,11 @@ const PointHist = (props) => {
 export default MyPointHistoryView;
 
 const styles = StyleSheet.create({
-  summaryWrap: {
+  more: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.white,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-  },
-  historyWrap: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    marginVertical: 3,
-    backgroundColor: COLORS.white,
-  },
-  notExistWrap: {
-    marginTop: 20,
     justifyContent: 'center',
-    alignItems: 'center',
+    height: 60,
+    backgroundColor: COLORS.white,
   },
 });

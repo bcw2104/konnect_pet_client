@@ -4,7 +4,7 @@ import { useStores } from '../../contexts/StoreContext';
 import Container from '../../components/layouts/Container';
 import GoogleMap from '../../components/map/GoogleMap';
 import CustomButton from '../../components/elements/CustomButton';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
@@ -21,6 +21,7 @@ import FootprintDetailModal from '../../components/walking/FootprintDetailModal'
 import WalkingSettingModal from '../../components/walking/WalkingSettingModal';
 import FootprintMarker from '../../components/walking/FootprintMarker';
 import { observer } from 'mobx-react-lite';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const window = Dimensions.get('window');
 const ASPECT_RATIO = window.width / window.height;
@@ -315,10 +316,12 @@ const WalkingHomeView = (props) => {
           }}
         />
         <CustomButton
-          bgColor={COLORS.dark}
-          bgColorPress={COLORS.darkDeep}
+          bgColor={COLORS.main}
+          bgColorPress={COLORS.mainDeep}
           text="산책 시작"
+          fontWeight={FONT_WEIGHT.BOLD}
           fontColor={COLORS.white}
+          fontSize={18}
           onPress={startWalking}
           height={50}
           wrapperStyle={styles.start}

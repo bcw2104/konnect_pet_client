@@ -3,7 +3,7 @@ import React from 'react';
 import Container from '../../components/layouts/Container';
 import CustomButton from '../../components/elements/CustomButton';
 import { Navigator } from '../../navigations/Navigator';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
 

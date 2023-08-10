@@ -9,6 +9,7 @@ import moment from 'moment';
 import { AntDesign } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
 import ProfileImage from '../modules/ProfileImage';
+import { COLORS } from '../../commons/colors';
 
 const Profile = () => {
   const { userStore } = useStores();
@@ -40,7 +41,12 @@ const Profile = () => {
           </CustomText>
         </View>
         <Pressable
-          style={styles.profileEditBtn}
+          style={({ pressed }) => [
+            styles.profileEditBtn,
+            {
+              backgroundColor: pressed ? COLORS.lightDeep : COLORS.white,
+            },
+          ]}
           hitSlop={5}
           onPress={editProfile}
         >

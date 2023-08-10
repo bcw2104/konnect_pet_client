@@ -15,7 +15,9 @@ const CustomRadio = ({
         <CustomButton
           key={index}
           bgColor={value == item.value ? COLORS.main : COLORS.light}
-          bgColorPress={value == item.value ? COLORS.main : COLORS.light}
+          bgColorPress={
+            value == item.value ? COLORS.main : COLORS.lightDeep
+          }
           text={item.label}
           fontColor={value == item.value ? COLORS.white : COLORS.gray}
           onPress={() => {

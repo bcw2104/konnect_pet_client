@@ -1,7 +1,8 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import CustomText from './CustomText';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const CustomButton = ({
   disabled = false,
@@ -10,6 +11,7 @@ const CustomButton = ({
   bgColorPress = COLORS.lightDeep,
   fontColor = COLORS.black,
   fontSize = 16,
+  fontWeight = FONT_WEIGHT.REGULAR,
   text = '',
   width = 'auto',
   height = 45,
@@ -40,7 +42,7 @@ const CustomButton = ({
             backgroundColor: pressed ? bgColorPress : bgColor,
             flex: 1,
             opacity: disabled ? 0.6 : 1,
-            flexDirection:'row',
+            flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
             ...style,
@@ -54,6 +56,7 @@ const CustomButton = ({
             style={{
               textAlign: 'center',
             }}
+            fontWeight={fontWeight}
             fontSize={fontSize}
             fontColor={fontColor}
           >

@@ -10,7 +10,7 @@ import Navigation from './src/navigations/Navigation';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 import { Settings } from 'react-native-fbsdk-next';
 import { useFonts } from 'expo-font';
-import COLORS from './src/commons/colors';
+import {COLORS} from './src/commons/colors';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Loader from './src/components/modules/Loader';

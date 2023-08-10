@@ -3,7 +3,7 @@ import React from 'react';
 import Container from '../../components/layouts/Container';
 import { Navigator } from '../../navigations/Navigator';
 import CustomButton from '../../components/elements/CustomButton';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import serviceApis from '../../utils/ServiceApis';
 import { useState } from 'react';
 import CustomText from '../../components/elements/CustomText';

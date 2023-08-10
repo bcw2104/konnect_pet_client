@@ -11,7 +11,7 @@ import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
 import { Navigator } from '../../navigations/Navigator';
 import { Image } from 'react-native';
-import COLORS from './../../commons/colors';
+import {COLORS} from './../../commons/colors';
 
 const GoogleLogin = () => {
   const { userStore, systemStore } = useStores();

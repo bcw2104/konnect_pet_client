@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import CustomInput from '../elements/CustomInput';
 import { useEffect, useState } from 'react';
-import REGEX from '../../commons/regex';
+import {REGEX} from '../../commons/regex';
 import { KeyboardAvoidingView } from 'react-native';
 import { Platform } from 'react-native';
 

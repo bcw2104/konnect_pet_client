@@ -11,7 +11,7 @@ import PetAddFormView from '../../screens/user/PetAddFormView';
 import ProfileFormView from '../../screens/user/ProfileFormView';
 import MyPointHistoryView from '../../screens/mypage/MyPointHistoryView';
 import MyNotificationView from '../../screens/mypage/MyNotificationView';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 
 const MyPageStack = createNativeStackNavigator();
 

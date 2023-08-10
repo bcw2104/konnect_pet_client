@@ -1,4 +1,4 @@
-export default COLORS = {
+export const COLORS = {
   primary: '#4285F4',
   primaryDeep: '#0d47a1',
 
@@ -24,6 +24,6 @@ export default COLORS = {
   transparent: 'rgba(255, 255, 255, 0)',
   semiTransparent: 'rgba(255, 255, 255, 0.5)',
 
-  main: '#ffbb33',
-  mainDeep: '#FF8800',
+  main: '#f4a460',
+  mainDeep: '#f4a460',
 };

@@ -11,7 +11,7 @@ import { FONT_WEIGHT } from '../../commons/constants';
 import moment from 'moment';
 import { utils } from '../../utils/Utils';
 import { Feather } from '@expo/vector-icons';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import CustomButton from '../elements/CustomButton';
 import { PROCESS_STATUS_CODE } from '../../commons/codes';
 import { useStores } from '../../contexts/StoreContext';
@@ -137,7 +137,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
             </View>
             <View style={styles.locationWrap}>
               <Entypo
-                name='location-pin'
+                name="location-pin"
                 size={22}
                 color={COLORS.dark}
                 style={{ marginRight: 5 }}

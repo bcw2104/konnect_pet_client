@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useImperativeHandle } from 'react';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import { useState } from 'react';
 import { forwardRef } from 'react';
 import Modal from 'react-native-modal';

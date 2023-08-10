@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import CustomButton from '../elements/CustomButton';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import { useStores } from '../../contexts/StoreContext';
 import CustomInput from '../elements/CustomInput';
 import serviceApis from './../../utils/ServiceApis';

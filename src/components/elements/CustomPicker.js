@@ -1,7 +1,7 @@
 import { Platform, Text, TextInput, View } from "react-native";
 import React from "react";
 import { useState } from "react";
-import COLORS from "../../commons/colors";
+import {COLORS} from "../../commons/colors";
 import { useEffect } from "react";
 import { Picker, PickerIOS } from "@react-native-picker/picker";
 import CustomText from "./CustomText";

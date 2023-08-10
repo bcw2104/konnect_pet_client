@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import CustomButton from '../../components/elements/CustomButton';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import serviceApis from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import CustomText from '../../components/elements/CustomText';

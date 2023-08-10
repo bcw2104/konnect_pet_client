@@ -12,7 +12,7 @@ import CustomText from '../../components/elements/CustomText';
 import Container from '../../components/layouts/Container';
 import { FONT_WEIGHT } from '../../commons/constants';
 import CustomButton from '../../components/elements/CustomButton';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import CustomInput from '../../components/elements/CustomInput';
 import { FontAwesome5 } from '@expo/vector-icons';
 import DatePicker from 'react-native-date-picker';
@@ -187,7 +187,7 @@ const PetAddFormView = (props) => {
                   <FontAwesome5
                     name="star-of-life"
                     size={10}
-                    color={COLORS.mainDeep}
+                    color={COLORS.main}
                     style={styles.required}
                   />
                 </View>
@@ -213,7 +213,7 @@ const PetAddFormView = (props) => {
                   <FontAwesome5
                     name="star-of-life"
                     size={10}
-                    color={COLORS.mainDeep}
+                    color={COLORS.main}
                     style={styles.required}
                   />
                 </View>
@@ -239,12 +239,12 @@ const PetAddFormView = (props) => {
                   <FontAwesome5
                     name="star-of-life"
                     size={10}
-                    color={COLORS.mainDeep}
+                    color={COLORS.main}
                     style={styles.required}
                   />
                 </View>
                 <CustomRadio
-                  fontSize={20}
+                  fontSize={16}
                   height={40}
                   items={[
                     { label: 'Male', value: 'M' },
@@ -264,7 +264,7 @@ const PetAddFormView = (props) => {
                   <FontAwesome5
                     name="star-of-life"
                     size={10}
-                    color={COLORS.mainDeep}
+                    color={COLORS.main}
                     style={styles.required}
                   />
                 </View>
@@ -291,7 +291,7 @@ const PetAddFormView = (props) => {
                   <FontAwesome5
                     name="star-of-life"
                     size={10}
-                    color={COLORS.mainDeep}
+                    color={COLORS.main}
                     style={styles.required}
                   />
                 </View>
@@ -329,13 +329,13 @@ const PetAddFormView = (props) => {
                   <FontAwesome5
                     name="star-of-life"
                     size={10}
-                    color={COLORS.mainDeep}
+                    color={COLORS.main}
                     style={styles.required}
                   />
                 </View>
 
                 <CustomRadio
-                  fontSize={20}
+                  fontSize={16}
                   height={40}
                   items={[
                     { label: 'Yes', value: true },
@@ -355,13 +355,13 @@ const PetAddFormView = (props) => {
                   <FontAwesome5
                     name="star-of-life"
                     size={10}
-                    color={COLORS.mainDeep}
+                    color={COLORS.main}
                     style={styles.required}
                   />
                 </View>
 
                 <CustomRadio
-                  fontSize={20}
+                  fontSize={16}
                   height={40}
                   items={[
                     { label: 'Yes', value: true },

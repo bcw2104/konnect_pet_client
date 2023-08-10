@@ -2,7 +2,7 @@ import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 
 const { width: WIN_WIDTH, height: WIN_HEIGHT } = Dimensions.get('window');
 

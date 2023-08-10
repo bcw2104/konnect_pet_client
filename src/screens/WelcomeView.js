@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import GoogleLogin from '../components/auth/GoogleLogin';
 import { observer } from 'mobx-react-lite';
 import DefaultLogin from '../components/auth/DefaultLogin';
-import COLORS from '../commons/colors';
+import {COLORS} from '../commons/colors';
 import Container from '../components/layouts/Container';
 import { Navigator } from '../navigations/Navigator';
 import { FONT_WEIGHT, SOCIAL_TYPE } from '../commons/constants';

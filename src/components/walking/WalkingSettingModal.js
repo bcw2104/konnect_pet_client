@@ -4,7 +4,7 @@ import CustomModal from '../elements/CustomModal';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomText from '../elements/CustomText';
 import CustomSwitch from '../elements/CustomSwitch';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 
 const WalkingSettingModal = ({ setting, handleChangeSetting, modalRef }) => {
   return (

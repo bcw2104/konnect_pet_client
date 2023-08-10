@@ -4,7 +4,7 @@ import Container from '../../components/layouts/Container';
 import { useStores } from '../../contexts/StoreContext';
 import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
-import COLORS from '../../commons/colors';
+import {COLORS} from '../../commons/colors';
 import { observer } from 'mobx-react-lite';
 import PetList from '../../components/mypage/PetList';
 import Profile from '../../components/mypage/Profile';
@@ -55,7 +55,7 @@ const MyPageHomeView = ({ navigation }) => {
           <View style={styles.element}>
             <CustomText
               style={styles.title}
-              fontSize={18}
+              fontSize={16}
               fontWeight={FONT_WEIGHT.BOLD}
             >
               My Profile
@@ -65,7 +65,7 @@ const MyPageHomeView = ({ navigation }) => {
           <View style={styles.element}>
             <CustomText
               style={styles.title}
-              fontSize={18}
+              fontSize={16}
               fontWeight={FONT_WEIGHT.BOLD}
             >
               My Pets
@@ -81,17 +81,17 @@ const MyPageHomeView = ({ navigation }) => {
             <View style={styles.element}>
               <CustomText
                 style={styles.title}
-                fontSize={18}
+                fontSize={16}
                 fontWeight={FONT_WEIGHT.BOLD}
               >
-                POINT & COUPON
+                Point & Coupon
               </CustomText>
               <View style={styles.pointWrap}>
                 <Pressable style={styles.point} onPress={openPointHistory}>
                   <CustomText
                     fontWeight={FONT_WEIGHT.BOLD}
                     fontSize={28}
-                    fontColor={COLORS.mainDeep}
+                    fontColor={COLORS.main}
                   >
                     {myData.point?.balance.toLocaleString('ko-KR')}
                     {myData.point?.pointTypeSymbol}
@@ -105,7 +105,7 @@ const MyPageHomeView = ({ navigation }) => {
                   <CustomText
                     fontWeight={FONT_WEIGHT.BOLD}
                     fontSize={28}
-                    fontColor={COLORS.mainDeep}
+                    fontColor={COLORS.main}
                   >
                     0
                   </CustomText>
@@ -118,7 +118,47 @@ const MyPageHomeView = ({ navigation }) => {
           )}
         </View>
 
-        <View style={styles.section3}>{/* 쇼핑,산책,커뮤니티 등등... */}</View>
+        <View style={styles.section3}>
+          {!!myData && (
+            <View style={styles.element}>
+              <CustomText
+                style={styles.title}
+                fontSize={16}
+                fontWeight={FONT_WEIGHT.BOLD}
+              >
+                Community
+              </CustomText>
+              <View style={styles.communityWrap}>
+                <Pressable style={styles.community}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+                    0
+                  </CustomText>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
+                    Friends
+                  </CustomText>
+                </Pressable>
+                <View style={styles.divider}></View>
+                <Pressable style={styles.community}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+                    0
+                  </CustomText>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
+                    Posts
+                  </CustomText>
+                </Pressable>
+                <View style={styles.divider}></View>
+                <Pressable style={styles.community}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+                    0
+                  </CustomText>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
+                    Comments
+                  </CustomText>
+                </Pressable>
+              </View>
+            </View>
+          )}
+        </View>
       </ScrollView>
     </Container>
   );
@@ -132,7 +172,13 @@ const HeaderRight = ({ newNotiCount }) => {
           Navigator.navigate({}, 'mypage_nav', 'notification_history');
         }}
         hitSlop={5}
-        style={{ marginRight: 20 }}
+        style={({ pressed }) => [
+          {
+            paddingHorizontal: 5,
+            marginRight: 10,
+            backgroundColor: pressed ? COLORS.lightDeep : COLORS.white,
+          },
+        ]}
       >
         <Ionicons name="notifications-outline" size={24} color={COLORS.dark} />
         {newNotiCount > 0 && (
@@ -152,6 +198,12 @@ const HeaderRight = ({ newNotiCount }) => {
           Navigator.navigate({}, 'mypage_nav', 'setting');
         }}
         hitSlop={5}
+        style={({ pressed }) => [
+          {
+            paddingHorizontal: 5,
+            backgroundColor: pressed ? COLORS.lightDeep : COLORS.white,
+          },
+        ]}
       >
         <Ionicons name="settings-outline" size={24} color={COLORS.dark} />
       </Pressable>
@@ -162,42 +214,6 @@ const HeaderRight = ({ newNotiCount }) => {
 export default observer(MyPageHomeView);
 
 const styles = StyleSheet.create({
-  section1: {
-    marginTop: 20,
-    paddingHorizontal: 15,
-    marginBottom: 10,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-  },
-  section2: {
-    paddingHorizontal: 15,
-    marginBottom: 50,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-  },
-  section3: {
-    paddingHorizontal: 5,
-  },
-  element: {
-    paddingVertical: 10,
-  },
-  title: {
-    marginBottom: 10,
-  },
-
-  divider: {
-    width: 1,
-    backgroundColor: COLORS.gray,
-  },
-
-  pointWrap: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  point: {
-    alignItems: 'center',
-  },
   notiLabel: {
     position: 'absolute',
     right: -7,
@@ -208,5 +224,61 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 9,
+  },
+  section1: {
+    paddingVertical: 5,
+    marginTop: 20,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+  },
+  section2: {
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+  },
+  section3: {
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+  },
+  element: {
+    paddingVertical: 10,
+  },
+  title: {
+    marginBottom: 10,
+  },
+
+  divider: {
+    width: 1,
+    height: '100%',
+    backgroundColor: COLORS.gray,
+  },
+
+  pointWrap: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  point: {
+    flex: 1,
+    alignItems: 'center',
+  },
+
+  communityWrap: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  community: {
+    flex: 1,
+    alignItems: 'center',
   },
 });

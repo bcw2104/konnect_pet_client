@@ -2,7 +2,7 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { useStores } from '../contexts/StoreContext';
 import { navigationRef } from './Navigator';
 import AuthStackNavigator from './stacks/AuthStackNavigator';
-import COLORS from '../commons/colors';
+import {COLORS} from '../commons/colors';
 import HomeTabs from './HomeTabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MyPageStackNavigator from './stacks/MyPageStackNavigator';
