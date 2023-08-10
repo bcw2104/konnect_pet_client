@@ -1,24 +1,24 @@
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
-import { StoreProvider } from './contexts/StoreContext';
-import { RootStore } from './contexts/RootStore';
+import { StoreProvider } from './src/contexts/StoreContext';
+import { RootStore } from './src/contexts/RootStore';
 import { StatusBar } from 'expo-status-bar';
-import GlobalModal from './components/elements/GlobalModal';
+import GlobalModal from './src/components/elements/GlobalModal';
 import Toast from 'react-native-toast-message';
-import Navigation from './navigations/Navigation';
+import Navigation from './src/navigations/Navigation';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 import { Settings } from 'react-native-fbsdk-next';
 import { useFonts } from 'expo-font';
-import COLORS from './commons/colors';
+import COLORS from './src/commons/colors';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import Loader from './components/modules/Loader';
+import Loader from './src/components/modules/Loader';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import { Linking } from 'react-native';
-import { Navigator } from './navigations/Navigator';
-import { DEEP_LINK_PREFIX } from './commons/constants';
+import { Navigator } from './src/navigations/Navigator';
+import { DEEP_LINK_PREFIX } from './src/commons/constants';
 
 const rootStore = new RootStore();
 
@@ -75,13 +75,19 @@ export default function App() {
 
   const initDeviceInfo = async () => {
     const deviceToken = await registerForPushNotificationsAsync();
-    rootStore.userStore.setDeviceInfo(Device.modelName, Device.osName, Device.osVersion, deviceToken);
+    rootStore.userStore.setDeviceInfo(
+      Device.modelName,
+      Device.osName,
+      Device.osVersion,
+      deviceToken
+    );
   };
 
   const registerForPushNotificationsAsync = async () => {
     let token = null;
     if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
       if (existingStatus !== 'granted') {
         const { status } = await Notifications.requestPermissionsAsync();
