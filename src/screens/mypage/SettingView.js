@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
 import { FONT_WEIGHT } from '../../commons/constants';
 import { useStores } from '../../contexts/StoreContext';
+import { COLORS } from '../../commons/colors';
 
 const SettingView = () => {
   const { userStore, modalStore } = useStores();
@@ -39,7 +40,7 @@ const SettingView = () => {
           <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
             알림 설정
           </CustomText>
-          <Ionicons name="chevron-forward-outline" size={28} color="black" />
+          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
         </Pressable>
         <Pressable
           onPress={() => {
@@ -50,7 +51,7 @@ const SettingView = () => {
           <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
             차단목록
           </CustomText>
-          <Ionicons name="chevron-forward-outline" size={28} color="black" />
+          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
         </Pressable>
         <Pressable
           onPress={() => {
@@ -61,7 +62,7 @@ const SettingView = () => {
           <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
             문의하기
           </CustomText>
-          <Ionicons name="chevron-forward-outline" size={28} color="black" />
+          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
         </Pressable>
         <Pressable
           onPress={() => {
@@ -72,7 +73,7 @@ const SettingView = () => {
           <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
             이용약관
           </CustomText>
-          <Ionicons name="chevron-forward-outline" size={28} color="black" />
+          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
         </Pressable>
         <Pressable
           onPress={() => {
@@ -83,13 +84,13 @@ const SettingView = () => {
           <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
             앱 정보
           </CustomText>
-          <Ionicons name="chevron-forward-outline" size={28} color="black" />
+          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
         </Pressable>
         <Pressable onPress={logout} style={styles.menuItem}>
           <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
             로그아웃
           </CustomText>
-          <Ionicons name="chevron-forward-outline" size={28} color="black" />
+          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
         </Pressable>
         <Pressable
           onPress={() => {
@@ -100,7 +101,7 @@ const SettingView = () => {
           <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
             회원탈퇴
           </CustomText>
-          <Ionicons name="chevron-forward-outline" size={28} color="black" />
+          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
         </Pressable>
       </View>
     </Container>

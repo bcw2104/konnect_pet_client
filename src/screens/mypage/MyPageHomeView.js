@@ -12,6 +12,7 @@ import { serviceApis } from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import { useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { utils } from '../../utils/Utils';
 
 const MyPageHomeView = ({ navigation }) => {
   const [myData, setMyData] = useState(null);
@@ -93,7 +94,7 @@ const MyPageHomeView = ({ navigation }) => {
                     fontSize={28}
                     fontColor={COLORS.main}
                   >
-                    {myData.point?.balance.toLocaleString('ko-KR')}
+                    {utils.toFormatNumber(myData.point?.balance)}
                     {myData.point?.pointTypeSymbol}
                   </CustomText>
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
@@ -256,14 +257,13 @@ const styles = StyleSheet.create({
 
   divider: {
     width: 1,
-    height: '100%',
+    height: '80%',
     backgroundColor: COLORS.gray,
   },
 
   pointWrap: {
     marginTop: 10,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
     alignItems: 'center',
   },
   point: {
@@ -274,7 +274,6 @@ const styles = StyleSheet.create({
   communityWrap: {
     marginTop: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   community: {

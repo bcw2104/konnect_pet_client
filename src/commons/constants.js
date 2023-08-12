@@ -24,6 +24,7 @@ export const FONT_WEIGHT = {
 
 export const FONT_FAMILY = {
   ROBOTO: 'Roboto',
+  MAPLE: 'Maple',
 };
 
 export const NUMBER_TO_LANG = [
@@ -40,4 +41,3 @@ export const DEEP_LINK_PREFIX = {
 };
 
 export const IMAGE_EXT_TYPE = ['png', 'jpg', 'jpeg', 'webp'];
-

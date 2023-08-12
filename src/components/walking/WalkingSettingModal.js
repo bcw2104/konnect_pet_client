@@ -1,19 +1,18 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import CustomModal from '../elements/CustomModal';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomText from '../elements/CustomText';
 import CustomSwitch from '../elements/CustomSwitch';
-import {COLORS} from '../../commons/colors';
+import FootprintImage from '../modules/FootprintImage';
 
 const WalkingSettingModal = ({ setting, handleChangeSetting, modalRef }) => {
   return (
     <CustomModal ref={modalRef} closeText={'닫기'} title={'Map Setting'}>
       <View style={styles.settingItemWrap}>
-        <View style={{ flexDirection: 'row' }}>
-          <MaterialCommunityIcons name="dog" size={27} color={COLORS.dark} />
+        <View style={{ flexDirection: 'row',alignItems:'center' }}>
+          <FootprintImage size={30} type="catched" />
           <CustomText fontSize={18} style={{ marginLeft: 7 }}>
-            발자국
+            Footprint
           </CustomText>
         </View>
         <CustomSwitch

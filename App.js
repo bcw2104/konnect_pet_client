@@ -10,7 +10,7 @@ import Navigation from './src/navigations/Navigation';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 import { Settings } from 'react-native-fbsdk-next';
 import { useFonts } from 'expo-font';
-import {COLORS} from './src/commons/colors';
+import { COLORS } from './src/commons/colors';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Loader from './src/components/modules/Loader';
@@ -30,6 +30,8 @@ export default function App() {
     'Roboto-Regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
     'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
     'Roboto-Thin': require('./assets/fonts/Roboto/Roboto-Thin.ttf'),
+    'Maple-Bold': require('./assets/fonts/Maple/Maple-Bold.ttf'),
+    'Maple-Regular': require('./assets/fonts/Maple/Maple-Regular.ttf'),
   });
 
   useEffect(() => {

@@ -8,8 +8,10 @@ import SignupStep4View from './../../screens/signup/SignUpStep4View';
 import WelcomeView from '../../screens/WelcomeView';
 import FindPasswordStep1View from './../../screens/account/FindPasswordStep1View';
 import FindPasswordStep2View from './../../screens/account/FindPasswordStep2View';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import TermsView from './../../screens/terms/TermsView';
+import CustomText from '../../components/elements/CustomText';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const AuthStack = createNativeStackNavigator();
 
@@ -23,15 +25,16 @@ const AuthStackNavigator = () => {
       ></AuthStack.Screen>
       <AuthStack.Group
         screenOptions={(props) => ({
-          headerTitle: 'Sign Up',
+          headerTitle: () => (
+            <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+              Sign Up
+            </CustomText>
+          ),
           headerTitleAlign: 'center',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name="arrow-back-outline" size={24} color="black" />
+              <Ionicons name="arrow-back-outline" size={24} color={COLORS.dark} />
             </Pressable>
           ),
           animation: 'slide_from_right',
@@ -56,15 +59,16 @@ const AuthStackNavigator = () => {
       </AuthStack.Group>
       <AuthStack.Group
         screenOptions={(props) => ({
-          headerTitle: 'Find Password',
+          headerTitle: () => (
+            <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+              Find Password
+            </CustomText>
+          ),
           headerTitleAlign: 'center',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name="arrow-back-outline" size={24} color="black" />
+              <Ionicons name="arrow-back-outline" size={24} color={COLORS.dark} />
             </Pressable>
           ),
           animation: 'slide_from_right',
@@ -85,7 +89,7 @@ const AuthStackNavigator = () => {
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name="arrow-back-outline" size={24} color="black" />
+              <Ionicons name="arrow-back-outline" size={24} color={COLORS.dark} />
             </Pressable>
           ),
           animation: 'slide_from_bottom',

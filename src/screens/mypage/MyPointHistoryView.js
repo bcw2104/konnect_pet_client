@@ -27,8 +27,8 @@ const MyPointHistoryView = (props) => {
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'first', title: '적립 내역' },
-    { key: 'second', title: '사용 내역' },
+    { key: 'first', title: 'Saved' },
+    { key: 'second', title: 'Used' },
   ]);
 
   const FirstRoute = useCallback(
@@ -60,7 +60,7 @@ const MyPointHistoryView = (props) => {
             renderLabel={({ route, focused, color }) => (
               <CustomText
                 fontWeight={FONT_WEIGHT.BOLD}
-                fontSize={17}
+                fontSize={16}
                 fontColor={focused ? COLORS.dark : COLORS.gray}
               >
                 {route.title}

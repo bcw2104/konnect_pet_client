@@ -7,6 +7,7 @@ export default class UserStore {
   _userId = null;
   _email = null;
   _tel = null;
+  _createdDate = null;
   _platform = null;
   _residenceAddress = null;
   _residenceCity = null;
@@ -36,6 +37,7 @@ export default class UserStore {
       runInAction(() => {
         this._userId = response.result.userId;
         this._email = response.result.email;
+        this._createdDate = response.result.createdDate;
         this._tel = response.result.tel;
         this._platform = response.result.platform;
         this._residenceAddress = response.result.residenceAddress;
@@ -107,7 +109,9 @@ export default class UserStore {
   get tel() {
     return this._tel;
   }
-
+  get createdDate() {
+    return this._createdDate;
+  }
   get platform() {
     return this._platform;
   }

@@ -95,6 +95,11 @@ export const serviceApis = {
     }),
   getFootprintDetail: (footprintId) =>
     baseAxios.get(`/api/v1/walking/footprints/${footprintId}`),
+  getWalkingSummary: ()=> baseAxios.get(`/api/v1/walking/summary`),
+  getWalkingHistory: (startDate,endDate)=> baseAxios.get(`/api/v1/walking/history`,{params:{
+    startDate: startDate,
+    endDate: endDate
+  }}),
 
   //pet
   savePet: (payload) => baseAxios.put(`/api/v1/user/pet`, payload),

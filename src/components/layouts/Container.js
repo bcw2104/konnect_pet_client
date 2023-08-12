@@ -1,12 +1,13 @@
 import { Platform, SafeAreaView, View } from 'react-native';
 import React from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { COLORS } from '../../commons/colors';
 
 const Container = ({
   header = false,
   paddingHorizontal = 15,
   headerPaddingTop = 20,
-  bgColor = '#ffffff',
+  bgColor = COLORS.white,
   children,
 }) => {
   const statusBarHeight = getStatusBarHeight();

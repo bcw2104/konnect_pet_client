@@ -77,8 +77,7 @@ export const utils = {
         0
       );
       imageUri = resize.uri;
-    } catch (e) {
-    }
+    } catch (e) {}
 
     const BASE_API_URL =
       process.env.NODE_ENV == 'development'
@@ -121,5 +120,14 @@ export const utils = {
     );
     var diff = d2.getTime() - d1.getTime();
     return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+  },
+  calculateKcal: (meters, kg) => {
+    return (1.1 * kg * meters) / 1000;
+  },
+  calculateSpeed: (meters, seconds) => {
+    return seconds == 0 ? 0 : parseInt((meters / seconds) * 3.6);
+  },
+  toFormatNumber: (val) => {
+    return val.toLocaleString('ko-KR');
   },
 };

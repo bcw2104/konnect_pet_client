@@ -13,7 +13,6 @@ import { FONT_WEIGHT } from '../../commons/constants';
 import CustomButton from '../../components/elements/CustomButton';
 import CustomInput from '../../components/elements/CustomInput';
 import { FontAwesome5 } from '@expo/vector-icons';
-import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import CustomRadio from '../../components/elements/CustomRadio';
 import { Feather } from '@expo/vector-icons';
@@ -25,13 +24,13 @@ import { serviceApis } from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import ProfileImage from '../../components/modules/ProfileImage';
 import { COLORS } from '../../commons/colors';
+import CustomDateTimePicker from '../../components/elements/CustomDateTimePicker';
 
 const ProfileFormView = (props) => {
   const { route } = props;
   const { userStore, modalStore, systemStore } = useStores();
   const imageUploaderRef = useRef();
   const isImageChanged = useRef(false);
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [profile, serProfile] = useState({
     nickname: null,
@@ -138,7 +137,7 @@ const ProfileFormView = (props) => {
                     }}
                   >
                     <View style={styles.upload}>
-                      <Feather name='camera' size={20} color='black' />
+                      <Feather name="camera" size={20} color={COLORS.dark} />
                     </View>
                     <ProfileImage
                       uri={profileImage}
@@ -154,7 +153,7 @@ const ProfileFormView = (props) => {
                     Nickname
                   </CustomText>
                   <FontAwesome5
-                    name='star-of-life'
+                    name="star-of-life"
                     size={10}
                     color={COLORS.main}
                     style={styles.required}
@@ -169,8 +168,8 @@ const ProfileFormView = (props) => {
                   fontSize={16}
                   height={40}
                   wrapperStyle={styles.input}
-                  placeholder='닉네임을 입력해 주세요.'
-                  keyboardType='default'
+                  placeholder="닉네임을 입력해 주세요."
+                  keyboardType="default"
                   outline={true}
                 />
               </View>
@@ -180,7 +179,7 @@ const ProfileFormView = (props) => {
                     Gender
                   </CustomText>
                   <FontAwesome5
-                    name='star-of-life'
+                    name="star-of-life"
                     size={10}
                     color={COLORS.main}
                     style={styles.required}
@@ -205,35 +204,20 @@ const ProfileFormView = (props) => {
                     BirthDate
                   </CustomText>
                   <FontAwesome5
-                    name='star-of-life'
+                    name="star-of-life"
                     size={10}
                     color={COLORS.main}
                     style={styles.required}
                   />
                 </View>
-                <Pressable
-                  onPress={() => {
-                    setDatePickerOpen(true);
-                  }}
-                  style={{
-                    padding: 10,
-                  }}
-                >
-                  <CustomText fontSize={16}>
-                    {moment(profile.birthDate).format('YYYY.MM.DD')}
-                  </CustomText>
-                </Pressable>
-                <DatePicker
-                  modal
-                  mode={'date'}
-                  open={datePickerOpen}
-                  date={profile.birthDate}
-                  onConfirm={(date) => {
-                    setDatePickerOpen(false);
+                <CustomDateTimePicker
+                  value={profile.birthDate}
+                  onChange={(date) => {
                     serProfile({ ...profile, birthDate: date });
                   }}
-                  onCancel={() => {
-                    setDatePickerOpen(false);
+                  maxDate={new Date()}
+                  style={{
+                    padding: 10,
                   }}
                 />
               </View>
@@ -258,8 +242,8 @@ const ProfileFormView = (props) => {
                   multiline={true}
                   fontSize={16}
                   wrapperStyle={styles.input}
-                  placeholder='자기소개를 해주세요.'
-                  keyboardType='default'
+                  placeholder="자기소개를 해주세요."
+                  keyboardType="default"
                   outline={true}
                   height={100}
                 />
@@ -273,7 +257,7 @@ const ProfileFormView = (props) => {
         bgColor={COLORS.dark}
         bgColorPress={COLORS.darkDeep}
         onPress={saveProfileInfo}
-        text='등록하기'
+        text="등록하기"
         style={styles.submitTheme}
         height={60}
       />

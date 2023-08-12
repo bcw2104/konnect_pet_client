@@ -50,7 +50,7 @@ const Profile = () => {
           hitSlop={5}
           onPress={editProfile}
         >
-          <AntDesign name="edit" size={20} color="black" />
+          <AntDesign name="edit" size={20} color={COLORS.dark} />
         </Pressable>
       </View>
       <View style={{ marginTop: 7 }}>

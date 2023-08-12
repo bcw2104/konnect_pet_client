@@ -13,11 +13,9 @@ import Container from '../../components/layouts/Container';
 import { FONT_WEIGHT } from '../../commons/constants';
 import CustomButton from '../../components/elements/CustomButton';
 import CustomInput from '../../components/elements/CustomInput';
-import { FontAwesome5 } from '@expo/vector-icons';
-import DatePicker from 'react-native-date-picker';
+import { FontAwesome5, Feather } from '@expo/vector-icons';
 import moment from 'moment';
 import CustomRadio from '../../components/elements/CustomRadio';
-import { Feather } from '@expo/vector-icons';
 
 import ImageUploader from '../../components/modules/ImageUploader';
 import { utils } from '../../utils/Utils';
@@ -27,6 +25,7 @@ import { Navigator } from '../../navigations/Navigator';
 import { observer } from 'mobx-react-lite';
 import PetImage from '../../components/modules/PetImage';
 import { COLORS } from '../../commons/colors';
+import CustomDateTimePicker from '../../components/elements/CustomDateTimePicker';
 
 const WEIGHT_REGEX = /^([1-9]{0,2}\d{0,1}|0{1})(\.{1}\d{0,2})?$/;
 
@@ -35,7 +34,6 @@ const PetAddFormView = (props) => {
   const { userStore, modalStore, systemStore } = useStores();
   const imageUploaderRef = useRef();
   const isImageChanged = useRef(false);
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [petImage, setPetImage] = useState(null);
   const [petInfo, setPetInfo] = useState({
     petId: null,
@@ -169,12 +167,9 @@ const PetAddFormView = (props) => {
                     }}
                   >
                     <View style={styles.upload}>
-                      <Feather name="camera" size={20} color="black" />
+                      <Feather name="camera" size={20} color={COLORS.dark} />
                     </View>
-                    <PetImage
-                      uri={petImage}
-                      style={styles.petImg}
-                    />
+                    <PetImage uri={petImage} style={styles.petImg} />
                   </Pressable>
                 </ImageUploader>
               </View>
@@ -295,29 +290,14 @@ const PetAddFormView = (props) => {
                     style={styles.required}
                   />
                 </View>
-                <Pressable
-                  onPress={() => {
-                    setDatePickerOpen(true);
-                  }}
-                  style={{
-                    padding: 10,
-                  }}
-                >
-                  <CustomText fontSize={16}>
-                    {moment(petInfo.birthDate).format('YYYY.MM.DD')}
-                  </CustomText>
-                </Pressable>
-                <DatePicker
-                  modal
-                  mode={'date'}
-                  open={datePickerOpen}
-                  date={petInfo.birthDate}
-                  onConfirm={(date) => {
-                    setDatePickerOpen(false);
+                <CustomDateTimePicker
+                  value={petInfo.birthDate}
+                  onChange={(date) => {
                     setPetInfo({ ...petInfo, birthDate: date });
                   }}
-                  onCancel={() => {
-                    setDatePickerOpen(false);
+                  maxDate={new Date()}
+                  style={{
+                    padding: 10,
                   }}
                 />
               </View>

@@ -1,20 +1,24 @@
-import { Dimensions, Modal, StyleSheet, View } from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useStores } from '../../contexts/StoreContext';
 import Container from '../../components/layouts/Container';
 import GoogleMap from '../../components/map/GoogleMap';
 import CustomButton from '../../components/elements/CustomButton';
-import {COLORS} from '../../commons/colors';
-import { MaterialIcons } from '@expo/vector-icons';
+import { COLORS } from '../../commons/colors';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import { serviceApis } from '../../utils/ServiceApis';
 import { Navigator } from '../../navigations/Navigator';
 import { asyncStorage } from '../../storage/Storage';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Marker } from 'react-native-maps';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { Ionicons } from '@expo/vector-icons';
 import { utils } from '../../utils/Utils';
 import { useIsFocused } from '@react-navigation/native';
 import FootprintDetailModal from '../../components/walking/FootprintDetailModal';
@@ -22,6 +26,11 @@ import WalkingSettingModal from '../../components/walking/WalkingSettingModal';
 import FootprintMarker from '../../components/walking/FootprintMarker';
 import { observer } from 'mobx-react-lite';
 import { FONT_WEIGHT } from '../../commons/constants';
+import CustomText from '../../components/elements/CustomText';
+import WalkingDashboard from '../../components/walking/WalkingDashboard';
+import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
+import moment from 'moment';
+import WalkingHistoryItem from '../../components/walking/WalkingHistoryItem';
 
 const window = Dimensions.get('window');
 const ASPECT_RATIO = window.width / window.height;
@@ -30,22 +39,17 @@ const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const WalkingHomeView = (props) => {
-  const { route } = props;
-  const mapRef = useRef(null);
-  const footprintDetailModalRef = useRef(null);
-  const settingModalRef = useRef(null);
-  const aroundStandardCoords = useRef(null);
   const isFocused = useIsFocused();
-
-  const [selectedFootprintId, setSelectedFootprintId] = useState(null);
-  const [permission, setPermission] = useState(false);
-  const [region, setRegion] = useState(null);
   const { modalStore, systemStore, userStore } = useStores();
-  const [footprints, setFootprints] = useState([]);
 
-  const [setting, setSetting] = useState({
-    footprintYn: true,
-  });
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: 'first', title: 'Walking' },
+    { key: 'second', title: 'History' },
+  ]);
+
+  const FirstRoute = useCallback(() => <WalkingStartView />, []);
+  const SecondRoute = useCallback(() => <WalkingHistoryView />, []);
 
   useEffect(() => {
     if (isFocused && !userStore.profile) {
@@ -59,6 +63,58 @@ const WalkingHomeView = (props) => {
       return;
     }
   }, [isFocused]);
+
+  return (
+    <Container paddingHorizontal={0} bgColor={COLORS.light}>
+      <TabView
+        lazy
+        renderTabBar={(props) => (
+          <TabBar
+            {...props}
+            style={{ backgroundColor: '#fff', paddingVertical: 5 }}
+            renderLabel={({ route, focused, color }) => (
+              <CustomText
+                fontWeight={FONT_WEIGHT.BOLD}
+                fontSize={16}
+                fontColor={focused ? COLORS.dark : COLORS.gray}
+              >
+                {route.title}
+              </CustomText>
+            )}
+            indicatorStyle={{
+              height: 3,
+              backgroundColor: COLORS.main,
+            }}
+          />
+        )}
+        navigationState={{ index, routes }}
+        renderScene={SceneMap({
+          first: FirstRoute,
+          second: SecondRoute,
+        })}
+        onIndexChange={setIndex}
+      />
+    </Container>
+  );
+};
+
+export default observer(WalkingHomeView);
+
+const WalkingStartView = () => {
+  const mapRef = useRef(null);
+  const footprintDetailModalRef = useRef(null);
+  const settingModalRef = useRef(null);
+  const aroundStandardCoords = useRef(null);
+  const { modalStore, systemStore, userStore } = useStores();
+
+  const [selectedFootprintId, setSelectedFootprintId] = useState(null);
+  const [permission, setPermission] = useState(false);
+  const [region, setRegion] = useState(null);
+  const [footprints, setFootprints] = useState([]);
+
+  const [setting, setSetting] = useState({
+    footprintYn: true,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -268,12 +324,12 @@ const WalkingHomeView = (props) => {
   };
 
   return (
-    <Container>
+    <>
       <View style={styles.section1}>
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          render={<Ionicons name="options" size={30} color="black" />}
+          render={<Ionicons name="options" size={30} color={COLORS.dark} />}
           fontColor={COLORS.white}
           onPress={handleOpenSetting}
           width={60}
@@ -305,7 +361,9 @@ const WalkingHomeView = (props) => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          render={<MaterialIcons name="my-location" size={30} color="black" />}
+          render={
+            <MaterialIcons name="my-location" size={30} color={COLORS.dark} />
+          }
           fontColor={COLORS.white}
           onPress={getMyLocation}
           width={60}
@@ -315,16 +373,11 @@ const WalkingHomeView = (props) => {
             borderRadius: 30,
           }}
         />
-        <CustomButton
-          bgColor={COLORS.main}
-          bgColorPress={COLORS.mainDeep}
-          text="산책 시작"
-          fontWeight={FONT_WEIGHT.BOLD}
-          fontColor={COLORS.white}
-          fontSize={18}
+        <WalkingDashboard
+          seconds={0}
+          meters={0}
           onPress={startWalking}
-          height={50}
-          wrapperStyle={styles.start}
+          type={'start'}
         />
       </View>
       <FootprintDetailModal
@@ -336,11 +389,187 @@ const WalkingHomeView = (props) => {
         setting={setting}
         handleChangeSetting={handleChangeSetting}
       />
-    </Container>
+    </>
   );
 };
 
-export default observer(WalkingHomeView);
+const WalkingHistoryView = () => {
+  const [summary, setSummary] = useState({
+    totalCount: 0,
+    totalDistance: 0,
+    totalPoint: 0,
+    totalHours: 0,
+    weekAvg: 0,
+  });
+  const { userStore } = useStores();
+  const [history, setHistory] = useState(null);
+  const [startDate, setStartDate] = useState(moment().startOf('month'));
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await serviceApis.getWalkingSummary();
+        setSummary(response.result);
+      } catch (err) {}
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    getHistory();
+  }, [startDate]);
+
+  const getHistory = async () => {
+    try {
+      const response = await serviceApis.getWalkingHistory(
+        startDate.format('YYYY-MM-DDTHH:mm:ss'),
+        startDate.clone().endOf('month').format('YYYY-MM-DDTHH:mm:ss')
+      );
+      setHistory(response.result);
+    } catch (err) {}
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getHistory();
+    setRefreshing(false);
+  };
+
+  const goToReport = useCallback((params) => {
+    Navigator.navigate(params, 'walking_nav', 'walking_result');
+  }, []);
+
+  return (
+    <View style={styles.section1}>
+      <View style={styles.summaryWrap}>
+        <CustomText
+          fontWeight={FONT_WEIGHT.BOLD}
+          fontSize={24}
+          style={{ marginBottom: 20 }}
+        >
+          Walking Summary
+        </CustomText>
+
+        <View style={styles.summary}>
+          <View style={styles.summaryMain}>
+            <View style={styles.summaryMainCircle}>
+              <CustomText
+                fontWeight={FONT_WEIGHT.BOLD}
+                fontColor={COLORS.main}
+                fontSize={16}
+                style={{ position: 'absolute', top: 15 }}
+              >
+                Total
+              </CustomText>
+              <CustomText
+                fontWeight={FONT_WEIGHT.BOLD}
+                fontColor={COLORS.main}
+                fontSize={20}
+              >
+                {utils.toFormatNumber(summary.totalPoint)}P
+              </CustomText>
+            </View>
+          </View>
+          <View style={styles.summarySub}>
+            <View style={styles.summaryItem}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                Average per week
+              </CustomText>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                {utils.toFormatNumber(summary.weekAvg)}
+              </CustomText>
+            </View>
+            <View style={styles.summaryItem}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                Total number of times
+              </CustomText>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                {utils.toFormatNumber(summary.totalCount)}
+              </CustomText>
+            </View>
+            <View style={styles.summaryItem}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                Total distance (km)
+              </CustomText>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                {utils.toFormatNumber(summary.totalDistance)}
+              </CustomText>
+            </View>
+            <View style={styles.summaryItem}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                Total time (hours)
+              </CustomText>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                {utils.toFormatNumber(summary.totalHours)}
+              </CustomText>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View style={styles.monthPicker}>
+        <Pressable
+          onPress={() => {
+            const min = moment(userStore.createdDate).format('YYYYMM');
+            const newDate = startDate.clone().subtract(1, 'M');
+            if (min <= newDate.format('YYYYMM')) {
+              setStartDate(newDate);
+            }
+          }}
+        >
+          <Ionicons name="chevron-back" size={28} color={COLORS.white} />
+        </Pressable>
+        <CustomText
+          fontWeight={FONT_WEIGHT.BOLD}
+          fontSize={17}
+          fontColor={COLORS.white}
+        >
+          {startDate.format('YYYY.MM')}
+        </CustomText>
+        <Pressable
+          onPress={() => {
+            const max = moment().format('YYYYMM');
+            const newDate = startDate.clone().add(1, 'M');
+            if (max >= newDate.format('YYYYMM')) {
+              setStartDate(newDate);
+            }
+          }}
+        >
+          <Ionicons name="chevron-forward" size={28} color={COLORS.white} />
+        </Pressable>
+      </View>
+      <View style={styles.historyWrap}>
+        <ScrollView
+          style={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {!!history &&
+            (history.length > 0 ? (
+              <>
+                {history?.map((item) => (
+                  <WalkingHistoryItem
+                    key={item.id}
+                    item={item}
+                    onPress={() => {
+                      goToReport({ walkingId: item.id });
+                    }}
+                  />
+                ))}
+              </>
+            ) : (
+              <View style={styles.notExistWrap}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                  History does not exist.
+                </CustomText>
+              </View>
+            ))}
+        </ScrollView>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   section1: {
@@ -350,11 +579,11 @@ const styles = StyleSheet.create({
   },
   mapSetting: {
     alignSelf: 'flex-end',
-    top: 90,
+    top: 150,
+    marginRight: 20,
     zIndex: 10,
     elevation: 10,
   },
-
   section2: {
     width: window.width,
     position: 'absolute',
@@ -367,5 +596,63 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginBottom: 30,
   },
-  start: {},
+  dashboard: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    bordeRadius: 10,
+  },
+
+  summaryWrap: {
+    width: '100%',
+    backgroundColor: COLORS.white,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  summary: {
+    flexDirection: 'row',
+  },
+  summaryMain: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 30,
+  },
+  summaryMainCircle: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderColor: COLORS.main,
+    borderWidth: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  summarySub: { flex: 1 },
+  summaryItem: {
+    flex: 1,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  historyWrap: {
+    width: '100%',
+    flex: 1,
+    backgroundColor: COLORS.light,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+
+  monthPicker: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    backgroundColor: COLORS.main,
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
 });

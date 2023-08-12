@@ -4,6 +4,7 @@ import CustomText from '../elements/CustomText';
 import moment from 'moment';
 import { FONT_WEIGHT } from '../../commons/constants';
 import { COLORS } from '../../commons/colors';
+import { Foundation } from '@expo/vector-icons';
 
 const NotificationItem = ({ item }) => {
   const goToLocation = (item) => {

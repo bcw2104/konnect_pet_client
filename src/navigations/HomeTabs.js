@@ -26,8 +26,7 @@ const HomeTabs = () => {
           position: 'relative',
           top: 0,
           fontSize: 12,
-          fontFamily: 'Roboto',
-          fontWeight: 'bold',
+          fontFamily: 'Maple-Bold',
           paddingBottom: 5,
         },
         tabBarIconStyle: {

@@ -4,8 +4,7 @@ import { useStores } from '../../contexts/StoreContext';
 import Container from '../../components/layouts/Container';
 import GoogleMap from '../../components/map/GoogleMap';
 import CustomButton from '../../components/elements/CustomButton';
-import {COLORS} from '../../commons/colors';
-import { MaterialIcons } from '@expo/vector-icons';
+import { COLORS } from '../../commons/colors';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import CustomText from '../../components/elements/CustomText';
@@ -22,13 +21,13 @@ import { serviceApis } from '../../utils/ServiceApis';
 import BackgroundService from 'react-native-background-actions';
 import { utils } from '../../utils/Utils';
 import { Marker, Polyline } from 'react-native-maps';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import moment from 'moment';
 import FootprintDetailModal from '../../components/walking/FootprintDetailModal';
 import WalkingSettingModal from '../../components/walking/WalkingSettingModal';
 import FootprintMarker from '../../components/walking/FootprintMarker';
+import WalkingDashboard from '../../components/walking/WalkingDashboard';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -42,7 +41,6 @@ const WalkingView = (props) => {
   const mapRef = useRef(null);
   const settingModalRef = useRef(null);
   const { route } = props;
-  const appState = useRef(AppState.currentState);
   const rewards = useRef({});
 
   const policies = useRef({});
@@ -121,8 +119,6 @@ const WalkingView = (props) => {
     return async () => {
       // subscription.remove();
       await BackgroundService.stop();
-
-      console.log('all tasks unregistered');
     };
   }, []);
 
@@ -234,12 +230,12 @@ const WalkingView = (props) => {
   const handleOpenSetting = () => {
     settingModalRef.current.openModal(true);
   };
-  
+
   const handleOpenFootprintDetail = useCallback((footprintId) => {
     setSelectedFootprintId(footprintId);
     footprintDetailModalRef.current.openModal(true);
   }, []);
-  
+
   const updateLocation = useCallback(async () => {
     try {
       let { coords } = await Location.getCurrentPositionAsync({
@@ -464,7 +460,10 @@ const WalkingView = (props) => {
           if (response?.rsp_code === '1000') {
             await asyncStorage.removeItem('walking_temp_data');
 
-            goToNextStep({ walkingId: route.params?.walkingId });
+            goToNextStep({
+              walkingId: route.params?.walkingId,
+              backAction: "home",
+            });
           }
         } catch (error) {
           Toast.show({
@@ -505,7 +504,7 @@ const WalkingView = (props) => {
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            render={<Ionicons name="options" size={30} color="black" />}
+            render={<Ionicons name="options" size={30} color={COLORS.dark} />}
             fontColor={COLORS.white}
             onPress={handleOpenSetting}
             width={60}
@@ -534,7 +533,7 @@ const WalkingView = (props) => {
               )}
               {myFootprints.map((coords, index) => (
                 <Marker key={index} coordinate={coords}>
-                  <FontAwesome5 name="stamp" size={24} color="black" />
+                  <FontAwesome5 name="stamp" size={24} color={COLORS.dark} />
                 </Marker>
               ))}
               <Polyline
@@ -550,7 +549,7 @@ const WalkingView = (props) => {
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
             render={
-              <MaterialIcons name="my-location" size={30} color="black" />
+              <MaterialIcons name="my-location" size={30} color={COLORS.dark} />
             }
             fontColor={COLORS.white}
             onPress={getMyLocation}
@@ -561,46 +560,12 @@ const WalkingView = (props) => {
               borderRadius: 30,
             }}
           />
-          <View style={styles.dashboard}>
-            <View style={{ alignItems: 'center' }}>
-              <Timer
-                remain={seconds}
-                fontWeight={FONT_WEIGHT.BOLD}
-                fontSize={16}
-              />
-              <CustomText
-                fontSize={15}
-                fontColor={COLORS.grayDeep}
-                style={{ marginTop: 5 }}
-              >
-                시간
-              </CustomText>
-            </View>
-            <CustomButton
-              bgColor={COLORS.main}
-              bgColorPress={COLORS.mainDeep}
-              render={<MaterialIcons name="pause" size={30} color="black" />}
-              fontColor={COLORS.white}
-              onPress={stopWalking}
-              width={60}
-              height={60}
-              style={{
-                borderRadius: 30,
-              }}
-            />
-            <View style={{ alignItems: 'center' }}>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD}>
-                {meters.toLocaleString('ko-KR')} m
-              </CustomText>
-              <CustomText
-                fontSize={15}
-                fontColor={COLORS.grayDeep}
-                style={{ marginTop: 5 }}
-              >
-                거리
-              </CustomText>
-            </View>
-          </View>
+          <WalkingDashboard
+            seconds={seconds}
+            meters={meters}
+            onPress={stopWalking}
+            type={'stop'}
+          />
         </View>
         <FootprintDetailModal
           modalRef={footprintDetailModalRef}
@@ -655,15 +620,5 @@ const styles = StyleSheet.create({
   location: {
     alignSelf: 'flex-end',
     marginBottom: 30,
-  },
-  dashboard: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-    borderRadius: 10,
   },
 });

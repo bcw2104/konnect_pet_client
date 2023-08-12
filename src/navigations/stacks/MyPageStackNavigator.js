@@ -11,7 +11,9 @@ import PetAddFormView from '../../screens/user/PetAddFormView';
 import ProfileFormView from '../../screens/user/ProfileFormView';
 import MyPointHistoryView from '../../screens/mypage/MyPointHistoryView';
 import MyNotificationView from '../../screens/mypage/MyNotificationView';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
+import CustomText from '../../components/elements/CustomText';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const MyPageStack = createNativeStackNavigator();
 
@@ -32,66 +34,75 @@ const MyPageStackNavigator = ({ navigation, route }) => {
     <MyPageStack.Navigator>
       <MyPageStack.Group
         screenOptions={(props) => ({
-          headerTitle: '',
+          headerTitle: ({ children }) => (
+            <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+              {children}
+            </CustomText>
+          ),
           headerTitleAlign: 'center',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={props.navigation.goBack}>
-              <Ionicons name='arrow-back-outline' size={24} color={COLORS.dark} />
+              <Ionicons
+                name="arrow-back-outline"
+                size={24}
+                color={COLORS.dark}
+              />
             </Pressable>
           ),
           animation: 'slide_from_bottom',
         })}
       >
         <MyPageStack.Screen
-          name='setting'
+          options={{
+            headerTitle: '',
+          }}
+          name="setting"
           component={SettingView}
         ></MyPageStack.Screen>
 
         <MyPageStack.Group
           screenOptions={{
+            headerTitle: '',
             animation: 'slide_from_right',
           }}
         >
           <MyPageStack.Screen
-            name='terms_list'
+            name="terms_list"
             component={TermsListView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
-            name='terms'
+            name="terms"
             component={TermsView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
-            name='leave_confirm'
+            name="leave_confirm"
             component={LeaveConfirmView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
-            name='leave'
+            name="leave"
             component={LeaveView}
           ></MyPageStack.Screen>
         </MyPageStack.Group>
 
         <MyPageStack.Screen
           options={{ headerTitle: 'My Pet' }}
-          name='pet_add_form'
+          name="pet_add_form"
           component={PetAddFormView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
           options={{ headerTitle: 'My Profile' }}
-          name='profile_form'
+          name="profile_form"
           component={ProfileFormView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
           options={{ headerTitle: 'Point History' }}
-          name='point_history'
+          name="point_history"
           component={MyPointHistoryView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
           options={{ headerTitle: 'Notification' }}
-          name='notification_history'
+          name="notification_history"
           component={MyNotificationView}
         ></MyPageStack.Screen>
       </MyPageStack.Group>

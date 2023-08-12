@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import React, { memo } from 'react';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Marker } from 'react-native-maps';
+import FootprintImage from '../modules/FootprintImage';
 
 const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
   return (
@@ -19,7 +19,7 @@ const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
               handleOpenFootprintDetail(ele.id);
             }}
           >
-            <MaterialCommunityIcons name="dog" size={24} color="blue" />
+            <FootprintImage size={24} type="mine" />
           </Marker>
         ))}
       {Object.values(footprints)
@@ -35,7 +35,7 @@ const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
               handleOpenFootprintDetail(ele.id);
             }}
           >
-            <MaterialCommunityIcons name="dog" size={24} color="black" />
+            <FootprintImage size={24} type="others" />
           </Marker>
         ))}
       {Object.values(footprints)
@@ -51,7 +51,7 @@ const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
               handleOpenFootprintDetail(ele.id);
             }}
           >
-            <MaterialCommunityIcons name="dog" size={24} color="red" />
+            <FootprintImage size={24} type="catched" />
           </Marker>
         ))}
     </>

@@ -8,6 +8,7 @@ import { serviceApis } from './../../utils/ServiceApis';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import { FONT_WEIGHT } from '../../commons/constants';
+import { COLORS } from '../../commons/colors';
 
 const TermsListView = () => {
   const { systemStore } = useStores();
@@ -57,9 +58,9 @@ const TermsListView = () => {
                   {ele.termsGroupName}
                 </CustomText>
                 <Ionicons
-                  name="chevron-forward-outline"
+                  name="chevron-forward"
                   size={28}
-                  color="black"
+                  color={COLORS.dark}
                 />
               </Pressable>
             ))}
