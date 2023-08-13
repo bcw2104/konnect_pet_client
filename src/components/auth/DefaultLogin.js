@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import CustomButton from '../elements/CustomButton';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import { useStores } from '../../contexts/StoreContext';
 import CustomInput from '../elements/CustomInput';
 import { asyncStorage } from '../../storage/Storage';
@@ -11,6 +11,7 @@ import { Navigator } from '../../navigations/Navigator';
 import { KeyboardAvoidingView } from 'react-native';
 import { Platform } from 'react-native';
 import { serviceApis } from '../../utils/ServiceApis';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const DefaultLogin = () => {
   const { userStore, systemStore } = useStores();
@@ -66,10 +67,10 @@ const DefaultLogin = () => {
         maxLength={50}
         onValueChange={setEmail}
         wrapperStyle={styles.input}
-        placeholder='Email'
-        keyboardType='email-address'
+        placeholder="Email"
+        keyboardType="email-address"
         errorHandler={emailError}
-        errorMsg='이메일을 입력해주세요.'
+        errorMsg="이메일을 입력해주세요."
       />
       <CustomInput
         secureTextEntry={true}
@@ -77,9 +78,9 @@ const DefaultLogin = () => {
         maxLength={50}
         onValueChange={setPassword}
         wrapperStyle={styles.input}
-        placeholder='Password'
+        placeholder="Password"
         errorHandler={passwordError}
-        errorMsg='비밀번호를 입력해주세요.'
+        errorMsg="비밀번호를 입력해주세요."
       />
       {loginFailed && (
         <CustomText
@@ -111,10 +112,11 @@ const DefaultLogin = () => {
         </Pressable>
       </View>
       <CustomButton
-        bgColor={COLORS.dark}
-        bgColorPress={COLORS.darkDeep}
-        text='Sign In'
+        fontWeight={FONT_WEIGHT.BOLD}
         fontColor={COLORS.white}
+        bgColor={COLORS.main}
+        bgColorPress={COLORS.mainDeep}
+        text="Sign In"
         onPress={loginSubmit}
         height={50}
         wrapperStyle={styles.submit}

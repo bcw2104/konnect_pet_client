@@ -7,8 +7,9 @@ import CustomInput from '../elements/CustomInput';
 import Timer from '../elements/Timer';
 import { Platform } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native';
-import {REGEX} from '../../commons/regex';
-import {COLORS} from '../../commons/colors';
+import { REGEX } from '../../commons/regex';
+import { COLORS } from '../../commons/colors';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const VERIFY_TIMEOUT = 600;
 
@@ -123,15 +124,16 @@ const EmailVerify = ({
           editable={!fixedEmail}
           maxLength={50}
           onValueChange={handleEmailChange}
-          keyboardType='email-address'
-          placeholder='Email address'
+          keyboardType="email-address"
+          placeholder="Email address"
           errorHandler={emailError}
-          errorMsg='Invalid email address.'
+          errorMsg="Invalid email address."
         />
         <CustomButton
+          fontWeight={FONT_WEIGHT.BOLD}
           fontColor={COLORS.white}
-          bgColor={COLORS.dark}
-          bgColorPress={COLORS.darkDeep}
+          bgColor={COLORS.main}
+          bgColorPress={COLORS.mainDeep}
           wrapperStyle={styles.emailVerifyButton}
           width={110}
           fontSize={15}
@@ -154,22 +156,28 @@ const EmailVerify = ({
             value={verifyCode}
             onValueChange={setVerifyCode}
             maxLength={10}
-            keyboardType='default'
+            keyboardType="default"
             wrapperStyle={styles.emailVerifyInput}
-            placeholder='Verify code'
+            placeholder="Verify code"
             errorHandler={verifiyError}
-            errorMsg='Incorrect verify code.'
+            errorMsg="Incorrect verify code."
           />
-          <Timer style={styles.verifyTimer} remain={remain} fontColor={COLORS.danger} fontSize={16}/>
+          <Timer
+            style={styles.verifyTimer}
+            remain={remain}
+            fontColor={COLORS.danger}
+            fontSize={16}
+          />
           <CustomButton
+            fontWeight={FONT_WEIGHT.BOLD}
             fontColor={COLORS.white}
-            bgColor={COLORS.dark}
-            bgColorPress={COLORS.darkDeep}
+            bgColor={COLORS.main}
+            bgColorPress={COLORS.mainDeep}
             wrapperStyle={styles.verifySubmitButton}
             width={110}
             fontSize={15}
             onPress={submitVerifyCode}
-            text='인증하기'
+            text="인증하기"
           />
         </View>
       )}
@@ -197,7 +205,7 @@ const styles = StyleSheet.create({
   },
   verifyTimer: {
     position: 'absolute',
-    top: 11,
+    top: 14,
     right: 125,
   },
   verifySubmitButton: {

@@ -9,11 +9,12 @@ import { useState } from 'react';
 import useInterval from './../../hooks/useInertval';
 import { KeyboardAvoidingView } from 'react-native';
 import { Platform } from 'react-native';
-import {REGEX} from '../../commons/regex';
+import { REGEX } from '../../commons/regex';
 import { serviceApis } from './../../utils/ServiceApis';
 import { useEffect } from 'react';
 import { Navigator } from '../../navigations/Navigator';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const VERIFY_TIMEOUT = 180;
 
@@ -175,9 +176,10 @@ const SmsVerify = ({
           errorMsg="Invalid phone number."
         />
         <CustomButton
+          fontWeight={FONT_WEIGHT.BOLD}
           fontColor={COLORS.white}
-          bgColor={COLORS.dark}
-          bgColorPress={COLORS.darkDeep}
+          bgColor={COLORS.main}
+          bgColorPress={COLORS.mainDeep}
           wrapperStyle={styles.phoneVerifyButton}
           width={110}
           fontSize={15}
@@ -213,9 +215,10 @@ const SmsVerify = ({
             fontSize={16}
           />
           <CustomButton
+            fontWeight={FONT_WEIGHT.BOLD}
             fontColor={COLORS.white}
-            bgColor={COLORS.dark}
-            bgColorPress={COLORS.darkDeep}
+            bgColor={COLORS.main}
+            bgColorPress={COLORS.mainDeep}
             wrapperStyle={styles.verifySubmitButton}
             width={110}
             fontSize={15}
@@ -249,7 +252,7 @@ const styles = StyleSheet.create({
   },
   verifyTimer: {
     position: 'absolute',
-    top: 11,
+    top: 14,
     right: 125,
   },
   verifySubmitButton: {

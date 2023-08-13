@@ -3,7 +3,7 @@ import React from 'react';
 import Container from '../../components/layouts/Container';
 import CustomButton from '../../components/elements/CustomButton';
 import { Navigator } from '../../navigations/Navigator';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
 
@@ -32,15 +32,16 @@ const LeaveConfirmView = () => {
           fontColor={COLORS.dark}
           bgColor={COLORS.light}
           bgColorPress={COLORS.lightDeep}
-          text='취소할게요'
+          text="취소할게요"
           wrapperStyle={{ flex: 1, marginRight: 10 }}
           onPress={cancel}
         />
         <CustomButton
+          fontWeight={FONT_WEIGHT.BOLD}
           fontColor={COLORS.white}
-          bgColor={COLORS.dark}
-          bgColorPress={COLORS.darkDeep}
-          text='그래도 탈퇴할래요'
+          bgColor={COLORS.main}
+          bgColorPress={COLORS.mainDeep}
+          text="그래도 탈퇴할래요"
           wrapperStyle={{ flex: 1 }}
           onPress={confirm}
         />
