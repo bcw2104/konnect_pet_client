@@ -244,7 +244,7 @@ const WalkingStartView = () => {
     setPermission(false);
     modalStore.openTwoButtonModal(
       '정상적인 산책 기록을 위해 위치 권한을 허용해주세요.',
-      '취소',
+      'Cancel',
       () => {},
       '승인하러 가기',
       () => {
@@ -280,10 +280,10 @@ const WalkingStartView = () => {
   const startWalking = async () => {
     if (userStore.pets.length == 0) {
       modalStore.openTwoButtonModal(
-        '산책 전 반려동물을 등록해주세요.',
-        '취소',
+        'Please register your pet before taking a walk.',
+        'Cancel',
         null,
-        '추가하기',
+        'Add',
         () => {
           Navigator.navigate({}, 'mypage_nav', 'pet_add_form');
         }
@@ -332,11 +332,11 @@ const WalkingStartView = () => {
           render={<Ionicons name="options" size={30} color={COLORS.dark} />}
           fontColor={COLORS.white}
           onPress={handleOpenSetting}
-          width={60}
-          height={60}
+          width={50}
+          height={50}
           wrapperStyle={styles.mapSetting}
           style={{
-            borderRadius: 30,
+            borderRadius: 25,
           }}
         />
         <GoogleMap
@@ -344,7 +344,8 @@ const WalkingStartView = () => {
           defaultRegion={region}
           mapRef={mapRef}
           width={window.width}
-          height={window.height}
+          style={{ position: 'absolute', top: 0 }}
+          height={'100%'}
           longitudeDelta={LONGITUDE_DELTA}
           latitudeDelta={LATITUDE_DELTA}
         >
@@ -366,11 +367,11 @@ const WalkingStartView = () => {
           }
           fontColor={COLORS.white}
           onPress={getMyLocation}
-          width={60}
-          height={60}
+          width={50}
+          height={50}
           wrapperStyle={styles.location}
           style={{
-            borderRadius: 30,
+            borderRadius: 25,
           }}
         />
         <WalkingDashboard
@@ -457,8 +458,7 @@ const WalkingHistoryView = () => {
               <CustomText
                 fontWeight={FONT_WEIGHT.BOLD}
                 fontColor={COLORS.main}
-                fontSize={16}
-                style={{ position: 'absolute', top: 15 }}
+                fontSize={14}
               >
                 Total
               </CustomText>
@@ -473,34 +473,34 @@ const WalkingHistoryView = () => {
           </View>
           <View style={styles.summarySub}>
             <View style={styles.summaryItem}>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                 Average per week
               </CustomText>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                 {utils.toFormatNumber(summary.weekAvg)}
               </CustomText>
             </View>
             <View style={styles.summaryItem}>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                 Total number of times
               </CustomText>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                 {utils.toFormatNumber(summary.totalCount)}
               </CustomText>
             </View>
             <View style={styles.summaryItem}>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                 Total distance (km)
               </CustomText>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                 {utils.toFormatNumber(summary.totalDistance)}
               </CustomText>
             </View>
             <View style={styles.summaryItem}>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                 Total time (hours)
               </CustomText>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                 {utils.toFormatNumber(summary.totalHours)}
               </CustomText>
             </View>
@@ -578,9 +578,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mapSetting: {
-    alignSelf: 'flex-end',
-    top: 150,
-    marginRight: 20,
+    position: 'absolute',
+    top: 30,
+    right: 20,
     zIndex: 10,
     elevation: 10,
   },
@@ -654,5 +654,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 20,
+  },
+  notExistWrap: {
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

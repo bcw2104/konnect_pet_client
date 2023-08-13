@@ -21,7 +21,7 @@ const ImageUploader = ({ onImageChange = () => {}, children }, ref) => {
     if (status != 'granted') {
       modalStore.openTwoButtonModal(
         '이미지 업로드를 위해서\n권한을 허용해주세요.',
-        '취소',
+        'Cancel',
         () => {},
         '승인하러 가기',
         () => {
@@ -46,7 +46,7 @@ const ImageUploader = ({ onImageChange = () => {}, children }, ref) => {
       }else{
         modalStore.openOneButtonModal(
           `Unsupported extension.\nOnly available (${IMAGE_EXT_TYPE.toString()})`,
-          '확인',
+          'Confirm',
           () => {}
         );
       }

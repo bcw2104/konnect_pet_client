@@ -27,14 +27,13 @@ export const FONT_FAMILY = {
   MAPLE: 'Maple',
 };
 
-export const NUMBER_TO_LANG = [
-  'ZERO',
-  '첫 번째',
-  '두 번째',
-  '세 번째',
-  '네 번째',
-  '다섯 번째',
-];
+export const FOOTPRINT_TYPE = {
+  MINE: 'mine',
+  FRIENDS: 'friends',
+  OTHERS: 'others',
+  CATCHED: 'catched',
+  DISABLED: 'disabled',
+};
 
 export const DEEP_LINK_PREFIX = {
   DEFAULT: 'konnect://',

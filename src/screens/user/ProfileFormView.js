@@ -69,8 +69,8 @@ const ProfileFormView = (props) => {
 
       if (!valid) {
         modalStore.openOneButtonModal(
-          '필수 항목을 전부 채워주세요.',
-          '확인',
+          'Please fill in all the required items.',
+          'Confirm',
           () => {}
         );
         return;
@@ -103,7 +103,7 @@ const ProfileFormView = (props) => {
         userStore.setProfile(response.result);
         modalStore.openOneButtonModal(
           '프로필 등록이 완료되었습니다.',
-          '확인',
+          'Confirm',
           () => {
             Navigator.goBack();
           }
@@ -149,7 +149,7 @@ const ProfileFormView = (props) => {
 
               <View style={styles.inputWrap}>
                 <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
                     Nickname
                   </CustomText>
                   <FontAwesome5
@@ -164,18 +164,18 @@ const ProfileFormView = (props) => {
                   onValueChange={(value) => {
                     serProfile({ ...profile, nickname: value });
                   }}
-                  maxLength={30}
-                  fontSize={16}
+                  maxLength={15}
+                  fontSize={15}
                   height={40}
                   wrapperStyle={styles.input}
-                  placeholder="닉네임을 입력해 주세요."
+                  placeholder="Please enter your nickname."
                   keyboardType="default"
                   outline={true}
                 />
               </View>
               <View style={styles.inputWrap}>
                 <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
                     Gender
                   </CustomText>
                   <FontAwesome5
@@ -186,7 +186,7 @@ const ProfileFormView = (props) => {
                   />
                 </View>
                 <CustomRadio
-                  fontSize={16}
+                  fontSize={15}
                   height={40}
                   items={[
                     { label: 'Male', value: 'M' },
@@ -200,7 +200,7 @@ const ProfileFormView = (props) => {
               </View>
               <View style={styles.inputWrap}>
                 <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
                     BirthDate
                   </CustomText>
                   <FontAwesome5
@@ -228,7 +228,7 @@ const ProfileFormView = (props) => {
               >
                 <CustomText
                   fontWeight={FONT_WEIGHT.BOLD}
-                  fontSize={16}
+                  fontSize={15}
                   style={{ marginBottom: 20 }}
                 >
                   Comment
@@ -240,9 +240,9 @@ const ProfileFormView = (props) => {
                   }}
                   maxLength={150}
                   multiline={true}
-                  fontSize={16}
+                  fontSize={15}
                   wrapperStyle={styles.input}
-                  placeholder="자기소개를 해주세요."
+                  placeholder="Please introduce yourself."
                   keyboardType="default"
                   outline={true}
                   height={100}
@@ -253,11 +253,12 @@ const ProfileFormView = (props) => {
         </ScrollView>
       </Container>
       <CustomButton
+        fontWeight={FONT_WEIGHT.BOLD}
         fontColor={COLORS.white}
-        bgColor={COLORS.dark}
-        bgColorPress={COLORS.darkDeep}
+        bgColor={COLORS.main}
+        bgColorPress={COLORS.mainDeep}
         onPress={saveProfileInfo}
-        text="등록하기"
+        text="Save"
         style={styles.submitTheme}
         height={60}
       />

@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import CustomButton from '../../components/elements/CustomButton';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import { serviceApis } from '../../utils/ServiceApis';
 import CustomText from '../../components/elements/CustomText';
 import SmsVerify from '../../components/modules/SmsVerify';
@@ -35,7 +35,7 @@ const LeaveView = () => {
     <>
       <Container header={true}>
         <View style={styles.section1}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
             핸드폰 번호를 인증해주세요.
           </CustomText>
         </View>
@@ -62,10 +62,11 @@ const LeaveView = () => {
         </View>
       </Container>
       <CustomButton
+        fontWeight={FONT_WEIGHT.BOLD}
         fontColor={COLORS.white}
-        bgColor={COLORS.dark}
-        bgColorPress={COLORS.darkDeep}
-        text='인증완료'
+        bgColor={COLORS.main}
+        bgColorPress={COLORS.mainDeep}
+        text="Confirm"
         disabled={!verifyKey}
         onPress={submit}
         style={styles.submitTheme}

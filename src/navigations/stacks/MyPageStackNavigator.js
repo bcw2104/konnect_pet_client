@@ -86,22 +86,22 @@ const MyPageStackNavigator = ({ navigation, route }) => {
         </MyPageStack.Group>
 
         <MyPageStack.Screen
-          options={{ headerTitle: 'My Pet' }}
+          options={{ title:"My Pet" }}
           name="pet_add_form"
           component={PetAddFormView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          options={{ headerTitle: 'My Profile' }}
+          options={{ title: 'My Profile' }}
           name="profile_form"
           component={ProfileFormView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          options={{ headerTitle: 'Point History' }}
+          options={{ title: 'Point History' }}
           name="point_history"
           component={MyPointHistoryView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
-          options={{ headerTitle: 'Notification' }}
+          options={{ title: 'Notification' }}
           name="notification_history"
           component={MyNotificationView}
         ></MyPageStack.Screen>

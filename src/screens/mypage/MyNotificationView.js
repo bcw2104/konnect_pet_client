@@ -129,4 +129,9 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: COLORS.white,
   },
+  notExistWrap: {
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

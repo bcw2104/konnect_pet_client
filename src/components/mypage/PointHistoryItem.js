@@ -43,9 +43,4 @@ const styles = StyleSheet.create({
     marginVertical: 3,
     backgroundColor: COLORS.white,
   },
-  notExistWrap: {
-    marginTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });

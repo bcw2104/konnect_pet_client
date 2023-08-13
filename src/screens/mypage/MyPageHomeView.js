@@ -228,7 +228,6 @@ const styles = StyleSheet.create({
   },
   section1: {
     paddingVertical: 5,
-    marginTop: 20,
     paddingHorizontal: 15,
     marginBottom: 20,
     backgroundColor: '#fff',

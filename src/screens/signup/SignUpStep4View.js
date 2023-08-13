@@ -1,7 +1,7 @@
 import { Dimensions, Platform, StyleSheet, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import Container from '../../components/layouts/Container';
-import {COLORS} from './../../commons/colors';
+import { COLORS } from './../../commons/colors';
 import CustomButton from './../../components/elements/CustomButton';
 import { serviceApis } from './../../utils/ServiceApis';
 import { asyncStorage } from '../../storage/Storage';
@@ -162,10 +162,11 @@ const SignupStep4View = (props) => {
         </View>
       </Container>
       <CustomButton
+        fontWeight={FONT_WEIGHT.BOLD}
         fontColor={COLORS.white}
-        bgColor={COLORS.dark}
-        bgColorPress={COLORS.darkDeep}
-        text="가입 완료"
+        bgColor={COLORS.main}
+        bgColorPress={COLORS.mainDeep}
+        text="Start Walking"
         disabled={!searchValue}
         onPress={submitSignupData}
         style={styles.submitTheme}

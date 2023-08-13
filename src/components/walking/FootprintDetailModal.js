@@ -142,7 +142,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                 color={COLORS.dark}
                 style={{ marginRight: 5 }}
               />
-              <CustomText fontSize={16}>{detail?.residenceCity}</CustomText>
+              <CustomText fontSize={15}>{detail?.residenceCity}</CustomText>
             </View>
             <View style={{ marginTop: 7 }}>
               <CustomText
@@ -179,13 +179,13 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                     <View style={styles.petDetailItem}>
                       <CustomText
                         style={styles.petDetailItemTitle}
-                        fontSize={15}
+                        fontSize={14}
                         fontWeight={FONT_WEIGHT.BOLD}
                       >
                         neutered
                       </CustomText>
                       <CustomText
-                        fontSize={15}
+                        fontSize={14}
                         style={styles.petDetailItemContent}
                       >
                         {pet.neuteredYn ? 'Yes' : 'No'}
@@ -194,13 +194,13 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                     <View style={styles.petDetailItem}>
                       <CustomText
                         style={styles.petDetailItemTitle}
-                        fontSize={15}
+                        fontSize={14}
                         fontWeight={FONT_WEIGHT.BOLD}
                       >
                         Introduction
                       </CustomText>
                       <CustomText
-                        fontSize={15}
+                        fontSize={14}
                         style={styles.petDetailItemContent}
                       >
                         {pet.petDescription}
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
   petDetailItemTitle: {
-    width: 100,
+    width: 120,
   },
   petDetailItemContent: {
     flex: 1,

@@ -14,9 +14,9 @@ const SettingView = () => {
   const logout = () => {
     modalStore.openTwoButtonModal(
       '로그아웃 하시겠습니까?',
-      '취소',
+      'Cancel',
       null,
-      '확인',
+      'Confirm',
       () => {
         userStore.logout();
       }

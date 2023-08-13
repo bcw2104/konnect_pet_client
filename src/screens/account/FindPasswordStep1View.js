@@ -3,7 +3,7 @@ import React from 'react';
 import Container from '../../components/layouts/Container';
 import { Navigator } from '../../navigations/Navigator';
 import CustomButton from '../../components/elements/CustomButton';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import { serviceApis } from '../../utils/ServiceApis';
 import { useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
@@ -60,10 +60,11 @@ const FindPasswordStep1View = (props) => {
         </View>
       </Container>
       <CustomButton
+        fontWeight={FONT_WEIGHT.BOLD}
         fontColor={COLORS.white}
-        bgColor={COLORS.dark}
-        bgColorPress={COLORS.darkDeep}
-        text='다음'
+        bgColor={COLORS.main}
+        bgColorPress={COLORS.mainDeep}
+        text="Next Step"
         disabled={!verifyKey}
         onPress={submit}
         style={styles.submitTheme}

@@ -10,7 +10,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import moment from 'moment';
 import CustomText from '../../components/elements/CustomText';
-import { FONT_WEIGHT, NUMBER_TO_LANG } from '../../commons/constants';
+import { FONT_WEIGHT, FOOTPRINT_TYPE } from '../../commons/constants';
 import GoogleMap from '../../components/map/GoogleMap';
 import { Polyline } from 'react-native-maps';
 import { COLORS } from '../../commons/colors';
@@ -258,7 +258,11 @@ const WalkingResultView = (props) => {
                     >
                       <FootprintImage
                         size={50}
-                        type={!!ele.footprintId ? 'catched' : 'disabled'}
+                        type={
+                          !!ele.footprintId
+                            ? FOOTPRINT_TYPE.CATCHED
+                            : FOOTPRINT_TYPE.DISABLED
+                        }
                       />
                     </Pressable>
                   ))}

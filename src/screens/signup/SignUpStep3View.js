@@ -4,7 +4,7 @@ import Container from '../../components/layouts/Container';
 import { useState, useEffect } from 'react';
 import { serviceApis } from './../../utils/ServiceApis';
 import CustomButton from '../../components/elements/CustomButton';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import CheckBox from '../../components/elements/CheckBox';
 import { Navigator } from './../../navigations/Navigator';
 import CustomText from '../../components/elements/CustomText';
@@ -170,10 +170,11 @@ const SignupStep3View = (props) => {
             </View>
           </Container>
           <CustomButton
+            fontWeight={FONT_WEIGHT.BOLD}
             fontColor={COLORS.white}
-            bgColor={COLORS.dark}
-            bgColorPress={COLORS.darkDeep}
-            text='다음'
+            bgColor={COLORS.main}
+            bgColorPress={COLORS.mainDeep}
+            text="Next Step"
             disabled={!isRequiredAllChecked}
             onPress={submitSignupData}
             style={styles.submitTheme}

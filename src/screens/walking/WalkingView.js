@@ -12,6 +12,7 @@ import Timer from '../../components/elements/Timer';
 import {
   DEEP_LINK_PREFIX,
   FONT_WEIGHT,
+  FOOTPRINT_TYPE,
   WALKING_REWARD_TYPE,
 } from '../../commons/constants';
 import { Navigator } from '../../navigations/Navigator';
@@ -28,6 +29,7 @@ import FootprintDetailModal from '../../components/walking/FootprintDetailModal'
 import WalkingSettingModal from '../../components/walking/WalkingSettingModal';
 import FootprintMarker from '../../components/walking/FootprintMarker';
 import WalkingDashboard from '../../components/walking/WalkingDashboard';
+import FootprintImage from '../../components/modules/FootprintImage';
 
 const window = Dimensions.get('window');
 const screen = Dimensions.get('screen');
@@ -407,7 +409,7 @@ const WalkingView = (props) => {
     setPermission(false);
     modalStore.openTwoButtonModal(
       '정상적인 산책 기록을 위해 위치 권한을 허용해주세요.',
-      '취소',
+      'Cancel',
       () => {
         goToHome();
       },
@@ -462,7 +464,7 @@ const WalkingView = (props) => {
 
             goToNextStep({
               walkingId: route.params?.walkingId,
-              backAction: "home",
+              backAction: 'home',
             });
           }
         } catch (error) {
@@ -499,7 +501,7 @@ const WalkingView = (props) => {
           </CustomText>
         </View>
       )}
-      <Container>
+      <Container paddingHorizontal={0}>
         <View style={styles.section1}>
           <CustomButton
             bgColor={COLORS.white}
@@ -507,11 +509,11 @@ const WalkingView = (props) => {
             render={<Ionicons name="options" size={30} color={COLORS.dark} />}
             fontColor={COLORS.white}
             onPress={handleOpenSetting}
-            width={60}
-            height={60}
+            width={50}
+            height={50}
             wrapperStyle={styles.mapSetting}
             style={{
-              borderRadius: 30,
+              borderRadius: 25,
             }}
           />
           {permission && (
@@ -519,7 +521,8 @@ const WalkingView = (props) => {
               defaultRegion={region}
               mapRef={mapRef}
               width={window.width}
-              height={window.height}
+              style={{ position: 'absolute', top: 0 }}
+              height={'100%'}
               longitudeDelta={LONGITUDE_DELTA}
               latitudeDelta={LATITUDE_DELTA}
               userLocation={permission}
@@ -533,7 +536,7 @@ const WalkingView = (props) => {
               )}
               {myFootprints.map((coords, index) => (
                 <Marker key={index} coordinate={coords}>
-                  <FontAwesome5 name="stamp" size={24} color={COLORS.dark} />
+                  <FootprintImage size={24} type={FOOTPRINT_TYPE.MINE} />
                 </Marker>
               ))}
               <Polyline
@@ -553,11 +556,11 @@ const WalkingView = (props) => {
             }
             fontColor={COLORS.white}
             onPress={getMyLocation}
-            width={60}
-            height={60}
+            width={50}
+            height={50}
             wrapperStyle={styles.location}
             style={{
-              borderRadius: 30,
+              borderRadius: 25,
             }}
           />
           <WalkingDashboard
@@ -599,15 +602,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   mapSetting: {
-    alignSelf: 'flex-end',
-    top: 80,
+    position: 'absolute',
+    top: 30,
+    right: 20,
     zIndex: 10,
     elevation: 10,
-  },
-  settingItemWrap: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   section2: {
     width: window.width,

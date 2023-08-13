@@ -3,7 +3,7 @@ import React from 'react';
 import Container from '../../components/layouts/Container';
 import { Navigator } from '../../navigations/Navigator';
 import CustomButton from '../../components/elements/CustomButton';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import { serviceApis } from '../../utils/ServiceApis';
 import { useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
@@ -33,7 +33,7 @@ const SignupStep2View = (props) => {
     <>
       <Container header={true}>
         <View style={styles.section1}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD}  fontSize={24}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
             가입 정보를 입력해주세요.
           </CustomText>
         </View>
@@ -50,12 +50,10 @@ const SignupStep2View = (props) => {
           <CustomText fontSize={16}>비밀번호를 입력해주세요.</CustomText>
           <PasswordSetting onPasswordChange={setPassword} />
         </View>
-        
+
         <View style={styles.section4}>
           <View style={styles.helpWrap}>
-            <CustomText fontSize={15}>
-              인증번호가 오지 않나요?
-            </CustomText>
+            <CustomText fontSize={15}>인증번호가 오지 않나요?</CustomText>
             <CustomText fontSize={15}>
               인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
               않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
@@ -65,10 +63,11 @@ const SignupStep2View = (props) => {
         </View>
       </Container>
       <CustomButton
+        fontWeight={FONT_WEIGHT.BOLD}
         fontColor={COLORS.white}
-        bgColor={COLORS.dark}
-        bgColorPress={COLORS.darkDeep}
-        text='다음'
+        bgColor={COLORS.main}
+        bgColorPress={COLORS.mainDeep}
+        text="Next Step"
         disabled={!verifyKey || !password}
         onPress={submit}
         style={styles.submitTheme}
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   section4: {
-    flex:3
+    flex: 3,
   },
 
   submitTheme: { borderRadius: 0 },

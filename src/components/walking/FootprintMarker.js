@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import React, { memo } from 'react';
 import { Marker } from 'react-native-maps';
 import FootprintImage from '../modules/FootprintImage';
+import { FOOTPRINT_TYPE } from '../../commons/constants';
 
 const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
   return (
@@ -19,7 +20,7 @@ const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
               handleOpenFootprintDetail(ele.id);
             }}
           >
-            <FootprintImage size={24} type="mine" />
+            <FootprintImage size={24} type={FOOTPRINT_TYPE.MINE} />
           </Marker>
         ))}
       {Object.values(footprints)
@@ -35,7 +36,7 @@ const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
               handleOpenFootprintDetail(ele.id);
             }}
           >
-            <FootprintImage size={24} type="others" />
+            <FootprintImage size={24} type={FOOTPRINT_TYPE.OTHERS} />
           </Marker>
         ))}
       {Object.values(footprints)
@@ -51,7 +52,7 @@ const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
               handleOpenFootprintDetail(ele.id);
             }}
           >
-            <FootprintImage size={24} type="catched" />
+            <FootprintImage size={24} type={FOOTPRINT_TYPE.CATCHED} />
           </Marker>
         ))}
     </>

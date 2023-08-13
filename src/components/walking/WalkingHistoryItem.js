@@ -5,7 +5,6 @@ import moment from 'moment';
 import { FONT_WEIGHT } from '../../commons/constants';
 import { COLORS } from '../../commons/colors';
 import { Ionicons } from '@expo/vector-icons';
-import Timer from '../elements/Timer';
 import { utils } from '../../utils/Utils';
 
 const WalkingHistoryItem = ({ item, onPress }) => {
@@ -29,47 +28,47 @@ const WalkingHistoryItem = ({ item, onPress }) => {
       </View>
       <View style={styles.history}>
         <View style={styles.historyData}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={18}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
             {utils.toFormatNumber(item.meters)}
           </CustomText>
           <CustomText
             fontWeight={FONT_WEIGHT.BOLD}
-            fontSize={14}
+            fontSize={13}
             style={{
               position: 'relative',
-              top: 2,
+              top: 1,
             }}
           >
             m
           </CustomText>
         </View>
         <View style={styles.historyData}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={18}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
           {utils.toFormatNumber(parseInt(item.seconds / 60))}
           </CustomText>
           <CustomText
             fontWeight={FONT_WEIGHT.BOLD}
-            fontSize={14}
+            fontSize={13}
             style={{
               position: 'relative',
-              top: 2,
+              top: 1,
             }}
           >
             min
           </CustomText>
         </View>
         <View style={styles.historyData}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={18}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
             {utils.toFormatNumber(
               utils.calculateSpeed(item.meters, item.seconds)
             )}
           </CustomText>
           <CustomText
             fontWeight={FONT_WEIGHT.BOLD}
-            fontSize={14}
+            fontSize={13}
             style={{
               position: 'relative',
-              top: 2,
+              top: 1,
             }}
           >
             km/h
