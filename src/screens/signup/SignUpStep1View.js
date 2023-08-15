@@ -9,6 +9,7 @@ import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT, SOCIAL_TYPE } from '../../commons/constants';
 import SmsVerify from '../../components/modules/SmsVerify';
 import { observer } from 'mobx-react-lite';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const SignupStep1View = (props) => {
   const { route } = props;
@@ -35,32 +36,34 @@ const SignupStep1View = (props) => {
   return (
     <>
       <Container header={true}>
-        <View style={styles.section1}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-            핸드폰 번호를 인증해주세요.
-          </CustomText>
-        </View>
-        <View style={styles.section2}>
-          <CustomText fontSize={16}>핸드폰 번호를 입력해주세요.</CustomText>
-          <SmsVerify
-            nationCode={nationCode}
-            onNationCodeChange={setNationCode}
-            verifyKey={verifyKey}
-            onVerifyKeyChange={setVerifyKey}
-            requestVerificationApi={serviceApis.requestJoinSmsVerification}
-            submitVerificationApi={serviceApis.submitJoinSmsVerification}
-          />
-        </View>
-        <View style={styles.section3}>
-          <View style={styles.helpWrap}>
-            <CustomText fontSize={15}>인증번호가 오지 않나요?</CustomText>
-            <CustomText fontSize={15}>
-              인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
-              않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
-              내용입니다.
+        <KeyboardAwareScrollView>
+          <View style={styles.section1}>
+            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+              핸드폰 번호를 인증해주세요.
             </CustomText>
           </View>
-        </View>
+          <View style={styles.section2}>
+            <CustomText fontSize={16}>핸드폰 번호를 입력해주세요.</CustomText>
+            <SmsVerify
+              nationCode={nationCode}
+              onNationCodeChange={setNationCode}
+              verifyKey={verifyKey}
+              onVerifyKeyChange={setVerifyKey}
+              requestVerificationApi={serviceApis.requestJoinSmsVerification}
+              submitVerificationApi={serviceApis.submitJoinSmsVerification}
+            />
+          </View>
+          <View style={styles.section3}>
+            <View style={styles.helpWrap}>
+              <CustomText fontSize={15}>인증번호가 오지 않나요?</CustomText>
+              <CustomText fontSize={15}>
+                인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
+                않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
+                내용입니다.
+              </CustomText>
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
       </Container>
       <CustomButton
         fontWeight={FONT_WEIGHT.BOLD}
@@ -80,13 +83,13 @@ export default observer(SignupStep1View);
 
 const styles = StyleSheet.create({
   section1: {
-    flex: 1,
+    marginBottom: 50,
   },
   section2: {
-    flex: 2,
+    marginBottom: 50,
   },
   section3: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'space-between',
   },
 

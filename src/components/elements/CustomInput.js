@@ -1,7 +1,7 @@
 import { Text, TextInput, View } from 'react-native';
 import React from 'react';
 import { useState } from 'react';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import { useEffect } from 'react';
 import CustomText from './CustomText';
 
@@ -13,6 +13,7 @@ const CustomInput = ({
   onValueChange = () => {},
   width = 'auto',
   height = 45,
+  minHeight = 45,
   fontSize = 16,
   wrapperStyle = {},
   style = {},
@@ -52,6 +53,7 @@ const CustomInput = ({
         style={{
           flexDirection: 'row',
           height: height,
+          minHeight: minHeight,
           width: width,
           ...wrapperStyle,
         }}
@@ -70,6 +72,7 @@ const CustomInput = ({
           style={{
             width: width,
             height: height,
+            minHeight: minHeight,
             fontSize: fontSize,
             paddingHorizontal: 10,
             borderWidth: outline ? 0 : 1,

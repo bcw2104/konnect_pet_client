@@ -45,7 +45,7 @@ const TermsView = (props) => {
               {term?.termsName}
             </CustomText>
             <CustomText style={{ marginTop: 5 }} fontSize={16}>
-              created: {moment(term?.createdDate).format('yyyy-MM-DD HH:mm:ss')}
+              created: {moment(term?.createdDate).format('yyyy-MM-DD')}
             </CustomText>
           </View>
           <View style={styles.section2}>

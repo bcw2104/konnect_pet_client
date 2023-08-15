@@ -6,17 +6,14 @@ import { FONT_WEIGHT } from '../../commons/constants';
 import { COLORS } from '../../commons/colors';
 import { Foundation } from '@expo/vector-icons';
 
-const NotificationItem = ({ item }) => {
-  const goToLocation = (item) => {
-    console.log(item);
-  };
+const NotificationItem = ({ item,onPress }) => {
 
   return (
     <Pressable
       key={item.id}
       style={styles.notiItem}
       onPress={() => {
-        goToLocation(item);
+        onPress(item);
       }}
     >
       <View style={styles.notiHeader}>

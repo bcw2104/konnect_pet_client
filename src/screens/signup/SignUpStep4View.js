@@ -180,10 +180,10 @@ export default SignupStep4View;
 
 const styles = StyleSheet.create({
   section1: {
-    flex: 1,
+    marginBottom: 50,
   },
   section2: {
-    flex: 7,
+    flex: 1,
   },
   placeWrap: {
     position: 'absolute',

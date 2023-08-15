@@ -76,6 +76,7 @@ const WalkingView = (props) => {
   const { systemStore, modalStore, userStore } = useStores();
   const [setting, setSetting] = useState({
     footprintYn: true,
+    routeYn: true,
   });
 
   const bgServiceOptions = {
@@ -534,16 +535,19 @@ const WalkingView = (props) => {
                   handleOpenFootprintDetail={handleOpenFootprintDetail}
                 />
               )}
-              {myFootprints.map((coords, index) => (
-                <Marker key={index} coordinate={coords}>
-                  <FootprintImage size={24} type={FOOTPRINT_TYPE.MINE} />
-                </Marker>
-              ))}
-              <Polyline
-                coordinates={routes}
-                strokeColor="#e23dff"
-                strokeWidth={6}
-              />
+              {!!setting.footprintYn &&
+                myFootprints.map((coords, index) => (
+                  <Marker key={index} coordinate={coords}>
+                    <FootprintImage size={24} type={FOOTPRINT_TYPE.MINE} />
+                  </Marker>
+                ))}
+              {!!setting.routeYn && (
+                <Polyline
+                  coordinates={routes}
+                  strokeColor="#e23dff"
+                  strokeWidth={6}
+                />
+              )}
             </GoogleMap>
           )}
         </View>

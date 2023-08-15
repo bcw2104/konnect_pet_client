@@ -10,13 +10,12 @@ import CustomText from '../elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
 import moment from 'moment';
 import { utils } from '../../utils/Utils';
-import { Feather } from '@expo/vector-icons';
-import {COLORS} from '../../commons/colors';
+import { AntDesign, Entypo } from '@expo/vector-icons';
+import { COLORS } from '../../commons/colors';
 import CustomButton from '../elements/CustomButton';
 import { PROCESS_STATUS_CODE } from '../../commons/codes';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
-import { Entypo } from '@expo/vector-icons';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import Loader from '../modules/Loader';
 
@@ -106,12 +105,12 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                     }}
                     render={
                       <>
-                        <Feather
+                        <AntDesign
                           name={
                             detail?.friendStatus ==
                             PROCESS_STATUS_CODE.PERMITTED
-                              ? 'send'
-                              : 'user-plus'
+                              ? 'message1'
+                              : 'adduser'
                           }
                           size={20}
                           color={COLORS.white}
@@ -220,8 +219,8 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
 export default observer(FootprintDetailModal);
 
 const styles = StyleSheet.create({
-  section1: { paddingTop: 20, marginBottom: 30 },
-  section2: { marginBottom: 30, maxHeight: 230 },
+  section1: { paddingTop: 10, marginBottom: 30 },
+  section2: { marginBottom: 10, maxHeight: 200 },
   locationWrap: {
     flexDirection: 'row',
     alignItems: 'center',

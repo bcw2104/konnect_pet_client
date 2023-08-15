@@ -5,8 +5,6 @@ import useInterval from '../../hooks/useInertval';
 import CustomButton from '../elements/CustomButton';
 import CustomInput from '../elements/CustomInput';
 import Timer from '../elements/Timer';
-import { Platform } from 'react-native';
-import { KeyboardAvoidingView } from 'react-native';
 import { REGEX } from '../../commons/regex';
 import { COLORS } from '../../commons/colors';
 import { FONT_WEIGHT } from '../../commons/constants';
@@ -115,9 +113,7 @@ const EmailVerify = ({
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View>
       <View style={styles.emailInputWrap}>
         <CustomInput
           value={email}
@@ -181,7 +177,7 @@ const EmailVerify = ({
           />
         </View>
       )}
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 

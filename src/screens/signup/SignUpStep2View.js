@@ -10,6 +10,7 @@ import CustomText from '../../components/elements/CustomText';
 import PasswordSetting from '../../components/modules/PasswordSetting';
 import EmailVerify from '../../components/modules/EmailVerify';
 import { FONT_WEIGHT } from '../../commons/constants';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const SignupStep2View = (props) => {
   const { route } = props;
@@ -32,35 +33,37 @@ const SignupStep2View = (props) => {
   return (
     <>
       <Container header={true}>
-        <View style={styles.section1}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-            가입 정보를 입력해주세요.
-          </CustomText>
-        </View>
-        <View style={styles.section2}>
-          <CustomText fontSize={16}>이메일을 입력해주세요.</CustomText>
-          <EmailVerify
-            verifyKey={verifyKey}
-            onVerifyKeyChange={setVerifyKey}
-            requestVerificationApi={serviceApis.requestJoinEmailVerification}
-            submitVerificationApi={serviceApis.submitJoinEmailVerification}
-          />
-        </View>
-        <View style={styles.section3}>
-          <CustomText fontSize={16}>비밀번호를 입력해주세요.</CustomText>
-          <PasswordSetting onPasswordChange={setPassword} />
-        </View>
-
-        <View style={styles.section4}>
-          <View style={styles.helpWrap}>
-            <CustomText fontSize={15}>인증번호가 오지 않나요?</CustomText>
-            <CustomText fontSize={15}>
-              인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
-              않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
-              내용입니다.
+        <KeyboardAwareScrollView>
+          <View style={styles.section1}>
+            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+              가입 정보를 입력해주세요.
             </CustomText>
           </View>
-        </View>
+          <View style={styles.section2}>
+            <CustomText fontSize={16}>이메일을 입력해주세요.</CustomText>
+            <EmailVerify
+              verifyKey={verifyKey}
+              onVerifyKeyChange={setVerifyKey}
+              requestVerificationApi={serviceApis.requestJoinEmailVerification}
+              submitVerificationApi={serviceApis.submitJoinEmailVerification}
+            />
+          </View>
+          <View style={styles.section3}>
+            <CustomText fontSize={16}>비밀번호를 입력해주세요.</CustomText>
+            <PasswordSetting onPasswordChange={setPassword} />
+          </View>
+
+          <View style={styles.section4}>
+            <View style={styles.helpWrap}>
+              <CustomText fontSize={15}>인증번호가 오지 않나요?</CustomText>
+              <CustomText fontSize={15}>
+                인증번호가 오지 않나요?에 대한 내용입니다. 인증번호가 오지
+                않나요?에 대한 내용입니다. 인증번호가 오지 않나요?에 대한
+                내용입니다.
+              </CustomText>
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
       </Container>
       <CustomButton
         fontWeight={FONT_WEIGHT.BOLD}
@@ -80,16 +83,16 @@ export default SignupStep2View;
 
 const styles = StyleSheet.create({
   section1: {
-    flex: 1,
+    marginBottom: 50,
   },
   section2: {
-    flex: 3,
+    marginBottom: 50,
   },
   section3: {
-    flex: 3,
+    marginBottom: 50,
   },
   section4: {
-    flex: 3,
+    flex: 1,
   },
 
   submitTheme: { borderRadius: 0 },

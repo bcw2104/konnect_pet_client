@@ -5,7 +5,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import CustomText from '../../components/elements/CustomText';
 import { COLORS } from '../../commons/colors';
@@ -14,6 +14,7 @@ import { serviceApis } from '../../utils/ServiceApis';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useStores } from '../../contexts/StoreContext';
 import NotificationItem from '../../components/mypage/NotificationItem';
+import { Navigator } from '../../navigations/Navigator';
 
 const PAGE_SIZE = 20;
 
@@ -76,6 +77,12 @@ const MyNotificationView = () => {
       setRefreshing(false);
     }
   };
+  const landing = useCallback((item) => {
+    if (item.landingUrl == 'walking_history') {
+      Navigator.reset({ tab: 1 }, 'home_tabs', 'walking_tab', 'walking_home');
+    }
+  }, []);
+
   return (
     <Container
       header={true}
@@ -93,7 +100,7 @@ const MyNotificationView = () => {
           (notification.length > 0 ? (
             <>
               {notification?.map((item) => (
-                <NotificationItem key={item.id} item={item} />
+                <NotificationItem key={item.id} item={item} onPress={landing} />
               ))}
               {hasNext && (
                 <Pressable style={styles.more} onPress={getNextData}>

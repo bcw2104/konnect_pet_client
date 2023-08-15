@@ -25,6 +25,7 @@ import { Navigator } from '../../navigations/Navigator';
 import ProfileImage from '../../components/modules/ProfileImage';
 import { COLORS } from '../../commons/colors';
 import CustomDateTimePicker from '../../components/elements/CustomDateTimePicker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const ProfileFormView = (props) => {
   const { route } = props;
@@ -32,7 +33,7 @@ const ProfileFormView = (props) => {
   const imageUploaderRef = useRef();
   const isImageChanged = useRef(false);
   const [profileImage, setProfileImage] = useState(null);
-  const [profile, serProfile] = useState({
+  const [profile, setProfile] = useState({
     nickname: null,
     gender: 'M',
     birthDate: new Date(),
@@ -42,7 +43,7 @@ const ProfileFormView = (props) => {
   useEffect(() => {
     const profile = route.params?.profile;
     if (!!profile) {
-      serProfile({
+      setProfile({
         ...profile,
         birthDate: moment(profile.birthDate, 'YYYYMMDD').toDate(),
       });
@@ -119,138 +120,129 @@ const ProfileFormView = (props) => {
   return (
     <>
       <Container header={true} headerPaddingTop={0}>
-        <ScrollView>
-          <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === 'ios' ? 'position' : 'height'}
-            keyboardVerticalOffset={20}
-          >
-            <View style={styles.section1}>
-              <View style={styles.profileImgWrap}>
-                <ImageUploader
-                  onImageChange={handleImageChange}
-                  ref={imageUploaderRef}
-                >
-                  <Pressable
-                    onPress={() => {
-                      imageUploaderRef.current.pickImage();
-                    }}
-                  >
-                    <View style={styles.upload}>
-                      <Feather name="camera" size={20} color={COLORS.dark} />
-                    </View>
-                    <ProfileImage
-                      uri={profileImage}
-                      style={styles.profileImg}
-                    />
-                  </Pressable>
-                </ImageUploader>
-              </View>
-
-              <View style={styles.inputWrap}>
-                <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
-                    Nickname
-                  </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.main}
-                    style={styles.required}
-                  />
-                </View>
-                <CustomInput
-                  value={profile.nickname}
-                  onValueChange={(value) => {
-                    serProfile({ ...profile, nickname: value });
-                  }}
-                  maxLength={15}
-                  fontSize={15}
-                  height={40}
-                  wrapperStyle={styles.input}
-                  placeholder="Please enter your nickname."
-                  keyboardType="default"
-                  outline={true}
-                />
-              </View>
-              <View style={styles.inputWrap}>
-                <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
-                    Gender
-                  </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.main}
-                    style={styles.required}
-                  />
-                </View>
-                <CustomRadio
-                  fontSize={15}
-                  height={40}
-                  items={[
-                    { label: 'Male', value: 'M' },
-                    { label: 'Female', value: 'F' },
-                  ]}
-                  value={profile.gender}
-                  onPress={(value) => {
-                    serProfile({ ...profile, gender: value });
-                  }}
-                />
-              </View>
-              <View style={styles.inputWrap}>
-                <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
-                    BirthDate
-                  </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.main}
-                    style={styles.required}
-                  />
-                </View>
-                <CustomDateTimePicker
-                  value={profile.birthDate}
-                  onChange={(date) => {
-                    serProfile({ ...profile, birthDate: date });
-                  }}
-                  maxDate={new Date()}
-                  style={{
-                    padding: 10,
-                  }}
-                />
-              </View>
-              <View
-                style={{
-                  paddingVertical: 20,
-                }}
+        <KeyboardAwareScrollView>
+          <View style={styles.section1}>
+            <View style={styles.profileImgWrap}>
+              <ImageUploader
+                onImageChange={handleImageChange}
+                ref={imageUploaderRef}
               >
-                <CustomText
-                  fontWeight={FONT_WEIGHT.BOLD}
-                  fontSize={15}
-                  style={{ marginBottom: 20 }}
-                >
-                  Comment
-                </CustomText>
-                <CustomInput
-                  value={profile.comment}
-                  onValueChange={(value) => {
-                    serProfile({ ...profile, comment: value });
+                <Pressable
+                  onPress={() => {
+                    imageUploaderRef.current.pickImage();
                   }}
-                  maxLength={150}
-                  multiline={true}
-                  fontSize={15}
-                  wrapperStyle={styles.input}
-                  placeholder="Please introduce yourself."
-                  keyboardType="default"
-                  outline={true}
-                  height={100}
+                >
+                  <View style={styles.upload}>
+                    <Feather name="camera" size={20} color={COLORS.dark} />
+                  </View>
+                  <ProfileImage uri={profileImage} style={styles.profileImg} />
+                </Pressable>
+              </ImageUploader>
+            </View>
+
+            <View style={styles.inputWrap}>
+              <View style={styles.title}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
+                  Nickname
+                </CustomText>
+                <FontAwesome5
+                  name="star-of-life"
+                  size={10}
+                  color={COLORS.main}
+                  style={styles.required}
                 />
               </View>
+              <CustomInput
+                value={profile.nickname}
+                onValueChange={(value) => {
+                  setProfile({ ...profile, nickname: value });
+                }}
+                maxLength={15}
+                fontSize={15}
+                height={40}
+                wrapperStyle={styles.input}
+                placeholder="Please enter your nickname."
+                keyboardType="default"
+                outline={true}
+              />
             </View>
-          </KeyboardAvoidingView>
-        </ScrollView>
+            <View style={styles.inputWrap}>
+              <View style={styles.title}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
+                  Gender
+                </CustomText>
+                <FontAwesome5
+                  name="star-of-life"
+                  size={10}
+                  color={COLORS.main}
+                  style={styles.required}
+                />
+              </View>
+              <CustomRadio
+                fontSize={15}
+                height={40}
+                items={[
+                  { label: 'Male', value: 'M' },
+                  { label: 'Female', value: 'F' },
+                ]}
+                value={profile.gender}
+                onPress={(value) => {
+                  setProfile({ ...profile, gender: value });
+                }}
+              />
+            </View>
+            <View style={styles.inputWrap}>
+              <View style={styles.title}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
+                  BirthDate
+                </CustomText>
+                <FontAwesome5
+                  name="star-of-life"
+                  size={10}
+                  color={COLORS.main}
+                  style={styles.required}
+                />
+              </View>
+              <CustomDateTimePicker
+                value={profile.birthDate}
+                onChange={(date) => {
+                  setProfile({ ...profile, birthDate: date });
+                }}
+                maxDate={new Date()}
+                style={{
+                  padding: 10,
+                }}
+              />
+            </View>
+            <View
+              style={{
+                paddingVertical: 20,
+              }}
+            >
+              <CustomText
+                fontWeight={FONT_WEIGHT.BOLD}
+                fontSize={15}
+                style={{ marginBottom: 20 }}
+              >
+                Comment
+              </CustomText>
+              <CustomInput
+                value={profile.comment}
+                onValueChange={(value) => {
+                  setProfile({ ...profile, comment: value });
+                }}
+                maxLength={150}
+                multiline={true}
+                fontSize={15}
+                wrapperStyle={styles.input}
+                placeholder="Please introduce yourself."
+                keyboardType="default"
+                outline={true}
+                height={'auto'}
+              />
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
       </Container>
       <CustomButton
         fontWeight={FONT_WEIGHT.BOLD}

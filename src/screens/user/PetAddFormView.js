@@ -1,12 +1,4 @@
-import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
 import Container from '../../components/layouts/Container';
@@ -26,6 +18,7 @@ import { observer } from 'mobx-react-lite';
 import PetImage from '../../components/modules/PetImage';
 import { COLORS } from '../../commons/colors';
 import CustomDateTimePicker from '../../components/elements/CustomDateTimePicker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const WEIGHT_REGEX = /^([1-9]{0,2}\d{0,1}|0{1})(\.{1}\d{0,2})?$/;
 
@@ -178,240 +171,234 @@ const PetAddFormView = (props) => {
   return (
     <>
       <Container header={true} headerPaddingTop={0}>
-        <ScrollView>
-          <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === 'ios' ? 'position' : 'height'}
-            keyboardVerticalOffset={20}
-          >
-            <View style={styles.section1}>
-              <View style={styles.petImgWrap}>
-                <ImageUploader
-                  onImageChange={handleImageChange}
-                  ref={imageUploaderRef}
-                >
-                  <Pressable
-                    onPress={() => {
-                      imageUploaderRef.current.pickImage();
-                    }}
-                  >
-                    <View style={styles.upload}>
-                      <Feather name="camera" size={20} color={COLORS.dark} />
-                    </View>
-                    <PetImage uri={petImage} style={styles.petImg} />
-                  </Pressable>
-                </ImageUploader>
-              </View>
-
-              <View style={styles.inputWrap}>
-                <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
-                    Name
-                  </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.main}
-                    style={styles.required}
-                  />
-                </View>
-                <CustomInput
-                  value={petInfo.petName}
-                  onValueChange={(value) => {
-                    setPetInfo({ ...petInfo, petName: value });
-                  }}
-                  maxLength={30}
-                  fontSize={15}
-                  height={40}
-                  wrapperStyle={styles.input}
-                  placeholder="Please enter pet name."
-                  keyboardType="default"
-                  outline={true}
-                />
-              </View>
-              <View style={styles.inputWrap}>
-                <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
-                    Species
-                  </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.main}
-                    style={styles.required}
-                  />
-                </View>
-                <CustomInput
-                  value={petInfo.petSpecies}
-                  onValueChange={(value) => {
-                    setPetInfo({ ...petInfo, petSpecies: value });
-                  }}
-                  maxLength={30}
-                  fontSize={15}
-                  height={40}
-                  wrapperStyle={styles.input}
-                  placeholder="Please enter pet species."
-                  keyboardType="default"
-                  outline={true}
-                />
-              </View>
-              <View style={styles.inputWrap}>
-                <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
-                    Gender
-                  </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.main}
-                    style={styles.required}
-                  />
-                </View>
-                <CustomRadio
-                  fontSize={15}
-                  height={40}
-                  items={[
-                    { label: 'Male', value: 'M' },
-                    { label: 'Female', value: 'F' },
-                  ]}
-                  value={petInfo.petGender}
-                  onPress={(value) => {
-                    setPetInfo({ ...petInfo, petGender: value });
-                  }}
-                />
-              </View>
-              <View style={styles.inputWrap}>
-                <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
-                    Weight(kg)
-                  </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.main}
-                    style={styles.required}
-                  />
-                </View>
-                <CustomInput
-                  value={petInfo.petWeight.toString()}
-                  onValueChange={(value) => {
-                    if (!WEIGHT_REGEX.test(value)) return;
-                    setPetInfo({ ...petInfo, petWeight: value });
-                  }}
-                  keyboardType="numeric"
-                  maxLength={30}
-                  fontSize={15}
-                  height={40}
-                  wrapperStyle={styles.input}
-                  placeholder="Please enter pet weight."
-                  outline={true}
-                />
-              </View>
-              <View style={styles.inputWrap}>
-                <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
-                    BirthDate
-                  </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.main}
-                    style={styles.required}
-                  />
-                </View>
-                <CustomDateTimePicker
-                  value={petInfo.birthDate}
-                  onChange={(date) => {
-                    setPetInfo({ ...petInfo, birthDate: date });
-                  }}
-                  maxDate={new Date()}
-                  style={{
-                    padding: 10,
-                  }}
-                />
-              </View>
-              <View style={styles.inputWrap}>
-                <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
-                    Neutered
-                  </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.main}
-                    style={styles.required}
-                  />
-                </View>
-
-                <CustomRadio
-                  fontSize={15}
-                  height={40}
-                  items={[
-                    { label: 'Yes', value: true },
-                    { label: 'No', value: false },
-                  ]}
-                  value={petInfo.neuteredYn}
-                  onPress={(value) => {
-                    setPetInfo({ ...petInfo, neuteredYn: value });
-                  }}
-                />
-              </View>
-              <View style={styles.inputWrap}>
-                <View style={styles.title}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
-                    Inoculated
-                  </CustomText>
-                  <FontAwesome5
-                    name="star-of-life"
-                    size={10}
-                    color={COLORS.main}
-                    style={styles.required}
-                  />
-                </View>
-
-                <CustomRadio
-                  fontSize={15}
-                  height={40}
-                  items={[
-                    { label: 'Yes', value: true },
-                    { label: 'No', value: false },
-                  ]}
-                  value={petInfo.inoculatedYn}
-                  onPress={(value) => {
-                    setPetInfo({ ...petInfo, inoculatedYn: value });
-                  }}
-                />
-              </View>
-              <View
-                style={{
-                  paddingVertical: 20,
-                }}
+        <KeyboardAwareScrollView>
+          <View style={styles.section1}>
+            <View style={styles.petImgWrap}>
+              <ImageUploader
+                onImageChange={handleImageChange}
+                ref={imageUploaderRef}
               >
-                <CustomText
-                  fontWeight={FONT_WEIGHT.BOLD}
-                  fontSize={15}
-                  style={{ marginBottom: 20 }}
-                >
-                  Introduction of pet
-                </CustomText>
-                <CustomInput
-                  value={petInfo.petDescription}
-                  onValueChange={(value) => {
-                    setPetInfo({ ...petInfo, petDescription: value });
+                <Pressable
+                  onPress={() => {
+                    imageUploaderRef.current.pickImage();
                   }}
-                  maxLength={150}
-                  multiline={true}
-                  fontSize={15}
-                  wrapperStyle={styles.input}
-                  placeholder="Please introduce your pet."
-                  keyboardType="default"
-                  outline={true}
-                  height={100}
+                >
+                  <View style={styles.upload}>
+                    <Feather name="camera" size={20} color={COLORS.dark} />
+                  </View>
+                  <PetImage uri={petImage} style={styles.petImg} />
+                </Pressable>
+              </ImageUploader>
+            </View>
+
+            <View style={styles.inputWrap}>
+              <View style={styles.title}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
+                  Name
+                </CustomText>
+                <FontAwesome5
+                  name="star-of-life"
+                  size={10}
+                  color={COLORS.main}
+                  style={styles.required}
                 />
               </View>
+              <CustomInput
+                value={petInfo.petName}
+                onValueChange={(value) => {
+                  setPetInfo({ ...petInfo, petName: value });
+                }}
+                maxLength={30}
+                fontSize={15}
+                height={40}
+                wrapperStyle={styles.input}
+                placeholder="Please enter pet name."
+                keyboardType="default"
+                outline={true}
+              />
             </View>
-          </KeyboardAvoidingView>
-        </ScrollView>
+            <View style={styles.inputWrap}>
+              <View style={styles.title}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
+                  Species
+                </CustomText>
+                <FontAwesome5
+                  name="star-of-life"
+                  size={10}
+                  color={COLORS.main}
+                  style={styles.required}
+                />
+              </View>
+              <CustomInput
+                value={petInfo.petSpecies}
+                onValueChange={(value) => {
+                  setPetInfo({ ...petInfo, petSpecies: value });
+                }}
+                maxLength={30}
+                fontSize={15}
+                height={40}
+                wrapperStyle={styles.input}
+                placeholder="Please enter pet species."
+                keyboardType="default"
+                outline={true}
+              />
+            </View>
+            <View style={styles.inputWrap}>
+              <View style={styles.title}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
+                  Gender
+                </CustomText>
+                <FontAwesome5
+                  name="star-of-life"
+                  size={10}
+                  color={COLORS.main}
+                  style={styles.required}
+                />
+              </View>
+              <CustomRadio
+                fontSize={15}
+                height={40}
+                items={[
+                  { label: 'Male', value: 'M' },
+                  { label: 'Female', value: 'F' },
+                ]}
+                value={petInfo.petGender}
+                onPress={(value) => {
+                  setPetInfo({ ...petInfo, petGender: value });
+                }}
+              />
+            </View>
+            <View style={styles.inputWrap}>
+              <View style={styles.title}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
+                  Weight(kg)
+                </CustomText>
+                <FontAwesome5
+                  name="star-of-life"
+                  size={10}
+                  color={COLORS.main}
+                  style={styles.required}
+                />
+              </View>
+              <CustomInput
+                value={petInfo.petWeight.toString()}
+                onValueChange={(value) => {
+                  if (!WEIGHT_REGEX.test(value)) return;
+                  setPetInfo({ ...petInfo, petWeight: value });
+                }}
+                keyboardType="numeric"
+                maxLength={30}
+                fontSize={15}
+                height={40}
+                wrapperStyle={styles.input}
+                placeholder="Please enter pet weight."
+                outline={true}
+              />
+            </View>
+            <View style={styles.inputWrap}>
+              <View style={styles.title}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
+                  BirthDate
+                </CustomText>
+                <FontAwesome5
+                  name="star-of-life"
+                  size={10}
+                  color={COLORS.main}
+                  style={styles.required}
+                />
+              </View>
+              <CustomDateTimePicker
+                value={petInfo.birthDate}
+                onChange={(date) => {
+                  setPetInfo({ ...petInfo, birthDate: date });
+                }}
+                maxDate={new Date()}
+                style={{
+                  padding: 10,
+                }}
+              />
+            </View>
+            <View style={styles.inputWrap}>
+              <View style={styles.title}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
+                  Neutered
+                </CustomText>
+                <FontAwesome5
+                  name="star-of-life"
+                  size={10}
+                  color={COLORS.main}
+                  style={styles.required}
+                />
+              </View>
+
+              <CustomRadio
+                fontSize={15}
+                height={40}
+                items={[
+                  { label: 'Yes', value: true },
+                  { label: 'No', value: false },
+                ]}
+                value={petInfo.neuteredYn}
+                onPress={(value) => {
+                  setPetInfo({ ...petInfo, neuteredYn: value });
+                }}
+              />
+            </View>
+            <View style={styles.inputWrap}>
+              <View style={styles.title}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
+                  Inoculated
+                </CustomText>
+                <FontAwesome5
+                  name="star-of-life"
+                  size={10}
+                  color={COLORS.main}
+                  style={styles.required}
+                />
+              </View>
+
+              <CustomRadio
+                fontSize={15}
+                height={40}
+                items={[
+                  { label: 'Yes', value: true },
+                  { label: 'No', value: false },
+                ]}
+                value={petInfo.inoculatedYn}
+                onPress={(value) => {
+                  setPetInfo({ ...petInfo, inoculatedYn: value });
+                }}
+              />
+            </View>
+            <View
+              style={{
+                paddingVertical: 20,
+              }}
+            >
+              <CustomText
+                fontWeight={FONT_WEIGHT.BOLD}
+                fontSize={15}
+                style={{ marginBottom: 20 }}
+              >
+                Introduction of pet
+              </CustomText>
+              <CustomInput
+                value={petInfo.petDescription}
+                onValueChange={(value) => {
+                  setPetInfo({ ...petInfo, petDescription: value });
+                }}
+                maxLength={150}
+                multiline={true}
+                fontSize={15}
+                wrapperStyle={styles.input}
+                placeholder="Please introduce your pet."
+                keyboardType="default"
+                outline={true}
+                height={'auto'}
+              />
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
       </Container>
       <CustomButton
         fontWeight={FONT_WEIGHT.BOLD}

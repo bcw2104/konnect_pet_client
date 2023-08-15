@@ -1,14 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import CustomText from '../elements/CustomText';
 import CustomPicker from '../elements/CustomPicker';
 import CustomInput from '../elements/CustomInput';
 import CustomButton from '../elements/CustomButton';
 import Timer from '../elements/Timer';
 import { useState } from 'react';
 import useInterval from './../../hooks/useInertval';
-import { KeyboardAvoidingView } from 'react-native';
-import { Platform } from 'react-native';
 import { REGEX } from '../../commons/regex';
 import { serviceApis } from './../../utils/ServiceApis';
 import { useEffect } from 'react';
@@ -149,9 +146,7 @@ const SmsVerify = ({
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View>
       {!fixedTel && (
         <CustomPicker
           value={nationCode}
@@ -227,7 +222,7 @@ const SmsVerify = ({
           />
         </View>
       )}
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 

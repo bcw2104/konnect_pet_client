@@ -22,7 +22,7 @@ export const serviceApis = {
   getNotifications: () => baseAxios.get(`/api/v1/user/noti`),
   getPointHistories : (pointType,type,size,page,) => baseAxios.get(`/api/v1/user/point/history`, { params:{ point:pointType,type: type, size:size, page:page  } }),
   getNotifications : (size,page) => baseAxios.get(`/api/v1/user/noti`,{ params:{ size:size, page:page }}),
-
+ 
 
   //terms
   getTermsDetail: (groupId) => baseAxios.get(`/api/v1/terms/group/${groupId}/lastest`),
@@ -108,4 +108,7 @@ export const serviceApis = {
 
   //community
   requestFriend:(toUserId) => baseAxios.put(`/api/v1/community/friend/${toUserId}`),
+  getFriends : () => baseAxios.get(`/api/v1/community/friend`),
+  getPendingFriends : () => baseAxios.get(`/api/v1/community/friend/pending`),
+
 };

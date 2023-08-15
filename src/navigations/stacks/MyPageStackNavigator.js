@@ -14,6 +14,7 @@ import MyNotificationView from '../../screens/mypage/MyNotificationView';
 import { COLORS } from '../../commons/colors';
 import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
+import FriendsView from '../../screens/mypage/FriendsView';
 
 const MyPageStack = createNativeStackNavigator();
 
@@ -86,7 +87,7 @@ const MyPageStackNavigator = ({ navigation, route }) => {
         </MyPageStack.Group>
 
         <MyPageStack.Screen
-          options={{ title:"My Pet" }}
+          options={{ title: 'My Pet' }}
           name="pet_add_form"
           component={PetAddFormView}
         ></MyPageStack.Screen>
@@ -104,6 +105,11 @@ const MyPageStackNavigator = ({ navigation, route }) => {
           options={{ title: 'Notification' }}
           name="notification_history"
           component={MyNotificationView}
+        ></MyPageStack.Screen>
+        <MyPageStack.Screen
+          options={{ title: 'My Friends' }}
+          name="friends"
+          component={FriendsView}
         ></MyPageStack.Screen>
       </MyPageStack.Group>
     </MyPageStack.Navigator>

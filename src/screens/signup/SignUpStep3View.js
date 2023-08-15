@@ -11,6 +11,7 @@ import CustomText from '../../components/elements/CustomText';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../contexts/StoreContext';
 import { FONT_WEIGHT } from '../../commons/constants';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const SignupStep3View = (props) => {
   const { route } = props;
@@ -98,76 +99,79 @@ const SignupStep3View = (props) => {
       {!systemStore.isLoading && (
         <>
           <Container header={true}>
-            <View style={styles.section1}>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-                약관 동의를 해주세요.
-              </CustomText>
-            </View>
-            <View style={styles.section2}>
-              <Pressable style={styles.termsSelectAll} onPress={toggleAll}>
-                <CheckBox checked={selectAll} size={27} onPress={toggleAll} />
-                <CustomText fontSize={17} style={{ marginLeft: 20 }}>
-                  전체 선택
+            <KeyboardAwareScrollView>
+              <View style={styles.section1}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+                  약관 동의를 해주세요.
                 </CustomText>
-              </Pressable>
-              {terms.map((ele) => (
-                <View key={ele.termsGroupId}>
-                  <View style={styles.termsItem}>
-                    <CheckBox
-                      checked={termsAgreed[ele.termsGroupId].checkedYn}
-                      onPress={() => {
-                        const newTermsAgreed = {
-                          ...termsAgreed,
-                          [ele.termsGroupId]: {
-                            ...termsAgreed[ele.termsGroupId],
-                            checkedYn: !termsAgreed[ele.termsGroupId].checkedYn,
-                          },
-                        };
-                        setTermsAgreed(newTermsAgreed);
-                        checkTerms(newTermsAgreed);
-                      }}
-                      size={27}
-                    />
-                    <Pressable
-                      onPress={() => {
-                        Navigator.navigate(
-                          {
-                            termsGroupId: ele.termsGroupId,
-                          },
-                          'terms'
-                        );
-                      }}
-                    >
-                      <View style={{ marginLeft: 20, flexDirection: 'row' }}>
-                        <CustomText fontSize={15}>
-                          [{ele.requiredYn ? '필수' : '선택'}]{' '}
-                        </CustomText>
-                        <CustomText
-                          fontSize={15}
-                          style={{
-                            textDecorationLine: 'underline',
-                          }}
-                        >
-                          {ele.termsGroupName}{' '}
-                        </CustomText>
-                        <CustomText fontSize={15}>동의</CustomText>
-                      </View>
-                    </Pressable>
+              </View>
+              <View style={styles.section2}>
+                <Pressable style={styles.termsSelectAll} onPress={toggleAll}>
+                  <CheckBox checked={selectAll} size={27} onPress={toggleAll} />
+                  <CustomText fontSize={17} style={{ marginLeft: 20 }}>
+                    전체 선택
+                  </CustomText>
+                </Pressable>
+                {terms.map((ele) => (
+                  <View key={ele.termsGroupId}>
+                    <View style={styles.termsItem}>
+                      <CheckBox
+                        checked={termsAgreed[ele.termsGroupId].checkedYn}
+                        onPress={() => {
+                          const newTermsAgreed = {
+                            ...termsAgreed,
+                            [ele.termsGroupId]: {
+                              ...termsAgreed[ele.termsGroupId],
+                              checkedYn:
+                                !termsAgreed[ele.termsGroupId].checkedYn,
+                            },
+                          };
+                          setTermsAgreed(newTermsAgreed);
+                          checkTerms(newTermsAgreed);
+                        }}
+                        size={27}
+                      />
+                      <Pressable
+                        onPress={() => {
+                          Navigator.navigate(
+                            {
+                              termsGroupId: ele.termsGroupId,
+                            },
+                            'terms'
+                          );
+                        }}
+                      >
+                        <View style={{ marginLeft: 20, flexDirection: 'row' }}>
+                          <CustomText fontSize={15}>
+                            [{ele.requiredYn ? '필수' : '선택'}]{' '}
+                          </CustomText>
+                          <CustomText
+                            fontSize={15}
+                            style={{
+                              textDecorationLine: 'underline',
+                            }}
+                          >
+                            {ele.termsGroupName}{' '}
+                          </CustomText>
+                          <CustomText fontSize={15}>동의</CustomText>
+                        </View>
+                      </Pressable>
+                    </View>
+                    {ele.termsGroupContent && (
+                      <CustomText
+                        style={{
+                          marginTop: -5,
+                          paddingLeft: 54,
+                        }}
+                        fontSize={14}
+                      >
+                        {ele.termsGroupContent}
+                      </CustomText>
+                    )}
                   </View>
-                  {ele.termsGroupContent && (
-                    <CustomText
-                      style={{
-                        marginTop: -5,
-                        paddingLeft: 54,
-                      }}
-                      fontSize={14}
-                    >
-                      {ele.termsGroupContent}
-                    </CustomText>
-                  )}
-                </View>
-              ))}
-            </View>
+                ))}
+              </View>
+            </KeyboardAwareScrollView>
           </Container>
           <CustomButton
             fontWeight={FONT_WEIGHT.BOLD}
@@ -189,10 +193,10 @@ export default observer(SignupStep3View);
 
 const styles = StyleSheet.create({
   section1: {
-    flex: 1,
+    marginBottom: 50,
   },
   section2: {
-    flex: 4,
+    flex: 1,
   },
 
   termsSelectAll: {

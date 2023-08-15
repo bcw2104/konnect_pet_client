@@ -40,6 +40,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const WalkingHomeView = (props) => {
   const isFocused = useIsFocused();
+  const { route } = props;
   const { modalStore, systemStore, userStore } = useStores();
 
   const [index, setIndex] = useState(0);
@@ -50,6 +51,12 @@ const WalkingHomeView = (props) => {
 
   const FirstRoute = useCallback(() => <WalkingStartView />, []);
   const SecondRoute = useCallback(() => <WalkingHistoryView />, []);
+
+  useEffect(() => {
+    if (!!route.params?.tab) {
+      setIndex(route.params.tab);
+    }
+  }, [route.params]);
 
   useEffect(() => {
     if (isFocused && !userStore.profile) {
@@ -446,8 +453,8 @@ const WalkingHistoryView = () => {
       <View style={styles.summaryWrap}>
         <CustomText
           fontWeight={FONT_WEIGHT.BOLD}
-          fontSize={24}
-          style={{ marginBottom: 20 }}
+          fontSize={20}
+          style={{ marginBottom: 10 }}
         >
           Walking Summary
         </CustomText>
@@ -611,7 +618,8 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: COLORS.white,
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingTop: 20,
+    paddingBottom: 10,
   },
   summary: {
     flexDirection: 'row',
@@ -642,8 +650,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     backgroundColor: COLORS.light,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
   },
 
   monthPicker: {

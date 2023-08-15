@@ -77,13 +77,13 @@ export default FindPasswordStep1View;
 
 const styles = StyleSheet.create({
   section1: {
-    flex: 1,
+    marginBottom: 50,
   },
   section2: {
-    flex: 2,
+    marginBottom: 50,
   },
   section3: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'space-between',
   },
   submitTheme: { borderRadius: 0 },

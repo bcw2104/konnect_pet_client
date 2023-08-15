@@ -8,8 +8,6 @@ import { asyncStorage } from '../../storage/Storage';
 import CustomText from '../elements/CustomText';
 import { Pressable } from 'react-native';
 import { Navigator } from '../../navigations/Navigator';
-import { KeyboardAvoidingView } from 'react-native';
-import { Platform } from 'react-native';
 import { serviceApis } from '../../utils/ServiceApis';
 import { FONT_WEIGHT } from '../../commons/constants';
 
@@ -58,10 +56,7 @@ const DefaultLogin = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.form}
-    >
+    <View style={styles.form}>
       <CustomInput
         value={email}
         maxLength={50}
@@ -121,7 +116,7 @@ const DefaultLogin = () => {
         height={50}
         wrapperStyle={styles.submit}
       />
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 

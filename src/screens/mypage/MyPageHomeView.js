@@ -1,10 +1,17 @@
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import { useStores } from '../../contexts/StoreContext';
 import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import { observer } from 'mobx-react-lite';
 import PetList from '../../components/mypage/PetList';
 import Profile from '../../components/mypage/Profile';
@@ -13,6 +20,9 @@ import { Navigator } from '../../navigations/Navigator';
 import { useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { utils } from '../../utils/Utils';
+import Swiper from 'react-native-swiper';
+
+const window = Dimensions.get('window');
 
 const MyPageHomeView = ({ navigation }) => {
   const [myData, setMyData] = useState(null);
@@ -76,8 +86,39 @@ const MyPageHomeView = ({ navigation }) => {
             </View>
           </View>
         </View>
+        {!!myData && myData.banners?.length > 0 && (
+          <Swiper
+            style={styles.section2}
+            autoplay={true}
+            autoplayTimeout={4}
+            dotColor={COLORS.gray}
+            activeDotColor={COLORS.main}
+          >
+            {myData.banners?.map((ele) => {
+              {
+                return (
+                  !!ele.imgUrl && (
+                    <Pressable
+                      key={ele.bannerId}
+                      style={{ flex: 1 }}
+                      onPress={() => {
+                        console.log(ele.bannerId);
+                      }}
+                    >
+                      <Image
+                        key={ele.bannerId}
+                        source={{ uri: ele.imgUrl }}
+                        style={{ width: '100%', height: '100%' }}
+                      />
+                    </Pressable>
+                  )
+                );
+              }
+            })}
+          </Swiper>
+        )}
 
-        <View style={styles.section2}>
+        <View style={styles.section3}>
           {!!myData && (
             <View style={styles.element}>
               <CustomText
@@ -119,7 +160,7 @@ const MyPageHomeView = ({ navigation }) => {
           )}
         </View>
 
-        <View style={styles.section3}>
+        <View style={styles.section4}>
           {!!myData && (
             <View style={styles.element}>
               <CustomText
@@ -130,7 +171,12 @@ const MyPageHomeView = ({ navigation }) => {
                 Community
               </CustomText>
               <View style={styles.communityWrap}>
-                <Pressable style={styles.community}>
+                <Pressable
+                  style={styles.community}
+                  onPress={() => {
+                    Navigator.navigate({}, 'mypage_nav', 'friends');
+                  }}
+                >
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
                     0
                   </CustomText>
@@ -229,18 +275,23 @@ const styles = StyleSheet.create({
   section1: {
     paddingVertical: 5,
     paddingHorizontal: 15,
-    marginBottom: 20,
     backgroundColor: '#fff',
     borderRadius: 10,
   },
   section2: {
+    height: window.width / 4,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+  },
+  section3: {
+    marginTop: 20,
     paddingVertical: 5,
     paddingHorizontal: 15,
     marginBottom: 20,
     backgroundColor: '#fff',
     borderRadius: 10,
   },
-  section3: {
+  section4: {
     paddingVertical: 5,
     paddingHorizontal: 15,
     marginBottom: 20,
