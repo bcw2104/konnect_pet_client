@@ -93,65 +93,45 @@ const PointHist = (props) => {
   const [history, setHistory] = useState(null);
   const [hasNext, setHasNext] = useState(false);
 
+  const getData = async (init) => {
+    try {
+      const response = await serviceApis.getPointHistories(
+        pointType,
+        type,
+        PAGE_SIZE,
+        page.current
+      );
+      if (init) {
+        setHistory(response.result?.histories);
+      } else {
+        setHistory([...history, ...response.result?.histories]);
+      }
+      setHasNext(response.result?.hasNext);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       systemStore.setIsLoading(true);
-      try {
-        const response = await serviceApis.getPointHistories(
-          pointType,
-          type,
-          PAGE_SIZE,
-          page.current
-        );
-        setHistory(response.result?.histories);
-        setHasNext(response.result?.hasNext);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        systemStore.setIsLoading(false);
-      }
+      await getData(true);
+      systemStore.setIsLoading(false);
     };
     fetchData();
   }, []);
 
   const getNextData = async () => {
     page.current += 1;
-
     systemStore.setIsLoading(true);
-    try {
-      const response = await serviceApis.getPointHistories(
-        pointType,
-        type,
-        PAGE_SIZE,
-        page.current
-      );
-
-      setHistory([...history, ...response.result?.histories]);
-      setHasNext(response.result?.hasNext);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      systemStore.setIsLoading(false);
-    }
+    await getData(false);
+    systemStore.setIsLoading(false);
   };
 
   const onRefresh = async () => {
     setRefreshing(true);
     page.current = 1;
-    try {
-      const response = await serviceApis.getPointHistories(
-        pointType,
-        type,
-        PAGE_SIZE,
-        page.current
-      );
-      setHistory(response.result?.histories);
-      setHasNext(response.result?.hasNext);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setRefreshing(false);
-    }
+    await getData(true);
+    setRefreshing(false);
   };
 
   return (
@@ -170,7 +150,7 @@ const PointHist = (props) => {
             {hasNext && (
               <Pressable style={styles.more} onPress={getNextData}>
                 <MaterialIcons
-                  name="expand-more"
+                  name='expand-more'
                   size={28}
                   color={COLORS.dark}
                   style={{ marginRight: 5 }}

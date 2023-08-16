@@ -8,6 +8,8 @@ export const PROCESS_STATUS_CODE = {
   PERMITTED: '002',
   DENIED: '003',
   CANCELED: '004',
+  FORBIDDEN : "005",
+  UNSET: "999"
 };
 
 export const LANDING_TYPE_CODE = {

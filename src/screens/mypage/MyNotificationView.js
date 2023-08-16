@@ -25,21 +25,28 @@ const MyNotificationView = () => {
   const page = useRef(1);
   const [refreshing, setRefreshing] = useState(false);
 
+  const getData = async (init) => {
+    try {
+      const response = await serviceApis.getNotifications(
+        PAGE_SIZE,
+        page.current
+      );
+      if (init) {
+        setNotification(response.result?.notifications);
+      } else {
+        setNotification([...notification, ...response.result?.notifications]);
+      }
+      setHasNext(response.result?.hasNext);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       systemStore.setIsLoading(true);
-      try {
-        const response = await serviceApis.getNotifications(
-          PAGE_SIZE,
-          page.current
-        );
-        setNotification(response.result?.notifications);
-        setHasNext(response.result?.hasNext);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        systemStore.setIsLoading(false);
-      }
+      await getData(true);
+      systemStore.setIsLoading(false);
     };
     fetchData();
   }, []);
@@ -47,36 +54,17 @@ const MyNotificationView = () => {
   const getNextData = async () => {
     page.current += 1;
     systemStore.setIsLoading(true);
-    try {
-      const response = await serviceApis.getNotifications(
-        PAGE_SIZE,
-        page.current
-      );
-      setNotification([...notification, ...response.result?.notifications]);
-      setHasNext(response.result?.hasNext);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      systemStore.setIsLoading(false);
-    }
+    await getData(false);
+    systemStore.setIsLoading(false);
   };
 
   const onRefresh = async () => {
     setRefreshing(true);
     page.current = 1;
-    try {
-      const response = await serviceApis.getNotifications(
-        PAGE_SIZE,
-        page.current
-      );
-      setNotification(response.result?.notifications);
-      setHasNext(response.result?.hasNext);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setRefreshing(false);
-    }
+    await getData(true);
+    setRefreshing(false);
   };
+  
   const landing = useCallback((item) => {
     if (item.landingUrl == 'walking_history') {
       Navigator.reset({ tab: 1 }, 'home_tabs', 'walking_tab', 'walking_home');
@@ -105,7 +93,7 @@ const MyNotificationView = () => {
               {hasNext && (
                 <Pressable style={styles.more} onPress={getNextData}>
                   <MaterialIcons
-                    name="expand-more"
+                    name='expand-more'
                     size={28}
                     color={COLORS.dark}
                     style={{ marginRight: 5 }}

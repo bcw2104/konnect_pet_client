@@ -4,12 +4,13 @@ import { COLORS } from '../../commons/colors';
 import CustomButton from '../elements/CustomButton';
 import ProfileImage from '../modules/ProfileImage';
 import CustomText from '../elements/CustomText';
-import { AntDesign } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { FONT_WEIGHT } from '../../commons/constants';
 import moment from 'moment';
 import { utils } from '../../utils/Utils';
+import { PROCESS_STATUS_CODE } from '../../commons/codes';
 
-const FriendItem = ({ item, type }) => {
+const FriendItem = ({ item, type, onHandleReply }) => {
   return (
     <View style={styles.friendItem}>
       <View style={styles.profile}>
@@ -34,10 +35,12 @@ const FriendItem = ({ item, type }) => {
               fontColor={COLORS.white}
               width={50}
               height={35}
-              onPress={() => {}}
+              onPress={() => {
+                onHandleReply(item.userId, PROCESS_STATUS_CODE.PERMITTED);
+              }}
               render={
-                <AntDesign
-                  name={'adduser'}
+                <Feather
+                  name='user-plus'
                   size={20}
                   color={COLORS.white}
                   style={{ marginRight: 5 }}
@@ -50,15 +53,24 @@ const FriendItem = ({ item, type }) => {
               fontColor={COLORS.white}
               width={50}
               height={35}
-              onPress={() => {}}
-              render={
-                <AntDesign
-                  name={'deleteuser'}
-                  size={20}
-                  color={COLORS.white}
-                  style={{ marginRight: 5 }}
-                />
-              }
+              onPress={() => {
+                onHandleReply(item.userId, PROCESS_STATUS_CODE.DENIED);
+              }}
+              render={<Feather name='user-x' size={20} color={COLORS.white} />}
+            />
+          </>
+        ) : type == 'request' ? (
+          <>
+            <CustomButton
+              bgColor={COLORS.danger}
+              bgColorPress={COLORS.dangerDeep}
+              fontColor={COLORS.white}
+              width={50}
+              height={35}
+              onPress={() => {
+                onHandleReply(item.userId, PROCESS_STATUS_CODE.CANCELED);
+              }}
+              render={<Feather name='user-x' size={20} color={COLORS.white} />}
             />
           </>
         ) : (

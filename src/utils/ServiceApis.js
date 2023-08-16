@@ -108,6 +108,7 @@ export const serviceApis = {
 
   //community
   requestFriend:(toUserId) => baseAxios.put(`/api/v1/community/friend/${toUserId}`),
+  replyFriend:(toUserId,code) => baseAxios.patch(`/api/v1/community/friend/${toUserId}`,{code:code}),
   getFriends : () => baseAxios.get(`/api/v1/community/friend`),
   getPendingFriends : () => baseAxios.get(`/api/v1/community/friend/pending`),
 

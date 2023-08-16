@@ -10,7 +10,7 @@ import CustomText from '../elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
 import moment from 'moment';
 import { utils } from '../../utils/Utils';
-import { AntDesign, Entypo } from '@expo/vector-icons';
+import { Feather, Entypo } from '@expo/vector-icons';
 import { COLORS } from '../../commons/colors';
 import CustomButton from '../elements/CustomButton';
 import { PROCESS_STATUS_CODE } from '../../commons/codes';
@@ -21,22 +21,23 @@ import Loader from '../modules/Loader';
 
 const FootprintDetailModal = ({ footprintId, modalRef }) => {
   const [detail, setDetail] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const { userStore, systemStore } = useStores();
+
+  const getData = async () => {
+    try {
+      const response = await serviceApis.getFootprintDetail(footprintId);
+      setDetail(response.result);
+    } catch (error) {
+    } 
+  };
 
   useEffect(() => {
     if (!footprintId) return;
     const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await serviceApis.getFootprintDetail(footprintId);
-        setDetail(response.result);
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
+      systemStore.setIsLoading(true);
+      await getData();
+      systemStore.setIsLoading(false);
+    }
     fetchData();
   }, [footprintId]);
 
@@ -47,12 +48,29 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
 
       setDetail({
         ...detail,
-        friendStatus: PROCESS_STATUS_CODE.PENDING,
+        friendStatus: response.result,
       });
-      Toast.show({
-        type: 'success',
-        text1: 'Your friend request has been completed.',
-      });
+    } catch (error) {
+    } finally {
+      systemStore.setIsLoading(false);
+    }
+  };
+
+  const cancelFriend = async (toUserId) => {
+    systemStore.setIsLoading(true);
+    try {
+      const response = await serviceApis.replyFriend(
+        toUserId,
+        PROCESS_STATUS_CODE.CANCELED
+      );
+      if (response.rsp_code == '9104') {
+        await getData();
+      } else {
+        setDetail({
+          ...detail,
+          friendStatus: response.result,
+        });
+      }
     } catch (error) {
     } finally {
       systemStore.setIsLoading(false);
@@ -62,7 +80,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
   return (
     <CustomBottomModal ref={modalRef}>
       <Loader />
-      {!isLoading && (
+      {!!detail && (
         <>
           <View style={styles.section1}>
             <View style={styles.profileWrap}>
@@ -90,28 +108,60 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                     fontColor={COLORS.white}
                     width={100}
                     height={35}
-                    disabled={
-                      detail?.friendStatus == PROCESS_STATUS_CODE.PENDING
-                    }
                     onPress={() => {
                       if (
+                        detail?.friendStatus == PROCESS_STATUS_CODE.PENDING ||
                         detail?.friendStatus == PROCESS_STATUS_CODE.PERMITTED
                       ) {
-                      } else if (
-                        detail?.friendStatus != PROCESS_STATUS_CODE.PENDING
-                      ) {
+                        cancelFriend(detail?.userId);
+                      } else {
                         requestFriend(detail?.userId);
                       }
                     }}
                     render={
                       <>
-                        <AntDesign
+                        <Feather
                           name={
                             detail?.friendStatus ==
                             PROCESS_STATUS_CODE.PERMITTED
-                              ? 'message1'
-                              : 'adduser'
+                              ? 'user-minus'
+                              : detail?.friendStatus ==
+                                PROCESS_STATUS_CODE.PENDING
+                              ? 'user-x'
+                              : 'user-plus'
                           }
+                          size={20}
+                          color={COLORS.white}
+                          wrapperStyle={{ marginBottom: 5 }}
+                        />
+                        <CustomText
+                          fontSize={14}
+                          fontColor={COLORS.white}
+                          fontWeight={FONT_WEIGHT.BOLD}
+                        >
+                          {detail?.friendStatus == PROCESS_STATUS_CODE.PERMITTED
+                            ? 'Remove'
+                            : detail?.friendStatus ==
+                              PROCESS_STATUS_CODE.PENDING
+                            ? 'Cancel'
+                            : 'Friend'}
+                        </CustomText>
+                      </>
+                    }
+                  />
+                  <CustomButton
+                    bgColor={COLORS.main}
+                    bgColorPress={COLORS.mainDeep}
+                    fontColor={COLORS.white}
+                    width={100}
+                    height={35}
+                    onPress={() => {
+                      // TODO: Message
+                    }}
+                    render={
+                      <>
+                        <Feather
+                          name='send'
                           size={20}
                           color={COLORS.white}
                           style={{ marginRight: 5 }}
@@ -121,12 +171,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                           fontColor={COLORS.white}
                           fontWeight={FONT_WEIGHT.BOLD}
                         >
-                          {detail?.friendStatus == PROCESS_STATUS_CODE.PERMITTED
-                            ? 'Message'
-                            : detail?.friendStatus ==
-                              PROCESS_STATUS_CODE.PENDING
-                            ? 'Waiting'
-                            : 'Friend'}
+                          Message
                         </CustomText>
                       </>
                     }
@@ -136,7 +181,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
             </View>
             <View style={styles.locationWrap}>
               <Entypo
-                name="location-pin"
+                name='location-pin'
                 size={22}
                 color={COLORS.dark}
                 style={{ marginRight: 5 }}
@@ -251,6 +296,7 @@ const styles = StyleSheet.create({
     height: 80,
     flex: 1,
   },
+  optionBtnWrap: {},
   petWrap: {
     backgroundColor: COLORS.light,
     paddingHorizontal: 15,

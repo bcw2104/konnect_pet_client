@@ -16,18 +16,23 @@ import { useStores } from '../../contexts/StoreContext';
 import CustomInput from '../../components/elements/CustomInput';
 import { FontAwesome } from '@expo/vector-icons';
 import FriendItem from '../../components/mypage/FriendItem';
+import { PROCESS_STATUS_CODE } from '../../commons/codes';
 
 const FriendsView = (props) => {
   const { route } = props;
 
+  const [refreshFriend, setRefreshFriend] = useState(0);
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'first', title: 'Friends' },
     { key: 'second', title: 'Requests' },
   ]);
 
-  const FirstRoute = useCallback(() => <Friends />, []);
-  const SecondRoute = useCallback(() => <RequestedFriends />, []);
+  const FirstRoute = useCallback(() => <Friends />, [refreshFriend]);
+  const SecondRoute = useCallback(
+    () => <RequestedFriends setRefreshFriend={setRefreshFriend} />,
+    []
+  );
 
   return (
     <Container
@@ -76,18 +81,21 @@ const Friends = () => {
   const originFriends = useRef(null);
   const [friends, setFriends] = useState(null);
 
+  const getData = async () => {
+    try {
+      const response = await serviceApis.getFriends();
+      originFriends.current = response.result?.friends;
+      filtering(search);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       systemStore.setIsLoading(true);
-      try {
-        const response = await serviceApis.getFriends();
-        originFriends.current = response.result?.friends;
-        filtering(search);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        systemStore.setIsLoading(false);
-      }
+      await getData();
+      systemStore.setIsLoading(false);
     };
     fetchData();
   }, []);
@@ -108,16 +116,29 @@ const Friends = () => {
 
   const onRefresh = async () => {
     setRefreshing(true);
+    await getData();
+    setRefreshing(false);
+  };
+
+  const onHandleReply = async (toUserId, code) => {
+    systemStore.setIsLoading(true);
     try {
-      const response = await serviceApis.getFriends();
-      originFriends.current = response.result?.friends;
-      filtering(search);
-    } catch (err) {
-      console.log(err);
+      const response = await serviceApis.replyFriend(toUserId, code);
+
+      if (response.rsp_code == '9104') {
+        await getData();
+      } else {
+        originFriends.current = originFriends.current.filter(
+          (ele) => ele.userId != toUserId
+        );
+        filtering();
+      }
+    } catch (error) {
     } finally {
-      setRefreshing(false);
+      systemStore.setIsLoading(false);
     }
   };
+
   return (
     <View style={styles.section1}>
       <View style={styles.searchWrap}>
@@ -126,10 +147,10 @@ const Friends = () => {
           maxLength={15}
           onValueChange={handleSearch}
           wrapperStyle={styles.input}
-          placeholder="Please enter the nickname."
+          placeholder='Please enter the nickname.'
         />
         <FontAwesome
-          name="search"
+          name='search'
           style={styles.searchIcon}
           size={24}
           color={COLORS.dark}
@@ -150,7 +171,12 @@ const Friends = () => {
             Friends ({friends?.length})
           </CustomText>
           {friends?.map((item) => (
-            <View>{item.userId}</View>
+            <FriendItem
+              key={item.friendId}
+              item={item}
+              type={'request'}
+              onHandleReply={onHandleReply}
+            />
           ))}
         </ScrollView>
       </View>
@@ -158,7 +184,7 @@ const Friends = () => {
   );
 };
 
-const RequestedFriends = () => {
+const RequestedFriends = ({ setRefreshFriend }) => {
   const { systemStore } = useStores();
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
@@ -168,20 +194,23 @@ const RequestedFriends = () => {
   const [request, setRequest] = useState(null);
   const [requested, setRequested] = useState(null);
 
+  const getData = async () => {
+    try {
+      const response = await serviceApis.getPendingFriends();
+      originRequest.current = response.result?.request;
+      originRequested.current = response.result?.requested;
+
+      filtering(search);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       systemStore.setIsLoading(true);
-      try {
-        const response = await serviceApis.getPendingFriends();
-        originRequest.current = response.result?.request;
-        originRequested.current = response.result?.requested;
-
-        filtering(search);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        systemStore.setIsLoading(false);
-      }
+      await getData();
+      systemStore.setIsLoading(false);
     };
     fetchData();
   }, []);
@@ -205,18 +234,35 @@ const RequestedFriends = () => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    try {
-      const response = await serviceApis.getFriends();
-      originRequest.current = response.result?.request;
-      originRequested.current = response.result?.requested;
+    await getData();
+    setRefreshing(false);
+  };
 
-      filtering(search);
-    } catch (err) {
-      console.log(err);
+  const onHandleReply = async (toUserId, code) => {
+    systemStore.setIsLoading(true);
+    try {
+      const response = await serviceApis.replyFriend(toUserId, code);
+
+      if (response.rsp_code == '9104') {
+        await getData();
+      } else {
+        if (code == PROCESS_STATUS_CODE.PERMITTED) {
+          setRefreshFriend((prev) => (prev += 1));
+        }
+        originRequest.current = originRequest.current.filter(
+          (ele) => ele.userId != toUserId
+        );
+        originRequested.current = originRequested.current.filter(
+          (ele) => ele.userId != toUserId
+        );
+        filtering();
+      }
+    } catch (error) {
     } finally {
-      setRefreshing(false);
+      systemStore.setIsLoading(false);
     }
   };
+
   return (
     <View style={styles.section1}>
       <View style={styles.searchWrap}>
@@ -225,10 +271,10 @@ const RequestedFriends = () => {
           maxLength={15}
           onValueChange={handleSearch}
           wrapperStyle={styles.input}
-          placeholder="Please enter the nickname."
+          placeholder='Please enter the nickname.'
         />
         <FontAwesome
-          name="search"
+          name='search'
           style={styles.searchIcon}
           size={24}
           color={COLORS.dark}
@@ -251,7 +297,12 @@ const RequestedFriends = () => {
             Request ({request?.length})
           </CustomText>
           {request?.map((item) => (
-            <FriendItem item={item} type={'request'} />
+            <FriendItem
+              key={item.friendId}
+              item={item}
+              type={'request'}
+              onHandleReply={onHandleReply}
+            />
           ))}
           <CustomText
             fontSize={16}
@@ -261,9 +312,12 @@ const RequestedFriends = () => {
             Requested ({requested?.length})
           </CustomText>
           {requested?.map((item) => (
-            <View>
-              <FriendItem item={item} type={'requested'} />
-            </View>
+            <FriendItem
+              key={item.friendId}
+              item={item}
+              type={'requested'}
+              onHandleReply={onHandleReply}
+            />
           ))}
         </ScrollView>
       </View>
