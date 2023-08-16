@@ -28,6 +28,12 @@ const FriendsView = (props) => {
     { key: 'second', title: 'Requests' },
   ]);
 
+  useEffect(() => {
+    if (!!route.params?.tab) {
+      setIndex(route.params.tab);
+    }
+  }, [route.params]);
+
   const FirstRoute = useCallback(() => <Friends />, [refreshFriend]);
   const SecondRoute = useCallback(
     () => <RequestedFriends setRefreshFriend={setRefreshFriend} />,

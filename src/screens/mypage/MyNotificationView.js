@@ -64,10 +64,14 @@ const MyNotificationView = () => {
     await getData(true);
     setRefreshing(false);
   };
-  
+
   const landing = useCallback((item) => {
-    if (item.landingUrl == 'walking_history') {
+    if (item.landingUrl == 'walking_history_tab2') {
       Navigator.reset({ tab: 1 }, 'home_tabs', 'walking_tab', 'walking_home');
+    } else if (item.landingUrl == 'friends_tab1') {
+      Navigator.reset({ tab: 0 }, 'friends');
+    } else if (item.landingUrl == 'friends_tab2') {
+      Navigator.reset({ tab: 1 }, 'friends');
     }
   }, []);
 
@@ -93,7 +97,7 @@ const MyNotificationView = () => {
               {hasNext && (
                 <Pressable style={styles.more} onPress={getNextData}>
                   <MaterialIcons
-                    name='expand-more'
+                    name="expand-more"
                     size={28}
                     color={COLORS.dark}
                     style={{ marginRight: 5 }}
