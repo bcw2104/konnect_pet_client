@@ -16,7 +16,6 @@ import CustomButton from '../elements/CustomButton';
 import { PROCESS_STATUS_CODE } from '../../commons/codes';
 import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import Loader from '../modules/Loader';
 
 const FootprintDetailModal = ({ footprintId, modalRef }) => {
@@ -24,20 +23,18 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
   const { userStore, systemStore } = useStores();
 
   const getData = async () => {
+    setDetail(null);
     try {
       const response = await serviceApis.getFootprintDetail(footprintId);
       setDetail(response.result);
-    } catch (error) {
-    } 
+    } catch (error) {}
   };
 
   useEffect(() => {
     if (!footprintId) return;
     const fetchData = async () => {
-      systemStore.setIsLoading(true);
       await getData();
-      systemStore.setIsLoading(false);
-    }
+    };
     fetchData();
   }, [footprintId]);
 
@@ -45,11 +42,14 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
     systemStore.setIsLoading(true);
     try {
       const response = await serviceApis.requestFriend(toUserId);
-
-      setDetail({
-        ...detail,
-        friendStatus: response.result,
-      });
+      if (response.rsp_code != '1000') {
+        modalRef.current.closeModal();
+      } else {
+        setDetail({
+          ...detail,
+          friendStatus: response.result,
+        });
+      }
     } catch (error) {
     } finally {
       systemStore.setIsLoading(false);
@@ -63,8 +63,8 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
         toUserId,
         PROCESS_STATUS_CODE.CANCELED
       );
-      if (response.rsp_code == '9104') {
-        await getData();
+      if (response.rsp_code != '1000') {
+        modalRef.current.closeModal();
       } else {
         setDetail({
           ...detail,
@@ -132,7 +132,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                           }
                           size={20}
                           color={COLORS.white}
-                          wrapperStyle={{ marginBottom: 5 }}
+                          style={{ marginRight: 5 }}
                         />
                         <CustomText
                           fontSize={14}
@@ -161,7 +161,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                     render={
                       <>
                         <Feather
-                          name='send'
+                          name="send"
                           size={20}
                           color={COLORS.white}
                           style={{ marginRight: 5 }}
@@ -181,7 +181,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
             </View>
             <View style={styles.locationWrap}>
               <Entypo
-                name='location-pin'
+                name="location-pin"
                 size={22}
                 color={COLORS.dark}
                 style={{ marginRight: 5 }}

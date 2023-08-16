@@ -125,7 +125,7 @@ const Friends = () => {
     try {
       const response = await serviceApis.replyFriend(toUserId, code);
 
-      if (response.rsp_code == '9104') {
+      if (response.rsp_code != '1000') {
         await getData();
       } else {
         originFriends.current = originFriends.current.filter(
@@ -147,10 +147,10 @@ const Friends = () => {
           maxLength={15}
           onValueChange={handleSearch}
           wrapperStyle={styles.input}
-          placeholder='Please enter the nickname.'
+          placeholder="Please enter the nickname."
         />
         <FontAwesome
-          name='search'
+          name="search"
           style={styles.searchIcon}
           size={24}
           color={COLORS.dark}
@@ -243,7 +243,7 @@ const RequestedFriends = ({ setRefreshFriend }) => {
     try {
       const response = await serviceApis.replyFriend(toUserId, code);
 
-      if (response.rsp_code == '9104') {
+      if (response.rsp_code != '1000') {
         await getData();
       } else {
         if (code == PROCESS_STATUS_CODE.PERMITTED) {
@@ -271,10 +271,10 @@ const RequestedFriends = ({ setRefreshFriend }) => {
           maxLength={15}
           onValueChange={handleSearch}
           wrapperStyle={styles.input}
-          placeholder='Please enter the nickname.'
+          placeholder="Please enter the nickname."
         />
         <FontAwesome
-          name='search'
+          name="search"
           style={styles.searchIcon}
           size={24}
           color={COLORS.dark}
@@ -345,13 +345,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20,
   },
-  friendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   title: {
-    marginTop: 30,
-    marginBottom: 20,
+    marginVertical: 20,
   },
 });

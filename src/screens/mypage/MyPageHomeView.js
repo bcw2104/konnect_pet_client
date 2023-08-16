@@ -178,7 +178,7 @@ const MyPageHomeView = ({ navigation }) => {
                   }}
                 >
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-                    0
+                    {myData.friendCount}
                   </CustomText>
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                     Friends

@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useImperativeHandle } from 'react';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import { useState } from 'react';
 import { forwardRef } from 'react';
 import Modal from 'react-native-modal';
@@ -13,6 +13,7 @@ const CustomBottomModal = ({ closeCallback = null, children }, ref) => {
     () => {
       return {
         openModal: handleOpen,
+        closeModal: handleClose,
       };
     },
     []
@@ -33,10 +34,10 @@ const CustomBottomModal = ({ closeCallback = null, children }, ref) => {
     <Modal
       animationType="none"
       isVisible={open}
-      animationInTiming={300}
-      animationOutTiming={300}
-      backdropTransitionInTiming={300}
-      backdropTransitionOutTiming={300}
+      animationInTiming={500}
+      animationOutTiming={500}
+      backdropTransitionInTiming={500}
+      backdropTransitionOutTiming={500}
       backdropColor={COLORS.transparent}
       onBackButtonPress={handleClose}
       onBackdropPress={handleClose}

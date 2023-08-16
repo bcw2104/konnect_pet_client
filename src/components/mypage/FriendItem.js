@@ -40,7 +40,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
               }}
               render={
                 <Feather
-                  name='user-plus'
+                  name="user-plus"
                   size={20}
                   color={COLORS.white}
                   style={{ marginRight: 5 }}
@@ -56,7 +56,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
               onPress={() => {
                 onHandleReply(item.userId, PROCESS_STATUS_CODE.DENIED);
               }}
-              render={<Feather name='user-x' size={20} color={COLORS.white} />}
+              render={<Feather name="user-x" size={20} color={COLORS.white} />}
             />
           </>
         ) : type == 'request' ? (
@@ -70,7 +70,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
               onPress={() => {
                 onHandleReply(item.userId, PROCESS_STATUS_CODE.CANCELED);
               }}
-              render={<Feather name='user-x' size={20} color={COLORS.white} />}
+              render={<Feather name="user-x" size={20} color={COLORS.white} />}
             />
           </>
         ) : (
@@ -84,6 +84,12 @@ const FriendItem = ({ item, type, onHandleReply }) => {
 export default FriendItem;
 
 const styles = StyleSheet.create({
+  friendItem: {
+    marginVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   profile: {
     flexDirection: 'row',
     alignItems: 'center',
