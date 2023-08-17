@@ -507,7 +507,7 @@ const WalkingView = (props) => {
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            render={<Ionicons name="options" size={30} color={COLORS.dark} />}
+            render={<Ionicons name='options' size={30} color={COLORS.dark} />}
             fontColor={COLORS.white}
             onPress={handleOpenSetting}
             width={50}
@@ -538,13 +538,17 @@ const WalkingView = (props) => {
               {!!setting.footprintYn &&
                 myFootprints.map((coords, index) => (
                   <Marker key={index} coordinate={coords}>
-                    <FootprintImage size={24} type={FOOTPRINT_TYPE.MINE} />
+                    <FootprintImage
+                      size={24}
+                      type={FOOTPRINT_TYPE.MINE}
+                      tracksViewChanges={false}
+                    />
                   </Marker>
                 ))}
               {!!setting.routeYn && (
                 <Polyline
                   coordinates={routes}
-                  strokeColor="#e23dff"
+                  strokeColor='#e23dff'
                   strokeWidth={6}
                 />
               )}
@@ -556,7 +560,7 @@ const WalkingView = (props) => {
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
             render={
-              <MaterialIcons name="my-location" size={30} color={COLORS.dark} />
+              <MaterialIcons name='my-location' size={30} color={COLORS.dark} />
             }
             fontColor={COLORS.white}
             onPress={getMyLocation}

@@ -86,7 +86,7 @@ const SignupStep4View = (props) => {
         <View style={styles.section2}>
           <View style={styles.placeWrap}>
             <GooglePlacesAutocomplete
-              placeholder="Search"
+              placeholder='Search'
               styles={styles.placeWrap}
               textInputProps={{
                 style: {
@@ -156,7 +156,12 @@ const SignupStep4View = (props) => {
               longitudeDelta={LONGITUDE_DELTA}
               latitudeDelta={LATITUDE_DELTA}
             >
-              {searchValue && <Marker coordinate={searchValue?.coords} />}
+              {searchValue && (
+                <Marker
+                  coordinate={searchValue?.coords}
+                  tracksViewChanges={false}
+                />
+              )}
             </GoogleMap>
           </View>
         </View>
@@ -166,7 +171,7 @@ const SignupStep4View = (props) => {
         fontColor={COLORS.white}
         bgColor={COLORS.main}
         bgColorPress={COLORS.mainDeep}
-        text="Start Walking"
+        text='Start Walking'
         disabled={!searchValue}
         onPress={submitSignupData}
         style={styles.submitTheme}
