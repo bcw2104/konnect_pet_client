@@ -70,7 +70,7 @@ const DefaultLogin = () => {
       <CustomInput
         secureTextEntry={true}
         value={password}
-        maxLength={50}
+        maxLength={16}
         onValueChange={setPassword}
         wrapperStyle={styles.input}
         placeholder="Password"

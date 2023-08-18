@@ -31,7 +31,7 @@ const FindPasswordStep1View = (props) => {
     <>
       <Container header={true}>
         <View style={styles.section1}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
             가입한 이메일을 입력해주세요.
           </CustomText>
         </View>

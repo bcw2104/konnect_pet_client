@@ -42,7 +42,7 @@ const FindPasswordStep2View = (props) => {
     <>
       <Container header={true}>
         <View style={styles.section1}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
             Please set a new password.
           </CustomText>
           <CustomText style={{ marginTop: 10 }}>

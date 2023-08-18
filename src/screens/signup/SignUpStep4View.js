@@ -79,7 +79,7 @@ const SignupStep4View = (props) => {
     <>
       <Container header={true}>
         <View style={styles.section1}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
             거주지를 입력해주세요.
           </CustomText>
         </View>

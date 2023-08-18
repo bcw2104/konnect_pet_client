@@ -22,7 +22,8 @@ export const serviceApis = {
   getNotifications: () => baseAxios.get(`/api/v1/user/noti`),
   getPointHistories : (pointType,type,size,page,) => baseAxios.get(`/api/v1/user/point/history`, { params:{ point:pointType,type: type, size:size, page:page  } }),
   getNotifications : (size,page) => baseAxios.get(`/api/v1/user/noti`,{ params:{ size:size, page:page }}),
- 
+  changePassword:(password,newPassword) => baseAxios.patch(`/api/v1/user/password`,{ prev:password, new:newPassword}),
+  changeMarketingAgreement:(marketingYn) => baseAxios.patch(`/api/v1/user/mypage/marketing`,{ marketingYn:marketingYn}),
 
   //terms
   getTermsDetail: (groupId) => baseAxios.get(`/api/v1/terms/group/${groupId}/lastest`),

@@ -35,7 +35,7 @@ const LeaveView = () => {
     <>
       <Container header={true}>
         <View style={styles.section1}>
-          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+          <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
             핸드폰 번호를 인증해주세요.
           </CustomText>
         </View>
@@ -66,7 +66,7 @@ const LeaveView = () => {
         fontColor={COLORS.white}
         bgColor={COLORS.main}
         bgColorPress={COLORS.mainDeep}
-        text="Confirm"
+        text="Withdrawal"
         disabled={!verifyKey}
         onPress={submit}
         style={styles.submitTheme}
@@ -79,14 +79,13 @@ export default observer(LeaveView);
 
 const styles = StyleSheet.create({
   section1: {
-    flex: 1,
+    marginBottom: 50,
   },
   section2: {
-    flex: 3,
+    marginBottom: 50,
   },
   section3: {
-    flex: 2,
-    justifyContent: 'space-between',
+    flex: 1,
   },
   phoneNumCountry: {
     marginTop: 20,

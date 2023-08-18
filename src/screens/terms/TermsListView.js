@@ -36,33 +36,29 @@ const TermsListView = () => {
       {!systemStore.isLoading && (
         <>
           <View style={styles.section1}>
-            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-              이용약관
-            </CustomText>
-          </View>
-          <View style={styles.section2}>
-            {terms.map((ele) => (
-              <Pressable
-                key={ele.termsGroupId}
-                onPress={() => {
-                  Navigator.navigate(
-                    {
-                      termsGroupId: ele.termsGroupId,
-                    },
-                    'terms'
-                  );
-                }}
-                style={styles.menuItem}
-              >
-                <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
-                  {ele.termsGroupName}
-                </CustomText>
-                <Ionicons
-                  name="chevron-forward"
-                  size={28}
-                  color={COLORS.dark}
-                />
-              </Pressable>
+            {terms.map((ele, idx) => (
+              <View key={ele.termsGroupId}>
+                <Pressable
+                  key={ele.termsGroupId}
+                  onPress={() => {
+                    Navigator.navigate(
+                      {
+                        termsGroupId: ele.termsGroupId,
+                      },
+                      'terms'
+                    );
+                  }}
+                  style={styles.menuItem}
+                >
+                  <CustomText fontSize={16}>{ele.termsGroupName}</CustomText>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={25}
+                    color={COLORS.dark}
+                  />
+                </Pressable>
+                {terms.length - 1 > idx && <View style={styles.divider}></View>}
+              </View>
             ))}
           </View>
         </>
@@ -77,14 +73,14 @@ const styles = StyleSheet.create({
   section1: {
     flex: 1,
   },
-  section2: {
-    flex: 7,
-    paddingHorizontal: 15,
-  },
   menuItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 15,
+  },
+  divider: {
+    height: 2,
+    backgroundColor: COLORS.light,
   },
 });

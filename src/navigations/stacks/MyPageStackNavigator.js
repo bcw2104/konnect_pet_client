@@ -15,6 +15,7 @@ import { COLORS } from '../../commons/colors';
 import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
 import FriendsView from '../../screens/mypage/FriendsView';
+import ChangePasswordView from '../../screens/mypage/ChangePasswordView';
 
 const MyPageStack = createNativeStackNavigator();
 
@@ -55,37 +56,42 @@ const MyPageStackNavigator = ({ navigation, route }) => {
         })}
       >
         <MyPageStack.Screen
-          options={{
-            headerTitle: '',
-          }}
+          options={{ title: 'Setting' }}
           name="setting"
           component={SettingView}
         ></MyPageStack.Screen>
 
         <MyPageStack.Group
           screenOptions={{
-            headerTitle: '',
             animation: 'slide_from_right',
           }}
         >
           <MyPageStack.Screen
+            options={{ title: 'Change Password' }}
+            name="change_password"
+            component={ChangePasswordView}
+          ></MyPageStack.Screen>
+          <MyPageStack.Screen
             name="terms_list"
+            options={{ title: 'Terms' }}
             component={TermsListView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
+            options={{ title: 'Terms' }}
             name="terms"
             component={TermsView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
+            options={{ title: 'Membership Withdrawal' }}
             name="leave_confirm"
             component={LeaveConfirmView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
+            options={{ title: 'Membership Withdrawal' }}
             name="leave"
             component={LeaveView}
           ></MyPageStack.Screen>
         </MyPageStack.Group>
-
         <MyPageStack.Screen
           options={{ title: 'My Pet' }}
           name="pet_add_form"

@@ -61,8 +61,8 @@ const WalkingHomeView = (props) => {
   useEffect(() => {
     if (isFocused && !userStore.profile) {
       modalStore.openOneButtonModal(
-        '이용 전 프로필을 등록해주세요.',
-        '등록하기',
+        'Please register your profile.',
+        'Regist',
         () => {
           Navigator.navigate({}, 'mypage_nav', 'profile_form');
         }
@@ -169,6 +169,7 @@ const WalkingStartView = () => {
               goToReport({ walkingId: walkingTempData.id });
             }
           } catch (err) {
+            console.log(err);
             Toast.show({
               type: 'error',
               text1: 'Failed to save walk history.',
@@ -184,6 +185,10 @@ const WalkingStartView = () => {
   const goToNextStep = (params) => {
     Navigator.reset(params, 'walking');
   };
+
+  const goToReport = useCallback((params) => {
+    Navigator.navigate(params, 'walking_nav', 'walking_result');
+  }, []);
 
   const handleChangeSetting = (setting) => {
     setSetting(setting);
@@ -332,7 +337,7 @@ const WalkingStartView = () => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          render={<Ionicons name='options' size={30} color={COLORS.dark} />}
+          render={<Ionicons name="options" size={30} color={COLORS.dark} />}
           fontColor={COLORS.white}
           onPress={handleOpenSetting}
           width={50}
@@ -366,7 +371,7 @@ const WalkingStartView = () => {
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
           render={
-            <MaterialIcons name='my-location' size={30} color={COLORS.dark} />
+            <MaterialIcons name="my-location" size={30} color={COLORS.dark} />
           }
           fontColor={COLORS.white}
           onPress={getMyLocation}
@@ -520,7 +525,7 @@ const WalkingHistoryView = () => {
             }
           }}
         >
-          <Ionicons name='chevron-back' size={28} color={COLORS.white} />
+          <Ionicons name="chevron-back" size={28} color={COLORS.white} />
         </Pressable>
         <CustomText
           fontWeight={FONT_WEIGHT.BOLD}
@@ -538,7 +543,7 @@ const WalkingHistoryView = () => {
             }
           }}
         >
-          <Ionicons name='chevron-forward' size={28} color={COLORS.white} />
+          <Ionicons name="chevron-forward" size={28} color={COLORS.white} />
         </Pressable>
       </View>
       <View style={styles.historyWrap}>

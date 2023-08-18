@@ -1,11 +1,4 @@
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import CustomText from '../../components/elements/CustomText';
 import Container from '../../components/layouts/Container';
@@ -32,6 +25,7 @@ const ProfileFormView = (props) => {
   const { userStore, modalStore, systemStore } = useStores();
   const imageUploaderRef = useRef();
   const isImageChanged = useRef(false);
+  const originImgPath = useRef(null);
   const [profileImage, setProfileImage] = useState(null);
   const [profile, setProfile] = useState({
     nickname: null,
@@ -47,6 +41,7 @@ const ProfileFormView = (props) => {
         ...profile,
         birthDate: moment(profile.birthDate, 'YYYYMMDD').toDate(),
       });
+      originImgPath.current = profile.profileImgPath;
       setProfileImage(
         process.env.EXPO_PUBLIC_BASE_IMAGE_URL + profile.profileImgPath
       );
@@ -81,7 +76,7 @@ const ProfileFormView = (props) => {
 
       systemStore.setIsLoading(true);
 
-      let imagePath = null;
+      let imagePath = originImgPath.current;
 
       if (isImageChanged.current && !!profileImage) {
         try {
@@ -91,8 +86,6 @@ const ProfileFormView = (props) => {
           );
           imagePath = upload.imagePath;
         } catch (err) {}
-      } else if (!isImageChanged.current && !!profileImage) {
-        imagePath = profileImage;
       }
 
       const data = {
@@ -105,7 +98,7 @@ const ProfileFormView = (props) => {
       if (response.rsp_code == '1000') {
         userStore.setProfile(response.result);
         modalStore.openOneButtonModal(
-          '프로필 등록이 완료되었습니다.',
+          'Profile registered successfully.',
           'Confirm',
           () => {
             Navigator.goBack();
@@ -135,7 +128,7 @@ const ProfileFormView = (props) => {
                   }}
                 >
                   <View style={styles.upload}>
-                    <Feather name='camera' size={20} color={COLORS.dark} />
+                    <Feather name="camera" size={20} color={COLORS.dark} />
                   </View>
                   <ProfileImage uri={profileImage} style={styles.profileImg} />
                 </Pressable>
@@ -148,7 +141,7 @@ const ProfileFormView = (props) => {
                   Nickname
                 </CustomText>
                 <FontAwesome5
-                  name='star-of-life'
+                  name="star-of-life"
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -163,8 +156,8 @@ const ProfileFormView = (props) => {
                 fontSize={15}
                 height={40}
                 wrapperStyle={styles.input}
-                placeholder='Please enter your nickname.'
-                keyboardType='default'
+                placeholder="Please enter your nickname."
+                keyboardType="default"
                 outline={true}
               />
             </View>
@@ -174,7 +167,7 @@ const ProfileFormView = (props) => {
                   Gender
                 </CustomText>
                 <FontAwesome5
-                  name='star-of-life'
+                  name="star-of-life"
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -199,7 +192,7 @@ const ProfileFormView = (props) => {
                   BirthDate
                 </CustomText>
                 <FontAwesome5
-                  name='star-of-life'
+                  name="star-of-life"
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -237,8 +230,8 @@ const ProfileFormView = (props) => {
                 multiline={true}
                 fontSize={15}
                 wrapperStyle={styles.input}
-                placeholder='Please introduce yourself.'
-                keyboardType='default'
+                placeholder="Please introduce yourself."
+                keyboardType="default"
                 outline={true}
                 height={'auto'}
               />
@@ -252,7 +245,7 @@ const ProfileFormView = (props) => {
         bgColor={COLORS.main}
         bgColorPress={COLORS.mainDeep}
         onPress={saveProfileInfo}
-        text='Save'
+        text="Save"
         style={styles.submitTheme}
         height={60}
       />

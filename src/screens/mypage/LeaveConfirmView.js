@@ -19,7 +19,7 @@ const LeaveConfirmView = () => {
   return (
     <Container header={true}>
       <View style={styles.section1}>
-        <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+        <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
           정말 탈퇴하시겠습니까?
         </CustomText>
         <CustomText style={{ marginTop: 20 }} fontSize={18}>

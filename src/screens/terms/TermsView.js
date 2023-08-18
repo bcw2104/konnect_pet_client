@@ -41,7 +41,7 @@ const TermsView = (props) => {
       {!systemStore.isLoading && (
         <>
           <View style={styles.section1}>
-            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
               {term?.termsName}
             </CustomText>
             <CustomText style={{ marginTop: 5 }} fontSize={16}>

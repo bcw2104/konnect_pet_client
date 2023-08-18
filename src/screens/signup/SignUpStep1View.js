@@ -38,7 +38,7 @@ const SignupStep1View = (props) => {
       <Container header={true}>
         <KeyboardAwareScrollView>
           <View style={styles.section1}>
-            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
               핸드폰 번호를 인증해주세요.
             </CustomText>
           </View>

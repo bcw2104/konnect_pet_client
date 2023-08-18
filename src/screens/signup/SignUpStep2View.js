@@ -35,7 +35,7 @@ const SignupStep2View = (props) => {
       <Container header={true}>
         <KeyboardAwareScrollView>
           <View style={styles.section1}>
-            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
               가입 정보를 입력해주세요.
             </CustomText>
           </View>

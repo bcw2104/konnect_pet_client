@@ -13,6 +13,8 @@ export default class UserStore {
   _residenceCity = null;
   _residenceCoords = null;
 
+  _marketingYn = false;
+
   _profile = null;
   _isLogin = false;
 
@@ -46,6 +48,7 @@ export default class UserStore {
         this._isLogin = true;
         this._pets = response.result.pets;
         this._profile = response.result.profile;
+        this._marketingYn = response.result.marketingYn;
       });
 
       await serviceApis.updateDeviceInfo(
@@ -68,6 +71,10 @@ export default class UserStore {
 
   setLoginStatus(isLogin) {
     this._isLogin = isLogin;
+  }
+
+  setMarketingYn(marketingYn) {
+    this._marketingYn = marketingYn;
   }
 
   setPets(pets) {
@@ -114,6 +121,10 @@ export default class UserStore {
   }
   get platform() {
     return this._platform;
+  }
+
+  get marketingYn() {
+    return this._marketingYn;
   }
   get residenceCity() {
     return this._residenceCity;

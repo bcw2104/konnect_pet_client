@@ -4,16 +4,20 @@ import Container from '../../components/layouts/Container';
 import CustomText from '../../components/elements/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
-import { FONT_WEIGHT } from '../../commons/constants';
+import { FONT_WEIGHT, SOCIAL_TYPE } from '../../commons/constants';
 import { useStores } from '../../contexts/StoreContext';
 import { COLORS } from '../../commons/colors';
+import CustomSwitch from '../../components/elements/CustomSwitch';
+import { observer } from 'mobx-react-lite';
+import { serviceApis } from '../../utils/ServiceApis';
+import Constants from 'expo-constants';
 
 const SettingView = () => {
   const { userStore, modalStore } = useStores();
 
   const logout = () => {
     modalStore.openTwoButtonModal(
-      '로그아웃 하시겠습니까?',
+      'Do you want to sign out?',
       'Cancel',
       null,
       'Confirm',
@@ -23,105 +27,133 @@ const SettingView = () => {
     );
   };
 
+  const goToChangePassword = () => {
+    Navigator.navigate({}, 'change_password');
+  };
+
+  const goToTerms = () => {
+    Navigator.navigate({}, 'terms_list');
+  };
+  const goToQna = () => {
+    Navigator.navigate({}, 'terms_list');
+  };
+  const goToLeave = () => {
+    Navigator.navigate({}, 'leave_confirm');
+  };
+  const changeMarketing = async () => {
+    const marketingYn = !userStore.marketingYn;
+    try {
+      const response = await serviceApis.changeMarketingAgreement(marketingYn);
+      userStore.setMarketingYn(marketingYn);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <Container header={true}>
+    <Container
+      header={true}
+      bgColor={COLORS.light}
+      paddingHorizontal={0}
+      headerPaddingTop={0}
+    >
       <View style={styles.section1}>
-        <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-          Setting
-        </CustomText>
+        <View style={styles.menuTitle}>
+          <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+            Account
+          </CustomText>
+        </View>
+        <Pressable onPress={logout} style={styles.menuItem}>
+          <CustomText fontSize={16}>Sign Out</CustomText>
+        </Pressable>
+        <View style={styles.divider}></View>
+        {userStore.platform == SOCIAL_TYPE.EMAIL && (
+          <>
+            <Pressable onPress={goToChangePassword} style={styles.menuItem}>
+              <CustomText fontSize={16}>Change Password</CustomText>
+              <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
+            </Pressable>
+            <View style={styles.divider}></View>
+          </>
+        )}
+        <Pressable onPress={logout} style={styles.menuItem}>
+          <CustomText fontSize={16}>Push Settings</CustomText>
+          <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
+        </Pressable>
+        <View style={styles.divider}></View>
+        <View style={styles.menuItem}>
+          <View style={{ flex: 1 }}>
+            <CustomText fontSize={16} style={{ marginBottom: 7 }}>
+              Marketing Information
+            </CustomText>
+            <CustomText fontSize={14} fontColor={COLORS.grayDeep}>
+              If you receive marketing information{'\n'}you can receive various
+              event information.
+            </CustomText>
+          </View>
+          <View style={{ width: 60, alignItems: 'flex-end' }}>
+            <CustomSwitch
+              onValueChange={changeMarketing}
+              scale={1}
+              value={userStore.marketingYn}
+            />
+          </View>
+        </View>
       </View>
       <View style={styles.section2}>
-        <Pressable
-          onPress={() => {
-            Navigator.navigate({}, 'leave_confirm');
-          }}
-          style={styles.menuItem}
-        >
-          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
-            알림 설정
+        <View style={styles.menuTitle}>
+          <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+            Service
           </CustomText>
-          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            Navigator.navigate({}, 'leave_confirm');
-          }}
-          style={styles.menuItem}
-        >
-          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
-            차단목록
-          </CustomText>
-          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            Navigator.navigate({}, 'leave_confirm');
-          }}
-          style={styles.menuItem}
-        >
-          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
-            문의하기
-          </CustomText>
-          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            Navigator.navigate({}, 'terms_list');
-          }}
-          style={styles.menuItem}
-        >
-          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
-            이용약관
-          </CustomText>
-          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            Navigator.navigate({}, 'leave_confirm');
-          }}
-          style={styles.menuItem}
-        >
-          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
-            앱 정보
-          </CustomText>
-          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
-        </Pressable>
+        </View>
         <Pressable onPress={logout} style={styles.menuItem}>
-          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
-            로그아웃
-          </CustomText>
-          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
+          <CustomText fontSize={16}>Version</CustomText>
+          <CustomText fontSize={16}>v{Constants.expoConfig.version}</CustomText>
         </Pressable>
-        <Pressable
-          onPress={() => {
-            Navigator.navigate({}, 'leave_confirm');
-          }}
-          style={styles.menuItem}
-        >
-          <CustomText fontSize={18} fontWeight={FONT_WEIGHT.BOLD}>
-            회원탈퇴
-          </CustomText>
-          <Ionicons name="chevron-forward" size={28} color={COLORS.dark} />
+        <View style={styles.divider}></View>
+        <Pressable onPress={goToTerms} style={styles.menuItem}>
+          <CustomText fontSize={16}>Terms</CustomText>
+          <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
+        </Pressable>
+        <View style={styles.divider}></View>
+        <Pressable onPress={goToQna} style={styles.menuItem}>
+          <CustomText fontSize={16}>Q&A</CustomText>
+          <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
+        </Pressable>
+        <View style={styles.divider}></View>
+        <Pressable onPress={goToLeave} style={styles.menuItem}>
+          <CustomText fontSize={16}>Membership Withdrawal</CustomText>
+          <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
         </Pressable>
       </View>
     </Container>
   );
 };
 
-export default SettingView;
+export default observer(SettingView);
 
 const styles = StyleSheet.create({
   section1: {
-    flex: 1,
+    backgroundColor: COLORS.white,
+    paddingHorizontal: 15,
   },
   section2: {
-    flex: 7,
+    marginTop: 20,
+    backgroundColor: COLORS.white,
     paddingHorizontal: 15,
+  },
+  menuTitle: {
+    justifyContent: 'center',
+    height: 50,
   },
   menuItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 15,
+  },
+  divider: {
+    height: 2,
+    backgroundColor: COLORS.light,
   },
 });
