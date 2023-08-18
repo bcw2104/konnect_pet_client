@@ -97,7 +97,7 @@ const MyPageHomeView = ({ navigation }) => {
             {myData.banners?.map((ele) => {
               {
                 return (
-                  !!ele.imgUrl && (
+                  !!ele.imgPath && (
                     <Pressable
                       key={ele.bannerId}
                       style={{ flex: 1 }}
@@ -107,7 +107,7 @@ const MyPageHomeView = ({ navigation }) => {
                     >
                       <Image
                         key={ele.bannerId}
-                        source={{ uri: ele.imgUrl }}
+                        source={{ uri: process.env.EXPO_PUBLIC_BASE_IMAGE_URL + ele.imgPath }}
                         style={{ width: '100%', height: '100%' }}
                       />
                     </Pressable>

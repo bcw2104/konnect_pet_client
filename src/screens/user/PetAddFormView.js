@@ -48,7 +48,7 @@ const PetAddFormView = (props) => {
         ...pet,
         birthDate: moment(pet.birthDate, 'YYYYMMDD').toDate(),
       });
-      setPetImage(pet.petImgUrl);
+      setPetImage(pet.petImgPath);
       navigation.setOptions({
         headerRight: () => (
           <Pressable
@@ -110,23 +110,23 @@ const PetAddFormView = (props) => {
 
       systemStore.setIsLoading(true);
 
-      let imageUrl = null;
+      let imagePath = null;
       if (isImageChanged.current && !!petImage) {
         try {
           const upload = await utils.uploadImage(
             petImage,
             '/api/v1/upload/images/profile/pet'
           );
-          imageUrl = upload.imageUrl;
+          imagePath = upload.imagePath;
         } catch (err) {}
       } else if (!isImageChanged.current && !!petImage) {
-        imageUrl = petImage;
+        imagePath = petImage;
       }
 
       const data = {
         ...petInfo,
         birthDate: moment(petInfo.birthDate).format('YYYYMMDD'),
-        petImgUrl: imageUrl,
+        petImgPath: imagePath,
       };
       const isNew = !petInfo.petId;
       const response = !isNew
@@ -186,7 +186,7 @@ const PetAddFormView = (props) => {
                   <View style={styles.upload}>
                     <Feather name="camera" size={20} color={COLORS.dark} />
                   </View>
-                  <PetImage uri={petImage} style={styles.petImg} />
+                  <PetImage path={petImage} style={styles.petImg} />
                 </Pressable>
               </ImageUploader>
             </View>

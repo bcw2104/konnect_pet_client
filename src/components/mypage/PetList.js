@@ -47,7 +47,7 @@ const PetList = ({ items }) => {
                 editPet(item);
               }}
             >
-              <PetImage uri={item?.petImgUrl} style={styles.petImg} />
+              <PetImage path={item?.petImgPath} style={styles.petImg} />
               <View style={styles.pet}>
                 <CustomText
                   fontSize={14}

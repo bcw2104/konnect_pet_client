@@ -166,7 +166,7 @@ const WalkingStartView = () => {
           try {
             const response = await serviceApis.saveWalking(walkingTempData);
             if (response?.rsp_code === '1000') {
-              goToResult({ walkingId: walkingTempData.id });
+              goToReport({ walkingId: walkingTempData.id });
             }
           } catch (err) {
             Toast.show({
@@ -183,10 +183,6 @@ const WalkingStartView = () => {
 
   const goToNextStep = (params) => {
     Navigator.reset(params, 'walking');
-  };
-
-  const goToResult = (params) => {
-    Navigator.reset(params, 'walking_nav', 'walking_result');
   };
 
   const handleChangeSetting = (setting) => {
@@ -336,7 +332,7 @@ const WalkingStartView = () => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          render={<Ionicons name="options" size={30} color={COLORS.dark} />}
+          render={<Ionicons name='options' size={30} color={COLORS.dark} />}
           fontColor={COLORS.white}
           onPress={handleOpenSetting}
           width={50}
@@ -370,7 +366,7 @@ const WalkingStartView = () => {
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
           render={
-            <MaterialIcons name="my-location" size={30} color={COLORS.dark} />
+            <MaterialIcons name='my-location' size={30} color={COLORS.dark} />
           }
           fontColor={COLORS.white}
           onPress={getMyLocation}
@@ -524,7 +520,7 @@ const WalkingHistoryView = () => {
             }
           }}
         >
-          <Ionicons name="chevron-back" size={28} color={COLORS.white} />
+          <Ionicons name='chevron-back' size={28} color={COLORS.white} />
         </Pressable>
         <CustomText
           fontWeight={FONT_WEIGHT.BOLD}
@@ -542,7 +538,7 @@ const WalkingHistoryView = () => {
             }
           }}
         >
-          <Ionicons name="chevron-forward" size={28} color={COLORS.white} />
+          <Ionicons name='chevron-forward' size={28} color={COLORS.white} />
         </Pressable>
       </View>
       <View style={styles.historyWrap}>

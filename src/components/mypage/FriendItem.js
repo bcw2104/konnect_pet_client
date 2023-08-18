@@ -14,7 +14,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
   return (
     <View style={styles.friendItem}>
       <View style={styles.profile}>
-        <ProfileImage uri={item.profileImgUrl} style={styles.profileImg} />
+        <ProfileImage path={item.profileImgPath} style={styles.profileImg} />
         <View>
           <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
             {item.nickname}

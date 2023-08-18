@@ -47,7 +47,7 @@ const ProfileFormView = (props) => {
         ...profile,
         birthDate: moment(profile.birthDate, 'YYYYMMDD').toDate(),
       });
-      setProfileImage(profile.profileImgUrl);
+      setProfileImage(profile.profileImgPath);
     }
   }, [route.params]);
 
@@ -79,7 +79,7 @@ const ProfileFormView = (props) => {
 
       systemStore.setIsLoading(true);
 
-      let imageUrl = null;
+      let imagePath = null;
 
       if (isImageChanged.current && !!profileImage) {
         try {
@@ -87,16 +87,16 @@ const ProfileFormView = (props) => {
             profileImage,
             '/api/v1/upload/images/profile/user'
           );
-          imageUrl = upload.imageUrl;
+          imagePath = upload.imagePath;
         } catch (err) {}
       } else if (!isImageChanged.current && !!profileImage) {
-        imageUrl = profileImage;
+        imagePath = profileImage;
       }
 
       const data = {
         ...profile,
         birthDate: moment(profile.birthDate).format('YYYYMMDD'),
-        profileImgUrl: imageUrl,
+        profileImgPath: imagePath,
       };
       const response = await serviceApis.saveProfile(data);
 
@@ -135,7 +135,7 @@ const ProfileFormView = (props) => {
                   <View style={styles.upload}>
                     <Feather name="camera" size={20} color={COLORS.dark} />
                   </View>
-                  <ProfileImage uri={profileImage} style={styles.profileImg} />
+                  <ProfileImage path={profileImage} style={styles.profileImg} />
                 </Pressable>
               </ImageUploader>
             </View>

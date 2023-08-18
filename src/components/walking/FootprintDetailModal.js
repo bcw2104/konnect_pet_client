@@ -85,7 +85,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
           <View style={styles.section1}>
             <View style={styles.profileWrap}>
               <ProfileImage
-                uri={detail?.profile?.profileImgUrl}
+                path={detail?.profile?.profileImgPath}
                 style={styles.profileImg}
               />
               <View style={styles.profile}>
@@ -206,7 +206,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
               {detail?.pets?.map((pet) => (
                 <View key={pet.petId} style={styles.petWrap}>
                   <View style={styles.pet}>
-                    <PetImage uri={pet.petImgUrl} style={styles.petImg} />
+                    <PetImage path={pet.petImgPath} style={styles.petImg} />
                     <View>
                       <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
                         {pet.petName} ({pet.petSpecies})

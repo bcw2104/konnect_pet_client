@@ -26,7 +26,7 @@ const Profile = () => {
     <>
       <View style={styles.profileWrap}>
         <ProfileImage
-          uri={userStore.profile?.profileImgUrl}
+          path={userStore.profile?.profileImgPath}
           style={styles.profileImg}
         />
         <View style={styles.profile}>

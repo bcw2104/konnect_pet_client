@@ -1,12 +1,12 @@
 import { StyleSheet, Image } from 'react-native';
 import React from 'react';
 
-const ProfileImage = ({ uri, style }) => {
+const ProfileImage = ({ path, style }) => {
   return (
     <Image
       source={
-        !!uri
-          ? { uri: uri }
+        !!path
+          ? { uri: process.env.EXPO_PUBLIC_BASE_IMAGE_URL + path }
           : require('../../../assets/images/profile/user_default.png')
       }
       style={style}
