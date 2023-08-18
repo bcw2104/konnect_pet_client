@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CommunityHomeView from '../../screens/community/CommunityHomeView';
 
 const CommunityTabStack = createNativeStackNavigator();
 

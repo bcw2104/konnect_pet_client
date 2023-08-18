@@ -14,7 +14,10 @@ const FriendItem = ({ item, type, onHandleReply }) => {
   return (
     <View style={styles.friendItem}>
       <View style={styles.profile}>
-        <ProfileImage path={item.profileImgPath} style={styles.profileImg} />
+        <ProfileImage
+          uri={process.env.EXPO_PUBLIC_BASE_IMAGE_URL + item.profileImgPath}
+          style={styles.profileImg}
+        />
         <View>
           <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
             {item.nickname}
@@ -40,7 +43,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
               }}
               render={
                 <Feather
-                  name="user-plus"
+                  name='user-plus'
                   size={20}
                   color={COLORS.white}
                   style={{ marginRight: 5 }}
@@ -56,7 +59,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
               onPress={() => {
                 onHandleReply(item.userId, PROCESS_STATUS_CODE.DENIED);
               }}
-              render={<Feather name="user-x" size={20} color={COLORS.white} />}
+              render={<Feather name='user-x' size={20} color={COLORS.white} />}
             />
           </>
         ) : type == 'request' ? (
@@ -70,7 +73,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
               onPress={() => {
                 onHandleReply(item.userId, PROCESS_STATUS_CODE.CANCELED);
               }}
-              render={<Feather name="user-x" size={20} color={COLORS.white} />}
+              render={<Feather name='user-x' size={20} color={COLORS.white} />}
             />
           </>
         ) : (

@@ -10,7 +10,7 @@ import React from 'react';
 import CustomText from '../elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
 import { AntDesign } from '@expo/vector-icons';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
 import { Navigator } from '../../navigations/Navigator';
 import { utils } from '../../utils/Utils';
 import moment from 'moment';
@@ -47,7 +47,10 @@ const PetList = ({ items }) => {
                 editPet(item);
               }}
             >
-              <PetImage path={item?.petImgPath} style={styles.petImg} />
+              <PetImage
+                uri={process.env.EXPO_PUBLIC_BASE_IMAGE_URL + item?.petImgPath}
+                style={styles.petImg}
+              />
               <View style={styles.pet}>
                 <CustomText
                   fontSize={14}
@@ -74,7 +77,7 @@ const PetList = ({ items }) => {
               onPress={addNewPet}
             >
               <AntDesign
-                name="pluscircleo"
+                name='pluscircleo'
                 size={40}
                 color={COLORS.dark}
                 style={styles.petImg}

@@ -48,7 +48,7 @@ const PetAddFormView = (props) => {
         ...pet,
         birthDate: moment(pet.birthDate, 'YYYYMMDD').toDate(),
       });
-      setPetImage(pet.petImgPath);
+      setPetImage(process.env.EXPO_PUBLIC_BASE_IMAGE_URL + pet.petImgPath);
       navigation.setOptions({
         headerRight: () => (
           <Pressable
@@ -70,7 +70,7 @@ const PetAddFormView = (props) => {
               } catch (error) {}
             }}
           >
-            <Ionicons name="trash-outline" size={24} color={COLORS.dark} />
+            <Ionicons name='trash-outline' size={24} color={COLORS.dark} />
           </Pressable>
         ),
       });
@@ -184,9 +184,12 @@ const PetAddFormView = (props) => {
                   }}
                 >
                   <View style={styles.upload}>
-                    <Feather name="camera" size={20} color={COLORS.dark} />
+                    <Feather name='camera' size={20} color={COLORS.dark} />
                   </View>
-                  <PetImage path={petImage} style={styles.petImg} />
+                  <PetImage
+                    uri={process.env.EXPO_PUBLIC_BASE_IMAGE_URL + petImage}
+                    style={styles.petImg}
+                  />
                 </Pressable>
               </ImageUploader>
             </View>
@@ -197,7 +200,7 @@ const PetAddFormView = (props) => {
                   Name
                 </CustomText>
                 <FontAwesome5
-                  name="star-of-life"
+                  name='star-of-life'
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -212,8 +215,8 @@ const PetAddFormView = (props) => {
                 fontSize={15}
                 height={40}
                 wrapperStyle={styles.input}
-                placeholder="Please enter pet name."
-                keyboardType="default"
+                placeholder='Please enter pet name.'
+                keyboardType='default'
                 outline={true}
               />
             </View>
@@ -223,7 +226,7 @@ const PetAddFormView = (props) => {
                   Species
                 </CustomText>
                 <FontAwesome5
-                  name="star-of-life"
+                  name='star-of-life'
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -238,8 +241,8 @@ const PetAddFormView = (props) => {
                 fontSize={15}
                 height={40}
                 wrapperStyle={styles.input}
-                placeholder="Please enter pet species."
-                keyboardType="default"
+                placeholder='Please enter pet species.'
+                keyboardType='default'
                 outline={true}
               />
             </View>
@@ -249,7 +252,7 @@ const PetAddFormView = (props) => {
                   Gender
                 </CustomText>
                 <FontAwesome5
-                  name="star-of-life"
+                  name='star-of-life'
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -274,7 +277,7 @@ const PetAddFormView = (props) => {
                   Weight(kg)
                 </CustomText>
                 <FontAwesome5
-                  name="star-of-life"
+                  name='star-of-life'
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -286,12 +289,12 @@ const PetAddFormView = (props) => {
                   if (!WEIGHT_REGEX.test(value)) return;
                   setPetInfo({ ...petInfo, petWeight: value });
                 }}
-                keyboardType="numeric"
+                keyboardType='numeric'
                 maxLength={30}
                 fontSize={15}
                 height={40}
                 wrapperStyle={styles.input}
-                placeholder="Please enter pet weight."
+                placeholder='Please enter pet weight.'
                 outline={true}
               />
             </View>
@@ -301,7 +304,7 @@ const PetAddFormView = (props) => {
                   BirthDate
                 </CustomText>
                 <FontAwesome5
-                  name="star-of-life"
+                  name='star-of-life'
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -324,7 +327,7 @@ const PetAddFormView = (props) => {
                   Neutered
                 </CustomText>
                 <FontAwesome5
-                  name="star-of-life"
+                  name='star-of-life'
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -350,7 +353,7 @@ const PetAddFormView = (props) => {
                   Inoculated
                 </CustomText>
                 <FontAwesome5
-                  name="star-of-life"
+                  name='star-of-life'
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -391,8 +394,8 @@ const PetAddFormView = (props) => {
                 multiline={true}
                 fontSize={15}
                 wrapperStyle={styles.input}
-                placeholder="Please introduce your pet."
-                keyboardType="default"
+                placeholder='Please introduce your pet.'
+                keyboardType='default'
                 outline={true}
                 height={'auto'}
               />
@@ -406,7 +409,7 @@ const PetAddFormView = (props) => {
         bgColor={COLORS.main}
         bgColorPress={COLORS.mainDeep}
         onPress={savePetInfo}
-        text="Save"
+        text='Save'
         style={styles.submitTheme}
         height={60}
       />

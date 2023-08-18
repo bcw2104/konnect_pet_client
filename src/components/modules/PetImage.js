@@ -1,13 +1,13 @@
 import { StyleSheet, Image } from 'react-native';
 import React from 'react';
 
-const PetImage = ({ path, style }) => {
+const PetImage = ({ uri, style }) => {
   return (
     <Image
       source={
-        !!path
+        !!uri
           ? {
-              uri: process.env.EXPO_PUBLIC_BASE_IMAGE_URL + path,
+              uri: uri,
             }
           : require('../../../assets/images/profile/pet_default.png')
       }

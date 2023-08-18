@@ -85,7 +85,10 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
           <View style={styles.section1}>
             <View style={styles.profileWrap}>
               <ProfileImage
-                path={detail?.profile?.profileImgPath}
+                uri={
+                  process.env.EXPO_PUBLIC_BASE_IMAGE_URL +
+                  detail?.profile?.profileImgPath
+                }
                 style={styles.profileImg}
               />
               <View style={styles.profile}>
@@ -161,7 +164,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                     render={
                       <>
                         <Feather
-                          name="send"
+                          name='send'
                           size={20}
                           color={COLORS.white}
                           style={{ marginRight: 5 }}
@@ -181,7 +184,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
             </View>
             <View style={styles.locationWrap}>
               <Entypo
-                name="location-pin"
+                name='location-pin'
                 size={22}
                 color={COLORS.dark}
                 style={{ marginRight: 5 }}
@@ -206,7 +209,12 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
               {detail?.pets?.map((pet) => (
                 <View key={pet.petId} style={styles.petWrap}>
                   <View style={styles.pet}>
-                    <PetImage path={pet.petImgPath} style={styles.petImg} />
+                    <PetImage
+                      uri={
+                        process.env.EXPO_PUBLIC_BASE_IMAGE_URL + pet.petImgPath
+                      }
+                      style={styles.petImg}
+                    />
                     <View>
                       <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
                         {pet.petName} ({pet.petSpecies})
