@@ -26,7 +26,6 @@ const WalkingSettingModal = ({ setting, handleChangeSetting, modalRef }) => {
                 footprintYn: !setting?.footprintYn,
               })
             }
-            scale={1}
             value={setting?.footprintYn}
           />
         </View>
@@ -46,7 +45,6 @@ const WalkingSettingModal = ({ setting, handleChangeSetting, modalRef }) => {
                 routeYn: !setting?.routeYn,
               })
             }
-            scale={1}
             value={setting?.routeYn}
           />
         </View>

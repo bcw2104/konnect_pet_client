@@ -6,10 +6,20 @@ export default class SystemStore {
   _isLoading = false;
   _backHandlerCallback = null;
 
+  _appVersion = null;
+  _lastestAppVersion = null;
+  _lastestForcedAppVersion = null;
+
   constructor(rootStore) {
     makeAutoObservable(this);
 
     this._rootStore = rootStore;
+  }
+
+  initAppInfo(appInfo) {
+    this._appVersion = appInfo.version;
+    this._lastestAppVersion = appInfo.lastestVersion;
+    this._lastestForcedAppVersion = appInfo.lastestForcedVersion;
   }
 
   setBackHandlerCallback(callback) {
@@ -24,11 +34,22 @@ export default class SystemStore {
     this._isLoading = isLoading;
   }
 
+  get appVersion() {
+    return this._appVersion;
+  }
+  get lastestAppVersion() {
+    return this._lastestAppVersion;
+  }
+
+  get lastestForcedAppVersion() {
+    return this._lastestForcedAppVersion;
+  }
+
   get isLoading() {
     return this._isLoading;
   }
-  
-  get backHandlerCallback(){
+
+  get backHandlerCallback() {
     return this._backHandlerCallback;
   }
 

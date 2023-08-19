@@ -13,7 +13,7 @@ import { serviceApis } from '../../utils/ServiceApis';
 import Constants from 'expo-constants';
 
 const SettingView = () => {
-  const { userStore, modalStore } = useStores();
+  const { userStore, modalStore, systemStore } = useStores();
 
   const logout = () => {
     modalStore.openTwoButtonModal(
@@ -29,6 +29,10 @@ const SettingView = () => {
 
   const goToChangePassword = () => {
     Navigator.navigate({}, 'change_password');
+  };
+
+  const goToPushSettings = () => {
+    Navigator.navigate({}, 'push_settings');
   };
 
   const goToTerms = () => {
@@ -76,7 +80,7 @@ const SettingView = () => {
             <View style={styles.divider}></View>
           </>
         )}
-        <Pressable onPress={logout} style={styles.menuItem}>
+        <Pressable onPress={goToPushSettings} style={styles.menuItem}>
           <CustomText fontSize={16}>Push Settings</CustomText>
           <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
         </Pressable>
@@ -94,7 +98,6 @@ const SettingView = () => {
           <View style={{ width: 60, alignItems: 'flex-end' }}>
             <CustomSwitch
               onValueChange={changeMarketing}
-              scale={1}
               value={userStore.marketingYn}
             />
           </View>
@@ -106,10 +109,27 @@ const SettingView = () => {
             Service
           </CustomText>
         </View>
-        <Pressable onPress={logout} style={styles.menuItem}>
+        <View style={styles.menuItem}>
           <CustomText fontSize={16}>Version</CustomText>
-          <CustomText fontSize={16}>v{Constants.expoConfig.version}</CustomText>
-        </Pressable>
+          <View style={{ flexDirection: 'row' }}>
+            <CustomText fontSize={16}>
+              {Constants.expoConfig.version}
+            </CustomText>
+            {!!systemStore.lastestAppVersion && (
+              <>
+                <CustomText fontSize={16} style={{ paddingHorizontal: 5 }}>
+                  /
+                </CustomText>
+                <CustomText
+                  fontSize={16}
+                  fontWeight={FONT_WEIGHT.BOLD}
+                >
+                  {systemStore.lastestAppVersion.version}
+                </CustomText>
+              </>
+            )}
+          </View>
+        </View>
         <View style={styles.divider}></View>
         <Pressable onPress={goToTerms} style={styles.menuItem}>
           <CustomText fontSize={16}>Terms</CustomText>

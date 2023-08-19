@@ -1,6 +1,4 @@
 import {
-  Dimensions,
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -20,9 +18,8 @@ import { Navigator } from '../../navigations/Navigator';
 import { useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { utils } from '../../utils/Utils';
-import Swiper from 'react-native-swiper';
+import BannerSwiper from '../../components/service/BannerSwiper';
 
-const window = Dimensions.get('window');
 
 const MyPageHomeView = ({ navigation }) => {
   const [myData, setMyData] = useState(null);
@@ -87,35 +84,7 @@ const MyPageHomeView = ({ navigation }) => {
           </View>
         </View>
         {!!myData && myData.banners?.length > 0 && (
-          <Swiper
-            style={styles.section2}
-            autoplay={true}
-            autoplayTimeout={4}
-            dotColor={COLORS.gray}
-            activeDotColor={COLORS.main}
-          >
-            {myData.banners?.map((ele) => {
-              {
-                return (
-                  !!ele.imgPath && (
-                    <Pressable
-                      key={ele.bannerId}
-                      style={{ flex: 1 }}
-                      onPress={() => {
-                        console.log(ele.bannerId);
-                      }}
-                    >
-                      <Image
-                        key={ele.bannerId}
-                        source={{ uri: process.env.EXPO_PUBLIC_BASE_IMAGE_URL + ele.imgPath }}
-                        style={{ width: '100%', height: '100%' }}
-                      />
-                    </Pressable>
-                  )
-                );
-              }
-            })}
-          </Swiper>
+          <BannerSwiper banners={myData.banners} />
         )}
 
         <View style={styles.section3}>
@@ -278,11 +247,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
   },
-  section2: {
-    height: window.width / 4,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-  },
+  
   section3: {
     marginTop: 20,
     paddingVertical: 5,

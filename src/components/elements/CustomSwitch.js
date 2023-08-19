@@ -1,19 +1,31 @@
 import { StyleSheet, Switch, Text, View } from 'react-native';
 import React from 'react';
-import {COLORS} from '../../commons/colors';
+import { COLORS } from '../../commons/colors';
+import SwitchToggle from 'react-native-switch-toggle';
 
 const CustomSwitch = ({
   onValueChange = () => {},
   value = false,
-  scale = 1.1,
+  size = 60,
 }) => {
   return (
-    <Switch
-      onValueChange={onValueChange}
-      value={value}
-      style={{ transform: [{ scaleX: scale }, { scaleY: scale }] }}
-      trackColor={{ false: COLORS.light, true: COLORS.main }}
-      thumbColor={value ? COLORS.light : COLORS.grayLight}
+    <SwitchToggle
+      switchOn={value}
+      onPress={onValueChange}
+      circleColorOff={COLORS.light}
+      circleColorOn={COLORS.main}
+      backgroundColorOn={COLORS.mainLight}
+      backgroundColorOff={COLORS.grayLight}
+      containerStyle={{
+        width: size,
+        height: size / 2,
+        borderRadius: size / 4,
+      }}
+      circleStyle={{
+        width: size / 2,
+        height: size / 2,
+        borderRadius: size / 4,
+      }}
     />
   );
 };

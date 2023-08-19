@@ -74,6 +74,7 @@
     "react-native-status-bar-height": "^2.6.0",
     "react-native-svg": "13.9.0",
     "react-native-swiper": "^1.6.0",
+    "react-native-switch-toggle": "^2.2.1",
     "react-native-tab-view": "^3.5.2",
     "react-native-toast-message": "^2.1.6",
     "react-native-web": "~0.19.6",

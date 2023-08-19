@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
     top: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.semiTransparent,
+    backgroundColor: COLORS.semiTransparentWhite,
   },
 });

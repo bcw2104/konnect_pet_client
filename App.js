@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StoreProvider } from './src/contexts/StoreContext';
 import { RootStore } from './src/contexts/RootStore';
@@ -19,6 +19,8 @@ import Constants from 'expo-constants';
 import { Linking } from 'react-native';
 import { Navigator } from './src/navigations/Navigator';
 import { DEEP_LINK_PREFIX } from './src/commons/constants';
+import { serviceApis } from './src/utils/ServiceApis';
+import moment from 'moment';
 
 const rootStore = new RootStore();
 
@@ -27,11 +29,9 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({
-    'Roboto-Regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
-    'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Bold.ttf'),
-    'Roboto-Thin': require('./assets/fonts/Roboto/Roboto-Thin.ttf'),
-    'Maple-Bold': require('./assets/fonts/Maple/Maple-Bold.ttf'),
-    'Maple-Regular': require('./assets/fonts/Maple/Maple-Regular.ttf'),
+    'NSR-Regular': require('./assets/fonts/nanum/NSR-Regular.ttf'),
+    'NSR-Bold': require('./assets/fonts/nanum/NSR-Bold.ttf'),
+    'NSR-Light': require('./assets/fonts/nanum/NSR-Light.ttf'),
   });
 
   useEffect(() => {
@@ -52,20 +52,51 @@ export default function App() {
   useEffect(() => {
     if (!fontsLoaded) return;
     async function prepare() {
+      let versionCheck = true;
       try {
         await initFacebook();
         await initDeviceInfo();
+        await initAppInfo();
         await rootStore.userStore.initUserInfo();
+        versionCheck = checkAppVersion();
       } catch (e) {
       } finally {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        await SplashScreen.hideAsync();
-        setAppIsReady(true);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        if (!versionCheck) {
+          rootStore.modalStore.openOneButtonModal(
+            'A new version has been released.\nPlease update the app.',
+            'Confirm',
+            () => {}
+          );
+        } else {
+          await SplashScreen.hideAsync();
+          setAppIsReady(true);
+        }
       }
     }
 
     prepare();
   }, [fontsLoaded]);
+
+  const initAppInfo = async () => {
+    try {
+      const currentVersion = Constants.expoConfig.version;
+      const response = await serviceApis.getAppInfo(currentVersion);
+      rootStore.systemStore.initAppInfo(response.result);
+    } catch (err) {}
+  };
+
+  const checkAppVersion = () => {
+    if (!rootStore.systemStore.appVersion) {
+      return false;
+    }
+    if (!rootStore.systemStore.lastestForcedAppVersion) {
+      return true;
+    }
+    return moment(rootStore.systemStore.appVersion.releasedDate).isSameOrAfter(
+      moment(rootStore.systemStore.lastestForcedAppVersion.releasedDate)
+    );
+  };
 
   const initFacebook = async () => {
     const { status } = await requestTrackingPermissionsAsync();
@@ -125,7 +156,11 @@ export default function App() {
   };
 
   if (!appIsReady) {
-    return null;
+    return (
+      <StoreProvider value={rootStore}>
+        <GlobalModal />
+      </StoreProvider>
+    );
   }
 
   return (

@@ -16,6 +16,7 @@ import CustomText from '../../components/elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
 import FriendsView from '../../screens/mypage/FriendsView';
 import ChangePasswordView from '../../screens/mypage/ChangePasswordView';
+import PushSettingView from '../../screens/mypage/PushSettingView';
 
 const MyPageStack = createNativeStackNavigator();
 
@@ -70,6 +71,11 @@ const MyPageStackNavigator = ({ navigation, route }) => {
             options={{ title: 'Change Password' }}
             name="change_password"
             component={ChangePasswordView}
+          ></MyPageStack.Screen>
+          <MyPageStack.Screen
+            options={{ title: 'Push Settings' }}
+            name="push_settings"
+            component={PushSettingView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
             name="terms_list"

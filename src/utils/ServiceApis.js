@@ -4,6 +4,8 @@ export const serviceApis = {
   //common
   telNations: () => baseAxios.get(`/api/v1/common/public/nations`),
 
+  getAppInfo: (currentVersion) => baseAxios.get(`/api/v1/common/public/app`,{params: {version:currentVersion}}),
+
   //auth
   login: (email, password) => baseAxios.post(`/api/v1/auth/login`, { email, password }),
   socialLogin: (token, type) =>
@@ -23,6 +25,7 @@ export const serviceApis = {
   getPointHistories : (pointType,type,size,page,) => baseAxios.get(`/api/v1/user/point/history`, { params:{ point:pointType,type: type, size:size, page:page  } }),
   getNotifications : (size,page) => baseAxios.get(`/api/v1/user/noti`,{ params:{ size:size, page:page }}),
   changePassword:(password,newPassword) => baseAxios.patch(`/api/v1/user/password`,{ prev:password, new:newPassword}),
+  changeSettings:(settings) => baseAxios.put(`/api/v1/user/mypage/settings`,settings),
   changeMarketingAgreement:(marketingYn) => baseAxios.patch(`/api/v1/user/mypage/marketing`,{ marketingYn:marketingYn}),
 
   //terms

@@ -17,14 +17,13 @@ export const WALKING_REWARD_PROVIDE_TYPE = {
 };
 
 export const FONT_WEIGHT = {
-  THIN: 'Thin',
+  LIGHT: 'Light',
   REGULAR: 'Regular',
   BOLD: 'Bold',
 };
 
 export const FONT_FAMILY = {
-  ROBOTO: 'Roboto',
-  MAPLE: 'Maple',
+  NANUM_SQUARE: 'NSR',
 };
 
 export const FOOTPRINT_TYPE = {

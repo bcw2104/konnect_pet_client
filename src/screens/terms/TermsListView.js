@@ -39,7 +39,6 @@ const TermsListView = () => {
             {terms.map((ele, idx) => (
               <View key={ele.termsGroupId}>
                 <Pressable
-                  key={ele.termsGroupId}
                   onPress={() => {
                     Navigator.navigate(
                       {

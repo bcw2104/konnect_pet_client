@@ -22,8 +22,10 @@ export const COLORS = {
   black: '#000000',
   white: '#ffffff',
   transparent: 'rgba(255, 255, 255, 0)',
-  semiTransparent: 'rgba(255, 255, 255, 0.5)',
+  semiTransparentWhite: 'rgba(255, 255, 255, 0.5)',
+  semiTransparentDark: 'rgba(0, 0, 0, 0.5)',
 
+  mainLight: '#fad3b1',
   main: '#f4a460',
   mainDeep: '#f4a460',
 };

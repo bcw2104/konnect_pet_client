@@ -16,7 +16,7 @@ const HomeTabs = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName='walking_tab'
+      initialRouteName="walking_tab"
       screenOptions={{
         tabBarActiveTintColor: COLORS.main,
         tabBarStyle: {
@@ -27,7 +27,7 @@ const HomeTabs = () => {
           position: 'relative',
           top: 0,
           fontSize: 12,
-          fontFamily: 'Maple-Bold',
+          fontFamily: 'NSR-Bold',
           paddingBottom: 5,
         },
         tabBarIconStyle: {
@@ -37,35 +37,35 @@ const HomeTabs = () => {
       }}
     >
       <Tab.Screen
-        name='community_tab'
+        name="community_tab"
         component={CommunityTabStackNavigator}
         options={{
           headerShown: false,
           tabBarLabel: 'Community',
           tabBarIcon: ({ color, size }) => (
-            <AntDesign name='message1' size={20} color={color} />
+            <AntDesign name="message1" size={20} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name='walking_tab'
+        name="walking_tab"
         component={WalkingTabStackNavigator}
         options={{
           headerShown: false,
           tabBarLabel: 'Walking',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name='pets' size={20} color={color} />
+            <MaterialIcons name="pets" size={20} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name='mypage_tab'
+        name="mypage_tab"
         component={MyPageTabStackNavigator}
         options={{
           headerShown: false,
           tabBarLabel: 'My Page',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name='person' size={20} color={color} />
+            <MaterialIcons name="person" size={20} color={color} />
           ),
         }}
       />

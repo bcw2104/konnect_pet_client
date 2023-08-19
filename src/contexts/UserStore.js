@@ -24,6 +24,7 @@ export default class UserStore {
   _deviceOs = null;
   _deviceOsVersion = null;
   _deviceToken = null;
+  _appSettings = null;
 
   constructor(rootStore) {
     makeAutoObservable(this);
@@ -49,6 +50,7 @@ export default class UserStore {
         this._pets = response.result.pets;
         this._profile = response.result.profile;
         this._marketingYn = response.result.marketingYn;
+        this._appSettings = response.result.appSettings;
       });
 
       await serviceApis.updateDeviceInfo(
@@ -86,9 +88,13 @@ export default class UserStore {
     if (this._pets != null) {
       pets = [...this._pets];
     }
-    pets.push(pet);
+    pets.app(pet);
 
     this._pets = pets;
+  }
+
+  setAppSettings(appSettings) {
+    this._appSettings = appSettings;
   }
 
   setProfile(profile) {
@@ -158,6 +164,9 @@ export default class UserStore {
     return this._profile;
   }
 
+  get appSettings() {
+    return this._appSettings;
+  }
   get rootStore() {
     return this._rootStore;
   }
