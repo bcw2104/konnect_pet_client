@@ -43,7 +43,7 @@ export const utils = {
 
     return aroundCoords;
   },
-  defaultNotification: (_title, _body, _link, _seconds) => {
+  defaultNotification: (_title, _body, _link, _seconds = 1) => {
     Notifications.scheduleNotificationAsync({
       content: {
         title: _title,
@@ -53,11 +53,9 @@ export const utils = {
         },
       },
       trigger: {
-        seconds: _seconds || 1, //onPress가 클릭이 되면 60초 뒤에 알람이 발생합니다.
+        seconds: _seconds, //onPress가 클릭이 되면 60초 뒤에 알람이 발생합니다.
       },
     });
-
-    console.log('send notification');
   },
 
   /**
@@ -131,4 +129,3 @@ export const utils = {
     return val.toLocaleString('ko-KR');
   },
 };
- 

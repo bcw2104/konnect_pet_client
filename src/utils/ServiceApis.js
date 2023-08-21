@@ -28,6 +28,9 @@ export const serviceApis = {
   changeSettings:(settings) => baseAxios.put(`/api/v1/user/mypage/settings`,settings),
   changeMarketingAgreement:(marketingYn) => baseAxios.patch(`/api/v1/user/mypage/marketing`,{ marketingYn:marketingYn}),
 
+  //service
+  getFaq: () => baseAxios.get(`/api/v1/service/faq`),
+
   //terms
   getTermsDetail: (groupId) => baseAxios.get(`/api/v1/terms/group/${groupId}/lastest`),
   getSignUpTerms: () => baseAxios.get(`/api/v1/terms/group/signup`),

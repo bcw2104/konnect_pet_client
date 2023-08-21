@@ -296,12 +296,13 @@ const WalkingView = (props) => {
             catchedFootprints.current.push(target);
             footprintsRef.current[target].catched = true;
             catchCount++;
-
-            utils.defaultNotification(
-              '발자국 획득!',
-              `${catchedFootprints.current.length}"번째 발자국을 획득했어요!`,
-              'walking'
-            );
+            if (userStore.appSettings.walkingYn) {
+              utils.defaultNotification(
+                '발자국 획득!',
+                `${catchedFootprints.current.length}"번째 발자국을 획득했어요!`,
+                'walking'
+              );
+            }
           }
         }
 
@@ -319,11 +320,13 @@ const WalkingView = (props) => {
             parseInt(policies.current['walking_footprint_max_amount'])
         ) {
           footprintCoords.current.push([coords.latitude, coords.longitude]);
-          utils.defaultNotification(
-            '발자국 기록!',
-            `${footprintCoords.current.length}"번째 발자국을 기록했어요!`,
-            'walking'
-          );
+          if (userStore.appSettings.walkingYn) {
+            utils.defaultNotification(
+              '발자국 기록!',
+              `${footprintCoords.current.length}"번째 발자국을 기록했어요!`,
+              'walking'
+            );
+          }
         }
       }
 
@@ -360,8 +363,8 @@ const WalkingView = (props) => {
       if (dist >= 2500) {
         getAroundFootprints(coords);
       }
-    } catch (e) {
-      console.log(e.message);
+    } catch (err) {
+      console.log(err);
     }
   }, []);
 
@@ -507,7 +510,7 @@ const WalkingView = (props) => {
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            render={<Ionicons name='options' size={30} color={COLORS.dark} />}
+            render={<Ionicons name="options" size={30} color={COLORS.dark} />}
             fontColor={COLORS.white}
             onPress={handleOpenSetting}
             width={50}
@@ -548,7 +551,7 @@ const WalkingView = (props) => {
               {!!setting.routeYn && (
                 <Polyline
                   coordinates={routes}
-                  strokeColor='#e23dff'
+                  strokeColor="#e23dff"
                   strokeWidth={6}
                 />
               )}
@@ -560,7 +563,7 @@ const WalkingView = (props) => {
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
             render={
-              <MaterialIcons name='my-location' size={30} color={COLORS.dark} />
+              <MaterialIcons name="my-location" size={30} color={COLORS.dark} />
             }
             fontColor={COLORS.white}
             onPress={getMyLocation}

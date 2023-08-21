@@ -20,11 +20,15 @@ const LeaveConfirmView = () => {
     <Container header={true}>
       <View style={styles.section1}>
         <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
-          정말 탈퇴하시겠습니까?
+          Are You Sure?
         </CustomText>
-        <CustomText style={{ marginTop: 20 }} fontSize={18}>
-          탈퇴하시면 모든 정보가 삭제됩니다.{'\n'}
-          그래도 탈퇴하시겠습니까?
+        <CustomText style={{ marginTop: 10 }} fontSize={16}>
+          If you go ahead and withdraw your membership,{'\n'}
+          please understand that the cherished memories you've shared with your
+          pet will be permanently{'\n'}
+          removed and cannot be restored. {'\n'}
+          {'\n'}
+          Are you still certain you wish to proceed with the withdrawal?
         </CustomText>
       </View>
       <View style={styles.section2}>

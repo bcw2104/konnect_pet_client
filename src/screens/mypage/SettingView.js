@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import React from 'react';
 import Container from '../../components/layouts/Container';
 import CustomText from '../../components/elements/CustomText';
@@ -38,8 +38,11 @@ const SettingView = () => {
   const goToTerms = () => {
     Navigator.navigate({}, 'terms_list');
   };
+  const goToFaq = () => {
+    Navigator.navigate({}, 'faq');
+  };
   const goToQna = () => {
-    Navigator.navigate({}, 'terms_list');
+    Navigator.navigate({}, 'qna');
   };
   const goToLeave = () => {
     Navigator.navigate({}, 'leave_confirm');
@@ -61,91 +64,99 @@ const SettingView = () => {
       paddingHorizontal={0}
       headerPaddingTop={0}
     >
-      <View style={styles.section1}>
-        <View style={styles.menuTitle}>
-          <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
-            Account
-          </CustomText>
-        </View>
-        <Pressable onPress={logout} style={styles.menuItem}>
-          <CustomText fontSize={16}>Sign Out</CustomText>
-        </Pressable>
-        <View style={styles.divider}></View>
-        {userStore.platform == SOCIAL_TYPE.EMAIL && (
-          <>
-            <Pressable onPress={goToChangePassword} style={styles.menuItem}>
-              <CustomText fontSize={16}>Change Password</CustomText>
-              <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
-            </Pressable>
-            <View style={styles.divider}></View>
-          </>
-        )}
-        <Pressable onPress={goToPushSettings} style={styles.menuItem}>
-          <CustomText fontSize={16}>Push Settings</CustomText>
-          <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
-        </Pressable>
-        <View style={styles.divider}></View>
-        <View style={styles.menuItem}>
-          <View style={{ flex: 1 }}>
-            <CustomText fontSize={16} style={{ marginBottom: 7 }}>
-              Marketing Information
-            </CustomText>
-            <CustomText fontSize={14} fontColor={COLORS.grayDeep}>
-              If you receive marketing information{'\n'}you can receive various
-              event information.
+      <ScrollView>
+        <View style={styles.section1}>
+          <View style={styles.menuTitle}>
+            <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+              Account
             </CustomText>
           </View>
-          <View style={{ width: 60, alignItems: 'flex-end' }}>
-            <CustomSwitch
-              onValueChange={changeMarketing}
-              value={userStore.marketingYn}
-            />
+          <Pressable onPress={logout} style={styles.menuItem}>
+            <CustomText fontSize={16}>Sign Out</CustomText>
+          </Pressable>
+          <View style={styles.divider}></View>
+          {userStore.platform == SOCIAL_TYPE.EMAIL && (
+            <>
+              <Pressable onPress={goToChangePassword} style={styles.menuItem}>
+                <CustomText fontSize={16}>Change Password</CustomText>
+                <Ionicons
+                  name="chevron-forward"
+                  size={25}
+                  color={COLORS.dark}
+                />
+              </Pressable>
+              <View style={styles.divider}></View>
+            </>
+          )}
+          <Pressable onPress={goToPushSettings} style={styles.menuItem}>
+            <CustomText fontSize={16}>Push Settings</CustomText>
+            <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
+          </Pressable>
+          <View style={styles.divider}></View>
+          <View style={styles.menuItem}>
+            <View style={{ flex: 1 }}>
+              <CustomText fontSize={16} style={{ marginBottom: 7 }}>
+                Marketing Information
+              </CustomText>
+              <CustomText fontSize={14} fontColor={COLORS.grayDeep}>
+                If you receive marketing information{'\n'}you can receive
+                various event information.
+              </CustomText>
+            </View>
+            <View style={{ width: 60, alignItems: 'flex-end' }}>
+              <CustomSwitch
+                onValueChange={changeMarketing}
+                value={userStore.marketingYn}
+              />
+            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.section2}>
-        <View style={styles.menuTitle}>
-          <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
-            Service
-          </CustomText>
-        </View>
-        <View style={styles.menuItem}>
-          <CustomText fontSize={16}>Version</CustomText>
-          <View style={{ flexDirection: 'row' }}>
-            <CustomText fontSize={16}>
-              {Constants.expoConfig.version}
+        <View style={styles.section2}>
+          <View style={styles.menuTitle}>
+            <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+              Service
             </CustomText>
-            {!!systemStore.lastestAppVersion && (
-              <>
-                <CustomText fontSize={16} style={{ paddingHorizontal: 5 }}>
-                  /
-                </CustomText>
-                <CustomText
-                  fontSize={16}
-                  fontWeight={FONT_WEIGHT.BOLD}
-                >
-                  {systemStore.lastestAppVersion.version}
-                </CustomText>
-              </>
-            )}
           </View>
+          <View style={styles.menuItem}>
+            <CustomText fontSize={16}>Version</CustomText>
+            <View style={{ flexDirection: 'row' }}>
+              <CustomText fontSize={16}>
+                {Constants.expoConfig.version}
+              </CustomText>
+              {!!systemStore.lastestAppVersion && (
+                <>
+                  <CustomText fontSize={16} style={{ paddingHorizontal: 5 }}>
+                    /
+                  </CustomText>
+                  <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                    {systemStore.lastestAppVersion.version}
+                  </CustomText>
+                </>
+              )}
+            </View>
+          </View>
+          <View style={styles.divider}></View>
+          <Pressable onPress={goToTerms} style={styles.menuItem}>
+            <CustomText fontSize={16}>Terms</CustomText>
+            <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
+          </Pressable>
+          <View style={styles.divider}></View>
+          <Pressable onPress={goToFaq} style={styles.menuItem}>
+            <CustomText fontSize={16}>FAQ</CustomText>
+            <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
+          </Pressable>
+          <View style={styles.divider}></View>
+          <Pressable onPress={goToQna} style={styles.menuItem}>
+            <CustomText fontSize={16}>Q&A</CustomText>
+            <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
+          </Pressable>
+          <View style={styles.divider}></View>
+          <Pressable onPress={goToLeave} style={styles.menuItem}>
+            <CustomText fontSize={16}>Membership Withdrawal</CustomText>
+            <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
+          </Pressable>
         </View>
-        <View style={styles.divider}></View>
-        <Pressable onPress={goToTerms} style={styles.menuItem}>
-          <CustomText fontSize={16}>Terms</CustomText>
-          <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
-        </Pressable>
-        <View style={styles.divider}></View>
-        <Pressable onPress={goToQna} style={styles.menuItem}>
-          <CustomText fontSize={16}>Q&A</CustomText>
-          <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
-        </Pressable>
-        <View style={styles.divider}></View>
-        <Pressable onPress={goToLeave} style={styles.menuItem}>
-          <CustomText fontSize={16}>Membership Withdrawal</CustomText>
-          <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
-        </Pressable>
-      </View>
+      </ScrollView>
     </Container>
   );
 };

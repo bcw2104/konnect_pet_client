@@ -17,6 +17,8 @@ import { FONT_WEIGHT } from '../../commons/constants';
 import FriendsView from '../../screens/mypage/FriendsView';
 import ChangePasswordView from '../../screens/mypage/ChangePasswordView';
 import PushSettingView from '../../screens/mypage/PushSettingView';
+import FaqView from '../../screens/mypage/FaqView';
+import QnaView from '../../screens/mypage/QnaView';
 
 const MyPageStack = createNativeStackNavigator();
 
@@ -86,6 +88,16 @@ const MyPageStackNavigator = ({ navigation, route }) => {
             options={{ title: 'Terms' }}
             name="terms"
             component={TermsView}
+          ></MyPageStack.Screen>
+          <MyPageStack.Screen
+            options={{ title: 'FAQ' }}
+            name="faq"
+            component={FaqView}
+          ></MyPageStack.Screen>
+          <MyPageStack.Screen
+            options={{ title: 'Q&A' }}
+            name="qna"
+            component={QnaView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
             options={{ title: 'Membership Withdrawal' }}

@@ -142,43 +142,45 @@ const WalkingResultView = (props) => {
       {!!report && (
         <ScrollView>
           <View style={styles.section1}>
-            <CustomText fontSize={16} style={{ marginBottom: 10 }}>
-              {report?.endDate}
-            </CustomText>
-            <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={18}>
-              산책 리포트
-            </CustomText>
-          </View>
-          <View style={styles.section2}>
-            <GoogleMap
-              defaultRegion={region}
-              mapRef={mapRef}
-              height={window.width * 0.5}
-              style={{ borderRadius: 20 }}
-              userLocation={false}
-              longitudeDelta={LONGITUDE_DELTA}
-              latitudeDelta={LATITUDE_DELTA}
-            >
-              <Polyline
-                coordinates={report?.routes}
-                strokeColor="#e23dff"
-                strokeWidth={6}
-              />
-            </GoogleMap>
-          </View>
-          <View style={styles.section3}>
+            <View style={styles.reportSection}>
+              <CustomText fontSize={16} style={{ marginBottom: 10 }}>
+                {report?.endDate}
+              </CustomText>
+              <CustomText
+                fontWeight={FONT_WEIGHT.BOLD}
+                fontSize={18}
+                style={styles.reportTitle}
+              >
+                Walking Routes
+              </CustomText>
+              <GoogleMap
+                defaultRegion={region}
+                mapRef={mapRef}
+                height={window.width * 0.5}
+                style={{ borderRadius: 20 }}
+                userLocation={false}
+                longitudeDelta={LONGITUDE_DELTA}
+                latitudeDelta={LATITUDE_DELTA}
+              >
+                <Polyline
+                  coordinates={report?.routes}
+                  strokeColor="#e23dff"
+                  strokeWidth={6}
+                />
+              </GoogleMap>
+            </View>
             <View style={styles.reportSection}>
               <CustomText
                 fontSize={18}
-                style={{ marginBottom: 10 }}
+                style={styles.reportTitle}
                 fontWeight={FONT_WEIGHT.BOLD}
               >
-                산책 기록
+                Walking Record
               </CustomText>
               <View style={styles.reportItemWrap}>
                 <View style={styles.reportItem}>
                   <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
-                    산책 시간
+                    Time
                   </CustomText>
                   <Timer
                     remain={report?.seconds}
@@ -188,7 +190,7 @@ const WalkingResultView = (props) => {
                 </View>
                 <View style={styles.reportItem}>
                   <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
-                    산책 거리
+                    Distance
                   </CustomText>
                   <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
                     {utils.toFormatNumber(report?.meters)} m
@@ -196,7 +198,7 @@ const WalkingResultView = (props) => {
                 </View>
                 <View style={styles.reportItem}>
                   <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
-                    활동량
+                    Average speed
                   </CustomText>
                   <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
                     {utils.calculateSpeed(report?.meters, report?.seconds)} km/h
@@ -209,10 +211,10 @@ const WalkingResultView = (props) => {
                 <View key={k}>
                   <CustomText
                     fontSize={18}
-                    style={{ marginBottom: 10 }}
+                    style={styles.reportTitle}
                     fontWeight={FONT_WEIGHT.BOLD}
                   >
-                    획득 {k}
+                    Earned {k}
                   </CustomText>
                   <View style={styles.reportItemWrap}>
                     {report?.rewards[k].map((ele, idx) => (
@@ -229,7 +231,7 @@ const WalkingResultView = (props) => {
                     {report?.rewards[k].length == 0 && (
                       <View style={styles.reportItem}>
                         <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
-                          획득한 {k}가 없어요.
+                          No {k} earned.
                         </CustomText>
                       </View>
                     )}
@@ -240,7 +242,7 @@ const WalkingResultView = (props) => {
             <View style={styles.reportSection}>
               <CustomText
                 fontSize={18}
-                style={{ marginBottom: 10 }}
+                style={styles.reportTitle}
                 fontWeight={FONT_WEIGHT.BOLD}
               >
                 Catched Footprints
@@ -285,21 +287,18 @@ export default WalkingResultView;
 const styles = StyleSheet.create({
   section1: {
     marginTop: 20,
-    marginBottom: 20,
-  },
-  section2: {
-    marginBottom: 20,
-  },
-  section3: {
-    paddingHorizontal: 5,
+    flex: 1,
   },
 
   reportSection: {
-    marginBottom: 20,
+    marginBottom: 30,
+  },
+  reportTitle: {
+    marginBottom: 10,
   },
   reportItemWrap: {
     backgroundColor: COLORS.light,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
   },
