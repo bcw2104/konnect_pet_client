@@ -46,7 +46,7 @@ const FaqView = () => {
           }}
         >
           <CustomText fontSize={14} fontWeight={FONT_WEIGHT.BOLD}>
-            Did the response not meet your expectations?
+            Not meet your expectations?
           </CustomText>
           <Ionicons
             name="arrow-forward-outline"

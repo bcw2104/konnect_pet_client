@@ -149,13 +149,13 @@ const SmsVerify = ({
     <View>
       {!fixedTel && (
         <CustomPicker
+          title="Nation"
+          displayValue={true}
+          valuePrefix='+'
           value={nationCode}
           onValueChange={handleNationCodeChange}
           items={nationCodes}
           itemStyle={{ fontSize: 16 }}
-          wrapperStyle={{
-            marginTop: 20,
-          }}
         />
       )}
       <View style={styles.phoneInputWrap}>
@@ -165,10 +165,10 @@ const SmsVerify = ({
           editable={!fixedTel}
           onValueChange={handleTelChange}
           regex={REGEX.number}
-          keyboardType="number-pad"
-          placeholder="Phone number"
+          keyboardType='number-pad'
+          placeholder='Phone number'
           errorHandler={telError}
-          errorMsg="Invalid phone number."
+          errorMsg='Invalid phone number.'
         />
         <CustomButton
           fontWeight={FONT_WEIGHT.BOLD}
@@ -197,11 +197,11 @@ const SmsVerify = ({
             value={verifyCode}
             onValueChange={setVerifyCode}
             maxLength={6}
-            keyboardType="number-pad"
+            keyboardType='number-pad'
             wrapperStyle={styles.phoneVerifyInput}
-            placeholder="Verify code"
+            placeholder='Verify code'
             errorHandler={verifiyError}
-            errorMsg="Incorrect verify code."
+            errorMsg='Incorrect verify code.'
           />
           <Timer
             style={styles.verifyTimer}
@@ -218,7 +218,7 @@ const SmsVerify = ({
             width={110}
             fontSize={15}
             onPress={submitVerifyCode}
-            text="인증하기"
+            text='인증하기'
           />
         </View>
       )}

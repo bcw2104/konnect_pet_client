@@ -62,18 +62,17 @@ const ProfileFormView = (props) => {
     return valid;
   };
   const saveProfileInfo = async () => {
+    const valid = validation(profile);
+
+    if (!valid) {
+      modalStore.openOneButtonModal(
+        'Please fill in all the required items.',
+        'Confirm',
+        () => {}
+      );
+      return;
+    }
     try {
-      const valid = validation(profile);
-
-      if (!valid) {
-        modalStore.openOneButtonModal(
-          'Please fill in all the required items.',
-          'Confirm',
-          () => {}
-        );
-        return;
-      }
-
       systemStore.setIsLoading(true);
 
       let imagePath = originImgPath.current;
@@ -128,7 +127,7 @@ const ProfileFormView = (props) => {
                   }}
                 >
                   <View style={styles.upload}>
-                    <Feather name="camera" size={20} color={COLORS.dark} />
+                    <Feather name='camera' size={20} color={COLORS.dark} />
                   </View>
                   <ProfileImage uri={profileImage} style={styles.profileImg} />
                 </Pressable>
@@ -141,7 +140,7 @@ const ProfileFormView = (props) => {
                   Nickname
                 </CustomText>
                 <FontAwesome5
-                  name="star-of-life"
+                  name='star-of-life'
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -156,8 +155,8 @@ const ProfileFormView = (props) => {
                 fontSize={15}
                 height={40}
                 wrapperStyle={styles.input}
-                placeholder="Please enter your nickname."
-                keyboardType="default"
+                placeholder='Please enter your nickname.'
+                keyboardType='default'
                 outline={true}
               />
             </View>
@@ -167,7 +166,7 @@ const ProfileFormView = (props) => {
                   Gender
                 </CustomText>
                 <FontAwesome5
-                  name="star-of-life"
+                  name='star-of-life'
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -192,7 +191,7 @@ const ProfileFormView = (props) => {
                   BirthDate
                 </CustomText>
                 <FontAwesome5
-                  name="star-of-life"
+                  name='star-of-life'
                   size={10}
                   color={COLORS.main}
                   style={styles.required}
@@ -230,8 +229,8 @@ const ProfileFormView = (props) => {
                 multiline={true}
                 fontSize={15}
                 wrapperStyle={styles.input}
-                placeholder="Please introduce yourself."
-                keyboardType="default"
+                placeholder='Please introduce yourself.'
+                keyboardType='default'
                 outline={true}
                 height={'auto'}
               />
@@ -245,7 +244,7 @@ const ProfileFormView = (props) => {
         bgColor={COLORS.main}
         bgColorPress={COLORS.mainDeep}
         onPress={saveProfileInfo}
-        text="Save"
+        text='Save'
         style={styles.submitTheme}
         height={60}
       />

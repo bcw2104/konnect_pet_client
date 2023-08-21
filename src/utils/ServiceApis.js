@@ -30,6 +30,9 @@ export const serviceApis = {
 
   //service
   getFaq: () => baseAxios.get(`/api/v1/service/faq`),
+  getQnaNew: () => baseAxios.get(`/api/v1/service/qna/new`),
+  saveQna: (payload) => baseAxios.put(`/api/v1/service/qna/new`,payload),
+  getQna: () => baseAxios.get(`/api/v1/service/qna`),
 
   //terms
   getTermsDetail: (groupId) => baseAxios.get(`/api/v1/terms/group/${groupId}/lastest`),

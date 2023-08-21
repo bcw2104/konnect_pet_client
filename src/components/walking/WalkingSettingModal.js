@@ -8,7 +8,7 @@ import { FOOTPRINT_TYPE } from '../../commons/constants';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { COLORS } from '../../commons/colors';
 
-const WalkingSettingModal = ({ setting, handleChangeSetting, modalRef }) => {
+const WalkingSettingModal = ({ setting, handleSettingChange, modalRef }) => {
   return (
     <CustomModal ref={modalRef} closeText={'닫기'} title={'Map Setting'}>
       {setting?.footprintYn != undefined && (
@@ -21,7 +21,7 @@ const WalkingSettingModal = ({ setting, handleChangeSetting, modalRef }) => {
           </View>
           <CustomSwitch
             onValueChange={() =>
-              handleChangeSetting({
+              handleSettingChange({
                 ...setting,
                 footprintYn: !setting?.footprintYn,
               })
@@ -40,7 +40,7 @@ const WalkingSettingModal = ({ setting, handleChangeSetting, modalRef }) => {
           </View>
           <CustomSwitch
             onValueChange={() =>
-              handleChangeSetting({
+              handleSettingChange({
                 ...setting,
                 routeYn: !setting?.routeYn,
               })

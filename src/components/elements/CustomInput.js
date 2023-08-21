@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { COLORS } from '../../commons/colors';
 import { useEffect } from 'react';
 import CustomText from './CustomText';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const CustomInput = ({
+  title = null,
   autoFocus = false,
   secureTextEntry = false,
   value = '',
@@ -58,6 +60,22 @@ const CustomInput = ({
           ...wrapperStyle,
         }}
       >
+        {title && (
+          <View
+            style={{
+              position: 'absolute',
+              top: -7,
+              left: 5,
+              backgroundColor: COLORS.white,
+              paddingHorizontal: 2,
+              zIndex: 1,
+            }}
+          >
+            <CustomText fontSize={13} fontWeight={FONT_WEIGHT.BOLD}>
+              {title}
+            </CustomText>
+          </View>
+        )}
         <TextInput
           autoFocus={autoFocus}
           secureTextEntry={secureTextEntry}
@@ -75,6 +93,7 @@ const CustomInput = ({
             minHeight: minHeight,
             fontSize: fontSize,
             paddingHorizontal: 10,
+            backgroundColor: COLORS.white,
             borderWidth: outline ? 0 : 1,
             borderColor: error ? COLORS.danger : COLORS.gray,
             borderRadius: 5,

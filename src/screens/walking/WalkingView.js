@@ -227,7 +227,7 @@ const WalkingView = (props) => {
     } catch (e) {}
   };
 
-  const handleChangeSetting = (setting) => {
+  const handleSettingChange = (setting) => {
     setSetting(setting);
   };
   const handleOpenSetting = () => {
@@ -588,7 +588,7 @@ const WalkingView = (props) => {
         <WalkingSettingModal
           modalRef={settingModalRef}
           setting={setting}
-          handleChangeSetting={handleChangeSetting}
+          handleSettingChange={handleSettingChange}
         />
       </Container>
     </>

@@ -36,7 +36,6 @@ const FindPasswordStep1View = (props) => {
           </CustomText>
         </View>
         <View style={styles.section2}>
-          <CustomText fontSize={16}>이메일을 입력해주세요.</CustomText>
           <EmailVerify
             verifyKey={verifyKey}
             onVerifyKeyChange={setVerifyKey}

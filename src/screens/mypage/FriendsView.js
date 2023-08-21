@@ -152,7 +152,6 @@ const Friends = () => {
           value={search}
           maxLength={15}
           onValueChange={handleSearch}
-          wrapperStyle={styles.input}
           placeholder="Please enter the nickname."
         />
         <FontAwesome
@@ -276,7 +275,6 @@ const RequestedFriends = ({ setRefreshFriend }) => {
           value={search}
           maxLength={15}
           onValueChange={handleSearch}
-          wrapperStyle={styles.input}
           placeholder="Please enter the nickname."
         />
         <FontAwesome
@@ -336,11 +334,8 @@ export default FriendsView;
 const styles = StyleSheet.create({
   section1: {
     flex: 1,
-    marginTop: 10,
+    marginTop: 20,
     paddingHorizontal: 20,
-  },
-  input: {
-    marginTop: 10,
   },
   searchIcon: {
     position: 'absolute',

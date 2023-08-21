@@ -1,5 +1,5 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../contexts/StoreContext';
 import { COLORS } from '../../commons/colors';
@@ -7,6 +7,7 @@ import Container from '../../components/layouts/Container';
 import CustomText from '../../components/elements/CustomText';
 import CustomSwitch from '../../components/elements/CustomSwitch';
 import { serviceApis } from '../../utils/ServiceApis';
+import { FONT_WEIGHT } from '../../commons/constants';
 
 const MENU_TITLE = {
   walkingYn: 'Walking Push',
@@ -18,11 +19,33 @@ const MENU_TITLE = {
 
 const PushSettingView = () => {
   const { userStore } = useStores();
+  const [all, setAll] = useState();
 
-  const handleChangeSetting = async (setting) => {
+  useEffect(() => {
+    checkAll(userStore.appSettings);
+  }, []);
+
+  const checkAll = (setting) => {
+    const hasTrue = Object.values(setting).filter((ele) => ele).length > 0;
+    setAll(hasTrue);
+  };
+
+  const handleChangeAll = async () => {
+    const setting = {};
+    Object.keys(userStore.appSettings).forEach((key) => (setting[key] = !all));
+
     try {
       const response = await serviceApis.changeSettings(setting);
       userStore.setAppSettings(setting);
+      setAll(!all);
+    } catch (err) {}
+  };
+
+  const handleSettingChange = async (setting) => {
+    try {
+      const response = await serviceApis.changeSettings(setting);
+      userStore.setAppSettings(setting);
+      checkAll(setting);
     } catch (err) {}
   };
 
@@ -30,6 +53,13 @@ const PushSettingView = () => {
     <Container header={true}>
       <View style={styles.section1}>
         <ScrollView>
+          <View>
+            <View style={styles.menuItem}>
+              <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>All Push</CustomText>
+              <CustomSwitch onValueChange={handleChangeAll} value={all} />
+            </View>
+            <View style={styles.dividerBold}></View>
+          </View>
           {!!userStore.appSettings &&
             Object.keys(userStore.appSettings)
               .filter((key) => !!MENU_TITLE[key])
@@ -39,7 +69,7 @@ const PushSettingView = () => {
                     <CustomText fontSize={16}>{MENU_TITLE[key]}</CustomText>
                     <CustomSwitch
                       onValueChange={() =>
-                        handleChangeSetting({
+                        handleSettingChange({
                           ...userStore.appSettings,
                           [key]: !userStore.appSettings[key],
                         })

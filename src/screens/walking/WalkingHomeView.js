@@ -190,7 +190,7 @@ const WalkingStartView = () => {
     Navigator.navigate(params, 'walking_nav', 'walking_result');
   }, []);
 
-  const handleChangeSetting = (setting) => {
+  const handleSettingChange = (setting) => {
     setSetting(setting);
   };
   const handleOpenSetting = () => {
@@ -396,7 +396,7 @@ const WalkingStartView = () => {
       <WalkingSettingModal
         modalRef={settingModalRef}
         setting={setting}
-        handleChangeSetting={handleChangeSetting}
+        handleSettingChange={handleSettingChange}
       />
     </>
   );

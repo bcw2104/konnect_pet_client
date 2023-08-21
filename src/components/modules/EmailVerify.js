@@ -185,7 +185,6 @@ export default EmailVerify;
 
 const styles = StyleSheet.create({
   emailInputWrap: {
-    marginTop: 10,
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'space-around',
