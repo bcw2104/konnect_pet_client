@@ -11,7 +11,7 @@ import CustomText from '../../components/elements/CustomText';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../contexts/StoreContext';
 import { FONT_WEIGHT } from '../../commons/constants';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const SignupStep3View = (props) => {
   const { route } = props;
@@ -98,8 +98,8 @@ const SignupStep3View = (props) => {
     <>
       {!systemStore.isLoading && (
         <>
-          <Container header={true}>
-            <KeyboardAwareScrollView>
+          <Container header={true} headerPaddingTop={0}>
+            <ScrollView>
               <View style={styles.section1}>
                 <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
                   약관 동의를 해주세요.
@@ -171,7 +171,7 @@ const SignupStep3View = (props) => {
                   </View>
                 ))}
               </View>
-            </KeyboardAwareScrollView>
+            </ScrollView>
           </Container>
           <CustomButton
             fontWeight={FONT_WEIGHT.BOLD}
@@ -193,6 +193,7 @@ export default observer(SignupStep3View);
 
 const styles = StyleSheet.create({
   section1: {
+    marginTop:20,
     marginBottom: 50,
   },
   section2: {

@@ -32,7 +32,7 @@ const SignupStep2View = (props) => {
 
   return (
     <>
-      <Container header={true}>
+      <Container header={true} headerPaddingTop={0}>
         <KeyboardAwareScrollView>
           <View style={styles.section1}>
             <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
@@ -85,6 +85,7 @@ export default SignupStep2View;
 
 const styles = StyleSheet.create({
   section1: {
+    marginTop:20,
     marginBottom: 50,
   },
   section2: {

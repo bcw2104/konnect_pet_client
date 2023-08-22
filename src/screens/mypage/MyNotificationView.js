@@ -11,10 +11,10 @@ import CustomText from '../../components/elements/CustomText';
 import { COLORS } from '../../commons/colors';
 import { FONT_WEIGHT } from '../../commons/constants';
 import { serviceApis } from '../../utils/ServiceApis';
-import { MaterialIcons } from '@expo/vector-icons';
 import { useStores } from '../../contexts/StoreContext';
 import NotificationItem from '../../components/mypage/NotificationItem';
 import { Navigator } from '../../navigations/Navigator';
+import MoreButton from '../../components/elements/MoreButton';
 
 const PAGE_SIZE = 20;
 
@@ -92,24 +92,14 @@ const MyNotificationView = () => {
           (notification.length > 0 ? (
             <>
               {notification?.map((item) => (
-                <NotificationItem key={item.id} item={item} onPress={landing} />
+                <NotificationItem key={item.notiId} item={item} onPress={landing} />
               ))}
-              {hasNext && (
-                <Pressable style={styles.more} onPress={getNextData}>
-                  <MaterialIcons
-                    name="expand-more"
-                    size={28}
-                    color={COLORS.dark}
-                    style={{ marginRight: 5 }}
-                  />
-                  <CustomText fontSize={16}>more</CustomText>
-                </Pressable>
-              )}
+              {hasNext && <MoreButton onPress={getNextData} />}
             </>
           ) : (
             <View style={styles.notExistWrap}>
               <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
-                Notifications does not exist.
+                Notifications received for 1 month does not exist.
               </CustomText>
             </View>
           ))}
@@ -121,13 +111,6 @@ const MyNotificationView = () => {
 export default MyNotificationView;
 
 const styles = StyleSheet.create({
-  more: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 60,
-    backgroundColor: COLORS.white,
-  },
   notExistWrap: {
     marginTop: 20,
     justifyContent: 'center',

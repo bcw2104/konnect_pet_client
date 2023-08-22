@@ -32,7 +32,8 @@ export const serviceApis = {
   getFaq: () => baseAxios.get(`/api/v1/service/faq`),
   getQnaNew: () => baseAxios.get(`/api/v1/service/qna/new`),
   saveQna: (payload) => baseAxios.put(`/api/v1/service/qna/new`,payload),
-  getQna: () => baseAxios.get(`/api/v1/service/qna`),
+  getQnas: (type,size,page) => baseAxios.get(`/api/v1/service/qna`,{ params:{type:type, size:size, page:page }}),
+  getQnaDetail: (qnaId) => baseAxios.get(`/api/v1/service/qna/${qnaId}`),
 
   //terms
   getTermsDetail: (groupId) => baseAxios.get(`/api/v1/terms/group/${groupId}/lastest`),

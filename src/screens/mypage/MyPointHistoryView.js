@@ -15,6 +15,7 @@ import { serviceApis } from '../../utils/ServiceApis';
 import { useStores } from '../../contexts/StoreContext';
 import { MaterialIcons } from '@expo/vector-icons';
 import PointHistoryItem from '../../components/mypage/PointHistoryItem';
+import MoreButton from '../../components/elements/MoreButton';
 
 const PAGE_SIZE = 20;
 const TAB_TYPE = {
@@ -148,15 +149,7 @@ const PointHist = (props) => {
               <PointHistoryItem key={item.id} item={item} />
             ))}
             {hasNext && (
-              <Pressable style={styles.more} onPress={getNextData}>
-                <MaterialIcons
-                  name='expand-more'
-                  size={28}
-                  color={COLORS.dark}
-                  style={{ marginRight: 5 }}
-                />
-                <CustomText fontSize={16}>more</CustomText>
-              </Pressable>
+              <MoreButton onPress={getNextData} />
             )}
           </>
         ) : (
@@ -173,13 +166,6 @@ const PointHist = (props) => {
 export default MyPointHistoryView;
 
 const styles = StyleSheet.create({
-  more: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 60,
-    backgroundColor: COLORS.white,
-  },
   notExistWrap: {
     marginTop: 20,
     justifyContent: 'center',

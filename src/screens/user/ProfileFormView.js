@@ -210,7 +210,7 @@ const ProfileFormView = (props) => {
             </View>
             <View
               style={{
-                paddingVertical: 20,
+                paddingTop: 20,
               }}
             >
               <CustomText
@@ -225,7 +225,7 @@ const ProfileFormView = (props) => {
                 onValueChange={(value) => {
                   setProfile({ ...profile, comment: value });
                 }}
-                maxLength={150}
+                maxLength={200}
                 multiline={true}
                 fontSize={15}
                 wrapperStyle={styles.input}

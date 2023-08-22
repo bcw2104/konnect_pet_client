@@ -10,7 +10,7 @@ const NotificationItem = ({ item,onPress }) => {
 
   return (
     <Pressable
-      key={item.id}
+      key={item.notiId}
       style={styles.notiItem}
       onPress={() => {
         onPress(item);
@@ -38,7 +38,6 @@ const NotificationItem = ({ item,onPress }) => {
           fontSize={14}
           fontWeight={FONT_WEIGHT.BOLD}
           fontColor={COLORS.gray}
-          style={{ marginTop: 3 }}
         >
           {moment(item.createdDate).format('YYYY.MM.DD')}
         </CustomText>
@@ -47,7 +46,7 @@ const NotificationItem = ({ item,onPress }) => {
         <CustomText
           fontWeight={FONT_WEIGHT.BOLD}
           fontSize={16}
-          style={{ marginBottom: 5 }}
+          style={{ marginBottom: 7 }}
         >
           {item.title}
         </CustomText>
@@ -69,15 +68,10 @@ const styles = StyleSheet.create({
   notiHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 8,
   },
   notiCategory: {
     flexDirection: 'row',
-    alignItems: 'center',
-  },
-  notExistWrap: {
-    marginTop: 20,
-    justifyContent: 'center',
     alignItems: 'center',
   },
 });

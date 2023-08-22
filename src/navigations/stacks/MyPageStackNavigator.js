@@ -19,6 +19,7 @@ import ChangePasswordView from '../../screens/mypage/ChangePasswordView';
 import PushSettingView from '../../screens/mypage/PushSettingView';
 import FaqView from '../../screens/mypage/FaqView';
 import QnaView from '../../screens/mypage/QnaView';
+import QnaFormView from '../../screens/mypage/QnaFormView';
 
 const MyPageStack = createNativeStackNavigator();
 
@@ -93,6 +94,11 @@ const MyPageStackNavigator = ({ navigation, route }) => {
             options={{ title: 'FAQ' }}
             name="faq"
             component={FaqView}
+          ></MyPageStack.Screen>
+           <MyPageStack.Screen
+            options={{ title: 'Q&A' }}
+            name="qna_form"
+            component={QnaFormView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
             options={{ title: 'Q&A' }}
