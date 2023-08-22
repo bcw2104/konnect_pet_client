@@ -15,7 +15,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
     <View style={styles.friendItem}>
       <View style={styles.profile}>
         <ProfileImage
-          uri={process.env.EXPO_PUBLIC_BASE_IMAGE_URL + item.profileImgPath}
+          uri={utils.pathToUri(item.profileImgPath)}
           style={styles.profileImg}
         />
         <View>
@@ -88,7 +88,7 @@ export default FriendItem;
 
 const styles = StyleSheet.create({
   friendItem: {
-    marginVertical: 5,
+    marginVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

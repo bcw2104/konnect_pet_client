@@ -20,6 +20,7 @@ import PushSettingView from '../../screens/mypage/PushSettingView';
 import FaqView from '../../screens/mypage/FaqView';
 import QnaView from '../../screens/mypage/QnaView';
 import QnaFormView from '../../screens/mypage/QnaFormView';
+import QnaDetailView from '../../screens/mypage/QnaDetailView';
 
 const MyPageStack = createNativeStackNavigator();
 
@@ -95,15 +96,20 @@ const MyPageStackNavigator = ({ navigation, route }) => {
             name="faq"
             component={FaqView}
           ></MyPageStack.Screen>
-           <MyPageStack.Screen
+          <MyPageStack.Screen
             options={{ title: 'Q&A' }}
             name="qna_form"
             component={QnaFormView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
-            options={{ title: 'Q&A' }}
+            options={{ title: 'My Q&A' }}
             name="qna"
             component={QnaView}
+          ></MyPageStack.Screen>
+          <MyPageStack.Screen
+            options={{ title: 'My Q&A' }}
+            name="qna_detail"
+            component={QnaDetailView}
           ></MyPageStack.Screen>
           <MyPageStack.Screen
             options={{ title: 'Membership Withdrawal' }}

@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
 import { serviceApis } from './../../utils/ServiceApis';
 import { COLORS } from '../../commons/colors';
+import Hr from '../../components/elements/Hr';
 
 const TermsListView = () => {
   const [terms, setTerms] = useState([]);
@@ -48,7 +49,7 @@ const TermsListView = () => {
                   color={COLORS.dark}
                 />
               </Pressable>
-              {terms.length - 1 > idx && <View style={styles.divider}></View>}
+              {terms.length - 1 > idx && <Hr />}
             </View>
           ))}
         </ScrollView>
@@ -68,9 +69,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 15,
-  },
-  divider: {
-    height: 2,
-    backgroundColor: COLORS.light,
   },
 });

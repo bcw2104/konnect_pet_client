@@ -7,6 +7,7 @@ import CustomText from '../../components/elements/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import { FONT_WEIGHT } from '../../commons/constants';
 import { Navigator } from '../../navigations/Navigator';
+import Hr from '../../components/elements/Hr';
 
 const FaqView = () => {
   const [faq, setFaq] = useState({});
@@ -70,6 +71,7 @@ const FaqView = () => {
                 <View style={{ flex: 1 }}>
                   <CustomText
                     fontSize={15}
+                    fontColor={COLORS.main}
                     style={{ marginBottom: 5 }}
                     fontWeight={FONT_WEIGHT.BOLD}
                   >
@@ -97,7 +99,7 @@ const FaqView = () => {
               </Pressable>
               {faq[key].open && (
                 <>
-                  <View style={styles.divider}></View>
+                  <Hr />
                   <View style={styles.menuDropdown}>
                     <CustomText fontSize={15} style={{ flex: 1 }}>
                       {faq[key].answer.trim()}
@@ -106,9 +108,7 @@ const FaqView = () => {
                 </>
               )}
 
-              {Object.keys(faq).length - 1 > idx && (
-                <View style={styles.divider}></View>
-              )}
+              {Object.keys(faq).length - 1 > idx && <Hr />}
             </View>
           ))}
         </ScrollView>
@@ -134,9 +134,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: COLORS.light,
     paddingVertical: 15,
-  },
-  divider: {
-    height: 2,
-    backgroundColor: COLORS.light,
   },
 });

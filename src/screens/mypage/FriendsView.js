@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
   searchIcon: {
     position: 'absolute',
     right: 15,
-    top: 20,
+    top: 10,
   },
   friendsWrap: {
     flex: 1,

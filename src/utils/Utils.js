@@ -128,4 +128,8 @@ export const utils = {
   toFormatNumber: (val) => {
     return val.toLocaleString('ko-KR');
   },
+  pathToUri: (path) => {
+    if (!path) return null;
+    return process.env.EXPO_PUBLIC_BASE_IMAGE_URL + path;
+  },
 };

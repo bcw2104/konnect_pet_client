@@ -50,7 +50,7 @@ const PetAddFormView = (props) => {
         birthDate: moment(pet.birthDate, 'YYYYMMDD').toDate(),
       });
       originImgPath.current = pet.petImgPath;
-      setPetImage(process.env.EXPO_PUBLIC_BASE_IMAGE_URL + pet.petImgPath);
+      setPetImage(utils.pathToUri(pet.petImgPath));
       navigation.setOptions({
         headerRight: () => (
           <Pressable

@@ -34,8 +34,8 @@ const QnaItem = ({ item, onPress }) => {
         <CustomText
           fontWeight={FONT_WEIGHT.BOLD}
           fontSize={14}
-          style={{ marginBottom: 7 }}
-          numberOfLines={2}
+          style={{ marginBottom: 7, width: '75%' }}
+          numberOfLines={1}
           ellipsizeMode={'tail'}
         >
           {item.title}
@@ -57,6 +57,6 @@ const styles = StyleSheet.create({
   qnaHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 8,
+    marginBottom: 12,
   },
 });

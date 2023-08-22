@@ -3,6 +3,7 @@ import React from 'react';
 import Swiper from 'react-native-swiper';
 import { COLORS } from '../../commons/colors';
 import CustomText from '../elements/CustomText';
+import { utils } from '../../utils/Utils';
 
 const window = Dimensions.get('window');
 const bannerWidth = window.width - 30;
@@ -36,7 +37,7 @@ const BannerSwiper = ({ banners }) => {
                 <Image
                   key={ele.bannerId}
                   source={{
-                    uri: process.env.EXPO_PUBLIC_BASE_IMAGE_URL + ele.imgPath,
+                    uri: utils.pathToUri(ele.imgPath),
                   }}
                   style={{
                     width: bannerWidth,

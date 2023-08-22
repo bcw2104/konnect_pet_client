@@ -13,8 +13,8 @@ import { Navigator } from '../../navigations/Navigator';
 
 const PAGE_SIZE = 20;
 const TAB_TYPE = {
-  first: 'question',
-  second: 'answer',
+  first: 'unanswered',
+  second: 'answered',
 };
 
 const QnaView = (props) => {
@@ -22,8 +22,8 @@ const QnaView = (props) => {
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'first', title: 'Question' },
-    { key: 'second', title: 'Answer' },
+    { key: 'first', title: 'Unanswered' },
+    { key: 'second', title: 'Answered' },
   ]);
 
   useEffect(() => {
@@ -148,7 +148,7 @@ const QnaListView = ({ type }) => {
         ) : (
           <View style={styles.notExistWrap}>
             <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
-              Q&A does not exist.
+              {type == "unanswered" ? "Question" : "Answered question"} does not exist.
             </CustomText>
           </View>
         ))}

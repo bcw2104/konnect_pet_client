@@ -48,7 +48,7 @@ const PetList = ({ items }) => {
               }}
             >
               <PetImage
-                uri={process.env.EXPO_PUBLIC_BASE_IMAGE_URL + item?.petImgPath}
+                uri={utils.pathToUri(item?.petImgPath)}
                 style={styles.petImg}
               />
               <View style={styles.pet}>
@@ -77,7 +77,7 @@ const PetList = ({ items }) => {
               onPress={addNewPet}
             >
               <AntDesign
-                name='pluscircleo'
+                name="pluscircleo"
                 size={40}
                 color={COLORS.dark}
                 style={styles.petImg}

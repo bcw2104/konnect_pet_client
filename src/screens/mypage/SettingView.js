@@ -11,6 +11,7 @@ import CustomSwitch from '../../components/elements/CustomSwitch';
 import { observer } from 'mobx-react-lite';
 import { serviceApis } from '../../utils/ServiceApis';
 import Constants from 'expo-constants';
+import Hr from '../../components/elements/Hr';
 
 const SettingView = () => {
   const { userStore, modalStore, systemStore } = useStores();
@@ -77,7 +78,8 @@ const SettingView = () => {
           <Pressable onPress={logout} style={styles.menuItem}>
             <CustomText fontSize={16}>Sign Out</CustomText>
           </Pressable>
-          <View style={styles.divider}></View>
+
+          <Hr />
           {userStore.platform == SOCIAL_TYPE.EMAIL && (
             <>
               <Pressable onPress={goToChangePassword} style={styles.menuItem}>
@@ -88,14 +90,14 @@ const SettingView = () => {
                   color={COLORS.dark}
                 />
               </Pressable>
-              <View style={styles.divider}></View>
+              <Hr />
             </>
           )}
           <Pressable onPress={goToPushSettings} style={styles.menuItem}>
             <CustomText fontSize={16}>Push Settings</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
-          <View style={styles.divider}></View>
+          <Hr />
           <View style={styles.menuItem}>
             <View style={{ flex: 1 }}>
               <CustomText fontSize={16} style={{ marginBottom: 7 }}>
@@ -138,27 +140,27 @@ const SettingView = () => {
               )}
             </View>
           </View>
-          <View style={styles.divider}></View>
+          <Hr />
           <Pressable onPress={goToTerms} style={styles.menuItem}>
             <CustomText fontSize={16}>Terms</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
-          <View style={styles.divider}></View>
+          <Hr />
           <Pressable onPress={goToFaq} style={styles.menuItem}>
             <CustomText fontSize={16}>FAQ</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
-          <View style={styles.divider}></View>
+          <Hr />
           <Pressable onPress={goToQnaForm} style={styles.menuItem}>
             <CustomText fontSize={16}>Q&A</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
-          <View style={styles.divider}></View>
+          <Hr />
           <Pressable onPress={goToQna} style={styles.menuItem}>
             <CustomText fontSize={16}>My Q&A</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
-          <View style={styles.divider}></View>
+          <Hr />
           <Pressable onPress={goToLeave} style={styles.menuItem}>
             <CustomText fontSize={16}>Membership Withdrawal</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
@@ -190,9 +192,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 15,
-  },
-  divider: {
-    height: 2,
-    backgroundColor: COLORS.light,
   },
 });

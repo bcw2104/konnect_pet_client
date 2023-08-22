@@ -26,10 +26,7 @@ const Profile = () => {
     <>
       <View style={styles.profileWrap}>
         <ProfileImage
-          uri={
-            process.env.EXPO_PUBLIC_BASE_IMAGE_URL +
-            userStore.profile?.profileImgPath
-          }
+          uri={utils.pathToUri(userStore.profile?.profileImgPath)}
           style={styles.profileImg}
         />
         <View style={styles.profile}>
@@ -53,7 +50,7 @@ const Profile = () => {
           hitSlop={5}
           onPress={editProfile}
         >
-          <AntDesign name='edit' size={20} color={COLORS.dark} />
+          <AntDesign name="edit" size={20} color={COLORS.dark} />
         </Pressable>
       </View>
       <View style={{ marginTop: 7 }}>

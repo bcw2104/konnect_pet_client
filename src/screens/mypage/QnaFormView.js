@@ -90,7 +90,7 @@ const QnaFormView = () => {
 
   return (
     <>
-      <Container header={true} headerPaddingTop={0} bgColor={COLORS.light}>
+      <Container header={true} headerPaddingTop={0}>
         <KeyboardAwareScrollView>
           <View style={styles.section1}>
             <CustomPicker
@@ -114,7 +114,7 @@ const QnaFormView = () => {
               maxLength={200}
               fontSize={15}
               wrapperStyle={{ marginBottom: 20 }}
-              keyboardType='default'
+              keyboardType="default"
             />
             <CustomInput
               title={'Question'}
@@ -126,8 +126,7 @@ const QnaFormView = () => {
               maxLength={800}
               multiline={true}
               fontSize={15}
-              style={{ paddingVertical: 10 }}
-              keyboardType='default'
+              keyboardType="default"
               minHeight={window.height / 2}
               height={'auto'}
             />
@@ -139,7 +138,7 @@ const QnaFormView = () => {
         fontColor={COLORS.white}
         bgColor={COLORS.main}
         bgColorPress={COLORS.mainDeep}
-        text='Submit'
+        text="Submit"
         onPress={submit}
         style={styles.submitTheme}
         height={60}

@@ -8,6 +8,7 @@ import CustomText from '../../components/elements/CustomText';
 import CustomSwitch from '../../components/elements/CustomSwitch';
 import { serviceApis } from '../../utils/ServiceApis';
 import { FONT_WEIGHT } from '../../commons/constants';
+import Hr from '../../components/elements/Hr';
 
 const MENU_TITLE = {
   walkingYn: 'Walking Push',
@@ -79,7 +80,7 @@ const PushSettingView = () => {
                     />
                   </View>
                   {Object.keys(userStore.appSettings).length - 1 > idx && (
-                    <View style={styles.divider}></View>
+                    <Hr />
                   )}
                 </View>
               ))}
@@ -98,9 +99,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 15,
-  },
-  divider: {
-    height: 2,
-    backgroundColor: COLORS.light,
   },
 });
