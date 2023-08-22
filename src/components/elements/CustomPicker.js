@@ -1,30 +1,30 @@
-import { Platform, Text, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import React from 'react';
 import { useState } from 'react';
 import { COLORS } from '../../commons/colors';
 import { useEffect } from 'react';
-import { Picker, PickerIOS } from '@react-native-picker/picker';
 import CustomText from './CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
+import ModalSelector from 'react-native-modal-selector';
 
 const CustomPicker = ({
   title = null,
-  displayValue = false,
-  valuePrefix = '',
   value = '',
   onValueChange = () => {},
+  placeholder = 'Select an option...',
   items = [],
+  fontSize = 16,
   width = 'auto',
   height = 45,
   wrapperStyle = {},
-  style = {},
-  itemStyle = {},
   disabled = false,
   errorHandler = false,
   errorMsg = '',
 }) => {
   const [error, setError] = useState(false);
-
+  const [label, setLabel] = useState(
+    items.filter((ele) => ele.value === value)[0]?.label || ''
+  );
   useEffect(() => {
     setError(errorHandler);
   }, [errorHandler]);
@@ -33,7 +33,6 @@ const CustomPicker = ({
     <>
       <View
         style={{
-          flexDirection: 'row',
           height: height,
           width: width,
           borderWidth: 1,
@@ -61,59 +60,47 @@ const CustomPicker = ({
             </CustomText>
           </View>
         )}
-        {Platform.OS === 'ios' ? (
-          <PickerIOS
-            selectedValue={value}
-            onValueChange={(itemValue, itemIndex) => onValueChange(itemValue)}
-            enabled={!disabled}
+        <ModalSelector
+          data={items.map((ele) => ({ key: ele.value, label: ele.label }))}
+          onChange={(option) => {
+            onValueChange(option.key);
+            setLabel(option.label);
+          }}
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+          overlayStyle={{
+            backgroundColor: COLORS.semiTransparentDark,
+          }}
+          optionStyle={{ paddingVertical: 15 }}
+          optionContainerStyle={{ backgroundColor: COLORS.light }}
+          optionTextStyle={{
+            fontSize: 16,
+            color: COLORS.dark,
+            fontFamily: 'NSR-Regular',
+          }}
+          cancelStyle={{ paddingVertical: 15, backgroundColor: COLORS.main }}
+          cancelTextStyle={{
+            fontSize: 16,
+            color: COLORS.white,
+            fontFamily: 'NSR-Bold',
+          }}
+          disabled={disabled}
+        >
+          <TextInput
             style={{
-              flex: 1,
-              ...style,
-              justifyContent: 'flex-start',
+              width: '100%',
+              height: '100%',
+              paddingHorizontal: 10,
+              fontSize: fontSize,
+              color:COLORS.dark
             }}
-            itemStyle={{
-              height: height,
-              ...itemStyle,
-            }}
-          >
-            {items.map((item, index) => (
-              <PickerIOS.Item
-                key={item.value}
-                label={
-                  item.label +
-                  (displayValue ? ` ${valuePrefix}${item.value}` : '')
-                }
-                value={item.value}
-              />
-            ))}
-          </PickerIOS>
-        ) : (
-          <Picker
-            selectedValue={value}
-            onValueChange={(itemValue, itemIndex) => onValueChange(itemValue)}
-            enabled={!disabled}
-            style={{
-              flex: 1,
-              ...style,
-              justifyContent: 'flex-start',
-            }}
-            itemStyle={{
-              height: height,
-              ...itemStyle,
-            }}
-          >
-            {items.map((item, index) => (
-              <Picker.Item
-                key={item.value}
-                label={
-                  item.label +
-                  (displayValue ? ` ${valuePrefix}${item.value}` : '')
-                }
-                value={item.value}
-              />
-            ))}
-          </Picker>
-        )}
+            editable={false}
+            placeholder={placeholder}
+            value={label}
+          />
+        </ModalSelector>
       </View>
       {error && (
         <CustomText

@@ -1,4 +1,4 @@
-import { StyleSheet, View, Pressable } from 'react-native';
+import { StyleSheet, View, Pressable, ScrollView } from 'react-native';
 import React from 'react';
 import Container from '../../components/layouts/Container';
 import { useState, useEffect } from 'react';
@@ -11,7 +11,6 @@ import CustomText from '../../components/elements/CustomText';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../contexts/StoreContext';
 import { FONT_WEIGHT } from '../../commons/constants';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const SignupStep3View = (props) => {
   const { route } = props;
@@ -204,7 +203,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     paddingVertical: 20,
-    backgroundColor: COLORS.lightDeep,
+    backgroundColor: COLORS.light,
     borderRadius: 10,
     marginBottom: 20,
     alignItems: 'center',

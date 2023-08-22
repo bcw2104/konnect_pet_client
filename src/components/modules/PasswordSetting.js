@@ -110,12 +110,12 @@ const PasswordSetting = ({ onPasswordChange = (value) => {} }) => {
   return (
     <View style={styles.passwordInputWrap}>
       <CustomInput
+        title="Password"
         value={password}
         maxLength={16}
         onValueChange={handlePasswordChange}
         secureTextEntry={true}
         keyboardType="default"
-        placeholder="Password"
         errorHandler={passwordError}
         errorMsg="Please check your password."
       />
@@ -138,12 +138,12 @@ const PasswordSetting = ({ onPasswordChange = (value) => {} }) => {
         ))}
       </View>
       <CustomInput
+        title="Verify password"
         value={password2}
         maxLength={16}
         onValueChange={handlePassword2Change}
         secureTextEntry={true}
         keyboardType="default"
-        placeholder="Verify password"
         errorHandler={password2Error}
         errorMsg="Passwords do not match."
         wrapperStyle={styles.password2Input}
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
 
   password2Input: {
-    marginTop: 15,
+    marginTop: 20,
   },
   checkerWrap: {
     width: '100%',

@@ -67,16 +67,16 @@ const ChangePasswordView = () => {
         <View style={styles.section2}>
           <View
             style={{
-              marginBottom: 15,
+              marginBottom: 20,
             }}
           >
             <CustomInput
+              title="Current Password"
               value={currentPassword}
               maxLength={16}
               onValueChange={handleCurrentPasswordChange}
               secureTextEntry={true}
               keyboardType="default"
-              placeholder="Current Password"
               errorHandler={currentPasswordError}
               errorMsg="Invalid password."
             />

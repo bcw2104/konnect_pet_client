@@ -26,10 +26,7 @@ const QnaFormView = () => {
     const fetchData = async () => {
       try {
         const response = await serviceApis.getQnaNew();
-        setCategory([
-          { label: 'Select Category', value: '' },
-          ...response.result.categories,
-        ]);
+        setCategory(response.result.categories);
       } catch (err) {}
     };
 
@@ -95,12 +92,12 @@ const QnaFormView = () => {
           <View style={styles.section1}>
             <CustomPicker
               title={'Category'}
+              placeholder="Select an category..."
               value={formData.category}
               onValueChange={(value) => {
                 setFormData({ ...formData, category: value });
               }}
               items={category}
-              itemStyle={{ fontSize: 16 }}
               wrapperStyle={{
                 marginBottom: 20,
               }}
@@ -127,6 +124,9 @@ const QnaFormView = () => {
               multiline={true}
               fontSize={15}
               keyboardType="default"
+              style={{
+                paddingVertical: 15,
+              }}
               minHeight={window.height / 2}
               height={'auto'}
             />

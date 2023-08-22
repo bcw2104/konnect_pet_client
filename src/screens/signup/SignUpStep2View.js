@@ -40,9 +40,6 @@ const SignupStep2View = (props) => {
             </CustomText>
           </View>
           <View style={styles.section2}>
-            <CustomText fontSize={15} style={{ marginBottom: 10 }}>
-              이메일을 입력해주세요.
-            </CustomText>
             <EmailVerify
               verifyKey={verifyKey}
               onVerifyKeyChange={setVerifyKey}
@@ -51,7 +48,6 @@ const SignupStep2View = (props) => {
             />
           </View>
           <View style={styles.section3}>
-            <CustomText fontSize={15} style={{ marginBottom: 10 }}>비밀번호를 입력해주세요.</CustomText>
             <PasswordSetting onPasswordChange={setPassword} />
           </View>
 
@@ -72,7 +68,7 @@ const SignupStep2View = (props) => {
         fontColor={COLORS.white}
         bgColor={COLORS.main}
         bgColorPress={COLORS.mainDeep}
-        text='Next Step'
+        text="Next Step"
         disabled={!verifyKey || !password}
         onPress={submit}
         style={styles.submitTheme}
@@ -85,11 +81,11 @@ export default SignupStep2View;
 
 const styles = StyleSheet.create({
   section1: {
-    marginTop:20,
+    marginTop: 20,
     marginBottom: 50,
   },
   section2: {
-    marginBottom: 50,
+    marginBottom: 20,
   },
   section3: {
     marginBottom: 50,

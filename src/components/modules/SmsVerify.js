@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { Navigator } from '../../navigations/Navigator';
 import { COLORS } from '../../commons/colors';
 import { FONT_WEIGHT } from '../../commons/constants';
+import CustomText from '../elements/CustomText';
 
 const VERIFY_TIMEOUT = 180;
 
@@ -150,8 +151,9 @@ const SmsVerify = ({
       {!fixedTel && (
         <CustomPicker
           title="Nation"
+          placeholder="Select an nation..."
           displayValue={true}
-          valuePrefix='+'
+          valuePrefix="+"
           value={nationCode}
           onValueChange={handleNationCodeChange}
           items={nationCodes}
@@ -159,16 +161,22 @@ const SmsVerify = ({
         />
       )}
       <View style={styles.phoneInputWrap}>
+        {!fixedTel && (
+          <View style={styles.nationCode}>
+            <CustomText>+{nationCode}</CustomText>
+          </View>
+        )}
         <CustomInput
+          title="Phone number"
           value={tel}
           maxLength={20}
           editable={!fixedTel}
           onValueChange={handleTelChange}
           regex={REGEX.number}
-          keyboardType='number-pad'
-          placeholder='Phone number'
+          keyboardType="number-pad"
+          style={{ paddingLeft: fixedTel ? 10 : 50 }}
           errorHandler={telError}
-          errorMsg='Invalid phone number.'
+          errorMsg="Invalid phone number."
         />
         <CustomButton
           fontWeight={FONT_WEIGHT.BOLD}
@@ -194,14 +202,14 @@ const SmsVerify = ({
       {verifing && (
         <View style={styles.phoneVerifyWrap}>
           <CustomInput
+            title="Verify code"
             value={verifyCode}
             onValueChange={setVerifyCode}
             maxLength={6}
-            keyboardType='number-pad'
+            keyboardType="number-pad"
             wrapperStyle={styles.phoneVerifyInput}
-            placeholder='Verify code'
             errorHandler={verifiyError}
-            errorMsg='Incorrect verify code.'
+            errorMsg="Incorrect verify code."
           />
           <Timer
             style={styles.verifyTimer}
@@ -218,7 +226,7 @@ const SmsVerify = ({
             width={110}
             fontSize={15}
             onPress={submitVerifyCode}
-            text='인증하기'
+            text="인증하기"
           />
         </View>
       )}
@@ -230,7 +238,7 @@ export default SmsVerify;
 
 const styles = StyleSheet.create({
   phoneInputWrap: {
-    marginTop: 10,
+    marginTop: 20,
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -239,15 +247,22 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
   },
+  nationCode: {
+    flexDirection: 'row',
+    position: 'absolute',
+    left: 10,
+    top: 15,
+    zIndex: 100,
+  },
 
   phoneVerifyWrap: {
-    marginTop: 10,
+    marginTop: 20,
     position: 'relative',
     alignItems: 'center',
   },
   verifyTimer: {
     position: 'absolute',
-    top: 14,
+    top: 15,
     right: 125,
   },
   verifySubmitButton: {

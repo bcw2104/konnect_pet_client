@@ -116,12 +116,12 @@ const EmailVerify = ({
     <View>
       <View style={styles.emailInputWrap}>
         <CustomInput
+          title="Email address"
           value={email}
           editable={!fixedEmail}
           maxLength={50}
           onValueChange={handleEmailChange}
           keyboardType="email-address"
-          placeholder="Email address"
           errorHandler={emailError}
           errorMsg="Invalid email address."
         />
@@ -149,12 +149,12 @@ const EmailVerify = ({
       {verifing && (
         <View style={styles.emailVerifyWrap}>
           <CustomInput
+            title="Verify code"
             value={verifyCode}
             onValueChange={setVerifyCode}
             maxLength={10}
             keyboardType="default"
             wrapperStyle={styles.emailVerifyInput}
-            placeholder="Verify code"
             errorHandler={verifiyError}
             errorMsg="Incorrect verify code."
           />
@@ -194,13 +194,13 @@ const styles = StyleSheet.create({
     right: 0,
   },
   emailVerifyWrap: {
-    marginTop: 10,
+    marginTop: 20,
     position: 'relative',
     alignItems: 'center',
   },
   verifyTimer: {
     position: 'absolute',
-    top: 14,
+    top: 15,
     right: 125,
   },
   verifySubmitButton: {
