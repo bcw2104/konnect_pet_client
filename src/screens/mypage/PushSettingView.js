@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../contexts/StoreContext';
@@ -51,14 +51,15 @@ const PushSettingView = () => {
 
   return (
     <Container header={true}>
-      <View style={styles.section1}>
-        <ScrollView>
+      <ScrollView>
+        <View style={styles.section1}>
           <View>
             <View style={styles.menuItem}>
-              <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>All Push</CustomText>
+              <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                All Push
+              </CustomText>
               <CustomSwitch onValueChange={handleChangeAll} value={all} />
             </View>
-            <View style={styles.dividerBold}></View>
           </View>
           {!!userStore.appSettings &&
             Object.keys(userStore.appSettings)
@@ -82,8 +83,8 @@ const PushSettingView = () => {
                   )}
                 </View>
               ))}
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </Container>
   );
 };
@@ -91,9 +92,7 @@ const PushSettingView = () => {
 export default observer(PushSettingView);
 
 const styles = StyleSheet.create({
-  section1: {
-    flex: 1,
-  },
+  section1: {},
   menuItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',

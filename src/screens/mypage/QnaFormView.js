@@ -46,7 +46,7 @@ const QnaFormView = () => {
   };
 
   const goToQna = () => {
-    Navigator.navigate({}, 'qna');
+    Navigator.reset({}, 'qna');
   };
 
   const submit = async () => {
@@ -128,6 +128,7 @@ const QnaFormView = () => {
               fontSize={15}
               style={{ paddingVertical: 10 }}
               keyboardType='default'
+              minHeight={window.height / 2}
               height={'auto'}
             />
           </View>

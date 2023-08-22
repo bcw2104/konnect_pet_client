@@ -28,15 +28,15 @@ const FaqView = () => {
     }
   };
 
-  const goToQna = () => {
-    Navigator.navigate({}, 'qna');
+  const goToQnaForm = () => {
+    Navigator.navigate({}, 'qna_form');
   };
 
   return (
     <Container header={true} paddingHorizontal={0}>
       <View style={styles.section1}>
         <Pressable
-          onPress={goToQna}
+          onPress={goToQnaForm}
           style={{
             marginBottom: 10,
             paddingHorizontal: 15,

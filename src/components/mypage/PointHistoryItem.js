@@ -13,7 +13,7 @@ const PointHistoryItem = ({ item }) => {
           {item.historyTypeName}
         </CustomText>
         <CustomText
-          fontSize={14}
+          fontSize={12}
           fontWeight={FONT_WEIGHT.BOLD}
           fontColor={COLORS.gray}
           style={{ marginTop: 5 }}

@@ -23,7 +23,7 @@ const QnaItem = ({ item, onPress }) => {
           {item.categoryName}
         </CustomText>
         <CustomText
-          fontSize={14}
+          fontSize={12}
           fontWeight={FONT_WEIGHT.BOLD}
           fontColor={COLORS.gray}
         >

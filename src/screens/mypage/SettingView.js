@@ -41,6 +41,9 @@ const SettingView = () => {
   const goToFaq = () => {
     Navigator.navigate({}, 'faq');
   };
+  const goToQnaForm = () => {
+    Navigator.navigate({}, 'qna_form');
+  };
   const goToQna = () => {
     Navigator.navigate({}, 'qna');
   };
@@ -103,7 +106,7 @@ const SettingView = () => {
                 various event information.
               </CustomText>
             </View>
-            <View style={{ width: 60, alignItems: 'flex-end' }}>
+            <View style={{ width: 70, alignItems: 'flex-end' }}>
               <CustomSwitch
                 onValueChange={changeMarketing}
                 value={userStore.marketingYn}
@@ -146,8 +149,13 @@ const SettingView = () => {
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
           <View style={styles.divider}></View>
-          <Pressable onPress={goToQna} style={styles.menuItem}>
+          <Pressable onPress={goToQnaForm} style={styles.menuItem}>
             <CustomText fontSize={16}>Q&A</CustomText>
+            <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
+          </Pressable>
+          <View style={styles.divider}></View>
+          <Pressable onPress={goToQna} style={styles.menuItem}>
+            <CustomText fontSize={16}>My Q&A</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
           <View style={styles.divider}></View>

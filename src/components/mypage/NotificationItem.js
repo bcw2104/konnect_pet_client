@@ -35,7 +35,7 @@ const NotificationItem = ({ item,onPress }) => {
           )}
         </View>
         <CustomText
-          fontSize={14}
+          fontSize={12}
           fontWeight={FONT_WEIGHT.BOLD}
           fontColor={COLORS.gray}
         >
