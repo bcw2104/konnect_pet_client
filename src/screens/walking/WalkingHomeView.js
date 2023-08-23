@@ -117,7 +117,7 @@ const WalkingStartView = () => {
   const [selectedFootprintId, setSelectedFootprintId] = useState(null);
   const [permission, setPermission] = useState(false);
   const [region, setRegion] = useState(null);
-  const [footprints, setFootprints] = useState([]);
+  const [footprints, setFootprints] = useState(null);
 
   const [setting, setSetting] = useState({
     footprintYn: true,
@@ -357,7 +357,7 @@ const WalkingStartView = () => {
           longitudeDelta={LONGITUDE_DELTA}
           latitudeDelta={LATITUDE_DELTA}
         >
-          {!!setting.footprintYn && (
+          {!!setting.footprintYn && !!footprints && (
             <FootprintMarker
               userId={userStore.userId}
               footprints={footprints}

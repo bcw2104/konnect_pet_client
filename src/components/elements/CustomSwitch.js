@@ -6,7 +6,7 @@ import SwitchToggle from 'react-native-switch-toggle';
 const CustomSwitch = ({
   onValueChange = () => {},
   value = false,
-  size = 60,
+  size = 50,
 }) => {
   return (
     <SwitchToggle

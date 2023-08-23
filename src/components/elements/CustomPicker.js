@@ -76,7 +76,7 @@ const CustomPicker = ({
           optionStyle={{ paddingVertical: 15 }}
           optionContainerStyle={{ backgroundColor: COLORS.light }}
           optionTextStyle={{
-            fontSize: 16,
+            fontSize: 14,
             color: COLORS.dark,
             fontFamily: 'NSR-Regular',
           }}

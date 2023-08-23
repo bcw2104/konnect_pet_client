@@ -9,7 +9,7 @@ const PointHistoryItem = ({ item }) => {
   return (
     <View key={item.id} style={styles.historyItem}>
       <View>
-        <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+        <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
           {item.historyTypeName}
         </CustomText>
         <CustomText
@@ -22,7 +22,7 @@ const PointHistoryItem = ({ item }) => {
         </CustomText>
       </View>
       <View>
-        <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+        <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
           {item.balance}
           {item.pointTypeSymbol}
         </CustomText>

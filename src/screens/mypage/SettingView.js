@@ -76,14 +76,14 @@ const SettingView = () => {
             </CustomText>
           </View>
           <Pressable onPress={logout} style={styles.menuItem}>
-            <CustomText fontSize={16}>Sign Out</CustomText>
+            <CustomText fontSize={15}>Sign Out</CustomText>
           </Pressable>
 
           <Hr />
           {userStore.platform == SOCIAL_TYPE.EMAIL && (
             <>
               <Pressable onPress={goToChangePassword} style={styles.menuItem}>
-                <CustomText fontSize={16}>Change Password</CustomText>
+                <CustomText fontSize={15}>Change Password</CustomText>
                 <Ionicons
                   name="chevron-forward"
                   size={25}
@@ -94,16 +94,16 @@ const SettingView = () => {
             </>
           )}
           <Pressable onPress={goToPushSettings} style={styles.menuItem}>
-            <CustomText fontSize={16}>Push Settings</CustomText>
+            <CustomText fontSize={15}>Push Settings</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
           <Hr />
           <View style={styles.menuItem}>
             <View style={{ flex: 1 }}>
-              <CustomText fontSize={16} style={{ marginBottom: 7 }}>
+              <CustomText fontSize={15} style={{ marginBottom: 7 }}>
                 Marketing Information
               </CustomText>
-              <CustomText fontSize={14} fontColor={COLORS.grayDeep}>
+              <CustomText fontSize={12} fontColor={COLORS.grayDeep}>
                 If you receive marketing information{'\n'}you can receive
                 various event information.
               </CustomText>
@@ -123,17 +123,17 @@ const SettingView = () => {
             </CustomText>
           </View>
           <View style={styles.menuItem}>
-            <CustomText fontSize={16}>Version</CustomText>
+            <CustomText fontSize={15}>Version</CustomText>
             <View style={{ flexDirection: 'row' }}>
-              <CustomText fontSize={16}>
+              <CustomText fontSize={12}>
                 Now v{Constants.expoConfig.version}
               </CustomText>
               {!!systemStore.lastestAppVersion && (
                 <>
-                  <CustomText fontSize={16} style={{ paddingHorizontal: 5 }}>
+                  <CustomText fontSize={12} style={{ paddingHorizontal: 5 }}>
                     /
                   </CustomText>
-                  <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                  <CustomText fontSize={12} fontWeight={FONT_WEIGHT.BOLD}>
                     New v{systemStore.lastestAppVersion.version}
                   </CustomText>
                 </>
@@ -142,27 +142,27 @@ const SettingView = () => {
           </View>
           <Hr />
           <Pressable onPress={goToTerms} style={styles.menuItem}>
-            <CustomText fontSize={16}>Terms</CustomText>
+            <CustomText fontSize={15}>Terms</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
           <Hr />
           <Pressable onPress={goToFaq} style={styles.menuItem}>
-            <CustomText fontSize={16}>FAQ</CustomText>
+            <CustomText fontSize={15}>FAQ</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
           <Hr />
           <Pressable onPress={goToQnaForm} style={styles.menuItem}>
-            <CustomText fontSize={16}>Q&A</CustomText>
+            <CustomText fontSize={15}>Q&A</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
           <Hr />
           <Pressable onPress={goToQna} style={styles.menuItem}>
-            <CustomText fontSize={16}>My Q&A</CustomText>
+            <CustomText fontSize={15}>My Q&A</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
           <Hr />
           <Pressable onPress={goToLeave} style={styles.menuItem}>
-            <CustomText fontSize={16}>Membership Withdrawal</CustomText>
+            <CustomText fontSize={15}>Membership Withdrawal</CustomText>
             <Ionicons name="chevron-forward" size={25} color={COLORS.dark} />
           </Pressable>
         </View>

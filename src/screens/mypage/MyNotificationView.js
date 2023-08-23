@@ -98,7 +98,7 @@ const MyNotificationView = () => {
             </>
           ) : (
             <View style={styles.notExistWrap}>
-              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={16}>
+              <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
                 Notifications received for 1 month does not exist.
               </CustomText>
             </View>

@@ -92,6 +92,7 @@ const QnaFormView = () => {
           <View style={styles.section1}>
             <CustomPicker
               title={'Category'}
+              fontSize={15}
               placeholder="Select an category..."
               value={formData.category}
               onValueChange={(value) => {

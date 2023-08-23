@@ -19,10 +19,10 @@ const FriendItem = ({ item, type, onHandleReply }) => {
           style={styles.profileImg}
         />
         <View>
-          <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+          <CustomText fontSize={15} fontWeight={FONT_WEIGHT.BOLD}>
             {item.nickname}
           </CustomText>
-          <CustomText fontSize={14} style={{ marginTop: 5 }}>
+          <CustomText fontSize={13} style={{ marginTop: 5 }}>
             {utils.getAge(moment(item.birthDate, 'YYYYMMDD').toDate())}
             {'Y '}({item.gender == 'M' ? 'Male' : 'Female'})
           </CustomText>

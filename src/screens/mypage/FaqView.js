@@ -46,7 +46,7 @@ const FaqView = () => {
             justifyContent: 'flex-end',
           }}
         >
-          <CustomText fontSize={14} fontWeight={FONT_WEIGHT.BOLD}>
+          <CustomText fontSize={13} fontWeight={FONT_WEIGHT.BOLD}>
             Not meet your expectations?
           </CustomText>
           <Ionicons
@@ -77,7 +77,7 @@ const FaqView = () => {
                   >
                     {faq[key].categoryName}
                   </CustomText>
-                  <CustomText fontSize={15}>
+                  <CustomText fontSize={13}>
                     {faq[key].question.trim()}
                   </CustomText>
                 </View>
@@ -101,7 +101,7 @@ const FaqView = () => {
                 <>
                   <Hr />
                   <View style={styles.menuDropdown}>
-                    <CustomText fontSize={15} style={{ flex: 1 }}>
+                    <CustomText fontSize={13} style={{ flex: 1 }}>
                       {faq[key].answer.trim()}
                     </CustomText>
                   </View>

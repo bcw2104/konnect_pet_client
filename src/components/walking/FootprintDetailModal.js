@@ -92,7 +92,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                 <CustomText fontSize={20} fontWeight={FONT_WEIGHT.BOLD}>
                   {detail?.profile?.nickname}
                 </CustomText>
-                <CustomText fontSize={16} style={{ marginTop: 5 }}>
+                <CustomText fontSize={15} style={{ marginTop: 5 }}>
                   {utils.getAge(
                     moment(detail?.profile?.birthDate, 'YYYYMMDD').toDate()
                   )}
@@ -135,7 +135,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                           style={{ marginRight: 5 }}
                         />
                         <CustomText
-                          fontSize={14}
+                          fontSize={13}
                           fontColor={COLORS.white}
                           fontWeight={FONT_WEIGHT.BOLD}
                         >
@@ -167,7 +167,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                           style={{ marginRight: 5 }}
                         />
                         <CustomText
-                          fontSize={14}
+                          fontSize={13}
                           fontColor={COLORS.white}
                           fontWeight={FONT_WEIGHT.BOLD}
                         >
@@ -182,21 +182,21 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
             <View style={styles.locationWrap}>
               <Entypo
                 name="location-pin"
-                size={22}
+                size={20}
                 color={COLORS.dark}
                 style={{ marginRight: 5 }}
               />
-              <CustomText fontSize={15}>{detail?.residenceCity}</CustomText>
+              <CustomText fontSize={13}>{detail?.residenceCity}</CustomText>
             </View>
             <View style={{ marginTop: 7 }}>
               <CustomText
                 style={{ marginBottom: 5 }}
-                fontSize={16}
+                fontSize={15}
                 fontWeight={FONT_WEIGHT.BOLD}
               >
                 Comment
               </CustomText>
-              <CustomText fontSize={15}>
+              <CustomText fontSize={13}>
                 {detail?.profile?.comment || '-'}
               </CustomText>
             </View>
@@ -211,10 +211,10 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                       style={styles.petImg}
                     />
                     <View>
-                      <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
+                      <CustomText fontSize={14} fontWeight={FONT_WEIGHT.BOLD}>
                         {pet.name} ({pet.species})
                       </CustomText>
-                      <CustomText fontSize={14} style={{ marginTop: 5 }}>
+                      <CustomText fontSize={13} style={{ marginTop: 5 }}>
                         {utils.getAge(
                           moment(pet.birthDate, 'YYYYMMDD').toDate()
                         )}
@@ -226,13 +226,13 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                     <View style={styles.petDetailItem}>
                       <CustomText
                         style={styles.petDetailItemTitle}
-                        fontSize={14}
+                        fontSize={13}
                         fontWeight={FONT_WEIGHT.BOLD}
                       >
                         neutered
                       </CustomText>
                       <CustomText
-                        fontSize={14}
+                        fontSize={13}
                         style={styles.petDetailItemContent}
                       >
                         {pet.neuteredYn ? 'Yes' : 'No'}
@@ -241,13 +241,13 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                     <View style={styles.petDetailItem}>
                       <CustomText
                         style={styles.petDetailItemTitle}
-                        fontSize={14}
+                        fontSize={13}
                         fontWeight={FONT_WEIGHT.BOLD}
                       >
                         Introduction
                       </CustomText>
                       <CustomText
-                        fontSize={14}
+                        fontSize={13}
                         style={styles.petDetailItemContent}
                       >
                         {pet.description}
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
   petDetailItemTitle: {
-    width: 120,
+    width: 90,
   },
   petDetailItemContent: {
     flex: 1,

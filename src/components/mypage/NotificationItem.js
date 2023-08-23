@@ -21,7 +21,7 @@ const NotificationItem = ({ item,onPress }) => {
           <CustomText
             fontWeight={FONT_WEIGHT.BOLD}
             fontColor={COLORS.main}
-            fontSize={14}
+            fontSize={12}
           >
             {item.categoryName}
           </CustomText>
@@ -45,12 +45,12 @@ const NotificationItem = ({ item,onPress }) => {
       <View>
         <CustomText
           fontWeight={FONT_WEIGHT.BOLD}
-          fontSize={16}
+          fontSize={15}
           style={{ marginBottom: 7 }}
         >
           {item.title}
         </CustomText>
-        <CustomText fontSize={14}>{item.content}</CustomText>
+        <CustomText fontSize={12}>{item.content}</CustomText>
       </View>
     </Pressable>
   );

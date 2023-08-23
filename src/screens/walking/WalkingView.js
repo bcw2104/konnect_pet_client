@@ -71,7 +71,7 @@ const WalkingView = (props) => {
 
   const [routes, setRoutes] = useState([]);
   const [myFootprints, setMyFootprints] = useState([]);
-  const [footprints, setFootprints] = useState([]);
+  const [footprints, setFootprints] = useState(null);
 
   const { systemStore, modalStore, userStore } = useStores();
   const [setting, setSetting] = useState({
@@ -253,7 +253,7 @@ const WalkingView = (props) => {
         prevCoords.current = currentCoords.current;
       }
 
-      changeMyLocation(coords);
+      // changeMyLocation(coords);
 
       metersRef.current += utils.coordsDist(
         currentCoords.current.latitude,
@@ -531,7 +531,7 @@ const WalkingView = (props) => {
               latitudeDelta={LATITUDE_DELTA}
               userLocation={permission}
             >
-              {!!setting.footprintYn && (
+              {!!setting.footprintYn && !!footprints && (
                 <FootprintMarker
                   userId={userStore.userId}
                   footprints={footprints}

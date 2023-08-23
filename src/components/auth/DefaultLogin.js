@@ -103,7 +103,7 @@ const DefaultLogin = () => {
           }}
           hitSlop={10}
         >
-          <CustomText fontSize={15}>Forget password?</CustomText>
+          <CustomText fontSize={14}>Forget password?</CustomText>
         </Pressable>
       </View>
       <CustomButton
