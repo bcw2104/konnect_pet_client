@@ -126,7 +126,7 @@ const SettingView = () => {
             <CustomText fontSize={16}>Version</CustomText>
             <View style={{ flexDirection: 'row' }}>
               <CustomText fontSize={16}>
-                {Constants.expoConfig.version}
+                Now v{Constants.expoConfig.version}
               </CustomText>
               {!!systemStore.lastestAppVersion && (
                 <>
@@ -134,7 +134,7 @@ const SettingView = () => {
                     /
                   </CustomText>
                   <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
-                    {systemStore.lastestAppVersion.version}
+                    New v{systemStore.lastestAppVersion.version}
                   </CustomText>
                 </>
               )}

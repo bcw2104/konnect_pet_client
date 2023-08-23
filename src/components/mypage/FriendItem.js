@@ -15,7 +15,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
     <View style={styles.friendItem}>
       <View style={styles.profile}>
         <ProfileImage
-          uri={utils.pathToUri(item.profileImgPath)}
+          uri={utils.pathToUri(item.imgPath)}
           style={styles.profileImg}
         />
         <View>

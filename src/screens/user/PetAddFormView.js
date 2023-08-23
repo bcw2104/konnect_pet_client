@@ -31,15 +31,15 @@ const PetAddFormView = (props) => {
   const [petImage, setPetImage] = useState(null);
   const [petInfo, setPetInfo] = useState({
     petId: null,
-    petName: null,
-    petType: '001',
-    petSpecies: null,
-    petGender: 'M',
-    petWeight: '',
+    name: null,
+    type: '001',
+    species: null,
+    gender: 'M',
+    weight: '',
     birthDate: new Date(),
     neuteredYn: false,
     inoculatedYn: false,
-    petDescription: '',
+    description: '',
   });
 
   useEffect(() => {
@@ -49,8 +49,8 @@ const PetAddFormView = (props) => {
         ...pet,
         birthDate: moment(pet.birthDate, 'YYYYMMDD').toDate(),
       });
-      originImgPath.current = pet.petImgPath;
-      setPetImage(utils.pathToUri(pet.petImgPath));
+      originImgPath.current = pet.imgPath;
+      setPetImage(utils.pathToUri(pet.imgPath));
       navigation.setOptions({
         headerRight: () => (
           <Pressable
@@ -87,10 +87,10 @@ const PetAddFormView = (props) => {
   const validation = (data) => {
     let valid = true;
     if (
-      !data.petName ||
-      !data.petSpecies ||
+      !data.name ||
+      !data.species ||
       !data.birthDate ||
-      !(data.petWeight > 0 && WEIGHT_REGEX.test(data.petWeight))
+      !(data.weight > 0 && WEIGHT_REGEX.test(data.weight))
     ) {
       valid = false;
     }
@@ -125,7 +125,7 @@ const PetAddFormView = (props) => {
       const data = {
         ...petInfo,
         birthDate: moment(petInfo.birthDate).format('YYYYMMDD'),
-        petImgPath: imagePath,
+        imgPath: imagePath,
       };
       const isNew = !petInfo.petId;
       const response = !isNew
@@ -203,9 +203,9 @@ const PetAddFormView = (props) => {
                 />
               </View>
               <CustomInput
-                value={petInfo.petName}
+                value={petInfo.name}
                 onValueChange={(value) => {
-                  setPetInfo({ ...petInfo, petName: value });
+                  setPetInfo({ ...petInfo, name: value });
                 }}
                 maxLength={30}
                 fontSize={15}
@@ -229,9 +229,9 @@ const PetAddFormView = (props) => {
                 />
               </View>
               <CustomInput
-                value={petInfo.petSpecies}
+                value={petInfo.species}
                 onValueChange={(value) => {
-                  setPetInfo({ ...petInfo, petSpecies: value });
+                  setPetInfo({ ...petInfo, species: value });
                 }}
                 maxLength={30}
                 fontSize={15}
@@ -261,9 +261,9 @@ const PetAddFormView = (props) => {
                   { label: 'Male', value: 'M' },
                   { label: 'Female', value: 'F' },
                 ]}
-                value={petInfo.petGender}
+                value={petInfo.gender}
                 onPress={(value) => {
-                  setPetInfo({ ...petInfo, petGender: value });
+                  setPetInfo({ ...petInfo, gender: value });
                 }}
               />
             </View>
@@ -280,10 +280,10 @@ const PetAddFormView = (props) => {
                 />
               </View>
               <CustomInput
-                value={petInfo.petWeight.toString()}
+                value={petInfo.weight.toString()}
                 onValueChange={(value) => {
                   if (!WEIGHT_REGEX.test(value)) return;
-                  setPetInfo({ ...petInfo, petWeight: value });
+                  setPetInfo({ ...petInfo, weight: value });
                 }}
                 keyboardType='numeric'
                 maxLength={30}
@@ -382,9 +382,9 @@ const PetAddFormView = (props) => {
                 Introduction of pet
               </CustomText>
               <CustomInput
-                value={petInfo.petDescription}
+                value={petInfo.description}
                 onValueChange={(value) => {
-                  setPetInfo({ ...petInfo, petDescription: value });
+                  setPetInfo({ ...petInfo, description: value });
                 }}
                 maxLength={200}
                 multiline={true}

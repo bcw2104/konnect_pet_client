@@ -41,8 +41,8 @@ const ProfileFormView = (props) => {
         ...profile,
         birthDate: moment(profile.birthDate, 'YYYYMMDD').toDate(),
       });
-      originImgPath.current = profile.profileImgPath;
-      setProfileImage(utils.pathToUri(profile.profileImgPath));
+      originImgPath.current = profile.imgPath;
+      setProfileImage(utils.pathToUri(profile.imgPath));
     }
   }, [route.params]);
 
@@ -88,7 +88,7 @@ const ProfileFormView = (props) => {
       const data = {
         ...profile,
         birthDate: moment(profile.birthDate).format('YYYYMMDD'),
-        profileImgPath: imagePath,
+        imgPath: imagePath,
       };
       const response = await serviceApis.saveProfile(data);
 

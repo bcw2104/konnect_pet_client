@@ -150,13 +150,13 @@ const SignupStep3View = (props) => {
                               textDecorationLine: 'underline',
                             }}
                           >
-                            {ele.termsGroupName}{' '}
+                            {ele.name}{' '}
                           </CustomText>
                           <CustomText fontSize={15}>동의</CustomText>
                         </View>
                       </Pressable>
                     </View>
-                    {ele.termsGroupContent && (
+                    {ele.content && (
                       <CustomText
                         style={{
                           marginTop: -5,
@@ -164,7 +164,7 @@ const SignupStep3View = (props) => {
                         }}
                         fontSize={14}
                       >
-                        {ele.termsGroupContent}
+                        {ele.content}
                       </CustomText>
                     )}
                   </View>

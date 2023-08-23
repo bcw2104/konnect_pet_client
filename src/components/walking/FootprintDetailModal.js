@@ -85,7 +85,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
           <View style={styles.section1}>
             <View style={styles.profileWrap}>
               <ProfileImage
-                uri={utils.pathToUri(detail?.profile?.profileImgPath)}
+                uri={utils.pathToUri(detail?.profile?.imgPath)}
                 style={styles.profileImg}
               />
               <View style={styles.profile}>
@@ -207,12 +207,12 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                 <View key={pet.petId} style={styles.petWrap}>
                   <View style={styles.pet}>
                     <PetImage
-                      uri={utils.pathToUri(pet.petImgPath)}
+                      uri={utils.pathToUri(pet.imgPath)}
                       style={styles.petImg}
                     />
                     <View>
                       <CustomText fontSize={16} fontWeight={FONT_WEIGHT.BOLD}>
-                        {pet.petName} ({pet.petSpecies})
+                        {pet.name} ({pet.species})
                       </CustomText>
                       <CustomText fontSize={14} style={{ marginTop: 5 }}>
                         {utils.getAge(
@@ -250,7 +250,7 @@ const FootprintDetailModal = ({ footprintId, modalRef }) => {
                         fontSize={14}
                         style={styles.petDetailItemContent}
                       >
-                        {pet.petDescription}
+                        {pet.description}
                       </CustomText>
                     </View>
                   </View>

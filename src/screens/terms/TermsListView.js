@@ -42,7 +42,7 @@ const TermsListView = () => {
                 }}
                 style={styles.menuItem}
               >
-                <CustomText fontSize={16}>{ele.termsGroupName}</CustomText>
+                <CustomText fontSize={16}>{ele.name}</CustomText>
                 <Ionicons
                   name="chevron-forward"
                   size={25}

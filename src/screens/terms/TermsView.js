@@ -42,7 +42,7 @@ const TermsView = (props) => {
         <>
           <View style={styles.section1}>
             <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={20}>
-              {term?.termsName}
+              {term?.name}
             </CustomText>
             <CustomText style={{ marginTop: 5 }} fontSize={16}>
               created: {moment(term?.createdDate).format('yyyy-MM-DD')}
@@ -58,7 +58,7 @@ const TermsView = (props) => {
                 html: `<html>
                 <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1"></head>
-                <body>${term?.termsContent}</body>
+                <body>${term?.content}</body>
                 </html>`,
               }}
             />

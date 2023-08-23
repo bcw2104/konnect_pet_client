@@ -48,7 +48,7 @@ const PetList = ({ items }) => {
               }}
             >
               <PetImage
-                uri={utils.pathToUri(item?.petImgPath)}
+                uri={utils.pathToUri(item?.imgPath)}
                 style={styles.petImg}
               />
               <View style={styles.pet}>
@@ -58,11 +58,11 @@ const PetList = ({ items }) => {
                   numberOfLines={1}
                   ellipsizeMode={'tail'}
                 >
-                  {item?.petName}
+                  {item?.name}
                 </CustomText>
                 <CustomText fontSize={12}>
                   {utils.getAge(moment(item?.birthDate, 'YYYYMMDD').toDate())}
-                  {'Y '}({item?.petGender == 'M' ? 'Male' : 'Female'})
+                  {'Y '}({item?.gender == 'M' ? 'Male' : 'Female'})
                 </CustomText>
               </View>
             </Pressable>
