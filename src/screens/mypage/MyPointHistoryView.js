@@ -57,7 +57,7 @@ const MyPointHistoryView = (props) => {
         renderTabBar={(props) => (
           <TabBar
             {...props}
-            style={{ backgroundColor: '#fff', paddingVertical: 5 }}
+            style={{ backgroundColor: COLORS.white, paddingVertical: 5 }}
             renderLabel={({ route, focused, color }) => (
               <CustomText
                 fontWeight={FONT_WEIGHT.BOLD}

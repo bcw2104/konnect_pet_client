@@ -59,7 +59,7 @@ export default BannerSwiper;
 const styles = StyleSheet.create({
   bannerWrap: {
     height: bannerHeight,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     borderRadius: 5,
   },
   pagingWrap: {

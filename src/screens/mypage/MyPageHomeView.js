@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   section1: {
     paddingVertical: 5,
     paddingHorizontal: 15,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     borderRadius: 10,
   },
   
@@ -253,14 +253,14 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     marginBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     borderRadius: 10,
   },
   section4: {
     paddingVertical: 5,
     paddingHorizontal: 15,
     marginBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     borderRadius: 10,
   },
   element: {

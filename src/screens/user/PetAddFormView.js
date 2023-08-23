@@ -174,6 +174,7 @@ const PetAddFormView = (props) => {
           <View style={styles.section1}>
             <View style={styles.petImgWrap}>
               <ImageUploader
+                editable={true}
                 onImageChange={handleImageChange}
                 ref={imageUploaderRef}
               >

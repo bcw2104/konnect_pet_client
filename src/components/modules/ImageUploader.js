@@ -1,10 +1,19 @@
-import { Linking, Pressable, StyleSheet } from 'react-native';
+import { Linking, StyleSheet } from 'react-native';
 import React, { forwardRef, useImperativeHandle } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { useStores } from '../../contexts/StoreContext';
 import { IMAGE_EXT_TYPE } from '../../commons/constants';
 
-const ImageUploader = ({ onImageChange = () => {}, children }, ref) => {
+const ImageUploader = (
+  {
+    onImageChange = () => {},
+    editable = false,
+    multiple = false,
+    limit = 1,
+    children,
+  },
+  ref
+) => {
   const { modalStore } = useStores();
 
   useImperativeHandle(
@@ -33,17 +42,22 @@ const ImageUploader = ({ onImageChange = () => {}, children }, ref) => {
 
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
+      allowsEditing: editable,
       aspect: [1, 1],
       quality: 1,
+      allowsMultipleSelection: multiple,
+      selectionLimit: limit,
     });
 
     if (!result.canceled) {
       const image = result.assets[0];
       const temp = image.uri?.split('.');
-      if (temp.length > 1 && IMAGE_EXT_TYPE.includes(temp[temp.length - 1].toLowerCase())) {
+      if (
+        temp.length > 1 &&
+        IMAGE_EXT_TYPE.includes(temp[temp.length - 1].toLowerCase())
+      ) {
         onImageChange(image);
-      }else{
+      } else {
         modalStore.openOneButtonModal(
           `Unsupported extension.\nOnly available (${IMAGE_EXT_TYPE.toString()})`,
           'Confirm',

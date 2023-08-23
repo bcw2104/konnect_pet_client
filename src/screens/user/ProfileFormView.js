@@ -116,6 +116,7 @@ const ProfileFormView = (props) => {
           <View style={styles.section1}>
             <View style={styles.profileImgWrap}>
               <ImageUploader
+                editable={true}
                 onImageChange={handleImageChange}
                 ref={imageUploaderRef}
               >
