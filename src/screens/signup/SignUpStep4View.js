@@ -153,7 +153,7 @@ const SignupStep4View = (props) => {
                 flex: 1,
                 marginVertical: 20,
               }}
-              onMapLoaded={() => {
+              onMapReady={() => {
                 setMapIsReady(true);
               }}
               userLocation={false}

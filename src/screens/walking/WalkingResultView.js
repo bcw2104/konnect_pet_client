@@ -159,7 +159,7 @@ const WalkingResultView = (props) => {
                 mapRef={mapRef}
                 height={window.width * 0.5}
                 style={{ borderRadius: 20 }}
-                onMapLoaded={() => {
+                onMapReady={() => {
                   setMapIsReady(true);
                 }}
                 userLocation={false}

@@ -1,13 +1,12 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { useStores } from '../../contexts/StoreContext';
 
 const GoogleMap = ({
   mapRef,
   defaultRegion = null,
   onRegionChange = () => {},
-  onMapLoaded = () => {},
+  onMapReady = () => {},
   userLocation = true,
   scrollEnabled = true,
   style = {},
@@ -39,6 +38,7 @@ const GoogleMap = ({
           provider={PROVIDER_GOOGLE}
           style={{ width: width, height: height, ...style }}
           onRegionChange={onRegionChange}
+          onMapReady={onMapReady}
           showsUserLocation={userLocation}
           showsMyLocationButton={false}
           showsIndoors={false}
@@ -47,7 +47,6 @@ const GoogleMap = ({
           pitchEnabled={false}
           loadingEnabled={true}
           toolbarEnabled={false}
-          onMapLoaded={onMapLoaded}
         >
           {children}
         </MapView>

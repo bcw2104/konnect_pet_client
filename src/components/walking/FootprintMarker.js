@@ -16,7 +16,6 @@ const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
               latitude: ele.latitude,
               longitude: ele.longitude,
             }}
-            tracksViewChanges={false}
             onPress={() => {
               handleOpenFootprintDetail(ele.id);
             }}
@@ -33,7 +32,6 @@ const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
               latitude: ele.latitude,
               longitude: ele.longitude,
             }}
-            tracksViewChanges={false}
             onPress={() => {
               handleOpenFootprintDetail(ele.id);
             }}
@@ -50,7 +48,6 @@ const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
               latitude: ele.latitude,
               longitude: ele.longitude,
             }}
-            tracksViewChanges={false}
             onPress={() => {
               handleOpenFootprintDetail(ele.id);
             }}

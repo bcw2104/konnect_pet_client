@@ -528,7 +528,7 @@ const WalkingView = (props) => {
               width={window.width}
               style={{ position: 'absolute', top: 0 }}
               height={'100%'}
-              onMapLoaded={() => {
+              onMapReady={() => {
                 setMapIsReady(true);
               }}
               longitudeDelta={LONGITUDE_DELTA}
