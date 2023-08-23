@@ -34,6 +34,7 @@ const WalkingResultView = (props) => {
   const mapRef = useRef(null);
   const [region, setRegion] = useState(null);
   const [report, setReport] = useState(null);
+  const [mapIsReady, setMapIsReady] = useState(false);
   const footprintDetailModalRef = useRef(null);
 
   const [selectedFootprintId, setSelectedFootprintId] = useState(null);
@@ -52,7 +53,7 @@ const WalkingResultView = (props) => {
             }
           }}
         >
-          <Ionicons name="arrow-back-outline" size={24} color={COLORS.dark} />
+          <Ionicons name='arrow-back-outline' size={24} color={COLORS.dark} />
         </Pressable>
       ),
     });
@@ -158,15 +159,20 @@ const WalkingResultView = (props) => {
                 mapRef={mapRef}
                 height={window.width * 0.5}
                 style={{ borderRadius: 20 }}
+                onMapLoaded={() => {
+                  setMapIsReady(true);
+                }}
                 userLocation={false}
                 longitudeDelta={LONGITUDE_DELTA}
                 latitudeDelta={LATITUDE_DELTA}
               >
-                <Polyline
-                  coordinates={report?.routes}
-                  strokeColor="#e23dff"
-                  strokeWidth={6}
-                />
+                {mapIsReady && (
+                  <Polyline
+                    coordinates={report?.routes}
+                    strokeColor='#e23dff'
+                    strokeWidth={6}
+                  />
+                )}
               </GoogleMap>
             </View>
             <View style={styles.reportSection}>

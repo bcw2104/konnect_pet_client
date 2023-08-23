@@ -7,7 +7,7 @@ const GoogleMap = ({
   mapRef,
   defaultRegion = null,
   onRegionChange = () => {},
-  onMapReady = () => {},
+  onMapLoaded = () => {},
   userLocation = true,
   scrollEnabled = true,
   style = {},
@@ -39,7 +39,6 @@ const GoogleMap = ({
           provider={PROVIDER_GOOGLE}
           style={{ width: width, height: height, ...style }}
           onRegionChange={onRegionChange}
-          onMapReady={onMapReady}
           showsUserLocation={userLocation}
           showsMyLocationButton={false}
           showsIndoors={false}
@@ -48,6 +47,7 @@ const GoogleMap = ({
           pitchEnabled={false}
           loadingEnabled={true}
           toolbarEnabled={false}
+          onMapLoaded={onMapLoaded}
         >
           {children}
         </MapView>

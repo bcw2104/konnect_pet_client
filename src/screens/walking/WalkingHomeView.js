@@ -119,6 +119,7 @@ const WalkingStartView = () => {
   const [region, setRegion] = useState(null);
   const [footprints, setFootprints] = useState(null);
 
+  const [mapIsReady, setMapIsReady] = useState(false);
   const [setting, setSetting] = useState({
     footprintYn: true,
   });
@@ -337,7 +338,7 @@ const WalkingStartView = () => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          render={<Ionicons name="options" size={30} color={COLORS.dark} />}
+          render={<Ionicons name='options' size={30} color={COLORS.dark} />}
           fontColor={COLORS.white}
           onPress={handleOpenSetting}
           width={50}
@@ -354,10 +355,13 @@ const WalkingStartView = () => {
           width={window.width}
           style={{ position: 'absolute', top: 0 }}
           height={'100%'}
+          onMapLoaded={() => {
+            setMapIsReady(true);
+          }}
           longitudeDelta={LONGITUDE_DELTA}
           latitudeDelta={LATITUDE_DELTA}
         >
-          {!!setting.footprintYn && !!footprints && (
+          {mapIsReady && !!setting.footprintYn && !!footprints && (
             <FootprintMarker
               userId={userStore.userId}
               footprints={footprints}
@@ -371,7 +375,7 @@ const WalkingStartView = () => {
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
           render={
-            <MaterialIcons name="my-location" size={30} color={COLORS.dark} />
+            <MaterialIcons name='my-location' size={30} color={COLORS.dark} />
           }
           fontColor={COLORS.white}
           onPress={getMyLocation}
@@ -525,7 +529,7 @@ const WalkingHistoryView = () => {
             }
           }}
         >
-          <Ionicons name="chevron-back" size={28} color={COLORS.white} />
+          <Ionicons name='chevron-back' size={28} color={COLORS.white} />
         </Pressable>
         <CustomText
           fontWeight={FONT_WEIGHT.BOLD}
@@ -543,7 +547,7 @@ const WalkingHistoryView = () => {
             }
           }}
         >
-          <Ionicons name="chevron-forward" size={28} color={COLORS.white} />
+          <Ionicons name='chevron-forward' size={28} color={COLORS.white} />
         </Pressable>
       </View>
       <View style={styles.historyWrap}>

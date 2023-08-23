@@ -26,6 +26,7 @@ const SignupStep4View = (props) => {
   const { userStore, systemStore } = useStores();
   const mapRef = useRef(null);
   const [searchValue, setSearchValue] = useState(null);
+  const [mapIsReady, setMapIsReady] = useState(false);
   const [region, setRegion] = useState(null);
 
   useEffect(() => {
@@ -152,11 +153,14 @@ const SignupStep4View = (props) => {
                 flex: 1,
                 marginVertical: 20,
               }}
+              onMapLoaded={() => {
+                setMapIsReady(true);
+              }}
               userLocation={false}
               longitudeDelta={LONGITUDE_DELTA}
               latitudeDelta={LATITUDE_DELTA}
             >
-              {searchValue && (
+              {mapIsReady && searchValue && (
                 <Marker
                   coordinate={searchValue?.coords}
                   tracksViewChanges={false}

@@ -72,6 +72,7 @@ const WalkingView = (props) => {
   const [routes, setRoutes] = useState([]);
   const [myFootprints, setMyFootprints] = useState([]);
   const [footprints, setFootprints] = useState(null);
+  const [mapIsReady, setMapIsReady] = useState(false);
 
   const { systemStore, modalStore, userStore } = useStores();
   const [setting, setSetting] = useState({
@@ -510,7 +511,7 @@ const WalkingView = (props) => {
           <CustomButton
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
-            render={<Ionicons name="options" size={30} color={COLORS.dark} />}
+            render={<Ionicons name='options' size={30} color={COLORS.dark} />}
             fontColor={COLORS.white}
             onPress={handleOpenSetting}
             width={50}
@@ -527,33 +528,40 @@ const WalkingView = (props) => {
               width={window.width}
               style={{ position: 'absolute', top: 0 }}
               height={'100%'}
+              onMapLoaded={() => {
+                setMapIsReady(true);
+              }}
               longitudeDelta={LONGITUDE_DELTA}
               latitudeDelta={LATITUDE_DELTA}
               userLocation={permission}
             >
-              {!!setting.footprintYn && !!footprints && (
-                <FootprintMarker
-                  userId={userStore.userId}
-                  footprints={footprints}
-                  handleOpenFootprintDetail={handleOpenFootprintDetail}
-                />
-              )}
-              {!!setting.footprintYn &&
-                myFootprints.map((coords, index) => (
-                  <Marker key={index} coordinate={coords}>
-                    <FootprintImage
-                      size={24}
-                      type={FOOTPRINT_TYPE.MINE}
-                      tracksViewChanges={false}
+              {mapIsReady && (
+                <>
+                  {!!setting.footprintYn && !!footprints && (
+                    <FootprintMarker
+                      userId={userStore.userId}
+                      footprints={footprints}
+                      handleOpenFootprintDetail={handleOpenFootprintDetail}
                     />
-                  </Marker>
-                ))}
-              {!!setting.routeYn && (
-                <Polyline
-                  coordinates={routes}
-                  strokeColor="#e23dff"
-                  strokeWidth={6}
-                />
+                  )}
+                  {!!setting.footprintYn &&
+                    myFootprints.map((coords, index) => (
+                      <Marker key={index} coordinate={coords}>
+                        <FootprintImage
+                          size={24}
+                          type={FOOTPRINT_TYPE.MINE}
+                          tracksViewChanges={false}
+                        />
+                      </Marker>
+                    ))}
+                  {!!setting.routeYn && (
+                    <Polyline
+                      coordinates={routes}
+                      strokeColor='#e23dff'
+                      strokeWidth={6}
+                    />
+                  )}
+                </>
               )}
             </GoogleMap>
           )}
@@ -563,7 +571,7 @@ const WalkingView = (props) => {
             bgColor={COLORS.white}
             bgColorPress={COLORS.lightDeep}
             render={
-              <MaterialIcons name="my-location" size={30} color={COLORS.dark} />
+              <MaterialIcons name='my-location' size={30} color={COLORS.dark} />
             }
             fontColor={COLORS.white}
             onPress={getMyLocation}
