@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
   petDetailItemTitle: {
-    width: 90,
+    width: 105,
   },
   petDetailItemContent: {
     flex: 1,

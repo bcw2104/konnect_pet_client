@@ -56,12 +56,12 @@ const Profile = () => {
       <View style={{ marginTop: 7 }}>
         <CustomText
           style={{ marginBottom: 5 }}
-          fontSize={16}
+          fontSize={15}
           fontWeight={FONT_WEIGHT.BOLD}
         >
           Comment
         </CustomText>
-        <CustomText fontSize={15}>
+        <CustomText fontSize={13}>
           {userStore.profile?.comment || '-'}
         </CustomText>
       </View>

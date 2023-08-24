@@ -140,6 +140,47 @@ const MyPageHomeView = ({ navigation }) => {
                 Community
               </CustomText>
               <View style={styles.communityWrap}>
+                <Pressable style={styles.community}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+                    0
+                  </CustomText>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
+                    Posts
+                  </CustomText>
+                </Pressable>
+                <View style={styles.divider}></View>
+                <Pressable style={styles.community}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+                    0
+                  </CustomText>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
+                    Comments
+                  </CustomText>
+                </Pressable>
+                <View style={styles.divider}></View>
+                <Pressable style={styles.community}>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
+                    0
+                  </CustomText>
+                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
+                    Likes
+                  </CustomText>
+                </Pressable>
+              </View>
+            </View>
+          )}
+        </View>
+        <View style={styles.section5}>
+          {!!myData && (
+            <View style={styles.element}>
+              <CustomText
+                style={styles.title}
+                fontSize={16}
+                fontWeight={FONT_WEIGHT.BOLD}
+              >
+                Community
+              </CustomText>
+              <View style={styles.communityWrap}>
                 <Pressable
                   style={styles.community}
                   onPress={() => {
@@ -257,6 +298,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   section4: {
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+  },
+  section5: {
     paddingVertical: 5,
     paddingHorizontal: 15,
     marginBottom: 20,
