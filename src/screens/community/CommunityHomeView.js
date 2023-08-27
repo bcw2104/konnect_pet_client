@@ -1,5 +1,14 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import {
+  FlatList,
+  Image,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 import Container from '../../components/layouts/Container';
@@ -9,50 +18,134 @@ import BannerSwiper from '../../components/service/BannerSwiper';
 import { FONT_WEIGHT } from '../../commons/constants';
 import CustomText from '../../components/elements/CustomText';
 import { Navigator } from '../../navigations/Navigator';
+import { useStores } from '../../contexts/StoreContext';
+import { utils } from '../../utils/Utils';
+import CategoryTab from '../../components/community/CategoryTab';
+import PostItem from '../../components/community/PostItem';
+import UserDetailModal from '../../components/community/UserDetailModal';
 
-const CommunityHomeView = ({navigation}) => {
+const PAGE_SIZE = 10;
+
+const CommunityHomeView = ({ navigation }) => {
   const isFocused = useIsFocused();
-  const [post, setPost] = useState([]);
+  const [posts, setPosts] = useState(null);
   const [communityData, setCommunityData] = useState({});
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(-1);
+  const [hasNext, setHasNext] = useState(false);
+  const { systemStore } = useStores();
+  const page = useRef(1);
+  const [refreshing, setRefreshing] = useState(false);
+  const userDetailModalRef = useRef(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
     if (isFocused) {
       const fetchData = async () => {
         try {
           const response = await serviceApis.getCommunityData();
+          const categories = [
+            { category: 'All', categoryId: -1 },
+            ...response.result.categories,
+          ];
+          response.result.categories = categories;
           setCommunityData(response.result);
           navigation.setOptions({
             headerRight: () => (
               <HeaderRight newNotiCount={response.result.newNotiCount} />
             ),
           });
+          await getData(true, tab);
         } catch (error) {}
       };
       fetchData();
     }
   }, [isFocused]);
 
+  const onUserProfilePress = useCallback((userId) => {
+    setSelectedUserId(userId);
+    userDetailModalRef.current.openModal(true);
+  }, []);
+
+  const getData = async (init, id) => {
+    try {
+      const response = await serviceApis.getPosts(id, PAGE_SIZE, page.current);
+      if (init) {
+        setPosts(response.result?.posts);
+      } else {
+        setPosts([...posts, ...response.result?.posts]);
+      }
+      setHasNext(response.result?.hasNext);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleTabChange = (tab) => {
+    setTab(tab);
+    getData(true, tab);
+  };
+
+  const getNextData = async () => {
+    page.current += 1;
+    await getData(false, tab);
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    page.current = 1;
+    await getData(true, tab);
+    setRefreshing(false);
+  };
+
   return (
     <Container
       header={true}
-      bgColor={COLORS.light}
+      bgColor={COLORS.containerGray}
       paddingHorizontal={0}
       headerPaddingTop={0}
     >
       <View style={styles.section1}>
         <View style={styles.categoryWrap}>
-          <View style={styles.category}>
-
-          </View>
+          <CategoryTab
+            tab={tab}
+            onTabCange={handleTabChange}
+            categories={communityData.categories}
+          />
         </View>
       </View>
-      <ScrollView>
-        {!!communityData && communityData.banners?.length > 0 && (
-          <BannerSwiper banners={communityData.banners} />
-        )}
-        <View style={styles.section2}></View>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        onScrollEndDrag={({ nativeEvent }) => {
+          if (utils.isCloseToBottom(nativeEvent) && hasNext) {
+            getNextData();
+          }
+        }}
+      >
+        <BannerSwiper banners={communityData?.banners} />
+        <View style={styles.section2}>
+          {!!posts &&
+            (posts.length > 0 ? (
+              <>
+                {posts.map((item) => (
+                  <PostItem
+                    key={item.postId}
+                    item={item}
+                    onUserProfilePress={onUserProfilePress}
+                  />
+                ))}
+              </>
+            ) : (
+              <View style={styles.notExistWrap}>
+                <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={15}>
+                  The post does not exist.
+                </CustomText>
+              </View>
+            ))}
+        </View>
       </ScrollView>
+      <UserDetailModal modalRef={userDetailModalRef} userId={selectedUserId} />
     </Container>
   );
 };
@@ -73,7 +166,7 @@ const HeaderRight = ({ newNotiCount }) => {
           },
         ]}
       >
-        <Ionicons name='notifications-outline' size={24} color={COLORS.dark} />
+        <Ionicons name="notifications-outline" size={24} color={COLORS.dark} />
         {newNotiCount > 0 && (
           <View style={styles.notiLabel}>
             <CustomText
@@ -98,7 +191,7 @@ const HeaderRight = ({ newNotiCount }) => {
           },
         ]}
       >
-        <Ionicons name='settings-outline' size={24} color={COLORS.dark} />
+        <Ionicons name="settings-outline" size={24} color={COLORS.dark} />
       </Pressable>
     </View>
   );
@@ -119,12 +212,17 @@ const styles = StyleSheet.create({
     borderRadius: 9,
   },
   section1: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
     backgroundColor: COLORS.white,
     borderRadius: 10,
   },
-  section2: {
-    paddingHorizontal: 15,
+  section2: {},
+  categoryWrap: {
+    paddingVertical: 20,
+  },
+
+  notExistWrap: {
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

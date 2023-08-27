@@ -123,4 +123,7 @@ export const serviceApis = {
   getFriends : () => baseAxios.get(`/api/v1/community/friend`),
   getPendingFriends : () => baseAxios.get(`/api/v1/community/friend/pending`),
   getCommunityData : () => baseAxios.get(`/api/v1/community`),
+  getPosts : (categoryId,size,page) => baseAxios.get(`/api/v1/community/post`,{params:{category:categoryId, size:size, page:page }}),
+  getUserDetail: (userId) => baseAxios.get(`/api/v1/community/user/${userId}`),
+  changePostLike:(postId,likeYn) => baseAxios.post(`/api/v1/community/post/${postId}/like`,{likeYn:likeYn})
 };

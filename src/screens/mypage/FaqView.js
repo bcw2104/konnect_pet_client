@@ -10,7 +10,7 @@ import { Navigator } from '../../navigations/Navigator';
 import Hr from '../../components/elements/Hr';
 
 const FaqView = () => {
-  const [faq, setFaq] = useState({});
+  const [faqs, setFaqs] = useState({});
 
   useEffect(() => {
     getData();
@@ -19,11 +19,11 @@ const FaqView = () => {
   const getData = async () => {
     try {
       const response = await serviceApis.getFaq();
-      const faq = {};
+      const faqs = {};
       response.result.map((ele) => {
-        faq[ele.faqId] = { ...ele, open: false };
+        faqs[ele.faqId] = { ...ele, open: false };
       });
-      setFaq(faq);
+      setFaqs(faqs);
     } catch (err) {
       console.log(err);
     }
@@ -57,14 +57,14 @@ const FaqView = () => {
           />
         </Pressable>
         <ScrollView>
-          {Object.keys(faq).map((key, idx) => (
+          {Object.keys(faqs).map((key, idx) => (
             <View key={key}>
               <Pressable
                 style={styles.menuItem}
                 onPress={() => {
-                  setFaq({
-                    ...faq,
-                    [key]: { ...faq[key], open: !faq[key].open },
+                  setFaqs({
+                    ...faqs,
+                    [key]: { ...faqs[key], open: !faqs[key].open },
                   });
                 }}
               >
@@ -75,13 +75,13 @@ const FaqView = () => {
                     style={{ marginBottom: 5 }}
                     fontWeight={FONT_WEIGHT.BOLD}
                   >
-                    {faq[key].categoryName}
+                    {faqs[key].categoryName}
                   </CustomText>
                   <CustomText fontSize={13}>
-                    {faq[key].question.trim()}
+                    {faqs[key].question.trim()}
                   </CustomText>
                 </View>
-                {faq[key].open ? (
+                {faqs[key].open ? (
                   <Ionicons
                     name="chevron-up"
                     size={25}
@@ -97,18 +97,18 @@ const FaqView = () => {
                   />
                 )}
               </Pressable>
-              {faq[key].open && (
+              {faqs[key].open && (
                 <>
                   <Hr />
                   <View style={styles.menuDropdown}>
                     <CustomText fontSize={13} style={{ flex: 1 }}>
-                      {faq[key].answer.trim()}
+                      {faqs[key].answer.trim()}
                     </CustomText>
                   </View>
                 </>
               )}
 
-              {Object.keys(faq).length - 1 > idx && <Hr />}
+              {Object.keys(faqs).length - 1 > idx && <Hr />}
             </View>
           ))}
         </ScrollView>

@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomText from '../elements/CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
 import { AntDesign } from '@expo/vector-icons';
@@ -18,8 +18,26 @@ import { useStores } from '../../contexts/StoreContext';
 import { observer } from 'mobx-react-lite';
 import PetImage from '../modules/PetImage';
 
-const PetList = ({ items }) => {
+const PetList = ({ items, max }) => {
   const { userStore } = useStores();
+  const [pets, setPets] = useState([]);
+
+  useEffect(() => {
+    if (!max) return;
+
+    const pets = items || [...userStore.pets];
+
+    const left = max - pets.length;
+    for (let i = 0; i < left; i++) {
+      pets.push({ petId: -1 });
+    }
+
+    if (pets.left % 2 != 0) {
+      pets.push({ petId: -2 });
+    }
+
+    setPets(pets);
+  }, [max]);
 
   const addNewPet = () => {
     Navigator.navigate({}, 'mypage_nav', 'pet_add_form');
@@ -32,7 +50,7 @@ const PetList = ({ items }) => {
   return (
     <FlatList
       scrollEnabled={false}
-      data={items || [...userStore.pets, { petId: -1 }]}
+      data={pets}
       renderItem={({ item }) => (
         <>
           {item.petId >= 0 ? (
@@ -66,7 +84,7 @@ const PetList = ({ items }) => {
                 </CustomText>
               </View>
             </Pressable>
-          ) : (
+          ) : item.petId == -1 ? (
             <Pressable
               style={({ pressed }) => [
                 styles.petItem,
@@ -92,6 +110,15 @@ const PetList = ({ items }) => {
                 </CustomText>
               </View>
             </Pressable>
+          ) : (
+            <View
+              style={{
+                paddingVertical: 5,
+                paddingHorizontal: 7,
+                margin: 3,
+                flex: 1,
+              }}
+            ></View>
           )}
         </>
       )}
@@ -104,9 +131,7 @@ const PetList = ({ items }) => {
 export default observer(PetList);
 
 const styles = StyleSheet.create({
-  petWrap: {
-    flexDirection: 'row',
-  },
+  
   petItem: {
     flexDirection: 'row',
     alignItems: 'center',

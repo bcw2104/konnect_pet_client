@@ -4,6 +4,7 @@ import { DEEP_LINK_PREFIX } from '../commons/constants';
 import { asyncStorage } from '../storage/Storage';
 import ImageResizer from 'react-native-image-resizer';
 import { Platform } from 'react-native';
+import moment from 'moment';
 
 export const utils = {
   coordsDist: (lat1, lon1, lat2, lon2) => {
@@ -131,5 +132,28 @@ export const utils = {
   pathToUri: (path) => {
     if (!path) return null;
     return process.env.EXPO_PUBLIC_BASE_IMAGE_URL + path;
+  },
+  isCloseToBottom: ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToBottom = 34;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  },
+  calculateDateAgo: (date) => {
+    const diff = parseInt(moment().diff(moment(date), 'hours'));
+
+    if (diff < 24) {
+      if (diff == 1) {
+        return diff + ' hour ago';
+      }
+      return diff + ' hours ago';
+    } else {
+      const days = parseInt(diff / 24);
+      if (days == 1) {
+        return days + ' day ago';
+      }
+      return days + ' days ago';
+    }
   },
 };

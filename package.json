@@ -63,6 +63,7 @@
     "react-native-gesture-handler": "^2.12.1",
     "react-native-google-places-autocomplete": "^2.5.1",
     "react-native-image-resizer": "^1.4.5",
+    "react-native-image-viewing": "^0.2.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-maps": "1.7.1",
     "react-native-modal": "^13.0.1",

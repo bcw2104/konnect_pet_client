@@ -50,7 +50,7 @@ const MyPointHistoryView = (props) => {
       header={true}
       paddingHorizontal={0}
       headerPaddingTop={0}
-      bgColor={COLORS.light}
+      bgColor={COLORS.containerGray}
     >
       <TabView
         lazy
@@ -91,7 +91,7 @@ const PointHist = (props) => {
   const page = useRef(1);
   const [refreshing, setRefreshing] = useState(false);
 
-  const [history, setHistory] = useState(null);
+  const [histories, setHistories] = useState(null);
   const [hasNext, setHasNext] = useState(false);
 
   const getData = async (init) => {
@@ -103,9 +103,9 @@ const PointHist = (props) => {
         page.current
       );
       if (init) {
-        setHistory(response.result?.histories);
+        setHistories(response.result?.histories);
       } else {
-        setHistory([...history, ...response.result?.histories]);
+        setHistories([...histories, ...response.result?.histories]);
       }
       setHasNext(response.result?.hasNext);
     } catch (err) {
@@ -142,10 +142,10 @@ const PointHist = (props) => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {!!history &&
-        (history.length > 0 ? (
+      {!!histories &&
+        (histories.length > 0 ? (
           <>
-            {history?.map((item) => (
+            {histories?.map((item) => (
               <PointHistoryItem key={item.id} item={item} />
             ))}
             {hasNext && (

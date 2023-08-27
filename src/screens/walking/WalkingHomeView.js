@@ -72,7 +72,7 @@ const WalkingHomeView = (props) => {
   }, [isFocused]);
 
   return (
-    <Container paddingHorizontal={0} bgColor={COLORS.light}>
+    <Container paddingHorizontal={0} bgColor={COLORS.containerGray}>
       <TabView
         lazy
         renderTabBar={(props) => (

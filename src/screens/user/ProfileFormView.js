@@ -128,7 +128,11 @@ const ProfileFormView = (props) => {
                   <View style={styles.upload}>
                     <Feather name="camera" size={20} color={COLORS.dark} />
                   </View>
-                  <ProfileImage uri={profileImage} style={styles.profileImg} />
+                  <ProfileImage
+                    uri={profileImage}
+                    style={styles.profileImg}
+                    viewer={false}
+                  />
                 </Pressable>
               </ImageUploader>
             </View>

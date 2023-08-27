@@ -28,4 +28,6 @@ export const COLORS = {
   mainLight: '#fad3b1',
   main: '#f4a460',
   mainDeep: '#f4a460',
+
+  containerGray: '#f8f8f8',
 };

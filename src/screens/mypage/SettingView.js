@@ -64,7 +64,7 @@ const SettingView = () => {
   return (
     <Container
       header={true}
-      bgColor={COLORS.light}
+      bgColor={COLORS.containerGray}
       paddingHorizontal={0}
       headerPaddingTop={0}
     >

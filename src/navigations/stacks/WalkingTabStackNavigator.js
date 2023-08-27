@@ -1,11 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Pressable, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import WalkingHomeView from '../../screens/walking/WalkingHomeView';
 import WalkingView from '../../screens/walking/WalkingView';
-import WalkingResultView from '../../screens/walking/WalkingResultView';
-import PetAddFormView from '../../screens/user/PetAddFormView';
-import ProfileFormView from '../../screens/user/ProfileFormView';
 
 const WalkingTabStack = createNativeStackNavigator();
 

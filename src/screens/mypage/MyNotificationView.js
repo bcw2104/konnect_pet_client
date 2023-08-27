@@ -19,7 +19,7 @@ import MoreButton from '../../components/elements/MoreButton';
 const PAGE_SIZE = 20;
 
 const MyNotificationView = () => {
-  const [notification, setNotification] = useState(null);
+  const [notifications, setNotifications] = useState(null);
   const [hasNext, setHasNext] = useState(false);
   const { systemStore } = useStores();
   const page = useRef(1);
@@ -32,9 +32,9 @@ const MyNotificationView = () => {
         page.current
       );
       if (init) {
-        setNotification(response.result?.notifications);
+        setNotifications(response.result?.notifications);
       } else {
-        setNotification([...notification, ...response.result?.notifications]);
+        setNotifications([...notifications, ...response.result?.notifications]);
       }
       setHasNext(response.result?.hasNext);
     } catch (err) {
@@ -80,7 +80,7 @@ const MyNotificationView = () => {
       header={true}
       paddingHorizontal={0}
       headerPaddingTop={0}
-      bgColor={COLORS.light}
+      bgColor={COLORS.containerGray}
     >
       <ScrollView
         style={{ flex: 1 }}
@@ -88,10 +88,10 @@ const MyNotificationView = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {!!notification &&
-          (notification.length > 0 ? (
+        {!!notifications &&
+          (notifications.length > 0 ? (
             <>
-              {notification?.map((item) => (
+              {notifications?.map((item) => (
                 <NotificationItem key={item.notiId} item={item} onPress={landing} />
               ))}
               {hasNext && <MoreButton onPress={getNextData} />}

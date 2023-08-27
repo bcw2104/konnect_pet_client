@@ -13,7 +13,7 @@ const MoreButton = ({ onPress }) => {
         color={COLORS.dark}
         style={{ marginRight: 5 }}
       />
-      <CustomText fontSize={16}>more</CustomText>
+      <CustomText fontSize={16}>More</CustomText>
     </Pressable>
   );
 };

@@ -30,7 +30,7 @@ const QnaDetailView = (props) => {
     <Container
       header={true}
       headerPaddingTop={0}
-      bgColor={COLORS.light}
+      bgColor={COLORS.containerGray}
       paddingHorizontal={0}
     >
       <ScrollView>

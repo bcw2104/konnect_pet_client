@@ -46,7 +46,7 @@ const QnaView = (props) => {
       header={true}
       paddingHorizontal={0}
       headerPaddingTop={0}
-      bgColor={COLORS.light}
+      bgColor={COLORS.containerGray}
     >
       <TabView
         lazy
@@ -83,7 +83,7 @@ const QnaView = (props) => {
 export default QnaView;
 
 const QnaListView = ({ type }) => {
-  const [qna, setQna] = useState(null);
+  const [qnas, setQnas] = useState(null);
   const [hasNext, setHasNext] = useState(false);
   const { systemStore } = useStores();
   const page = useRef(1);
@@ -93,9 +93,9 @@ const QnaListView = ({ type }) => {
     try {
       const response = await serviceApis.getQnas(type, PAGE_SIZE, page.current);
       if (init) {
-        setQna(response.result?.qnas);
+        setQnas(response.result?.qnas);
       } else {
-        setQna([...qna, ...response.result?.qnas]);
+        setQnas([...qnas, ...response.result?.qnas]);
       }
       setHasNext(response.result?.hasNext);
     } catch (err) {
@@ -137,10 +137,10 @@ const QnaListView = ({ type }) => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {!!qna &&
-        (qna.length > 0 ? (
+      {!!qnas &&
+        (qnas.length > 0 ? (
           <>
-            {qna?.map((item) => (
+            {qnas?.map((item) => (
               <QnaItem key={item.qnaId} item={item} onPress={goToDetail} />
             ))}
             {hasNext && <MoreButton onPress={getNextData} />}

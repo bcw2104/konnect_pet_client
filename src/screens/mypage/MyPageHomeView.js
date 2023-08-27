@@ -1,9 +1,4 @@
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Container from '../../components/layouts/Container';
 import { useStores } from '../../contexts/StoreContext';
@@ -19,7 +14,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { utils } from '../../utils/Utils';
 import BannerSwiper from '../../components/service/BannerSwiper';
-
+import Hr from '../../components/elements/Hr';
 
 const MyPageHomeView = ({ navigation }) => {
   const [myData, setMyData] = useState(null);
@@ -54,7 +49,7 @@ const MyPageHomeView = ({ navigation }) => {
   return (
     <Container
       header={true}
-      bgColor={COLORS.light}
+      bgColor={COLORS.containerGray}
       paddingHorizontal={0}
       headerPaddingTop={0}
     >
@@ -79,13 +74,11 @@ const MyPageHomeView = ({ navigation }) => {
               My Pets
             </CustomText>
             <View style={styles.petWrap}>
-              <PetList />
+              <PetList max={myData?.petMaxCount} />
             </View>
           </View>
         </View>
-        {!!myData && myData.banners?.length > 0 && (
-          <BannerSwiper banners={myData.banners} />
-        )}
+        <BannerSwiper banners={myData?.banners} />
 
         <View style={styles.section3}>
           {!!myData && (
@@ -128,8 +121,38 @@ const MyPageHomeView = ({ navigation }) => {
             </View>
           )}
         </View>
-
         <View style={styles.section4}>
+          <View style={styles.element}>
+            <CustomText
+              style={styles.title}
+              fontSize={16}
+              fontWeight={FONT_WEIGHT.BOLD}
+            >
+              Walking
+            </CustomText>
+            <View style={styles.walkingWrap}>
+              <Pressable
+                onPress={() => {
+                  Navigator.reset(
+                    { tab: 1 },
+                    'home_tabs',
+                    'walking_tab',
+                    'walking_home'
+                  );
+                }}
+                style={styles.walking}
+              >
+                <CustomText fontSize={15}>Walking History</CustomText>
+                <Ionicons
+                  name="chevron-forward"
+                  size={25}
+                  color={COLORS.dark}
+                />
+              </Pressable>
+            </View>
+          </View>
+        </View>
+        <View style={styles.section5}>
           {!!myData && (
             <View style={styles.element}>
               <CustomText
@@ -167,50 +190,33 @@ const MyPageHomeView = ({ navigation }) => {
                   </CustomText>
                 </Pressable>
               </View>
-            </View>
-          )}
-        </View>
-        <View style={styles.section5}>
-          {!!myData && (
-            <View style={styles.element}>
-              <CustomText
-                style={styles.title}
-                fontSize={16}
-                fontWeight={FONT_WEIGHT.BOLD}
-              >
-                Community
-              </CustomText>
-              <View style={styles.communityWrap}>
+              <View style={styles.friendWrap}>
                 <Pressable
-                  style={styles.community}
                   onPress={() => {
-                    Navigator.navigate({}, 'mypage_nav', 'friends');
+                    Navigator.navigate({ tab: 0 }, 'mypage_nav', 'friends');
                   }}
+                  style={styles.friend}
                 >
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-                    {myData.friendCount}
-                  </CustomText>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
-                    Friends
-                  </CustomText>
+                  <CustomText fontSize={15}>My Friends</CustomText>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={25}
+                    color={COLORS.dark}
+                  />
                 </Pressable>
-                <View style={styles.divider}></View>
-                <Pressable style={styles.community}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-                    0
-                  </CustomText>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
-                    Posts
-                  </CustomText>
-                </Pressable>
-                <View style={styles.divider}></View>
-                <Pressable style={styles.community}>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-                    0
-                  </CustomText>
-                  <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
-                    Comments
-                  </CustomText>
+                <Hr />
+                <Pressable
+                  onPress={() => {
+                    Navigator.navigate({ tab: 1 }, 'mypage_nav', 'friends');
+                  }}
+                  style={styles.friend}
+                >
+                  <CustomText fontSize={15}>Requested Friends</CustomText>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={25}
+                    color={COLORS.dark}
+                  />
                 </Pressable>
               </View>
             </View>
@@ -250,6 +256,7 @@ const HeaderRight = ({ newNotiCount }) => {
           </View>
         )}
       </Pressable>
+
       <Pressable
         onPress={() => {
           Navigator.navigate({}, 'mypage_nav', 'setting');
@@ -288,7 +295,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
   },
-  
+
   section3: {
     marginTop: 20,
     paddingVertical: 5,
@@ -334,6 +341,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  walkingWrap: {},
+  walking: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+  },
   communityWrap: {
     marginTop: 10,
     flexDirection: 'row',
@@ -342,5 +357,15 @@ const styles = StyleSheet.create({
   community: {
     flex: 1,
     alignItems: 'center',
+  },
+  friendWrap: {
+    marginTop: 20,
+  },
+  friend: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
   },
 });

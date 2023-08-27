@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { COLORS } from '../../commons/colors';
 import CustomButton from '../elements/CustomButton';
@@ -10,10 +10,20 @@ import moment from 'moment';
 import { utils } from '../../utils/Utils';
 import { PROCESS_STATUS_CODE } from '../../commons/codes';
 
-const FriendItem = ({ item, type, onHandleReply }) => {
+const FriendItem = ({
+  item,
+  type,
+  onHandleReply = () => {},
+  onUserProfilePress = () => {},
+}) => {
   return (
     <View style={styles.friendItem}>
-      <View style={styles.profile}>
+      <Pressable
+        style={styles.profile}
+        onPress={() => {
+          onUserProfilePress(item.userId);
+        }}
+      >
         <ProfileImage
           uri={utils.pathToUri(item.imgPath)}
           style={styles.profileImg}
@@ -27,7 +37,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
             {'Y '}({item.gender == 'M' ? 'Male' : 'Female'})
           </CustomText>
         </View>
-      </View>
+      </Pressable>
       <View style={styles.optionBtnWrap}>
         {type == 'requested' ? (
           <>
@@ -43,7 +53,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
               }}
               render={
                 <Feather
-                  name='user-plus'
+                  name="user-plus"
                   size={20}
                   color={COLORS.white}
                   style={{ marginRight: 5 }}
@@ -59,7 +69,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
               onPress={() => {
                 onHandleReply(item.userId, PROCESS_STATUS_CODE.DENIED);
               }}
-              render={<Feather name='user-x' size={20} color={COLORS.white} />}
+              render={<Feather name="user-x" size={20} color={COLORS.white} />}
             />
           </>
         ) : type == 'request' ? (
@@ -73,7 +83,7 @@ const FriendItem = ({ item, type, onHandleReply }) => {
               onPress={() => {
                 onHandleReply(item.userId, PROCESS_STATUS_CODE.CANCELED);
               }}
-              render={<Feather name='user-x' size={20} color={COLORS.white} />}
+              render={<Feather name="user-x" size={20} color={COLORS.white} />}
             />
           </>
         ) : (

@@ -1,5 +1,5 @@
 import { Dimensions, Image, Pressable, StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { memo } from 'react';
 import Swiper from 'react-native-swiper';
 import { COLORS } from '../../commons/colors';
 import CustomText from '../elements/CustomText';
@@ -23,7 +23,7 @@ const BannerSwiper = ({ banners }) => {
         </View>
       )}
     >
-      {banners?.map((ele) => {
+      {!!banners && banners?.map((ele) => {
         {
           return (
             !!ele.imgPath && (
@@ -54,7 +54,7 @@ const BannerSwiper = ({ banners }) => {
   );
 };
 
-export default BannerSwiper;
+export default memo(BannerSwiper);
 
 const styles = StyleSheet.create({
   bannerWrap: {

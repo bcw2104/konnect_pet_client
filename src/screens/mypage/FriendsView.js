@@ -17,6 +17,7 @@ import CustomInput from '../../components/elements/CustomInput';
 import { FontAwesome } from '@expo/vector-icons';
 import FriendItem from '../../components/mypage/FriendItem';
 import { PROCESS_STATUS_CODE } from '../../commons/codes';
+import UserDetailModal from '../../components/community/UserDetailModal';
 
 const FriendsView = (props) => {
   const { route } = props;
@@ -45,7 +46,7 @@ const FriendsView = (props) => {
       header={true}
       paddingHorizontal={0}
       headerPaddingTop={0}
-      bgColor={COLORS.light}
+      bgColor={COLORS.containerGray}
     >
       <TabView
         lazy
@@ -84,6 +85,8 @@ const Friends = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
 
+  const userDetailModalRef = useRef(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const originFriends = useRef(null);
   const [friends, setFriends] = useState(null);
 
@@ -145,6 +148,11 @@ const Friends = () => {
     }
   };
 
+  const onUserProfilePress = useCallback((userId) => {
+    setSelectedUserId(userId);
+    userDetailModalRef.current.openModal(true);
+  }, []);
+
   return (
     <View style={styles.section1}>
       <View style={styles.searchWrap}>
@@ -180,10 +188,16 @@ const Friends = () => {
               key={item.friendId}
               item={item}
               type={'request'}
+              onUserProfilePress={onUserProfilePress}
               onHandleReply={onHandleReply}
             />
           ))}
         </ScrollView>
+
+        <UserDetailModal
+          modalRef={userDetailModalRef}
+          userId={selectedUserId}
+        />
       </View>
     </View>
   );
@@ -198,6 +212,8 @@ const RequestedFriends = ({ setRefreshFriend }) => {
   const originRequested = useRef(null);
   const [request, setRequest] = useState(null);
   const [requested, setRequested] = useState(null);
+  const userDetailModalRef = useRef(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   const getData = async () => {
     try {
@@ -267,6 +283,10 @@ const RequestedFriends = ({ setRefreshFriend }) => {
       systemStore.setIsLoading(false);
     }
   };
+  const onUserProfilePress = useCallback((userId) => {
+    setSelectedUserId(userId);
+    userDetailModalRef.current.openModal(true);
+  }, []);
 
   return (
     <View style={styles.section1}>
@@ -305,6 +325,7 @@ const RequestedFriends = ({ setRefreshFriend }) => {
               key={item.friendId}
               item={item}
               type={'request'}
+              onUserProfilePress={onUserProfilePress}
               onHandleReply={onHandleReply}
             />
           ))}
@@ -320,10 +341,15 @@ const RequestedFriends = ({ setRefreshFriend }) => {
               key={item.friendId}
               item={item}
               type={'requested'}
+              onUserProfilePress={onUserProfilePress}
               onHandleReply={onHandleReply}
             />
           ))}
         </ScrollView>
+        <UserDetailModal
+          modalRef={userDetailModalRef}
+          userId={selectedUserId}
+        />
       </View>
     </View>
   );
