@@ -144,7 +144,7 @@ const MyPageHomeView = ({ navigation }) => {
               >
                 <CustomText fontSize={15}>Walking History</CustomText>
                 <Ionicons
-                  name="chevron-forward"
+                  name='chevron-forward'
                   size={25}
                   color={COLORS.dark}
                 />
@@ -165,7 +165,7 @@ const MyPageHomeView = ({ navigation }) => {
               <View style={styles.communityWrap}>
                 <Pressable style={styles.community}>
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-                    0
+                    {myData.postCount}
                   </CustomText>
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                     Posts
@@ -174,7 +174,7 @@ const MyPageHomeView = ({ navigation }) => {
                 <View style={styles.divider}></View>
                 <Pressable style={styles.community}>
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-                    0
+                    {myData.commentCount}
                   </CustomText>
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                     Comments
@@ -183,7 +183,7 @@ const MyPageHomeView = ({ navigation }) => {
                 <View style={styles.divider}></View>
                 <Pressable style={styles.community}>
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
-                    0
+                    {myData.postLikeCount}
                   </CustomText>
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={14}>
                     Likes
@@ -199,7 +199,7 @@ const MyPageHomeView = ({ navigation }) => {
                 >
                   <CustomText fontSize={15}>My Friends</CustomText>
                   <Ionicons
-                    name="chevron-forward"
+                    name='chevron-forward'
                     size={25}
                     color={COLORS.dark}
                   />
@@ -213,7 +213,7 @@ const MyPageHomeView = ({ navigation }) => {
                 >
                   <CustomText fontSize={15}>Requested Friends</CustomText>
                   <Ionicons
-                    name="chevron-forward"
+                    name='chevron-forward'
                     size={25}
                     color={COLORS.dark}
                   />
@@ -243,7 +243,7 @@ const HeaderRight = ({ newNotiCount }) => {
           },
         ]}
       >
-        <Ionicons name="notifications-outline" size={24} color={COLORS.dark} />
+        <Ionicons name='notifications-outline' size={24} color={COLORS.dark} />
         {newNotiCount > 0 && (
           <View style={styles.notiLabel}>
             <CustomText
@@ -269,7 +269,7 @@ const HeaderRight = ({ newNotiCount }) => {
           },
         ]}
       >
-        <Ionicons name="settings-outline" size={24} color={COLORS.dark} />
+        <Ionicons name='settings-outline' size={24} color={COLORS.dark} />
       </Pressable>
     </View>
   );

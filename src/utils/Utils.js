@@ -5,6 +5,8 @@ import { asyncStorage } from '../storage/Storage';
 import ImageResizer from 'react-native-image-resizer';
 import { Platform } from 'react-native';
 import moment from 'moment';
+import axios from 'axios';
+import { baseAxios } from './Axios';
 
 export const utils = {
   coordsDist: (lat1, lon1, lat2, lon2) => {
@@ -59,6 +61,10 @@ export const utils = {
     });
   },
 
+  extractExtension: (path) => {
+    const split = path.split('/');
+    return split[split.length - 1].split('.')[1];
+  },
   /**
    *
    * @param {*} imageUri
@@ -66,6 +72,7 @@ export const utils = {
    * @returns upload image function
    */
   uploadImage: async (imageUri, path) => {
+    let image;
     try {
       const resize = await ImageResizer.createResizedImage(
         imageUri,
@@ -75,34 +82,74 @@ export const utils = {
         80,
         0
       );
-      imageUri = resize.uri;
-    } catch (e) {}
-
-    const BASE_API_URL =
-      process.env.NODE_ENV == 'development'
-        ? Platform.OS == 'ios'
-          ? 'http://127.0.0.1:8080'
-          : 'http://10.0.2.2:8080'
-        : process.env.EXPO_PUBLIC_BASE_API_URL;
-
+      image = resize;
+    } catch (e) {
+      return null;
+    }
     try {
       const accessToken = await asyncStorage.getItem('access_token');
 
       const headers = {
         Authorization: `Bearer ${accessToken}`,
+        'content-type': 'multipart/form-data',
       };
 
-      const response = await FileSystem.uploadAsync(
-        BASE_API_URL + path,
-        imageUri,
-        {
-          headers: headers,
-          httpMethod: 'POST',
-          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-          fieldName: 'image',
-        }
+      const formData = new FormData();
+      formData.append('image', {
+        name: image.name,
+        type: 'image/png',
+        uri: image.uri,
+      });
+      const response = await baseAxios.post(path, formData, {
+        headers: headers,
+      });
+      return response.result?.imagePath;
+    } catch (e) {
+      throw new Error(e);
+    }
+  },
+  /**
+   *
+   * @param {*} imageUris
+   * @param {*} path
+   * @returns upload multiple image function
+   */
+  uploadMultipleImages: async (imageUris = [], path) => {
+    const images = [];
+    imageUris.forEach(async (uri) => {
+      try {
+        const resize = await ImageResizer.createResizedImage(
+          uri,
+          250,
+          250,
+          'PNG',
+          80,
+          0
+        );
+        images.push(resize);
+      } catch (e) {}
+    });
+    try {
+      const accessToken = await asyncStorage.getItem('access_token');
+
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+        'content-type': 'multipart/form-data',
+      };
+
+      const formData = new FormData();
+      formData.append(
+        'images',
+        images.map((image, idx) => ({
+          name: image.name,
+          type: 'image/png',
+          uri: image.uri,
+        }))
       );
-      return JSON.parse(response.body).result;
+      const response = await baseAxios.post(path, formData, {
+        headers: headers,
+      });
+      return response.result.imagePaths;
     } catch (e) {
       throw new Error(e);
     }
@@ -131,7 +178,7 @@ export const utils = {
   },
   pathToUri: (path) => {
     if (!path) return null;
-    return process.env.EXPO_PUBLIC_BASE_IMAGE_URL + path;
+    return process.env.EXPO_PUBLIC_BASE_IMAGE_URL + '/' + path;
   },
   isCloseToBottom: ({ layoutMeasurement, contentOffset, contentSize }) => {
     const paddingToBottom = 34;

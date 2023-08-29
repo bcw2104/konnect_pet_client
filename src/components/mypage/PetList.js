@@ -28,7 +28,7 @@ const PetList = ({ items, max }) => {
     const pets = items || [...userStore.pets];
 
     const left = max - pets.length;
-    for (let i = 0; i < left; i++) {
+    if (left > 0) {
       pets.push({ petId: -1 });
     }
 
@@ -37,7 +37,7 @@ const PetList = ({ items, max }) => {
     }
 
     setPets(pets);
-  }, [max]);
+  }, [max, userStore.pets]);
 
   const addNewPet = () => {
     Navigator.navigate({}, 'mypage_nav', 'pet_add_form');
@@ -95,14 +95,14 @@ const PetList = ({ items, max }) => {
               onPress={addNewPet}
             >
               <AntDesign
-                name="pluscircleo"
+                name='pluscircleo'
                 size={40}
                 color={COLORS.dark}
                 style={styles.petImg}
               />
               <View style={styles.pet}>
                 <CustomText
-                  fontSize={15}
+                  fontSize={14}
                   fontWeight={FONT_WEIGHT.BOLD}
                   numberOfLines={1}
                 >
@@ -131,7 +131,6 @@ const PetList = ({ items, max }) => {
 export default observer(PetList);
 
 const styles = StyleSheet.create({
-  
   petItem: {
     flexDirection: 'row',
     alignItems: 'center',

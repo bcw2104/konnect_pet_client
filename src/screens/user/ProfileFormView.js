@@ -77,11 +77,11 @@ const ProfileFormView = (props) => {
 
       if (isImageChanged.current && !!profileImage) {
         try {
-          const upload = await utils.uploadImage(
+          const uploadPath = await utils.uploadImage(
             profileImage,
             '/api/v1/upload/images/profile/user'
           );
-          imagePath = upload.imagePath;
+          imagePath = uploadPath;
         } catch (err) {}
       }
 

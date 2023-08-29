@@ -114,11 +114,11 @@ const PetAddFormView = (props) => {
       let imagePath = originImgPath.current;
       if (isImageChanged.current && !!petImage) {
         try {
-          const upload = await utils.uploadImage(
+          const uploadPath = await utils.uploadImage(
             petImage,
             '/api/v1/upload/images/profile/pet'
           );
-          imagePath = upload.imagePath;
+          imagePath = uploadPath;
         } catch (err) {}
       }
 

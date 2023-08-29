@@ -118,12 +118,14 @@ export const serviceApis = {
   removePet: (id) => baseAxios.delete(`/api/v1/user/pet/${id}`),
 
   //community
+  getUserDetail: (userId) => baseAxios.get(`/api/v1/community/user/${userId}`),
   requestFriend:(toUserId) => baseAxios.put(`/api/v1/community/friend/${toUserId}`),
   replyFriend:(toUserId,code) => baseAxios.patch(`/api/v1/community/friend/${toUserId}`,{code:code}),
   getFriends : () => baseAxios.get(`/api/v1/community/friend`),
   getPendingFriends : () => baseAxios.get(`/api/v1/community/friend/pending`),
   getCommunityData : () => baseAxios.get(`/api/v1/community`),
   getPosts : (categoryId,size,page) => baseAxios.get(`/api/v1/community/post`,{params:{category:categoryId, size:size, page:page }}),
-  getUserDetail: (userId) => baseAxios.get(`/api/v1/community/user/${userId}`),
+  getPost : (postId) => baseAxios.get(`/api/v1/community/post/${postId}`),
+  getComments : (postId,size,page) => baseAxios.get(`/api/v1/community/post/${postId}/comment`,{params:{size:size, page:page }}),
   changePostLike:(postId,likeYn) => baseAxios.post(`/api/v1/community/post/${postId}/like`,{likeYn:likeYn})
 };

@@ -88,7 +88,7 @@ export default class UserStore {
     if (this._pets != null) {
       pets = [...this._pets];
     }
-    pets.app(pet);
+    pets.push(pet);
 
     this._pets = pets;
   }
