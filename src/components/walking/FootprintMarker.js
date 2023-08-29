@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import React, { memo } from 'react';
+import React from 'react';
 import { Marker } from 'react-native-maps';
 import FootprintImage from '../modules/FootprintImage';
 import { FOOTPRINT_TYPE } from '../../commons/constants';
@@ -59,6 +59,6 @@ const FootprintMarker = ({ userId, footprints, handleOpenFootprintDetail }) => {
   );
 };
 
-export default memo(FootprintMarker);
+export default FootprintMarker;
 
 const styles = StyleSheet.create({});
