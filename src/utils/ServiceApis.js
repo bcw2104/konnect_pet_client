@@ -31,7 +31,7 @@ export const serviceApis = {
   //service
   getFaq: () => baseAxios.get(`/api/v1/service/faq`),
   getQnaNew: () => baseAxios.get(`/api/v1/service/qna/new`),
-  saveQna: (payload) => baseAxios.put(`/api/v1/service/qna/new`,payload),
+  saveQna: (payload) => baseAxios.post(`/api/v1/service/qna/new`,payload),
   getQnas: (type,size,page) => baseAxios.get(`/api/v1/service/qna`,{ params:{type:type, size:size, page:page }}),
   getQnaDetail: (qnaId) => baseAxios.get(`/api/v1/service/qna/${qnaId}`),
 
@@ -113,13 +113,13 @@ export const serviceApis = {
   }}),
 
   //pet
-  savePet: (payload) => baseAxios.put(`/api/v1/user/pet`, payload),
-  editPet: (id, payload) => baseAxios.patch(`/api/v1/user/pet/${id}`, payload),
+  savePet: (payload) => baseAxios.post(`/api/v1/user/pet`, payload),
+  editPet: (id, payload) => baseAxios.put(`/api/v1/user/pet/${id}`, payload),
   removePet: (id) => baseAxios.delete(`/api/v1/user/pet/${id}`),
 
   //community
   getUserDetail: (userId) => baseAxios.get(`/api/v1/community/user/${userId}`),
-  requestFriend:(toUserId) => baseAxios.put(`/api/v1/community/friend/${toUserId}`),
+  requestFriend:(toUserId) => baseAxios.post(`/api/v1/community/friend/${toUserId}`),
   replyFriend:(toUserId,code) => baseAxios.patch(`/api/v1/community/friend/${toUserId}`,{code:code}),
   getFriends : () => baseAxios.get(`/api/v1/community/friend`),
   getPendingFriends : () => baseAxios.get(`/api/v1/community/friend/pending`),
