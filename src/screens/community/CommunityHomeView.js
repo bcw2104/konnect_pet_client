@@ -1,28 +1,25 @@
+import { Ionicons } from '@expo/vector-icons';
+import { useIsFocused } from '@react-navigation/native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  FlatList,
-  Image,
   Pressable,
   RefreshControl,
   ScrollView,
   StyleSheet,
-  Text,
-  View,
+  View
 } from 'react-native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { useIsFocused } from '@react-navigation/native';
-import Container from '../../components/layouts/Container';
 import { COLORS } from '../../commons/colors';
-import { serviceApis } from '../../utils/ServiceApis';
-import BannerSwiper from '../../components/service/BannerSwiper';
 import { FONT_WEIGHT } from '../../commons/constants';
-import CustomText from '../../components/elements/CustomText';
-import { Navigator } from '../../navigations/Navigator';
-import { useStores } from '../../contexts/StoreContext';
-import { utils } from '../../utils/Utils';
 import CategoryTab from '../../components/community/CategoryTab';
 import PostItem from '../../components/community/PostItem';
 import UserDetailModal from '../../components/community/UserDetailModal';
+import CustomText from '../../components/elements/CustomText';
+import Container from '../../components/layouts/Container';
+import BannerSwiper from '../../components/service/BannerSwiper';
+import { useStores } from '../../contexts/StoreContext';
+import { Navigator } from '../../navigations/Navigator';
+import { serviceApis } from '../../utils/ServiceApis';
+import { utils } from '../../utils/Utils';
 
 const PAGE_SIZE = 10;
 
@@ -145,7 +142,11 @@ const CommunityHomeView = ({ navigation }) => {
             ))}
         </View>
       </ScrollView>
-      <UserDetailModal modalRef={userDetailModalRef} userId={selectedUserId} />
+      <UserDetailModal
+        modalRef={userDetailModalRef}
+        userId={selectedUserId}
+        friendBtn={true}
+      />
     </Container>
   );
 };
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
   },
   section2: {},
   categoryWrap: {
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
 
   notExistWrap: {

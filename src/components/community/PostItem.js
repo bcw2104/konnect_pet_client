@@ -1,25 +1,37 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import React, { memo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import ProfileImage from '../modules/ProfileImage';
 import CustomText from '../elements/CustomText';
 import { COLORS } from '../../commons/colors';
 import { FONT_WEIGHT } from '../../commons/constants';
 import { utils } from '../../utils/Utils';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Feather } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
 import ImageViewer from '../elements/ImageViewer';
 import { serviceApis } from '../../utils/ServiceApis';
+import ReportModal from './ReportModal';
 
 const PostItem = ({ item, onUserProfilePress }) => {
   const [viewerIndex, setViewerIndex] = useState(0);
-  const [openImageViewer, setOpenImageViewer] = useState(false);
+  const [imageViewerOpen, setImageViewerOpen] = useState(false);
   const [lockLike, setLockLike] = useState(false);
-  const [postLike, setPostLike] = useState(item.likeYn);
-  const [postLikeCount, setPostLikeCount] = useState(item.likeCount);
+  const [postLike, setPostLike] = useState(false);
+  const [postLikeCount, setPostLikeCount] = useState(0);
+
+  const reportModal = useRef(null);
+
+  useEffect(() => {
+    setPostLike(item.likeYn);
+    setPostLikeCount(item.likeCount);
+  }, [item]);
 
   const handleViewerClose = () => {
-    setOpenImageViewer(false);
+    setImageViewerOpen(false);
   };
+
+  const onMenuPress = useCallback(() => {
+    reportModal.current.openModal(true);
+  }, []);
 
   const handlePostLike = async () => {
     if (lockLike) return;
@@ -37,10 +49,20 @@ const PostItem = ({ item, onUserProfilePress }) => {
   };
 
   const goToDetail = () => {
-    Navigator.navigate({ postId: item.postId }, 'post_detail');
+    Navigator.navigate({ postId: item.postId }, 'community_nav', 'post_detail');
   };
+
   return (
-    <View style={styles.post} key={item.postId}>
+    <Pressable style={styles.post} key={item.postId} onPress={goToDetail}>
+      <View style={{ marginBottom: 10 }}>
+        <CustomText
+          fontSize={15}
+          fontColor={COLORS.main}
+          fontWeight={FONT_WEIGHT.BOLD}
+        >
+          {item?.category}
+        </CustomText>
+      </View>
       <Pressable
         style={styles.postProfile}
         onPress={() => {
@@ -52,31 +74,24 @@ const PostItem = ({ item, onUserProfilePress }) => {
           style={styles.profileImg}
         />
         <View style={styles.profile}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
+          <View>
             <CustomText fontSize={15} fontWeight={FONT_WEIGHT.BOLD}>
               {item?.nickname}
             </CustomText>
+
             <CustomText
-              fontSize={15}
-              fontColor={COLORS.main}
+              fontSize={13}
+              style={{ marginTop: 3 }}
               fontWeight={FONT_WEIGHT.BOLD}
+              fontColor={COLORS.gray}
             >
-              {item?.category}
+              {utils.calculateDateAgo(item.createdDate)}
             </CustomText>
           </View>
-          <CustomText
-            fontSize={12}
-            style={{ marginTop: 3 }}
-            fontWeight={FONT_WEIGHT.BOLD}
-            fontColor={COLORS.gray}
-          >
-            {utils.calculateDateAgo(item.createdDate)}
-          </CustomText>
+
+          <Pressable onPress={onMenuPress} hitSlop={10}>
+            <Feather name="more-vertical" size={20} color={COLORS.dark} />
+          </Pressable>
         </View>
       </Pressable>
       <View style={styles.postContent}>
@@ -90,7 +105,7 @@ const PostItem = ({ item, onUserProfilePress }) => {
                     key={idx}
                     onPress={() => {
                       setViewerIndex(0);
-                      setOpenImageViewer(true);
+                      setImageViewerOpen(true);
                     }}
                   >
                     <Image
@@ -107,7 +122,7 @@ const PostItem = ({ item, onUserProfilePress }) => {
                     key={idx}
                     onPress={() => {
                       setViewerIndex(1);
-                      setOpenImageViewer(true);
+                      setImageViewerOpen(true);
                     }}
                   >
                     <Image
@@ -154,16 +169,14 @@ const PostItem = ({ item, onUserProfilePress }) => {
           >
             {item.content}
           </CustomText>
-          <Pressable>
-            <CustomText
-              fontSize={15}
-              fontWeight={FONT_WEIGHT.BOLD}
-              fontColor={COLORS.gray}
-              style={{ marginTop: 5 }}
-            >
-              More
-            </CustomText>
-          </Pressable>
+          <CustomText
+            fontSize={15}
+            fontWeight={FONT_WEIGHT.BOLD}
+            fontColor={COLORS.gray}
+            style={{ marginTop: 5 }}
+          >
+            More
+          </CustomText>
         </View>
       </View>
       <View style={styles.postInfo}>
@@ -176,7 +189,7 @@ const PostItem = ({ item, onUserProfilePress }) => {
           />
           <CustomText fontSize={15}>{postLikeCount}</CustomText>
         </Pressable>
-        <Pressable style={[styles.postInfoItem, { marginLeft: 15 }]}>
+        <View style={[styles.postInfoItem, { marginLeft: 15 }]}>
           <FontAwesome
             name="commenting-o"
             size={20}
@@ -184,17 +197,19 @@ const PostItem = ({ item, onUserProfilePress }) => {
             style={{ marginRight: 5 }}
           />
           <CustomText fontSize={15}>{item.commentCount}</CustomText>
-        </Pressable>
+        </View>
       </View>
       {item.filePaths.length > 0 && (
         <ImageViewer
           index={viewerIndex}
-          open={openImageViewer}
+          open={imageViewerOpen}
           handleClose={handleViewerClose}
           uris={[...item.filePaths.map((path) => utils.pathToUri(path))]}
         />
       )}
-    </View>
+
+      <ReportModal modalRef={reportModal} userId={item.userId} />
+    </Pressable>
   );
 };
 
@@ -205,6 +220,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     paddingHorizontal: 15,
     paddingVertical: 20,
+    marginBottom: 10,
   },
   postProfile: {
     flexDirection: 'row',
@@ -212,11 +228,13 @@ const styles = StyleSheet.create({
   },
   profile: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   profileImg: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     marginRight: 10,
   },
   postContent: {

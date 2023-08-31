@@ -16,13 +16,10 @@ const CustomKeyboardAvoidingView = ({ children, aosOffset = 0, style }) => {
       keyboardVerticalOffset={
         Platform.OS === 'ios' ? 60 + statusBarHeight : aosOffset
       }
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={style}
     >
-      <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-        {children}
-        <View style={{ flex: 1 }}></View>
-      </View>
+      {children}
     </KeyboardAvoidingView>
   );
 };

@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import ImageViewer from '../elements/ImageViewer';
 
 const ProfileImage = ({ uri, style, viewer = true }) => {
-  const [openImageViewer, setOpenImageViewer] = useState(false);
+  const [imageViewerOpen, setImageViewerOpen] = useState(false);
 
   const handleViewerClose = () => {
-    setOpenImageViewer(false);
+    setImageViewerOpen(false);
   };
 
   return (
@@ -14,7 +14,7 @@ const ProfileImage = ({ uri, style, viewer = true }) => {
       <Pressable
         disabled={!viewer}
         onPress={() => {
-          setOpenImageViewer(true);
+          setImageViewerOpen(true);
         }}
       >
         <Image
@@ -28,7 +28,7 @@ const ProfileImage = ({ uri, style, viewer = true }) => {
       </Pressable>
       {!!uri && (
         <ImageViewer
-          open={openImageViewer}
+          open={imageViewerOpen}
           handleClose={handleViewerClose}
           uris={[uri]}
         />

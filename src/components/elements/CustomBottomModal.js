@@ -38,7 +38,7 @@ const CustomBottomModal = ({ closeCallback = null, children }, ref) => {
       animationOutTiming={500}
       backdropTransitionInTiming={500}
       backdropTransitionOutTiming={500}
-      backdropColor={COLORS.transparent}
+      backdropColor={COLORS.semiTransparentDark}
       onBackButtonPress={handleClose}
       onBackdropPress={handleClose}
       style={styles.bottomHalf}

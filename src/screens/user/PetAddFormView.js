@@ -393,6 +393,7 @@ const PetAddFormView = (props) => {
                 }}
                 maxLength={200}
                 multiline={true}
+                textAlignVertical={'top'}
                 fontSize={15}
                 wrapperStyle={styles.input}
                 placeholder="Please introduce your pet."

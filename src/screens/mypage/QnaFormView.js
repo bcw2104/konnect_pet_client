@@ -123,6 +123,7 @@ const QnaFormView = () => {
               wrapperStyle={{ flex: 1 }}
               maxLength={800}
               multiline={true}
+              textAlignVertical={'top'}
               fontSize={15}
               keyboardType="default"
               style={{

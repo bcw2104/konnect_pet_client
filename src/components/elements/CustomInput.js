@@ -26,6 +26,7 @@ const CustomInput = ({
   errorHandler = false,
   errorMsg = '',
   outline = false,
+  textAlignVertical = 'center',
   multiline = false,
 }) => {
   const [error, setError] = useState(false);
@@ -80,7 +81,7 @@ const CustomInput = ({
           autoFocus={autoFocus}
           secureTextEntry={secureTextEntry}
           maxLength={maxLength}
-          textAlignVertical={multiline ? 'top' : 'center'}
+          textAlignVertical={textAlignVertical}
           value={value}
           scrollEnabled={false}
           returnKeyType="done"
@@ -110,7 +111,6 @@ const CustomInput = ({
         <CustomText
           fontColor={COLORS.danger}
           fontSize={14}
-          multiline={multiline}
           style={{
             marginTop: 5,
             textAlign: 'left',

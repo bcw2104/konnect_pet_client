@@ -26,7 +26,7 @@ const CategoryTab = ({ categories, tab, onTabCange }) => {
           <CustomText
             fontWeight={FONT_WEIGHT.BOLD}
             fontColor={tab == item.categoryId ? COLORS.white : COLORS.main}
-            fontSize={15}
+            fontSize={14}
           >
             {item.category}
           </CustomText>
@@ -41,8 +41,8 @@ export default memo(CategoryTab);
 
 const styles = StyleSheet.create({
   category: {
-    paddingVertical: 10,
-    width: 100,
+    paddingVertical: 7,
+    width: 80,
     alignItems: 'center',
     borderRadius: 30,
     borderWidth: 1,

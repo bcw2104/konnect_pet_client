@@ -2,13 +2,14 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { useStores } from '../contexts/StoreContext';
 import { navigationRef } from './Navigator';
 import AuthStackNavigator from './stacks/AuthStackNavigator';
-import {COLORS} from '../commons/colors';
+import { COLORS } from '../commons/colors';
 import HomeTabs from './HomeTabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MyPageStackNavigator from './stacks/MyPageStackNavigator';
 import WalkingStackNavigator from './stacks/WalkingStackNavigator';
 import { observer } from 'mobx-react-lite';
 import { useBackPressHandler } from '../hooks/useBackPressHandler';
+import CommunityStackNavigator from './stacks/CommunityStackNavigator';
 
 const navTheme = {
   ...DefaultTheme,
@@ -44,6 +45,11 @@ const Navigation = () => {
           <Stack.Screen
             name="walking_nav"
             component={WalkingStackNavigator}
+            options={{ headerShown: false, animation: 'slide_from_bottom' }}
+          />
+          <Stack.Screen
+            name="community_nav"
+            component={CommunityStackNavigator}
             options={{ headerShown: false, animation: 'slide_from_bottom' }}
           />
         </Stack.Navigator>
