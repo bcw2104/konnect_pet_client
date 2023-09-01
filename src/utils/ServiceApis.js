@@ -127,5 +127,6 @@ export const serviceApis = {
   getPosts : (categoryId,size,page) => baseAxios.get(`/api/v1/community/post`,{params:{category:categoryId, size:size, page:page }}),
   getPost : (postId) => baseAxios.get(`/api/v1/community/post/${postId}`),
   getComments : (postId,size,page) => baseAxios.get(`/api/v1/community/post/${postId}/comment`,{params:{size:size, page:page }}),
-  changePostLike:(postId,likeYn) => baseAxios.post(`/api/v1/community/post/${postId}/like`,{likeYn:likeYn})
+  changePostLike:(postId,likeYn) => baseAxios.post(`/api/v1/community/post/${postId}/like`,{likeYn:likeYn}),
+  report:(targetId,type) => baseAxios.post(`/api/v1/community/report`,{targetId,type})
 };

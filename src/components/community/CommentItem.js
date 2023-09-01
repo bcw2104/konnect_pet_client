@@ -1,13 +1,12 @@
-import { FontAwesome, Feather } from '@expo/vector-icons';
+import { Feather, FontAwesome } from '@expo/vector-icons';
 import React, { useCallback, useRef } from 'react';
 import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
-import { FONT_WEIGHT } from '../../commons/constants';
+import AutoHeightImage from 'react-native-auto-height-image';
+import { COLORS } from '../../commons/colors';
+import { FONT_WEIGHT, REPORT_TYPE } from '../../commons/constants';
+import { utils } from '../../utils/Utils';
 import CustomText from '../elements/CustomText';
 import ProfileImage from '../modules/ProfileImage';
-import { COLORS } from '../../commons/colors';
-import AutoHeightImage from 'react-native-auto-height-image';
-import { utils } from '../../utils/Utils';
-import CustomBottomModal from '../elements/CustomBottomModal';
 import ReportModal from './ReportModal';
 
 const window = Dimensions.get('window');
@@ -97,7 +96,7 @@ const CommentItem = ({
           Reply
         </CustomText>
       </Pressable>
-      <ReportModal modalRef={reportModal} userId={item.userId} />
+      <ReportModal modalRef={reportModal} type={REPORT_TYPE.COMMENT} targetId={item.commentId} />
     </View>
   );
 };

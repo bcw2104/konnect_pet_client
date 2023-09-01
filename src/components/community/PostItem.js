@@ -2,7 +2,7 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { COLORS } from '../../commons/colors';
-import { FONT_WEIGHT } from '../../commons/constants';
+import { FONT_WEIGHT, REPORT_TYPE } from '../../commons/constants';
 import { Navigator } from '../../navigations/Navigator';
 import { serviceApis } from '../../utils/ServiceApis';
 import { utils } from '../../utils/Utils';
@@ -205,7 +205,11 @@ const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
         </View>
       </View>
 
-      <ReportModal modalRef={reportModal} userId={item.userId} />
+      <ReportModal
+        modalRef={reportModal}
+        type={REPORT_TYPE.POST}
+        targetId={item.postId}
+      />
     </Pressable>
   );
 };

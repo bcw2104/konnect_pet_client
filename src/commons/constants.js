@@ -39,3 +39,8 @@ export const DEEP_LINK_PREFIX = {
 };
 
 export const IMAGE_EXT_TYPE = ['png', 'jpg', 'jpeg', 'webp'];
+
+export const REPORT_TYPE = {
+  POST: 'POST',
+  COMMENT: 'COMMENT'
+};

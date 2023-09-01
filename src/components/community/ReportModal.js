@@ -4,17 +4,22 @@ import CustomBottomModal from '../elements/CustomBottomModal';
 import CustomText from '../elements/CustomText';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS } from '../../commons/colors';
-import { FONT_WEIGHT } from '../../commons/constants';
-import { useStores } from '../../contexts/StoreContext';
+import { FONT_WEIGHT, REPORT_TYPE } from '../../commons/constants';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { serviceApis } from '../../utils/ServiceApis';
 
-const ReportModal = ({ modalRef, userId }) => {
+const ReportModal = ({ modalRef, type, targetId }) => {
   const handleReport = async () => {
     try {
-      console.log(userId);
+      const response = await serviceApis.report(targetId, type);
+      let message = 'A report has been filed.';
+      if (response.rsp_code == '9600') {
+        message = response.rsp_msg_detail;
+      }
+
       Toast.show({
         type: 'success',
-        text1: 'A report has been filed.',
+        text1: message,
       });
     } catch (err) {
     } finally {
@@ -37,7 +42,7 @@ const ReportModal = ({ modalRef, userId }) => {
           onPress={handleReport}
         >
           <MaterialCommunityIcons
-            name="alarm-light"
+            name='alarm-light'
             size={24}
             color={COLORS.danger}
             style={{ marginRight: 7 }}
