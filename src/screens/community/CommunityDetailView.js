@@ -126,8 +126,8 @@ const CommunityDetailView = (props) => {
     }
   };
 
-  const openImageViewer = useCallback((images) => {
-    setViewerIndex(0);
+  const openImageViewer = useCallback((images, index = 0) => {
+    setViewerIndex(index);
     setImageViewerOpen(true);
     setViewerImages(images);
   }, []);
@@ -217,7 +217,7 @@ const CommunityDetailView = (props) => {
           </Pressable>
           <View style={[styles.postInfoItem, { marginLeft: 15 }]}>
             <FontAwesome
-              name="commenting-o"
+              name='commenting-o'
               size={20}
               color={COLORS.dark}
               style={{ marginRight: 5 }}
@@ -254,7 +254,7 @@ const CommunityDetailView = (props) => {
                             }}
                           >
                             <Feather
-                              name="corner-down-right"
+                              name='corner-down-right'
                               size={20}
                               color={COLORS.dark}
                               style={{ paddingRight: 10 }}
@@ -283,14 +283,12 @@ const CommunityDetailView = (props) => {
               </>
             ))}
         </View>
-        {!!post?.filePaths && post?.filePaths.length > 0 && (
-          <ImageViewer
-            index={viewerIndex}
-            open={imageViewerOpen}
-            handleClose={handleViewerClose}
-            uris={viewerImages}
-          />
-        )}
+        <ImageViewer
+          index={viewerIndex}
+          open={imageViewerOpen}
+          handleClose={handleViewerClose}
+          uris={viewerImages}
+        />
         <UserDetailModal
           modalRef={userDetailModalRef}
           userId={selectedUserId}
@@ -305,7 +303,7 @@ const CommunityDetailView = (props) => {
             height={'auto'}
             onValueChange={setMyComment}
             wrapperStyle={styles.commentInput}
-            placeholder="Comment"
+            placeholder='Comment'
             multiline={true}
             textAlignVertical={'center'}
           />
@@ -322,7 +320,7 @@ const CommunityDetailView = (props) => {
             onPress={() => {}}
             render={
               <Feather
-                name="send"
+                name='send'
                 size={20}
                 color={COLORS.white}
                 style={{ marginRight: 5 }}

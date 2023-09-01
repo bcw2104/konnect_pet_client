@@ -6,7 +6,7 @@ import {
   RefreshControl,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native';
 import { COLORS } from '../../commons/colors';
 import { FONT_WEIGHT } from '../../commons/constants';
@@ -14,6 +14,7 @@ import CategoryTab from '../../components/community/CategoryTab';
 import PostItem from '../../components/community/PostItem';
 import UserDetailModal from '../../components/community/UserDetailModal';
 import CustomText from '../../components/elements/CustomText';
+import ImageViewer from '../../components/elements/ImageViewer';
 import Container from '../../components/layouts/Container';
 import BannerSwiper from '../../components/service/BannerSwiper';
 import { useStores } from '../../contexts/StoreContext';
@@ -34,6 +35,9 @@ const CommunityHomeView = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const userDetailModalRef = useRef(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
+
+  const [viewerIndex, setViewerIndex] = useState(0);
+  const [imageViewerOpen, setImageViewerOpen] = useState(false);
 
   useEffect(() => {
     if (isFocused) {
@@ -57,6 +61,16 @@ const CommunityHomeView = ({ navigation }) => {
       fetchData();
     }
   }, [isFocused]);
+
+  const openImageViewer = useCallback((images, index = 0) => {
+    setViewerIndex(index);
+    setImageViewerOpen(true);
+    setViewerImages(images);
+  }, []);
+
+  const handleViewerClose = () => {
+    setImageViewerOpen(false);
+  };
 
   const onUserProfilePress = useCallback((userId) => {
     setSelectedUserId(userId);
@@ -130,6 +144,7 @@ const CommunityHomeView = ({ navigation }) => {
                     key={item.postId}
                     item={item}
                     onUserProfilePress={onUserProfilePress}
+                    openImageViewer={openImageViewer}
                   />
                 ))}
               </>
@@ -142,6 +157,12 @@ const CommunityHomeView = ({ navigation }) => {
             ))}
         </View>
       </ScrollView>
+      <ImageViewer
+        index={viewerIndex}
+        open={imageViewerOpen}
+        handleClose={handleViewerClose}
+        uris={[...item.filePaths.map((path) => utils.pathToUri(path))]}
+      />
       <UserDetailModal
         modalRef={userDetailModalRef}
         userId={selectedUserId}
@@ -167,7 +188,7 @@ const HeaderRight = ({ newNotiCount }) => {
           },
         ]}
       >
-        <Ionicons name="notifications-outline" size={24} color={COLORS.dark} />
+        <Ionicons name='notifications-outline' size={24} color={COLORS.dark} />
         {newNotiCount > 0 && (
           <View style={styles.notiLabel}>
             <CustomText
@@ -192,7 +213,7 @@ const HeaderRight = ({ newNotiCount }) => {
           },
         ]}
       >
-        <Ionicons name="settings-outline" size={24} color={COLORS.dark} />
+        <Ionicons name='settings-outline' size={24} color={COLORS.dark} />
       </Pressable>
     </View>
   );

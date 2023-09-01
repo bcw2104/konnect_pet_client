@@ -53,7 +53,7 @@ const CommentItem = ({
           </View>
 
           <Pressable onPress={onMenuPress} hitSlop={10}>
-            <Feather name="more-vertical" size={20} color={COLORS.dark} />
+            <Feather name='more-vertical' size={20} color={COLORS.dark} />
           </Pressable>
         </View>
       </Pressable>
@@ -64,7 +64,7 @@ const CommentItem = ({
             <Pressable
               style={styles.contentImg}
               onPress={() => {
-                openImageViewer([utils.pathToUri(item.imgPath)]);
+                openImageViewer([utils.pathToUri(item.imgPath)], 0);
               }}
             >
               <AutoHeightImage
@@ -84,7 +84,7 @@ const CommentItem = ({
         }}
       >
         <FontAwesome
-          name="reply"
+          name='reply'
           size={18}
           color={COLORS.gray}
           style={{ marginRight: 5 }}

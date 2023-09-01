@@ -1,19 +1,16 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Feather, FontAwesome } from '@expo/vector-icons';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import ProfileImage from '../modules/ProfileImage';
-import CustomText from '../elements/CustomText';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { COLORS } from '../../commons/colors';
 import { FONT_WEIGHT } from '../../commons/constants';
-import { utils } from '../../utils/Utils';
-import { FontAwesome, Feather } from '@expo/vector-icons';
 import { Navigator } from '../../navigations/Navigator';
-import ImageViewer from '../elements/ImageViewer';
 import { serviceApis } from '../../utils/ServiceApis';
+import { utils } from '../../utils/Utils';
+import CustomText from '../elements/CustomText';
+import ProfileImage from '../modules/ProfileImage';
 import ReportModal from './ReportModal';
 
-const PostItem = ({ item, onUserProfilePress }) => {
-  const [viewerIndex, setViewerIndex] = useState(0);
-  const [imageViewerOpen, setImageViewerOpen] = useState(false);
+const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
   const [lockLike, setLockLike] = useState(false);
   const [postLike, setPostLike] = useState(false);
   const [postLikeCount, setPostLikeCount] = useState(0);
@@ -24,10 +21,6 @@ const PostItem = ({ item, onUserProfilePress }) => {
     setPostLike(item.likeYn);
     setPostLikeCount(item.likeCount);
   }, [item]);
-
-  const handleViewerClose = () => {
-    setImageViewerOpen(false);
-  };
 
   const onMenuPress = useCallback(() => {
     reportModal.current.openModal(true);
@@ -90,7 +83,7 @@ const PostItem = ({ item, onUserProfilePress }) => {
           </View>
 
           <Pressable onPress={onMenuPress} hitSlop={10}>
-            <Feather name="more-vertical" size={20} color={COLORS.dark} />
+            <Feather name='more-vertical' size={20} color={COLORS.dark} />
           </Pressable>
         </View>
       </Pressable>
@@ -104,14 +97,20 @@ const PostItem = ({ item, onUserProfilePress }) => {
                     style={styles.contentImg}
                     key={idx}
                     onPress={() => {
-                      setViewerIndex(0);
-                      setImageViewerOpen(true);
+                      openImageViewer(
+                        [
+                          ...item.filePaths?.map((path) =>
+                            utils.pathToUri(path)
+                          ),
+                        ],
+                        0
+                      );
                     }}
                   >
                     <Image
                       source={{ uri: utils.pathToUri(path) }}
                       style={{ width: '100%', height: '100%' }}
-                      resizeMode="cover"
+                      resizeMode='cover'
                     />
                   </Pressable>
                 );
@@ -121,14 +120,20 @@ const PostItem = ({ item, onUserProfilePress }) => {
                     style={[styles.contentImg, { marginLeft: 7 }]}
                     key={idx}
                     onPress={() => {
-                      setViewerIndex(1);
-                      setImageViewerOpen(true);
+                      openImageViewer(
+                        [
+                          ...item.filePaths?.map((path) =>
+                            utils.pathToUri(path)
+                          ),
+                        ],
+                        1
+                      );
                     }}
                   >
                     <Image
                       source={{ uri: utils.pathToUri(path) }}
                       style={{ width: '100%', height: '100%' }}
-                      resizeMode="cover"
+                      resizeMode='cover'
                     />
                     {item.filePaths.length >= 3 && (
                       <View
@@ -191,7 +196,7 @@ const PostItem = ({ item, onUserProfilePress }) => {
         </Pressable>
         <View style={[styles.postInfoItem, { marginLeft: 15 }]}>
           <FontAwesome
-            name="commenting-o"
+            name='commenting-o'
             size={20}
             color={COLORS.dark}
             style={{ marginRight: 5 }}
@@ -199,14 +204,6 @@ const PostItem = ({ item, onUserProfilePress }) => {
           <CustomText fontSize={15}>{item.commentCount}</CustomText>
         </View>
       </View>
-      {item.filePaths.length > 0 && (
-        <ImageViewer
-          index={viewerIndex}
-          open={imageViewerOpen}
-          handleClose={handleViewerClose}
-          uris={[...item.filePaths.map((path) => utils.pathToUri(path))]}
-        />
-      )}
 
       <ReportModal modalRef={reportModal} userId={item.userId} />
     </Pressable>
