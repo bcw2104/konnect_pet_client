@@ -188,15 +188,20 @@ export const utils = {
     );
   },
   calculateDateAgo: (date) => {
-    const diff = parseInt(moment().diff(moment(date), 'hours'));
-
-    if (diff < 24) {
+    const diff = parseInt(moment().diff(moment(date), 'minutes'));
+    if (diff < 60) {
       if (diff == 1) {
-        return diff + ' hour ago';
+        return diff + ' minute ago';
       }
-      return diff + ' hours ago';
+      return diff + ' minutes ago';
+    } else if (diff < 1440) {
+      const hours = parseInt(diff / 60);
+      if (hours == 1) {
+        return hours + ' hour ago';
+      }
+      return hours + ' hours ago';
     } else {
-      const days = parseInt(diff / 24);
+      const days = parseInt(diff / 1440);
       if (days == 1) {
         return days + ' day ago';
       }

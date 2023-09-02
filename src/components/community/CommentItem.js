@@ -13,9 +13,10 @@ const window = Dimensions.get('window');
 
 const CommentItem = ({
   item,
-  onUserProfilePress,
-  openImageViewer,
+  onUserProfilePress = () => {},
+  openImageViewer = () => {},
   paddingLeft = 0,
+  onReplyPress = () => {},
 }) => {
   const reportModal = useRef(null);
 
@@ -52,12 +53,19 @@ const CommentItem = ({
           </View>
 
           <Pressable onPress={onMenuPress} hitSlop={10}>
-            <Feather name='more-vertical' size={20} color={COLORS.dark} />
+            <Feather name="more-vertical" size={20} color={COLORS.dark} />
           </Pressable>
         </View>
       </Pressable>
       <View style={styles.content}>
-        <CustomText fontSize={14}>{item.content}</CustomText>
+        <CustomText
+          fontSize={14}
+          fontColor={
+            item.removeYn || item.blockedYn ? COLORS.gray : COLORS.dark
+          }
+        >
+          {item.content}
+        </CustomText>
         {!!item.imgPath && (
           <View style={styles.contentImgWrap}>
             <Pressable
@@ -79,11 +87,16 @@ const CommentItem = ({
       <Pressable
         style={styles.reply}
         onPress={() => {
-          onUserProfilePress(post?.userId);
+          onReplyPress({
+            nickname: item.nickname,
+            replayId: !!item.parentCommentId
+              ? item.parentCommentId
+              : item.commentId,
+          });
         }}
       >
         <FontAwesome
-          name='reply'
+          name="reply"
           size={18}
           color={COLORS.gray}
           style={{ marginRight: 5 }}
@@ -96,7 +109,11 @@ const CommentItem = ({
           Reply
         </CustomText>
       </Pressable>
-      <ReportModal modalRef={reportModal} type={REPORT_TYPE.COMMENT} targetId={item.commentId} />
+      <ReportModal
+        modalRef={reportModal}
+        type={REPORT_TYPE.COMMENT}
+        targetId={item.commentId}
+      />
     </View>
   );
 };
@@ -105,6 +122,7 @@ export default CommentItem;
 
 const styles = StyleSheet.create({
   comment: {
+    flex: 1,
     marginVertical: 15,
   },
   profileWrap: {

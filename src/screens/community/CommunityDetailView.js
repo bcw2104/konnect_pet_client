@@ -1,7 +1,8 @@
-import { Feather, FontAwesome } from '@expo/vector-icons';
+import { Feather, FontAwesome, AntDesign } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
+  Image,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -10,7 +11,7 @@ import {
 } from 'react-native';
 import AutoHeightImage from 'react-native-auto-height-image';
 import { COLORS } from '../../commons/colors';
-import { FONT_WEIGHT } from '../../commons/constants';
+import { FONT_WEIGHT, REPORT_TYPE } from '../../commons/constants';
 import CommentItem from '../../components/community/CommentItem';
 import UserDetailModal from '../../components/community/UserDetailModal';
 import CustomButton from '../../components/elements/CustomButton';
@@ -24,6 +25,8 @@ import ProfileImage from '../../components/modules/ProfileImage';
 import { useStores } from '../../contexts/StoreContext';
 import { serviceApis } from '../../utils/ServiceApis';
 import { utils } from '../../utils/Utils';
+import ReportModal from '../../components/community/ReportModal';
+import ImageUploader from '../../components/modules/ImageUploader';
 
 const PAGE_SIZE = 10;
 
@@ -31,7 +34,7 @@ const window = Dimensions.get('window');
 
 const CommunityDetailView = (props) => {
   const { route } = props;
-  const { systemStore } = useStores();
+  const { systemStore, modalStore } = useStores();
 
   const page = useRef(1);
   const [post, setPost] = useState({});
@@ -44,6 +47,11 @@ const CommunityDetailView = (props) => {
   const [imageViewerOpen, setImageViewerOpen] = useState(false);
   const [viewerImages, setViewerImages] = useState([]);
   const userDetailModalRef = useRef(null);
+  const reportModal = useRef(null);
+  const imageUploaderRef = useRef(null);
+
+  const [reply, setReply] = useState(null);
+  const commentInputRef = useRef(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
 
   const [lockLike, setLockLike] = useState(false);
@@ -51,6 +59,7 @@ const CommunityDetailView = (props) => {
   const [postLikeCount, setPostLikeCount] = useState(0);
 
   const [myComment, setMyComment] = useState('');
+  const [myCommentImage, setMyCommentImage] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,6 +69,12 @@ const CommunityDetailView = (props) => {
     fetchData();
   }, []);
 
+  const resetMyComment = () => {
+    setMyComment('');
+    setMyCommentImage(null);
+    setReply(null);
+    commentInputRef.current.blur();
+  };
   const getPost = async () => {
     try {
       const response = await serviceApis.getPost(route.params.postId);
@@ -132,6 +147,59 @@ const CommunityDetailView = (props) => {
     setViewerImages(images);
   }, []);
 
+  const onMenuPress = useCallback(() => {
+    reportModal.current.openModal(true);
+  }, []);
+
+  const onReplyPress = useCallback((reply) => {
+    setReply(reply);
+    commentInputRef.current.focus();
+  }, []);
+
+  const handleImageChange = (image) => {
+    setMyCommentImage(image.uri);
+    commentInputRef.current.focus();
+  };
+
+  const saveComment = async () => {
+    const valid = !!myComment || !!myCommentImage;
+
+    if (!valid) {
+      modalStore.openOneButtonModal(
+        'Please enter the contents.',
+        'Confirm',
+        () => {}
+      );
+      return;
+    }
+
+    try {
+      let imagePath = null;
+      systemStore.setIsLoading(true);
+      if (!!myCommentImage) {
+        try {
+          const uploadPath = await utils.uploadImage(
+            myCommentImage,
+            '/api/v1/upload/images/community/comment'
+          );
+          imagePath = uploadPath;
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      const response = await serviceApis.saveComment(post.postId, {
+        content: myComment,
+        imagePath: imagePath,
+        parentId: reply ? reply.replayId : null,
+      });
+      resetMyComment();
+      getData(true);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      systemStore.setIsLoading(false);
+    }
+  };
   return (
     <Container header={true} headerPaddingTop={0}>
       <ScrollView
@@ -139,7 +207,26 @@ const CommunityDetailView = (props) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        onScrollEndDrag={({ nativeEvent }) => {
+          if (utils.isCloseToBottom(nativeEvent) && hasNext) {
+            getNextData();
+          }
+        }}
       >
+        <View
+          style={{
+            marginTop: 20,
+            marginBottom: 10,
+          }}
+        >
+          <CustomText
+            fontSize={15}
+            fontColor={COLORS.main}
+            fontWeight={FONT_WEIGHT.BOLD}
+          >
+            {post?.category}
+          </CustomText>
+        </View>
         <Pressable
           style={styles.profileWrap}
           onPress={() => {
@@ -151,36 +238,33 @@ const CommunityDetailView = (props) => {
             style={styles.profileImg}
           />
           <View style={styles.profile}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}
-            >
+            <View>
               <CustomText fontSize={15} fontWeight={FONT_WEIGHT.BOLD}>
                 {post?.nickname}
               </CustomText>
               <CustomText
-                fontSize={14}
-                fontColor={COLORS.main}
+                fontSize={13}
+                style={{ marginTop: 3 }}
                 fontWeight={FONT_WEIGHT.BOLD}
+                fontColor={COLORS.gray}
               >
-                {post?.category}
+                {utils.calculateDateAgo(post?.createdDate)}
               </CustomText>
             </View>
-            <CustomText
-              fontSize={13}
-              style={{ marginTop: 3 }}
-              fontWeight={FONT_WEIGHT.BOLD}
-              fontColor={COLORS.gray}
-            >
-              {utils.calculateDateAgo(post?.createdDate)}
-            </CustomText>
+            <Pressable onPress={onMenuPress} hitSlop={10}>
+              <Feather name="more-vertical" size={20} color={COLORS.dark} />
+            </Pressable>
           </View>
         </Pressable>
         <View style={styles.postContent}>
           <View style={styles.content}>
-            <CustomText fontSize={15} style={{ marginTop: 5, lineHeight: 20 }}>
+            <CustomText
+              fontSize={15}
+              style={{ marginTop: 5, lineHeight: 20 }}
+              fontColor={
+                post.removeYn || post.blockedYn ? COLORS.gray : COLORS.dark
+              }
+            >
               {post?.content}
             </CustomText>
           </View>
@@ -217,7 +301,7 @@ const CommunityDetailView = (props) => {
           </Pressable>
           <View style={[styles.postInfoItem, { marginLeft: 15 }]}>
             <FontAwesome
-              name='commenting-o'
+              name="commenting-o"
               size={20}
               color={COLORS.dark}
               style={{ marginRight: 5 }}
@@ -239,6 +323,7 @@ const CommunityDetailView = (props) => {
                         onUserProfilePress={onUserProfilePress}
                         openImageViewer={openImageViewer}
                         paddingLeft={50}
+                        onReplyPress={onReplyPress}
                       />
                       {item.childrens?.map((child) => (
                         <View
@@ -254,7 +339,7 @@ const CommunityDetailView = (props) => {
                             }}
                           >
                             <Feather
-                              name='corner-down-right'
+                              name="corner-down-right"
                               size={20}
                               color={COLORS.dark}
                               style={{ paddingRight: 10 }}
@@ -265,12 +350,12 @@ const CommunityDetailView = (props) => {
                             onUserProfilePress={onUserProfilePress}
                             openImageViewer={openImageViewer}
                             paddingLeft={100}
+                            onReplyPress={onReplyPress}
                           />
                         </View>
                       ))}
                     </View>
                   ))}
-                {hasNext && <MoreButton onPress={getNextData} />}
               </>
             ) : (
               <>
@@ -294,18 +379,88 @@ const CommunityDetailView = (props) => {
           userId={selectedUserId}
           friendBtn={true}
         />
+
+        <ReportModal
+          modalRef={reportModal}
+          type={REPORT_TYPE.POST}
+          targetId={post.postId}
+        />
       </ScrollView>
       <CustomKeyboardAvoidingView>
+        {myCommentImage && (
+          <View
+            style={{
+              paddingVertical: 20,
+              backgroundColor: COLORS.dark,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Pressable
+              onPress={() => {
+                setMyCommentImage(null);
+              }}
+              style={{ position: 'absolute', top: 10, right: 10 }}
+            >
+              <AntDesign name="closecircleo" size={24} color={COLORS.white} />
+            </Pressable>
+            <AutoHeightImage
+              source={{ uri: myCommentImage }}
+              width={window.width / 2}
+            />
+          </View>
+        )}
+        {reply && (
+          <View
+            style={{
+              paddingTop: 15,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <CustomText
+              fontWeight={FONT_WEIGHT.BOLD}
+              fontSize={14}
+              fontColor={COLORS.gray}
+            >
+              @ {reply.nickname}
+            </CustomText>
+            <Pressable
+              onPress={() => {
+                setReply(null);
+              }}
+            >
+              <AntDesign name="closecircleo" size={24} color={COLORS.dark} />
+            </Pressable>
+          </View>
+        )}
         <View style={styles.myCommentWrap}>
+          <ImageUploader
+            onImageChange={handleImageChange}
+            ref={imageUploaderRef}
+          >
+            <Pressable
+              onPress={() => {
+                imageUploaderRef.current.pickImage();
+              }}
+              style={{ marginRight: 5 }}
+            >
+              <Feather name="image" size={30} color={COLORS.grayDeep} />
+            </Pressable>
+          </ImageUploader>
           <CustomInput
             value={myComment}
             maxLength={800}
             height={'auto'}
+            maxHeight={200}
             onValueChange={setMyComment}
             wrapperStyle={styles.commentInput}
-            placeholder='Comment'
+            placeholder="Comment"
             multiline={true}
             textAlignVertical={'center'}
+            outline={true}
+            innerRef={commentInputRef}
           />
           <CustomButton
             fontWeight={FONT_WEIGHT.BOLD}
@@ -316,11 +471,11 @@ const CommunityDetailView = (props) => {
             width={70}
             height={'100%'}
             fontSize={14}
-            disabled={!myComment}
-            onPress={() => {}}
+            disabled={!myComment && !myCommentImage}
+            onPress={saveComment}
             render={
               <Feather
-                name='send'
+                name="send"
                 size={20}
                 color={COLORS.white}
                 style={{ marginRight: 5 }}
@@ -337,12 +492,13 @@ export default CommunityDetailView;
 
 const styles = StyleSheet.create({
   profileWrap: {
-    marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
   },
   profile: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   profileImg: {
     width: 50,
@@ -372,9 +528,11 @@ const styles = StyleSheet.create({
   commentWrap: {},
 
   myCommentWrap: {
-    backgroundColor: COLORS.white,
     flexDirection: 'row',
-    paddingVertical: 20,
+    backgroundColor: COLORS.white,
+    alignItems: 'center',
+    paddingTop: 15,
+    paddingBottom: 20,
   },
   commentInput: {
     flex: 1,

@@ -9,6 +9,7 @@ const ImageUploader = (
     onImageChange = () => {},
     editable = false,
     multiple = false,
+    aspect = [1, 1],
     limit = 1,
     children,
   },
@@ -43,7 +44,7 @@ const ImageUploader = (
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: editable,
-      aspect: [1, 1],
+      aspect: aspect,
       quality: 1,
       allowsMultipleSelection: multiple,
       selectionLimit: limit,

@@ -83,7 +83,7 @@ const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
           </View>
 
           <Pressable onPress={onMenuPress} hitSlop={10}>
-            <Feather name='more-vertical' size={20} color={COLORS.dark} />
+            <Feather name="more-vertical" size={20} color={COLORS.dark} />
           </Pressable>
         </View>
       </Pressable>
@@ -110,7 +110,7 @@ const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
                     <Image
                       source={{ uri: utils.pathToUri(path) }}
                       style={{ width: '100%', height: '100%' }}
-                      resizeMode='cover'
+                      resizeMode="cover"
                     />
                   </Pressable>
                 );
@@ -133,7 +133,7 @@ const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
                     <Image
                       source={{ uri: utils.pathToUri(path) }}
                       style={{ width: '100%', height: '100%' }}
-                      resizeMode='cover'
+                      resizeMode="cover"
                     />
                     {item.filePaths.length >= 3 && (
                       <View
@@ -171,6 +171,9 @@ const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
             style={{ marginTop: 5, lineHeight: 20 }}
             numberOfLines={4}
             ellipsizeMode={'tail'}
+            fontColor={
+              item.removeYn || item.blockedYn ? COLORS.gray : COLORS.dark
+            }
           >
             {item.content}
           </CustomText>
@@ -196,7 +199,7 @@ const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
         </Pressable>
         <View style={[styles.postInfoItem, { marginLeft: 15 }]}>
           <FontAwesome
-            name='commenting-o'
+            name="commenting-o"
             size={20}
             color={COLORS.dark}
             style={{ marginRight: 5 }}

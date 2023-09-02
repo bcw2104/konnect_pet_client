@@ -38,6 +38,7 @@ const CommunityHomeView = ({ navigation }) => {
 
   const [viewerIndex, setViewerIndex] = useState(0);
   const [imageViewerOpen, setImageViewerOpen] = useState(false);
+  const [viewerImages, setViewerImages] = useState([]);
 
   useEffect(() => {
     if (isFocused) {
@@ -161,7 +162,7 @@ const CommunityHomeView = ({ navigation }) => {
         index={viewerIndex}
         open={imageViewerOpen}
         handleClose={handleViewerClose}
-        uris={[...item.filePaths.map((path) => utils.pathToUri(path))]}
+        uris={viewerImages}
       />
       <UserDetailModal
         modalRef={userDetailModalRef}

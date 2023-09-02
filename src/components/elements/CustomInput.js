@@ -13,9 +13,11 @@ const CustomInput = ({
   value = '',
   maxLength = 100,
   onValueChange = () => {},
+  onBlur = () => {},
   width = 'auto',
   height = 45,
   minHeight = 45,
+  maxHeight = 'auto',
   fontSize = 16,
   wrapperStyle = {},
   style = {},
@@ -28,6 +30,7 @@ const CustomInput = ({
   outline = false,
   textAlignVertical = 'center',
   multiline = false,
+  innerRef = null,
 }) => {
   const [error, setError] = useState(false);
 
@@ -78,14 +81,16 @@ const CustomInput = ({
           </View>
         )}
         <TextInput
+          ref={innerRef}
           autoFocus={autoFocus}
           secureTextEntry={secureTextEntry}
           maxLength={maxLength}
           textAlignVertical={textAlignVertical}
           value={value}
-          scrollEnabled={false}
+          scrollEnabled={true}
           returnKeyType="done"
           onChangeText={onValueChangeWithRegex}
+          onBlur={onBlur}
           keyboardType={keyboardType}
           placeholder={placeholder}
           editable={editable}
@@ -94,6 +99,7 @@ const CustomInput = ({
             width: width,
             height: height,
             minHeight: minHeight,
+            maxHeight: maxHeight,
             fontSize: fontSize,
             paddingHorizontal: 10,
             backgroundColor: COLORS.white,
