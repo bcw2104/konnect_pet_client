@@ -38,9 +38,9 @@ export const DEEP_LINK_PREFIX = {
   DEFAULT: 'konnect://',
 };
 
-export const IMAGE_EXT_TYPE = ['png', 'jpg', 'jpeg', 'webp'];
+export const IMAGE_EXT_TYPE = ['png', 'jpg', 'jpeg', 'webp','avif'];
 
-export const REPORT_TYPE = {
+export const COMMUNITY_CONTENT_TYPE = {
   POST: 'POST',
   COMMENT: 'COMMENT'
 };

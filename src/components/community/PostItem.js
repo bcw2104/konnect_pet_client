@@ -2,20 +2,23 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { COLORS } from '../../commons/colors';
-import { FONT_WEIGHT, REPORT_TYPE } from '../../commons/constants';
+import { FONT_WEIGHT, COMMUNITY_CONTENT_TYPE } from '../../commons/constants';
 import { Navigator } from '../../navigations/Navigator';
 import { serviceApis } from '../../utils/ServiceApis';
 import { utils } from '../../utils/Utils';
 import CustomText from '../elements/CustomText';
 import ProfileImage from '../modules/ProfileImage';
-import ReportModal from './ReportModal';
+import CommunityOptionModal from './CommunityOptionModal';
 
 const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
   const [lockLike, setLockLike] = useState(false);
   const [postLike, setPostLike] = useState(false);
   const [postLikeCount, setPostLikeCount] = useState(0);
 
-  const reportModal = useRef(null);
+  const [isRemoved, setIsRemoved] = useState(item.removedYn);
+  const [isBlocked, setIsBlocked] = useState(item.blockedYn);
+
+  const communityOptionModalRef = useRef(null);
 
   useEffect(() => {
     setPostLike(item.likeYn);
@@ -23,7 +26,7 @@ const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
   }, [item]);
 
   const onMenuPress = useCallback(() => {
-    reportModal.current.openModal(true);
+    communityOptionModalRef.current.openModal(true);
   }, []);
 
   const handlePostLike = async () => {
@@ -81,110 +84,118 @@ const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
               {utils.calculateDateAgo(item.createdDate)}
             </CustomText>
           </View>
-
-          <Pressable onPress={onMenuPress} hitSlop={10}>
-            <Feather name="more-vertical" size={20} color={COLORS.dark} />
-          </Pressable>
+          {!isRemoved && !isBlocked && (
+            <Pressable onPress={onMenuPress} hitSlop={10}>
+              <Feather name="more-vertical" size={20} color={COLORS.dark} />
+            </Pressable>
+          )}
         </View>
       </Pressable>
       <View style={styles.postContent}>
-        {item.filePaths.length > 0 && (
-          <View style={styles.contentImgWrap}>
-            {item.filePaths.map((path, idx) => {
-              if (idx == 0) {
-                return (
-                  <Pressable
-                    style={styles.contentImg}
-                    key={idx}
-                    onPress={() => {
-                      openImageViewer(
-                        [
-                          ...item.filePaths?.map((path) =>
-                            utils.pathToUri(path)
-                          ),
-                        ],
-                        0
-                      );
-                    }}
-                  >
-                    <Image
-                      source={{ uri: utils.pathToUri(path) }}
-                      style={{ width: '100%', height: '100%' }}
-                      resizeMode="cover"
-                    />
-                  </Pressable>
-                );
-              } else if (idx == 1) {
-                return (
-                  <Pressable
-                    style={[styles.contentImg, { marginLeft: 7 }]}
-                    key={idx}
-                    onPress={() => {
-                      openImageViewer(
-                        [
-                          ...item.filePaths?.map((path) =>
-                            utils.pathToUri(path)
-                          ),
-                        ],
-                        1
-                      );
-                    }}
-                  >
-                    <Image
-                      source={{ uri: utils.pathToUri(path) }}
-                      style={{ width: '100%', height: '100%' }}
-                      resizeMode="cover"
-                    />
-                    {item.filePaths.length >= 3 && (
-                      <View
-                        style={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          backgroundColor: COLORS.semiTransparentDark,
-                          width: '100%',
-                          height: '100%',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        <CustomText
-                          fontSize={24}
-                          fontWeight={FONT_WEIGHT.BOLD}
-                          fontColor={COLORS.white}
+        {!isRemoved &&
+          !isBlocked &&
+          !!item.filePaths &&
+          item?.filePaths.length > 0 && (
+            <View style={styles.contentImgWrap}>
+              {item.filePaths.map((path, idx) => {
+                if (idx == 0) {
+                  return (
+                    <Pressable
+                      style={styles.contentImg}
+                      key={idx}
+                      onPress={() => {
+                        openImageViewer(
+                          [
+                            ...item.filePaths?.map((path) =>
+                              utils.pathToUri(path)
+                            ),
+                          ],
+                          0
+                        );
+                      }}
+                    >
+                      <Image
+                        source={{ uri: utils.pathToUri(path) }}
+                        style={{ width: '100%', height: '100%' }}
+                        resizeMode="cover"
+                      />
+                    </Pressable>
+                  );
+                } else if (idx == 1) {
+                  return (
+                    <Pressable
+                      style={[styles.contentImg, { marginLeft: 7 }]}
+                      key={idx}
+                      onPress={() => {
+                        openImageViewer(
+                          [
+                            ...item.filePaths?.map((path) =>
+                              utils.pathToUri(path)
+                            ),
+                          ],
+                          1
+                        );
+                      }}
+                    >
+                      <Image
+                        source={{ uri: utils.pathToUri(path) }}
+                        style={{ width: '100%', height: '100%' }}
+                        resizeMode="cover"
+                      />
+                      {item.filePaths.length >= 3 && (
+                        <View
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            backgroundColor: COLORS.semiTransparentDark,
+                            width: '100%',
+                            height: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
                         >
-                          +{item.filePaths.length - 2}
-                        </CustomText>
-                      </View>
-                    )}
-                  </Pressable>
-                );
-              } else {
-                return <View key={idx}></View>;
-              }
-            })}
-          </View>
-        )}
+                          <CustomText
+                            fontSize={24}
+                            fontWeight={FONT_WEIGHT.BOLD}
+                            fontColor={COLORS.white}
+                          >
+                            +{item.filePaths.length - 2}
+                          </CustomText>
+                        </View>
+                      )}
+                    </Pressable>
+                  );
+                } else {
+                  return <View key={idx}></View>;
+                }
+              })}
+            </View>
+          )}
         <View style={styles.content}>
           <CustomText
             fontSize={15}
             style={{ marginTop: 5, lineHeight: 20 }}
             numberOfLines={4}
             ellipsizeMode={'tail'}
-            fontColor={
-              item.removeYn || item.blockedYn ? COLORS.gray : COLORS.dark
-            }
+            fontColor={!isRemoved && !isBlocked ? COLORS.dark : COLORS.gray}
           >
-            {item.content}
+            {isRemoved
+              ? 'This post has been deleted.'
+              : isBlocked
+              ? 'This post has been deleted by administrator.'
+              : item.content}
           </CustomText>
-          <CustomText
-            fontSize={15}
-            fontWeight={FONT_WEIGHT.BOLD}
-            fontColor={COLORS.gray}
-            style={{ marginTop: 5 }}
-          >
-            More
-          </CustomText>
+          {!isRemoved && !isBlocked && (
+            <CustomText
+              fontSize={15}
+              fontWeight={FONT_WEIGHT.BOLD}
+              fontColor={COLORS.gray}
+              style={{ marginTop: 5 }}
+            >
+              More
+            </CustomText>
+          )}
         </View>
       </View>
       <View style={styles.postInfo}>
@@ -208,10 +219,14 @@ const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
         </View>
       </View>
 
-      <ReportModal
-        modalRef={reportModal}
-        type={REPORT_TYPE.POST}
-        targetId={item.postId}
+      <CommunityOptionModal
+        modalRef={communityOptionModalRef}
+        type={COMMUNITY_CONTENT_TYPE.POST}
+        postId={item.postId}
+        userId={item.userId}
+        onRemove={() => {
+          setIsRemoved(true);
+        }}
       />
     </Pressable>
   );

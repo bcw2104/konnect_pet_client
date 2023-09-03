@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import AutoHeightImage from 'react-native-auto-height-image';
 import { COLORS } from '../../commons/colors';
-import { FONT_WEIGHT, REPORT_TYPE } from '../../commons/constants';
+import { FONT_WEIGHT, COMMUNITY_CONTENT_TYPE } from '../../commons/constants';
 import CommentItem from '../../components/community/CommentItem';
 import UserDetailModal from '../../components/community/UserDetailModal';
 import CustomButton from '../../components/elements/CustomButton';
@@ -25,7 +25,7 @@ import ProfileImage from '../../components/modules/ProfileImage';
 import { useStores } from '../../contexts/StoreContext';
 import { serviceApis } from '../../utils/ServiceApis';
 import { utils } from '../../utils/Utils';
-import ReportModal from '../../components/community/ReportModal';
+import CommunityOptionModal from '../../components/community/CommunityOptionModal';
 import ImageUploader from '../../components/modules/ImageUploader';
 
 const PAGE_SIZE = 10;
@@ -47,7 +47,7 @@ const CommunityDetailView = (props) => {
   const [imageViewerOpen, setImageViewerOpen] = useState(false);
   const [viewerImages, setViewerImages] = useState([]);
   const userDetailModalRef = useRef(null);
-  const reportModal = useRef(null);
+  const communityOptionModalRef = useRef(null);
   const imageUploaderRef = useRef(null);
 
   const [reply, setReply] = useState(null);
@@ -60,6 +60,9 @@ const CommunityDetailView = (props) => {
 
   const [myComment, setMyComment] = useState('');
   const [myCommentImage, setMyCommentImage] = useState(null);
+
+  const [isRemoved, setIsRemoved] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,6 +84,8 @@ const CommunityDetailView = (props) => {
       setPost(response.result);
       setPostLike(response.result.likeYn);
       setPostLikeCount(response.result.likeCount);
+      setIsRemoved(response.result.removedYn);
+      setIsBlocked(response.result.blockedYn);
     } catch (err) {
       console.log(err);
     }
@@ -111,6 +116,7 @@ const CommunityDetailView = (props) => {
 
   const onRefresh = async () => {
     setRefreshing(true);
+    page.current = 1;
     await getData(true);
     setRefreshing(false);
   };
@@ -148,7 +154,7 @@ const CommunityDetailView = (props) => {
   }, []);
 
   const onMenuPress = useCallback(() => {
-    reportModal.current.openModal(true);
+    communityOptionModalRef.current.openModal(true);
   }, []);
 
   const onReplyPress = useCallback((reply) => {
@@ -251,9 +257,11 @@ const CommunityDetailView = (props) => {
                 {utils.calculateDateAgo(post?.createdDate)}
               </CustomText>
             </View>
-            <Pressable onPress={onMenuPress} hitSlop={10}>
-              <Feather name="more-vertical" size={20} color={COLORS.dark} />
-            </Pressable>
+            {!isRemoved && !isBlocked && (
+              <Pressable onPress={onMenuPress} hitSlop={10}>
+                <Feather name="more-vertical" size={20} color={COLORS.dark} />
+              </Pressable>
+            )}
           </View>
         </Pressable>
         <View style={styles.postContent}>
@@ -261,33 +269,38 @@ const CommunityDetailView = (props) => {
             <CustomText
               fontSize={15}
               style={{ marginTop: 5, lineHeight: 20 }}
-              fontColor={
-                post.removeYn || post.blockedYn ? COLORS.gray : COLORS.dark
-              }
+              fontColor={!isRemoved && !isBlocked ? COLORS.dark : COLORS.gray}
             >
-              {post?.content}
+              {isRemoved
+                ? 'This post has been deleted.'
+                : isBlocked
+                ? 'This post has been deleted by administrator.'
+                : post?.content}
             </CustomText>
           </View>
-          {!!post?.filePaths && post?.filePaths.length > 0 && (
-            <View style={styles.contentImgWrap}>
-              {post?.filePaths?.map((path, idx) => (
-                <Pressable
-                  style={styles.contentImg}
-                  key={idx}
-                  onPress={() => {
-                    openImageViewer([
-                      ...post?.filePaths.map((path) => utils.pathToUri(path)),
-                    ]);
-                  }}
-                >
-                  <AutoHeightImage
-                    source={{ uri: utils.pathToUri(path) }}
-                    width={window.width - 30}
-                  />
-                </Pressable>
-              ))}
-            </View>
-          )}
+          {!isRemoved &&
+            !isBlocked &&
+            !!post?.filePaths &&
+            post?.filePaths.length > 0 && (
+              <View style={styles.contentImgWrap}>
+                {post?.filePaths?.map((path, idx) => (
+                  <Pressable
+                    style={styles.contentImg}
+                    key={idx}
+                    onPress={() => {
+                      openImageViewer([
+                        ...post?.filePaths.map((path) => utils.pathToUri(path)),
+                      ]);
+                    }}
+                  >
+                    <AutoHeightImage
+                      source={{ uri: utils.pathToUri(path) }}
+                      width={window.width - 30}
+                    />
+                  </Pressable>
+                ))}
+              </View>
+            )}
         </View>
         <View style={styles.postInfo}>
           <Pressable style={styles.postInfoItem} onPress={handlePostLike}>
@@ -380,10 +393,14 @@ const CommunityDetailView = (props) => {
           friendBtn={true}
         />
 
-        <ReportModal
-          modalRef={reportModal}
-          type={REPORT_TYPE.POST}
-          targetId={post.postId}
+        <CommunityOptionModal
+          modalRef={communityOptionModalRef}
+          type={COMMUNITY_CONTENT_TYPE.POST}
+          postId={post.postId}
+          userId={post.userId}
+          onRemove={() => {
+            setIsRemoved(true);
+          }}
         />
       </ScrollView>
       <CustomKeyboardAvoidingView>

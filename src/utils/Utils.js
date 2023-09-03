@@ -76,10 +76,10 @@ export const utils = {
     try {
       const resize = await ImageResizer.createResizedImage(
         imageUri,
-        250,
-        250,
-        'PNG',
-        80,
+        350,
+        350,
+        'JPEG',
+        100,
         0
       );
       image = resize;
@@ -97,7 +97,7 @@ export const utils = {
       const formData = new FormData();
       formData.append('image', {
         name: image.name,
-        type: 'image/png',
+        type: 'image/*',
         uri: image.uri,
       });
       const response = await baseAxios.post(path, formData, {
@@ -120,10 +120,10 @@ export const utils = {
       try {
         const resize = await ImageResizer.createResizedImage(
           uri,
-          250,
-          250,
-          'PNG',
-          80,
+          350,
+          350,
+          'JPEG',
+          100,
           0
         );
         images.push(resize);
@@ -142,7 +142,7 @@ export const utils = {
         'images',
         images.map((image, idx) => ({
           name: image.name,
-          type: 'image/png',
+          type: 'image/*',
           uri: image.uri,
         }))
       );

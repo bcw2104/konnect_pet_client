@@ -1,13 +1,13 @@
 import { Feather, FontAwesome } from '@expo/vector-icons';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
 import AutoHeightImage from 'react-native-auto-height-image';
 import { COLORS } from '../../commons/colors';
-import { FONT_WEIGHT, REPORT_TYPE } from '../../commons/constants';
+import { FONT_WEIGHT, COMMUNITY_CONTENT_TYPE } from '../../commons/constants';
 import { utils } from '../../utils/Utils';
 import CustomText from '../elements/CustomText';
 import ProfileImage from '../modules/ProfileImage';
-import ReportModal from './ReportModal';
+import CommunityOptionModal from './CommunityOptionModal';
 
 const window = Dimensions.get('window');
 
@@ -18,10 +18,11 @@ const CommentItem = ({
   paddingLeft = 0,
   onReplyPress = () => {},
 }) => {
-  const reportModal = useRef(null);
-
+  const communityOptionModalRef = useRef(null);
+  const [isRemoved, setIsRemoved] = useState(item.removedYn);
+  const [isBlocked, setIsBlocked] = useState(item.blockedYn);
   const onMenuPress = useCallback(() => {
-    reportModal.current.openModal(true);
+    communityOptionModalRef.current.openModal(true);
   }, []);
 
   return (
@@ -51,23 +52,32 @@ const CommentItem = ({
               {utils.calculateDateAgo(item?.createdDate)}
             </CustomText>
           </View>
-
-          <Pressable onPress={onMenuPress} hitSlop={10}>
-            <Feather name="more-vertical" size={20} color={COLORS.dark} />
-          </Pressable>
+          {!isRemoved && !isBlocked && (
+            <Pressable onPress={onMenuPress} hitSlop={10}>
+              <Feather name="more-vertical" size={20} color={COLORS.dark} />
+            </Pressable>
+          )}
         </View>
       </Pressable>
       <View style={styles.content}>
-        <CustomText
-          fontSize={14}
-          fontColor={
-            item.removeYn || item.blockedYn ? COLORS.gray : COLORS.dark
-          }
-        >
-          {item.content}
-        </CustomText>
-        {!!item.imgPath && (
-          <View style={styles.contentImgWrap}>
+        {(isRemoved || isBlocked || !!item.content) && (
+          <CustomText
+            fontSize={14}
+            fontColor={!isRemoved && !isBlocked ? COLORS.dark : COLORS.gray}
+          >
+            {isRemoved
+              ? 'This comment has been deleted.'
+              : isBlocked
+              ? 'This comment has been deleted by administrator.'
+              : item.content}
+          </CustomText>
+        )}
+        {!isRemoved && !isBlocked && !!item.imgPath && (
+          <View
+            style={{
+              marginTop: !!item.content ? 15 : 0,
+            }}
+          >
             <Pressable
               style={styles.contentImg}
               onPress={() => {
@@ -84,35 +94,44 @@ const CommentItem = ({
           </View>
         )}
       </View>
-      <Pressable
-        style={styles.reply}
-        onPress={() => {
-          onReplyPress({
-            nickname: item.nickname,
-            replayId: !!item.parentCommentId
-              ? item.parentCommentId
-              : item.commentId,
-          });
+      {!isRemoved && !isBlocked && (
+        <>
+          <Pressable
+            style={styles.reply}
+            onPress={() => {
+              onReplyPress({
+                nickname: item.nickname,
+                replayId: !!item.parentCommentId
+                  ? item.parentCommentId
+                  : item.commentId,
+              });
+            }}
+          >
+            <FontAwesome
+              name="reply"
+              size={18}
+              color={COLORS.gray}
+              style={{ marginRight: 5 }}
+            />
+            <CustomText
+              fontSize={12}
+              fontWeight={FONT_WEIGHT.BOLD}
+              fontColor={COLORS.gray}
+            >
+              Reply
+            </CustomText>
+          </Pressable>
+        </>
+      )}
+      <CommunityOptionModal
+        modalRef={communityOptionModalRef}
+        type={COMMUNITY_CONTENT_TYPE.COMMENT}
+        postId={item.postId}
+        commentId={item.commentId}
+        userId={item.userId}
+        onRemove={() => {
+          setIsRemoved(true);
         }}
-      >
-        <FontAwesome
-          name="reply"
-          size={18}
-          color={COLORS.gray}
-          style={{ marginRight: 5 }}
-        />
-        <CustomText
-          fontSize={12}
-          fontWeight={FONT_WEIGHT.BOLD}
-          fontColor={COLORS.gray}
-        >
-          Reply
-        </CustomText>
-      </Pressable>
-      <ReportModal
-        modalRef={reportModal}
-        type={REPORT_TYPE.COMMENT}
-        targetId={item.commentId}
       />
     </View>
   );
@@ -143,9 +162,6 @@ const styles = StyleSheet.create({
   content: {
     paddingVertical: 15,
     paddingLeft: 50,
-  },
-  contentImgWrap: {
-    marginTop: 15,
   },
   contentImg: {},
   reply: {
