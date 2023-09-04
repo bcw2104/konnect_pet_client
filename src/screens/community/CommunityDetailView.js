@@ -557,7 +557,7 @@ const styles = StyleSheet.create({
   },
   commentBtn: {},
   notExistWrap: {
-    marginTop: 20,
+    marginVertical: 30,
     justifyContent: 'center',
     alignItems: 'center',
   },

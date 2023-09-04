@@ -1,11 +1,8 @@
 import * as Notifications from 'expo-notifications';
-import * as FileSystem from 'expo-file-system';
+import moment from 'moment';
+import ImageResizer from 'react-native-image-resizer';
 import { DEEP_LINK_PREFIX } from '../commons/constants';
 import { asyncStorage } from '../storage/Storage';
-import ImageResizer from 'react-native-image-resizer';
-import { Platform } from 'react-native';
-import moment from 'moment';
-import axios from 'axios';
 import { baseAxios } from './Axios';
 
 export const utils = {
@@ -116,7 +113,7 @@ export const utils = {
    */
   uploadMultipleImages: async (imageUris = [], path) => {
     const images = [];
-    imageUris.forEach(async (uri) => {
+    for (let uri of imageUris) {
       try {
         const resize = await ImageResizer.createResizedImage(
           uri,
@@ -128,7 +125,8 @@ export const utils = {
         );
         images.push(resize);
       } catch (e) {}
-    });
+    }
+
     try {
       const accessToken = await asyncStorage.getItem('access_token');
 
@@ -138,13 +136,13 @@ export const utils = {
       };
 
       const formData = new FormData();
-      formData.append(
-        'images',
-        images.map((image, idx) => ({
+
+      images.map((image, idx) =>
+        formData.append('images', {
           name: image.name,
           type: 'image/*',
           uri: image.uri,
-        }))
+        })
       );
       const response = await baseAxios.post(path, formData, {
         headers: headers,

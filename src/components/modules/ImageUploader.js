@@ -24,7 +24,7 @@ const ImageUploader = (
         pickImage: pickImage,
       };
     },
-    []
+    [editable, multiple, aspect, limit, onImageChange]
   );
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
