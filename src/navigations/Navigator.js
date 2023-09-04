@@ -6,20 +6,20 @@ export const Navigator = {
     navigationRef.current?.goBack();
   },
   navigate: (params, lvl1, lvl2, lvl3) => {
+    params = params || {};
     navigationRef.current?.navigate(
       lvl1,
       !!lvl2
         ? {
             screen: lvl2,
-            params: !!lvl3
-              ? { screen: lvl3, params: params }
-              : params,
+            params: !!lvl3 ? { screen: lvl3, params: params } : params,
           }
         : params
     );
   },
 
   reset: (params, lvl1, lvl2, lvl3) => {
+    params = params || {};
     navigationRef.current?.reset({
       index: 0,
       routes: [

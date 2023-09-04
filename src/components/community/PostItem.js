@@ -15,12 +15,14 @@ const PostItem = ({ item, onUserProfilePress, openImageViewer }) => {
   const [postLike, setPostLike] = useState(false);
   const [postLikeCount, setPostLikeCount] = useState(0);
 
-  const [isRemoved, setIsRemoved] = useState(item.removedYn);
-  const [isBlocked, setIsBlocked] = useState(item.blockedYn);
+  const [isRemoved, setIsRemoved] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const communityOptionModalRef = useRef(null);
 
   useEffect(() => {
+    setIsRemoved(item.removedYn);
+    setIsBlocked(item.blockedYn);
     setPostLike(item.likeYn);
     setPostLikeCount(item.likeCount);
   }, [item]);

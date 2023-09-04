@@ -6,6 +6,7 @@ import { COLORS } from '../../commons/colors';
 import { FONT_WEIGHT } from '../../commons/constants';
 import CustomText from '../../components/elements/CustomText';
 import CommunityDetailView from '../../screens/community/CommunityDetailView';
+import CommunityPostFormView from '../../screens/community/CommunityPostFormView';
 
 const CommunityStack = createNativeStackNavigator();
 
@@ -37,6 +38,11 @@ const CommunityStackNavigator = ({ navigation, route }) => {
           options={{ title: 'Post' }}
           name="post_detail"
           component={CommunityDetailView}
+        ></CommunityStack.Screen>
+        <CommunityStack.Screen
+          options={{ title: 'Create a post' }}
+          name="post_form"
+          component={CommunityPostFormView}
         ></CommunityStack.Screen>
       </CommunityStack.Group>
     </CommunityStack.Navigator>

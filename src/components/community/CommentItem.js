@@ -98,6 +98,7 @@ const CommentItem = ({
         <>
           <Pressable
             style={styles.reply}
+            hitSlop={5}
             onPress={() => {
               onReplyPress({
                 nickname: item.nickname,
@@ -109,7 +110,7 @@ const CommentItem = ({
           >
             <FontAwesome
               name="reply"
-              size={18}
+              size={16}
               color={COLORS.gray}
               style={{ marginRight: 5 }}
             />

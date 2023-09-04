@@ -15,7 +15,7 @@ const window = Dimensions.get('window');
 
 const QnaFormView = () => {
   const { modalStore, systemStore } = useStores();
-  const [category, setCategory] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
     category: null,
@@ -26,7 +26,7 @@ const QnaFormView = () => {
     const fetchData = async () => {
       try {
         const response = await serviceApis.getQnaNew();
-        setCategory(response.result.categories);
+        setCategories(response.result.categories);
       } catch (err) {}
     };
 
@@ -93,12 +93,12 @@ const QnaFormView = () => {
             <CustomPicker
               title={'Category'}
               fontSize={15}
-              placeholder="Select an category..."
+              placeholder="Select an category."
               value={formData.category}
               onValueChange={(value) => {
                 setFormData({ ...formData, category: value });
               }}
-              items={category}
+              items={categories}
               wrapperStyle={{
                 marginBottom: 20,
               }}
@@ -109,6 +109,7 @@ const QnaFormView = () => {
               onValueChange={(value) => {
                 setFormData({ ...formData, title: value });
               }}
+              placeholder="Please enter title up to 200 characters."
               maxLength={200}
               fontSize={15}
               wrapperStyle={{ marginBottom: 20 }}
@@ -120,6 +121,7 @@ const QnaFormView = () => {
               onValueChange={(value) => {
                 setFormData({ ...formData, question: value });
               }}
+              placeholder="Please enter questions up to 2000 characters."
               wrapperStyle={{ flex: 1 }}
               maxLength={800}
               multiline={true}
@@ -129,7 +131,7 @@ const QnaFormView = () => {
               style={{
                 paddingVertical: 15,
               }}
-              minHeight={window.height / 2}
+              minHeight={window.height-350}
               height={'auto'}
             />
           </View>

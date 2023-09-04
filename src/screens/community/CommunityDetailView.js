@@ -448,7 +448,7 @@ const CommunityDetailView = (props) => {
                 setReply(null);
               }}
             >
-              <AntDesign name="closecircleo" size={24} color={COLORS.dark} />
+              <AntDesign name="closecircleo" size={24} color={COLORS.gray} />
             </Pressable>
           </View>
         )}

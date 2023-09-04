@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -109,6 +109,10 @@ const CommunityHomeView = ({ navigation }) => {
     setRefreshing(false);
   };
 
+  const goToPostForm = (params) => {
+    Navigator.navigate(params, 'community_nav', 'post_form');
+  };
+
   return (
     <Container
       header={true}
@@ -158,6 +162,14 @@ const CommunityHomeView = ({ navigation }) => {
             ))}
         </View>
       </ScrollView>
+      <Pressable
+        style={styles.postBtn}
+        onPress={() => {
+          goToPostForm();
+        }}
+      >
+        <AntDesign name="edit" size={26} color={COLORS.white} />
+      </Pressable>
       <ImageViewer
         index={viewerIndex}
         open={imageViewerOpen}
@@ -189,7 +201,7 @@ const HeaderRight = ({ newNotiCount }) => {
           },
         ]}
       >
-        <Ionicons name='notifications-outline' size={24} color={COLORS.dark} />
+        <Ionicons name="notifications-outline" size={24} color={COLORS.dark} />
         {newNotiCount > 0 && (
           <View style={styles.notiLabel}>
             <CustomText
@@ -214,7 +226,7 @@ const HeaderRight = ({ newNotiCount }) => {
           },
         ]}
       >
-        <Ionicons name='settings-outline' size={24} color={COLORS.dark} />
+        <Ionicons name="settings-outline" size={24} color={COLORS.dark} />
       </Pressable>
     </View>
   );
@@ -242,7 +254,17 @@ const styles = StyleSheet.create({
   categoryWrap: {
     paddingVertical: 10,
   },
-
+  postBtn: {
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: COLORS.main,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   notExistWrap: {
     marginTop: 20,
     justifyContent: 'center',

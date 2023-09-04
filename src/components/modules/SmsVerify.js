@@ -151,7 +151,7 @@ const SmsVerify = ({
       {!fixedTel && (
         <CustomPicker
           title="Nation"
-          placeholder="Select an nation..."
+          placeholder="Select an nation."
           displayValue={true}
           valuePrefix="+"
           value={nationCode}

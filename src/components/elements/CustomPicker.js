@@ -11,7 +11,7 @@ const CustomPicker = ({
   title = null,
   value = '',
   onValueChange = () => {},
-  placeholder = 'Select an option...',
+  placeholder = 'Select an option.',
   items = [],
   fontSize = 16,
   width = 'auto',
@@ -22,12 +22,14 @@ const CustomPicker = ({
   errorMsg = '',
 }) => {
   const [error, setError] = useState(false);
-  const [label, setLabel] = useState(
-    items.filter((ele) => ele.value === value)[0]?.label || ''
-  );
+  const [label, setLabel] = useState('');
   useEffect(() => {
     setError(errorHandler);
   }, [errorHandler]);
+
+  useEffect(() => {
+    setLabel(items.filter((ele) => ele.value === value)[0]?.label || '');
+  }, [items]);
 
   return (
     <>
@@ -94,7 +96,7 @@ const CustomPicker = ({
               height: '100%',
               paddingHorizontal: 10,
               fontSize: fontSize,
-              color:COLORS.dark
+              color: COLORS.dark,
             }}
             editable={false}
             placeholder={placeholder}

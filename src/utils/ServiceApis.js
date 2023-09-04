@@ -19,14 +19,14 @@ export const serviceApis = {
   tokenRefresh: () => baseAxios.post(`/api/v1/auth/token/refresh`),
 
   //mypage
-  getMyData: () => baseAxios.get(`/api/v1/user/mypage`),
-  leaveUser: (smsVerifyKey) => baseAxios.post(`/api/v1/user/mypage/leave`, { smsVerifyKey }),
-  getNotifications: () => baseAxios.get(`/api/v1/user/noti`),
-  getPointHistories : (pointType,type,size,page,) => baseAxios.get(`/api/v1/user/point/history`, { params:{ point:pointType,type: type, size:size, page:page  } }),
-  getNotifications : (size,page) => baseAxios.get(`/api/v1/user/noti`,{ params:{ size:size, page:page }}),
-  changePassword:(password,newPassword) => baseAxios.patch(`/api/v1/user/password`,{ prev:password, new:newPassword}),
-  changeSettings:(settings) => baseAxios.put(`/api/v1/user/mypage/settings`,settings),
-  changeMarketingAgreement:(marketingYn) => baseAxios.patch(`/api/v1/user/mypage/marketing`,{ marketingYn:marketingYn}),
+  getMyData: () => baseAxios.get(`/api/v1/users/mypage`),
+  leaveUser: (smsVerifyKey) => baseAxios.post(`/api/v1/users/mypage/leave`, { smsVerifyKey }),
+  getNotifications: () => baseAxios.get(`/api/v1/users/noti`),
+  getPointHistories : (pointType,type,size,page,) => baseAxios.get(`/api/v1/users/point/history`, { params:{ point:pointType,type: type, size:size, page:page  } }),
+  getNotifications : (size,page) => baseAxios.get(`/api/v1/users/noti`,{ params:{ size:size, page:page }}),
+  changePassword:(password,newPassword) => baseAxios.patch(`/api/v1/users/password`,{ prev:password, new:newPassword}),
+  changeSettings:(settings) => baseAxios.put(`/api/v1/users/mypage/settings`,settings),
+  changeMarketingAgreement:(marketingYn) => baseAxios.patch(`/api/v1/users/mypage/marketing`,{ marketingYn:marketingYn}),
 
   //service
   getFaq: () => baseAxios.get(`/api/v1/service/faq`),
@@ -36,9 +36,9 @@ export const serviceApis = {
   getQnaDetail: (qnaId) => baseAxios.get(`/api/v1/service/qna/${qnaId}`),
 
   //terms
-  getTermsDetail: (groupId) => baseAxios.get(`/api/v1/terms/group/${groupId}/lastest`),
-  getSignUpTerms: () => baseAxios.get(`/api/v1/terms/group/signup`),
-  getAllTerms: () => baseAxios.get(`/api/v1/terms/group/all`),
+  getTermsDetail: (groupId) => baseAxios.get(`/api/v1/terms/groups/${groupId}/lastest`),
+  getSignUpTerms: () => baseAxios.get(`/api/v1/terms/groups/signup`),
+  getAllTerms: () => baseAxios.get(`/api/v1/terms/groups/all`),
 
   //verification
   requestJoinSmsVerification: (tel) => baseAxios.post(`/api/v1/auth/join/verify/sms`, { tel }),
@@ -67,34 +67,34 @@ export const serviceApis = {
       verify,
     }),
 
-  requestSmsVerification: () => baseAxios.post(`/api/v1/user/verify/sms`),
+  requestSmsVerification: () => baseAxios.post(`/api/v1/users/verify/sms`),
   submitSmsVerification: (reqId, timestamp, tel, verify) =>
-    baseAxios.post(`/api/v1/user/verify/sms/check`, {
+    baseAxios.post(`/api/v1/users/verify/sms/check`, {
       reqId,
       timestamp,
       tel,
       verify,
     }),
-  requestEmailVerification: () => baseAxios.post(`/api/v1/user/verify/email`),
+  requestEmailVerification: () => baseAxios.post(`/api/v1/users/verify/email`),
   submitEmailVerification: (reqId, timestamp, email, verify) =>
-    baseAxios.post(`/api/v1/user/verify/email/check`, {
+    baseAxios.post(`/api/v1/users/verify/email/check`, {
       reqId,
       timestamp,
       email,
       verify,
     }),
 
-  //user
-  logout: () => baseAxios.post(`/api/v1/user/logout`),
-  getUserInfo: () => baseAxios.get(`/api/v1/user/info`),
+  //users
+  logout: () => baseAxios.post(`/api/v1/users/logout`),
+  getUserInfo: () => baseAxios.get(`/api/v1/users/info`),
   updateDeviceInfo: (deviceModel, deviceOs, deviceOsVersion, deviceToken) =>
-    baseAxios.post(`/api/v1/user/device`, {
+    baseAxios.post(`/api/v1/users/device`, {
       deviceModel,
       deviceOs,
       deviceOsVersion,
       deviceToken,
     }),
-  saveProfile: (payload) => baseAxios.post(`/api/v1/user/profile`, payload),
+  saveProfile: (payload) => baseAxios.post(`/api/v1/users/profile`, payload),
 
   //walking
   startWalking: () => baseAxios.post(`/api/v1/walking/start`),
@@ -113,23 +113,24 @@ export const serviceApis = {
   }}),
 
   //pet
-  savePet: (payload) => baseAxios.post(`/api/v1/user/pet`, payload),
-  editPet: (id, payload) => baseAxios.put(`/api/v1/user/pet/${id}`, payload),
-  removePet: (id) => baseAxios.delete(`/api/v1/user/pet/${id}`),
+  savePet: (payload) => baseAxios.post(`/api/v1/users/pets`, payload),
+  editPet: (id, payload) => baseAxios.put(`/api/v1/users/pets/${id}`, payload),
+  removePet: (id) => baseAxios.delete(`/api/v1/users/pets/${id}`),
 
   //community
-  getUserDetail: (userId) => baseAxios.get(`/api/v1/community/user/${userId}`),
-  requestFriend:(toUserId) => baseAxios.post(`/api/v1/community/friend/${toUserId}`),
-  replyFriend:(toUserId,code) => baseAxios.patch(`/api/v1/community/friend/${toUserId}`,{code:code}),
-  getFriends : () => baseAxios.get(`/api/v1/community/friend`),
-  getPendingFriends : () => baseAxios.get(`/api/v1/community/friend/pending`),
+  getUserDetail: (userId) => baseAxios.get(`/api/v1/community/users/${userId}`),
+  requestFriend:(toUserId) => baseAxios.post(`/api/v1/community/friends/${toUserId}`),
+  replyFriend:(toUserId,code) => baseAxios.patch(`/api/v1/community/friends/${toUserId}`,{code:code}),
+  getFriends : () => baseAxios.get(`/api/v1/community/friends`),
+  getPendingFriends : () => baseAxios.get(`/api/v1/community/friends/pending`),
   getCommunityData : () => baseAxios.get(`/api/v1/community`),
-  getPosts : (categoryId,size,page) => baseAxios.get(`/api/v1/community/post`,{params:{category:categoryId, size:size, page:page }}),
-  getPost : (postId) => baseAxios.get(`/api/v1/community/post/${postId}`),
-  getComments : (postId,size,page) => baseAxios.get(`/api/v1/community/post/${postId}/comment`,{params:{size:size, page:page }}),
-  changePostLike:(postId,likeYn) => baseAxios.post(`/api/v1/community/post/${postId}/like`,{likeYn:likeYn}),
+  getPosts : (categoryId,size,page) => baseAxios.get(`/api/v1/community/posts`,{params:{category:categoryId, size:size, page:page }}),
+  getPost : (postId) => baseAxios.get(`/api/v1/community/posts/${postId}`),
+  getPostFormData : (postId) => baseAxios.get(`/api/v1/community/posts/form`),
+  getComments : (postId,size,page) => baseAxios.get(`/api/v1/community/posts/${postId}/comments`,{params:{size:size, page:page }}),
+  changePostLike:(postId,likeYn) => baseAxios.post(`/api/v1/community/posts/${postId}/like`,{likeYn:likeYn}),
   report:(targetId,type) => baseAxios.post(`/api/v1/community/report`,{targetId,type}),
-  removePost:(postId) => baseAxios.delete(`/api/v1/community/post/${postId}`),
-  saveComment:(postId,payload) => baseAxios.post(`/api/v1/community/post/${postId}/comment`,payload),
-  removeComment:(postId,commentId) => baseAxios.delete(`/api/v1/community/post/${postId}/comment/${commentId}`),
+  removePost:(postId) => baseAxios.delete(`/api/v1/community/posts/${postId}`),
+  saveComment:(postId,payload) => baseAxios.post(`/api/v1/community/posts/${postId}/comments`,payload),
+  removeComment:(postId,commentId) => baseAxios.delete(`/api/v1/community/posts/${postId}/comments/${commentId}`),
 };
