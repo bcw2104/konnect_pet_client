@@ -168,6 +168,7 @@ const SmsVerify = ({
         )}
         <CustomInput
           title="Phone number"
+          placeholder='Please enter your phone number.'
           value={tel}
           maxLength={20}
           editable={!fixedTel}

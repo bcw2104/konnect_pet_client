@@ -64,7 +64,7 @@ const ProfileFormView = (props) => {
 
     if (!valid) {
       modalStore.openOneButtonModal(
-        'Please fill in all the required items.',
+        'Please enter all required items.',
         'Confirm',
         () => {}
       );
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   },
   required: {
     marginLeft: 5,
-    top: 2,
+    top: 1,
   },
   title: {
     width: 120,

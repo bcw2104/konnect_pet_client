@@ -259,7 +259,7 @@ const CommunityDetailView = (props) => {
             </View>
             {!isRemoved && !isBlocked && (
               <Pressable onPress={onMenuPress} hitSlop={10}>
-                <Feather name="more-vertical" size={20} color={COLORS.dark} />
+                <Feather name='more-vertical' size={20} color={COLORS.dark} />
               </Pressable>
             )}
           </View>
@@ -288,9 +288,14 @@ const CommunityDetailView = (props) => {
                     style={styles.contentImg}
                     key={idx}
                     onPress={() => {
-                      openImageViewer([
-                        ...post?.filePaths.map((path) => utils.pathToUri(path)),
-                      ]);
+                      openImageViewer(
+                        [
+                          ...post?.filePaths.map((path) =>
+                            utils.pathToUri(path)
+                          ),
+                        ],
+                        idx
+                      );
                     }}
                   >
                     <AutoHeightImage
@@ -314,7 +319,7 @@ const CommunityDetailView = (props) => {
           </Pressable>
           <View style={[styles.postInfoItem, { marginLeft: 15 }]}>
             <FontAwesome
-              name="commenting-o"
+              name='commenting-o'
               size={20}
               color={COLORS.dark}
               style={{ marginRight: 5 }}
@@ -352,7 +357,7 @@ const CommunityDetailView = (props) => {
                             }}
                           >
                             <Feather
-                              name="corner-down-right"
+                              name='corner-down-right'
                               size={20}
                               color={COLORS.dark}
                               style={{ paddingRight: 10 }}
@@ -419,7 +424,7 @@ const CommunityDetailView = (props) => {
               }}
               style={{ position: 'absolute', top: 10, right: 10 }}
             >
-              <AntDesign name="closecircleo" size={24} color={COLORS.white} />
+              <AntDesign name='closecircleo' size={24} color={COLORS.white} />
             </Pressable>
             <AutoHeightImage
               source={{ uri: myCommentImage }}
@@ -448,7 +453,7 @@ const CommunityDetailView = (props) => {
                 setReply(null);
               }}
             >
-              <AntDesign name="closecircleo" size={24} color={COLORS.gray} />
+              <AntDesign name='closecircleo' size={24} color={COLORS.gray} />
             </Pressable>
           </View>
         )}
@@ -463,7 +468,7 @@ const CommunityDetailView = (props) => {
               }}
               style={{ marginRight: 5 }}
             >
-              <Feather name="image" size={30} color={COLORS.grayDeep} />
+              <Feather name='image' size={30} color={COLORS.grayDeep} />
             </Pressable>
           </ImageUploader>
           <CustomInput
@@ -473,7 +478,7 @@ const CommunityDetailView = (props) => {
             maxHeight={200}
             onValueChange={setMyComment}
             wrapperStyle={styles.commentInput}
-            placeholder="Comment"
+            placeholder='Comment'
             multiline={true}
             textAlignVertical={'center'}
             outline={true}
@@ -492,7 +497,7 @@ const CommunityDetailView = (props) => {
             onPress={saveComment}
             render={
               <Feather
-                name="send"
+                name='send'
                 size={20}
                 color={COLORS.white}
                 style={{ marginRight: 5 }}

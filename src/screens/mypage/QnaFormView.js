@@ -35,7 +35,13 @@ const QnaFormView = () => {
 
   const validation = (data) => {
     let valid = true;
-    if (!data.title || !data.question || !data.category) {
+    if (!data.title || data.title > 200) {
+      valid = false;
+    }
+    if (!data.question || data.question > 2000) {
+      valid = false;
+    }
+    if (!data.category) {
       valid = false;
     }
 
@@ -51,7 +57,7 @@ const QnaFormView = () => {
 
     if (!valid) {
       modalStore.openOneButtonModal(
-        'Please fill in all the required items.',
+        'Please enter all required items.',
         'Confirm',
         () => {}
       );
@@ -92,8 +98,9 @@ const QnaFormView = () => {
           <View style={styles.section1}>
             <CustomPicker
               title={'Category'}
+              required={true}
               fontSize={15}
-              placeholder="Select an category."
+              placeholder='Select an category.'
               value={formData.category}
               onValueChange={(value) => {
                 setFormData({ ...formData, category: value });
@@ -105,15 +112,16 @@ const QnaFormView = () => {
             />
             <CustomInput
               title={'Title'}
+              required={true}
               value={formData.title}
               onValueChange={(value) => {
                 setFormData({ ...formData, title: value });
               }}
-              placeholder="Please enter title up to 200 characters."
+              placeholder='Please enter the title less than 200 characters.'
               maxLength={200}
               fontSize={15}
               wrapperStyle={{ marginBottom: 20 }}
-              keyboardType="default"
+              keyboardType='default'
             />
             <CustomInput
               title={'Question'}
@@ -121,17 +129,17 @@ const QnaFormView = () => {
               onValueChange={(value) => {
                 setFormData({ ...formData, question: value });
               }}
-              placeholder="Please enter questions up to 2000 characters."
+              placeholder='Please enter the content less than 2000 characters.'
               wrapperStyle={{ flex: 1 }}
-              maxLength={800}
+              maxLength={2000}
               multiline={true}
               textAlignVertical={'top'}
               fontSize={15}
-              keyboardType="default"
+              keyboardType='default'
               style={{
                 paddingVertical: 15,
               }}
-              minHeight={window.height-350}
+              minHeight={window.height - 350}
               height={'auto'}
             />
           </View>
@@ -142,7 +150,7 @@ const QnaFormView = () => {
         fontColor={COLORS.white}
         bgColor={COLORS.main}
         bgColorPress={COLORS.mainDeep}
-        text="Submit"
+        text='Submit'
         onPress={submit}
         style={styles.submitTheme}
         height={60}

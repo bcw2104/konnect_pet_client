@@ -6,9 +6,11 @@ import { useEffect } from 'react';
 import CustomText from './CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
 import ModalSelector from 'react-native-modal-selector';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 const CustomPicker = ({
   title = null,
+  required = false,
   value = '',
   onValueChange = () => {},
   placeholder = 'Select an option.',
@@ -50,16 +52,29 @@ const CustomPicker = ({
           <View
             style={{
               position: 'absolute',
-              top: -8,
+              top: -7,
               left: 5,
               backgroundColor: COLORS.white,
               paddingHorizontal: 2,
               zIndex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
             <CustomText fontSize={13} fontWeight={FONT_WEIGHT.BOLD}>
               {title}
             </CustomText>
+            {required && (
+              <FontAwesome5
+                name='star-of-life'
+                size={8}
+                color={COLORS.main}
+                style={{
+                  marginLeft: 5,
+                  top: 1,
+                }}
+              />
+            )}
           </View>
         )}
         <ModalSelector

@@ -1,13 +1,13 @@
-import { Text, TextInput, View } from 'react-native';
-import React from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { TextInput, View } from 'react-native';
 import { COLORS } from '../../commons/colors';
-import { useEffect } from 'react';
-import CustomText from './CustomText';
 import { FONT_WEIGHT } from '../../commons/constants';
+import CustomText from './CustomText';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 const CustomInput = ({
   title = null,
+  required = false,
   autoFocus = false,
   secureTextEntry = false,
   value = '',
@@ -73,11 +73,24 @@ const CustomInput = ({
               backgroundColor: COLORS.white,
               paddingHorizontal: 2,
               zIndex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
             <CustomText fontSize={13} fontWeight={FONT_WEIGHT.BOLD}>
               {title}
             </CustomText>
+            {required && (
+              <FontAwesome5
+                name='star-of-life'
+                size={8}
+                color={COLORS.main}
+                style={{
+                  marginLeft: 5,
+                  top: 1,
+                }}
+              />
+            )}
           </View>
         )}
         <TextInput
@@ -88,7 +101,7 @@ const CustomInput = ({
           textAlignVertical={textAlignVertical}
           value={value}
           scrollEnabled={true}
-          returnKeyType="done"
+          returnKeyType='done'
           onChangeText={onValueChangeWithRegex}
           onBlur={onBlur}
           keyboardType={keyboardType}

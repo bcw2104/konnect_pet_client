@@ -73,9 +73,9 @@ export const utils = {
     try {
       const resize = await ImageResizer.createResizedImage(
         imageUri,
-        350,
-        350,
-        'JPEG',
+        400,
+        400,
+        'PNG',
         100,
         0
       );
@@ -117,9 +117,9 @@ export const utils = {
       try {
         const resize = await ImageResizer.createResizedImage(
           uri,
-          350,
-          350,
-          'JPEG',
+          400,
+          400,
+          'PNG',
           100,
           0
         );

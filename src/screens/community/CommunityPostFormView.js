@@ -73,7 +73,7 @@ const CommunityPostFormView = () => {
 
     if (!valid) {
       modalStore.openOneButtonModal(
-        'Please fill in all the required items.',
+        'Please enter all required items.',
         'Confirm',
         () => {}
       );
@@ -123,6 +123,7 @@ const CommunityPostFormView = () => {
           <View style={styles.section1}>
             <CustomPicker
               title={'Category'}
+              required={true}
               fontSize={15}
               placeholder='Select an category.'
               value={formData.category}
@@ -136,11 +137,12 @@ const CommunityPostFormView = () => {
             />
             <CustomInput
               title={'Content'}
+              required={true}
               value={formData.content}
               onValueChange={(value) => {
                 setFormData({ ...formData, content: value });
               }}
-              placeholder='Please enter contents up to 2000 characters.'
+              placeholder="Please enter less than 2000 characters."
               wrapperStyle={{ flex: 1 }}
               maxLength={2000}
               multiline={true}
