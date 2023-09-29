@@ -134,4 +134,8 @@ export const serviceApis = {
   removePost:(postId) => baseAxios.delete(`/api/v1/community/posts/${postId}`),
   saveComment:(postId,payload) => baseAxios.post(`/api/v1/community/posts/${postId}/comments`,payload),
   removeComment:(postId,commentId) => baseAxios.delete(`/api/v1/community/posts/${postId}/comments/${commentId}`),
+  getMyPosts : (size,page) => baseAxios.get(`/api/v1/community/posts/my`,{params:{size:size, page:page }}),
+  getMyPostLikes : (size,page) => baseAxios.get(`/api/v1/community/posts/like/my`,{params:{size:size, page:page }}),
+  getMyComments : (size,page) => baseAxios.get(`/api/v1/community/comments/my`,{params:{size:size, page:page }}),
+  
 };

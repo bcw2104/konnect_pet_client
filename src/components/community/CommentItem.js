@@ -16,7 +16,7 @@ const CommentItem = ({
   onUserProfilePress = () => {},
   openImageViewer = () => {},
   paddingLeft = 0,
-  onReplyPress = () => {},
+  onReplyPress = null,
 }) => {
   const communityOptionModalRef = useRef(null);
   const [isRemoved, setIsRemoved] = useState(item.removedYn);
@@ -94,7 +94,7 @@ const CommentItem = ({
           </View>
         )}
       </View>
-      {!isRemoved && !isBlocked && (
+      {!isRemoved && !isBlocked && !!onReplyPress && (
         <>
           <Pressable
             style={styles.reply}

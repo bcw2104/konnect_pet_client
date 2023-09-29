@@ -45,6 +45,13 @@ const MyPageHomeView = ({ navigation }) => {
       'point_history'
     );
   };
+  const openCommunityHistory = (tab) => {
+    Navigator.navigate({ tab: tab }, 'mypage_nav', 'community_history');
+  };
+
+  const openFriends = (tab) => {
+    Navigator.navigate({ tab: tab }, 'mypage_nav', 'friends');
+  };
 
   return (
     <Container
@@ -144,7 +151,7 @@ const MyPageHomeView = ({ navigation }) => {
               >
                 <CustomText fontSize={15}>Walking History</CustomText>
                 <Ionicons
-                  name='chevron-forward'
+                  name="chevron-forward"
                   size={25}
                   color={COLORS.dark}
                 />
@@ -163,7 +170,12 @@ const MyPageHomeView = ({ navigation }) => {
                 Community
               </CustomText>
               <View style={styles.communityWrap}>
-                <Pressable style={styles.community}>
+                <Pressable
+                  style={styles.community}
+                  onPress={() => {
+                    openCommunityHistory(0);
+                  }}
+                >
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
                     {myData.postCount}
                   </CustomText>
@@ -172,7 +184,12 @@ const MyPageHomeView = ({ navigation }) => {
                   </CustomText>
                 </Pressable>
                 <View style={styles.divider}></View>
-                <Pressable style={styles.community}>
+                <Pressable
+                  style={styles.community}
+                  onPress={() => {
+                    openCommunityHistory(1);
+                  }}
+                >
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
                     {myData.commentCount}
                   </CustomText>
@@ -181,7 +198,12 @@ const MyPageHomeView = ({ navigation }) => {
                   </CustomText>
                 </Pressable>
                 <View style={styles.divider}></View>
-                <Pressable style={styles.community}>
+                <Pressable
+                  style={styles.community}
+                  onPress={() => {
+                    openCommunityHistory(2);
+                  }}
+                >
                   <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={24}>
                     {myData.postLikeCount}
                   </CustomText>
@@ -193,13 +215,13 @@ const MyPageHomeView = ({ navigation }) => {
               <View style={styles.friendWrap}>
                 <Pressable
                   onPress={() => {
-                    Navigator.navigate({ tab: 0 }, 'mypage_nav', 'friends');
+                    openFriends(0);
                   }}
                   style={styles.friend}
                 >
                   <CustomText fontSize={15}>My Friends</CustomText>
                   <Ionicons
-                    name='chevron-forward'
+                    name="chevron-forward"
                     size={25}
                     color={COLORS.dark}
                   />
@@ -207,13 +229,13 @@ const MyPageHomeView = ({ navigation }) => {
                 <Hr />
                 <Pressable
                   onPress={() => {
-                    Navigator.navigate({ tab: 1 }, 'mypage_nav', 'friends');
+                    openFriends(1);
                   }}
                   style={styles.friend}
                 >
                   <CustomText fontSize={15}>Requested Friends</CustomText>
                   <Ionicons
-                    name='chevron-forward'
+                    name="chevron-forward"
                     size={25}
                     color={COLORS.dark}
                   />
@@ -243,7 +265,7 @@ const HeaderRight = ({ newNotiCount }) => {
           },
         ]}
       >
-        <Ionicons name='notifications-outline' size={24} color={COLORS.dark} />
+        <Ionicons name="notifications-outline" size={24} color={COLORS.dark} />
         {newNotiCount > 0 && (
           <View style={styles.notiLabel}>
             <CustomText
@@ -269,7 +291,7 @@ const HeaderRight = ({ newNotiCount }) => {
           },
         ]}
       >
-        <Ionicons name='settings-outline' size={24} color={COLORS.dark} />
+        <Ionicons name="settings-outline" size={24} color={COLORS.dark} />
       </Pressable>
     </View>
   );

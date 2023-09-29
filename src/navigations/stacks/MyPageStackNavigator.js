@@ -21,6 +21,7 @@ import FaqView from '../../screens/mypage/FaqView';
 import QnaView from '../../screens/mypage/QnaView';
 import QnaFormView from '../../screens/mypage/QnaFormView';
 import QnaDetailView from '../../screens/mypage/QnaDetailView';
+import MyCommunityActivityView from '../../screens/mypage/MyCommunityActivityView';
 
 const MyPageStack = createNativeStackNavigator();
 
@@ -124,6 +125,11 @@ const MyPageStackNavigator = ({ navigation, route }) => {
           options={{ title: 'Point History' }}
           name="point_history"
           component={MyPointHistoryView}
+        ></MyPageStack.Screen>
+        <MyPageStack.Screen
+          options={{ title: 'My Activity' }}
+          name="community_history"
+          component={MyCommunityActivityView}
         ></MyPageStack.Screen>
         <MyPageStack.Screen
           options={{ title: 'Notification' }}

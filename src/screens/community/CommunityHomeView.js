@@ -42,6 +42,7 @@ const CommunityHomeView = ({ navigation }) => {
 
   useEffect(() => {
     if (isFocused) {
+      page.current = 1;
       const fetchData = async () => {
         try {
           const response = await serviceApis.getCommunityData();
