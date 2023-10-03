@@ -11,6 +11,7 @@ import FacebookLogin from '../components/auth/FacebookLogin';
 import CustomText from '../components/elements/CustomText';
 import { asyncStorage } from '../storage/Storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Hr from '../components/elements/Hr';
 
 const WelcomeView = () => {
   useEffect(() => {
@@ -19,61 +20,87 @@ const WelcomeView = () => {
   }, []);
 
   return (
-    <Container>
+    <Container paddingHorizontal={30}>
       <KeyboardAwareScrollView>
         <View style={styles.section1}>
           <CustomText fontWeight={FONT_WEIGHT.BOLD} fontSize={30}>
-            반가워요!
+            Let's Sign You In
           </CustomText>
-          <CustomText style={{ marginTop: 10 }} fontSize={18}>
-            산책을 시작해볼까요?
+          <CustomText
+            style={{ marginTop: 10 }}
+            fontSize={16}
+            fontColor={COLORS.grayDeep}
+          >
+            Welcome back, you've been missed!
           </CustomText>
         </View>
         <View style={styles.section2}>
           <View style={styles.loginWrap}>
             <DefaultLogin />
           </View>
-          <View style={styles.divider}>
-            <View style={styles.dividerLine} />
-            <CustomText style={styles.dividerText} fontSize={13}>
-              OR
-            </CustomText>
-            <View style={styles.dividerLine} />
+
+          <View style={styles.optionsWrap}>
+            <View style={styles.options}>
+              <CustomText
+                style={styles.optionText}
+                fontColor={COLORS.grayDeep}
+                fontSize={16}
+              >
+                Don't have an account?
+              </CustomText>
+              <Pressable
+                onPress={() => {
+                  Navigator.navigate(
+                    {
+                      platform: SOCIAL_TYPE.EMAIL,
+                    },
+                    'signup_step1'
+                  );
+                }}
+                hitSlop={10}
+              >
+                <CustomText
+                  style={{
+                    marginLeft: 10,
+                  }}
+                  fontWeight={FONT_WEIGHT.BOLD}
+                  fontSize={16}
+                >
+                  Sign Up
+                </CustomText>
+              </Pressable>
+            </View>
+            <View style={styles.options}>
+              <CustomText
+                style={styles.optionText}
+                fontColor={COLORS.grayDeep}
+                fontSize={16}
+              >
+                Forget your password?
+              </CustomText>
+              <Pressable
+                onPress={() => {
+                  Navigator.navigate({}, 'find_password_step1');
+                }}
+                hitSlop={10}
+              >
+                <CustomText
+                  style={{
+                    marginLeft: 10,
+                  }}
+                  fontWeight={FONT_WEIGHT.BOLD}
+                  fontSize={16}
+                >
+                  Recover
+                </CustomText>
+              </Pressable>
+            </View>
           </View>
+          <Hr />
           <View style={styles.socialWrap}>
             <GoogleLogin />
             <FacebookLogin />
             <GoogleLogin />
-          </View>
-          <View style={styles.optionsWrap}>
-            <CustomText
-              style={styles.optionText}
-              fontColor={COLORS.grayDeep}
-              fontSize={16}
-            >
-              Don't have an account?
-            </CustomText>
-            <Pressable
-              onPress={() => {
-                Navigator.navigate(
-                  {
-                    platform: SOCIAL_TYPE.EMAIL,
-                  },
-                  'signup_step1'
-                );
-              }}
-              hitSlop={10}
-            >
-              <CustomText
-                style={{
-                  marginLeft: 10,
-                  textDecorationLine: 'underline',
-                }}
-                fontSize={16}
-              >
-                Sign Up
-              </CustomText>
-            </Pressable>
           </View>
         </View>
       </KeyboardAwareScrollView>
@@ -85,39 +112,21 @@ export default observer(WelcomeView);
 
 const styles = StyleSheet.create({
   section1: {
-    paddingVertical: 60,
-    alignItems: 'center',
+    paddingTop: 60,
+    paddingBottom: 20,
     justifyContent: 'center',
   },
   section2: {},
-  loginWrap: {
-    alignItems: 'center',
-  },
   socialWrap: {
-    paddingHorizontal: 30,
-    flexDirection: 'row',
-    justifyContent: 'center',
     marginBottom: 30,
+    marginTop: 20,
   },
   optionsWrap: {
+    marginVertical: 20,
+  },
+  options: {
     flexDirection: 'row',
     justifyContent: 'center',
-  },
-
-  divider: {
-    flexDirection: 'row',
-    alignSelf: 'center',
-    marginVertical: 30,
-    width: 200,
-  },
-  dividerText: {
-    alignSelf: 'center',
-    paddingHorizontal: 5,
-  },
-  dividerLine: {
-    backgroundColor: COLORS.dark,
-    height: 1,
-    flex: 1,
-    alignSelf: 'center',
+    marginVertical: 5,
   },
 });

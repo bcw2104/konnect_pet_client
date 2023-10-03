@@ -31,8 +31,11 @@ const CustomInput = ({
   textAlignVertical = 'center',
   multiline = false,
   innerRef = null,
+  prepend = null,
+  append = null,
 }) => {
   const [error, setError] = useState(false);
+  const [focus, setFocus] = useState(false);
 
   useEffect(() => {
     setError(errorHandler);
@@ -55,20 +58,11 @@ const CustomInput = ({
 
   return (
     <>
-      <View
-        style={{
-          flexDirection: 'row',
-          height: height,
-          minHeight: minHeight,
-          width: width,
-          ...wrapperStyle,
-        }}
-      >
+      <View style={{ width: width, ...wrapperStyle }}>
         {title && (
           <View
             style={{
               position: 'absolute',
-              top: -7,
               left: 5,
               backgroundColor: COLORS.white,
               paddingHorizontal: 2,
@@ -77,14 +71,18 @@ const CustomInput = ({
               alignItems: 'center',
             }}
           >
-            <CustomText fontSize={13} fontWeight={FONT_WEIGHT.BOLD}>
+            <CustomText
+              fontSize={14}
+              fontWeight={FONT_WEIGHT.BOLD}
+              fontColor={COLORS.gray}
+            >
               {title}
             </CustomText>
             {required && (
               <FontAwesome5
-                name='star-of-life'
+                name="star-of-life"
                 size={8}
-                color={COLORS.main}
+                color={COLORS.danger}
                 style={{
                   marginLeft: 5,
                   top: 1,
@@ -93,38 +91,73 @@ const CustomInput = ({
             )}
           </View>
         )}
-        <TextInput
-          ref={innerRef}
-          autoFocus={autoFocus}
-          secureTextEntry={secureTextEntry}
-          maxLength={maxLength}
-          textAlignVertical={textAlignVertical}
-          value={value}
-          scrollEnabled={true}
-          returnKeyType='done'
-          onChangeText={onValueChangeWithRegex}
-          onBlur={onBlur}
-          keyboardType={keyboardType}
-          placeholder={placeholder}
-          editable={editable}
-          multiline={multiline}
+        <View
           style={{
-            width: width,
-            height: height,
-            minHeight: minHeight,
-            maxHeight: maxHeight,
-            fontSize: fontSize,
-            paddingHorizontal: 10,
+            marginTop: !!title ? 20 : 0,
+            flexDirection: 'row',
+            width: '100%',
             backgroundColor: COLORS.white,
-            borderWidth: outline ? 0 : 1,
-            borderColor: error ? COLORS.danger : COLORS.gray,
-            borderRadius: 5,
+            borderBottomWidth: outline ? 0 : 2,
+            borderColor: focus
+              ? COLORS.main
+              : error
+              ? COLORS.danger
+              : COLORS.grayLight,
             borderStyle: 'solid',
-            flex: 1,
-            color: editable ? COLORS.dark : COLORS.grayDeep,
-            ...style,
+            alignItems: 'center',
           }}
-        />
+        >
+          {!!prepend && (
+            <View
+              style={{
+                paddingHorizontal: 5,
+              }}
+            >
+              {prepend}
+            </View>
+          )}
+          <TextInput
+            ref={innerRef}
+            autoFocus={autoFocus}
+            onFocus={() => {
+              setFocus(true);
+            }}
+            secureTextEntry={secureTextEntry}
+            maxLength={maxLength}
+            textAlignVertical={textAlignVertical}
+            value={value}
+            scrollEnabled={true}
+            returnKeyType="done"
+            onChangeText={onValueChangeWithRegex}
+            onBlur={() => {
+              onBlur();
+              setFocus(false);
+            }}
+            keyboardType={keyboardType}
+            placeholder={placeholder}
+            editable={editable}
+            multiline={multiline}
+            style={{
+              minHeight: minHeight,
+              height: height,
+              maxHeight: maxHeight,
+              fontSize: fontSize,
+              paddingHorizontal: 10,
+              flex: 1,
+              color: editable ? COLORS.dark : COLORS.grayDeep,
+              ...style,
+            }}
+          />
+          {!!append && (
+            <View
+              style={{
+                paddingHorizontal: 5,
+              }}
+            >
+              {append}
+            </View>
+          )}
+        </View>
       </View>
       {error && (
         <CustomText

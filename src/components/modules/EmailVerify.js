@@ -124,25 +124,26 @@ const EmailVerify = ({
           keyboardType="email-address"
           errorHandler={emailError}
           errorMsg="Invalid email address."
-        />
-        <CustomButton
-          fontWeight={FONT_WEIGHT.BOLD}
-          fontColor={COLORS.white}
-          bgColor={COLORS.main}
-          bgColorPress={COLORS.mainDeep}
-          wrapperStyle={styles.emailVerifyButton}
-          width={110}
-          fontSize={15}
-          disabled={!openVerify}
-          onPress={requestVerification}
-          text={
-            !!verifyKey
-              ? '인증 완료'
-              : !verifing && !openVerify
-              ? '전송 중'
-              : verifing
-              ? '재발송'
-              : '인증번호 발송'
+          append={
+            <CustomButton
+              fontWeight={FONT_WEIGHT.BOLD}
+              fontColor={COLORS.white}
+              bgColor={COLORS.dark}
+              bgColorPress={COLORS.darkDeep}
+              width={110}
+              fontSize={15}
+              disabled={!openVerify}
+              onPress={requestVerification}
+              text={
+                !!verifyKey
+                  ? '인증 완료'
+                  : !verifing && !openVerify
+                  ? '전송 중'
+                  : verifing
+                  ? '재발송'
+                  : '인증번호 발송'
+              }
+            />
           }
         />
       </View>
@@ -157,23 +158,26 @@ const EmailVerify = ({
             wrapperStyle={styles.emailVerifyInput}
             errorHandler={verifiyError}
             errorMsg="Incorrect verify code."
-          />
-          <Timer
-            style={styles.verifyTimer}
-            remain={remain}
-            fontColor={COLORS.danger}
-            fontSize={16}
-          />
-          <CustomButton
-            fontWeight={FONT_WEIGHT.BOLD}
-            fontColor={COLORS.white}
-            bgColor={COLORS.main}
-            bgColorPress={COLORS.mainDeep}
-            wrapperStyle={styles.verifySubmitButton}
-            width={110}
-            fontSize={15}
-            onPress={submitVerifyCode}
-            text="인증하기"
+            append={
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Timer
+                  style={{ marginRight: 10 }}
+                  remain={remain}
+                  fontColor={COLORS.danger}
+                  fontSize={16}
+                />
+                <CustomButton
+                  fontWeight={FONT_WEIGHT.BOLD}
+                  fontColor={COLORS.white}
+                  bgColor={COLORS.dark}
+                  bgColorPress={COLORS.darkDeep}
+                  width={110}
+                  fontSize={15}
+                  onPress={submitVerifyCode}
+                  text="인증하기"
+                />
+              </View>
+            }
           />
         </View>
       )}
@@ -189,23 +193,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-  emailVerifyButton: {
-    position: 'absolute',
-    right: 0,
-  },
   emailVerifyWrap: {
     marginTop: 20,
     position: 'relative',
     alignItems: 'center',
-  },
-  verifyTimer: {
-    position: 'absolute',
-    top: 15,
-    right: 125,
-  },
-  verifySubmitButton: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
   },
 });

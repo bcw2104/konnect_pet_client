@@ -1,11 +1,13 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
 import { serviceApis } from '../../utils/ServiceApis';
-import { SOCIAL_TYPE } from '../../commons/constants';
+import { FONT_WEIGHT, SOCIAL_TYPE } from '../../commons/constants';
 import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
 import { Navigator } from '../../navigations/Navigator';
 import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
+import { COLORS } from '../../commons/colors';
+import CustomText from '../elements/CustomText';
 
 const FacebookLogin = () => {
   const { userStore, systemStore } = useStores();
@@ -59,7 +61,7 @@ const FacebookLogin = () => {
 
   return (
     <Pressable
-      title='Sign in with Google'
+      title="Sign in with Google"
       onPress={signIn}
       style={styles.button}
     >
@@ -67,23 +69,34 @@ const FacebookLogin = () => {
         style={styles.logo}
         source={require('../../../assets/images/logos/logo_facebook.png')}
       />
+      <CustomText
+        fontColor={COLORS.dark}
+        fontSize={18}
+        fontWeight={FONT_WEIGHT.BOLD}
+      >
+        Continue With FaceBook
+      </CustomText>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    width: 60,
-    height: 60,
+    width: '100%',
+    flexDirection: 'row',
     borderRadius: 30,
-    justifyContent: 'center',
+    backgroundColor: COLORS.light,
     alignItems: 'center',
-    marginHorizontal: 10,
+    marginBottom: 20,
+    height: 60,
+    paddingLeft: 100,
   },
   logo: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    left: 30,
   },
 });
 

@@ -6,14 +6,15 @@ import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { serviceApis } from '../../utils/ServiceApis';
-import { SOCIAL_TYPE } from '../../commons/constants';
+import { FONT_WEIGHT, SOCIAL_TYPE } from '../../commons/constants';
 import { asyncStorage } from '../../storage/Storage';
 import { useStores } from '../../contexts/StoreContext';
 import { Navigator } from '../../navigations/Navigator';
 import { Image } from 'react-native';
-import {COLORS} from './../../commons/colors';
+import { COLORS } from './../../commons/colors';
+import CustomText from '../elements/CustomText';
 
-const GoogleLogin = () => {
+const   GoogleLogin = () => {
   const { userStore, systemStore } = useStores();
 
   GoogleSignin.configure({});
@@ -74,7 +75,7 @@ const GoogleLogin = () => {
   return (
     <>
       <Pressable
-        title='Sign in with Google'
+        title="Sign in with Google"
         onPress={signIn}
         style={styles.button}
       >
@@ -82,6 +83,13 @@ const GoogleLogin = () => {
           style={styles.logo}
           source={require('../../../assets/images/logos/logo_google.png')}
         />
+        <CustomText
+          fontColor={COLORS.dark}
+          fontSize={18}
+          fontWeight={FONT_WEIGHT.BOLD}
+        >
+          Continue With Google
+        </CustomText>
       </Pressable>
     </>
   );
@@ -89,18 +97,21 @@ const GoogleLogin = () => {
 
 const styles = StyleSheet.create({
   button: {
-    width: 60,
-    height: 60,
+    width: '100%',
+    flexDirection: 'row',
     borderRadius: 30,
-    backgroundColor: COLORS.white,
-    justifyContent: 'center',
+    backgroundColor: COLORS.light,
     alignItems: 'center',
-    marginHorizontal: 10,
+    marginBottom: 15,
+    height: 60,
+    paddingLeft: 100,
   },
   logo: {
-    borderRadius: 30,
-    width: 60,
-    height: 60,
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    left: 30,
   },
 });
 

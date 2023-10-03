@@ -35,24 +35,11 @@ const CustomPicker = ({
 
   return (
     <>
-      <View
-        style={{
-          height: height,
-          width: width,
-          borderWidth: 1,
-          borderColor: error ? COLORS.danger : COLORS.gray,
-          borderRadius: 5,
-          borderStyle: 'solid',
-          alignItems: 'center',
-          backgroundColor: COLORS.white,
-          ...wrapperStyle,
-        }}
-      >
+      <View style={{ width: width, ...wrapperStyle }}>
         {title && (
           <View
             style={{
               position: 'absolute',
-              top: -7,
               left: 5,
               backgroundColor: COLORS.white,
               paddingHorizontal: 2,
@@ -61,14 +48,18 @@ const CustomPicker = ({
               alignItems: 'center',
             }}
           >
-            <CustomText fontSize={13} fontWeight={FONT_WEIGHT.BOLD}>
+            <CustomText
+              fontSize={14}
+              fontWeight={FONT_WEIGHT.BOLD}
+              fontColor={COLORS.gray}
+            >
               {title}
             </CustomText>
             {required && (
               <FontAwesome5
-                name='star-of-life'
+                name="star-of-life"
                 size={8}
-                color={COLORS.main}
+                color={COLORS.danger}
                 style={{
                   marginLeft: 5,
                   top: 1,
@@ -84,8 +75,15 @@ const CustomPicker = ({
             setLabel(option.label);
           }}
           style={{
+            marginTop: !!title ? 20 : 0,
+            height: height,
             width: '100%',
-            height: '100%',
+            backgroundColor: COLORS.white,
+            borderBottomWidth: 2,
+            borderColor:error
+              ? COLORS.danger
+              : COLORS.grayLight,
+            borderStyle: 'solid',
           }}
           overlayStyle={{
             backgroundColor: COLORS.semiTransparentDark,

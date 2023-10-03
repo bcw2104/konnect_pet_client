@@ -10,6 +10,7 @@ import { Pressable } from 'react-native';
 import { Navigator } from '../../navigations/Navigator';
 import { serviceApis } from '../../utils/ServiceApis';
 import { FONT_WEIGHT } from '../../commons/constants';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 
 const DefaultLogin = () => {
   const { userStore, systemStore } = useStores();
@@ -62,10 +63,11 @@ const DefaultLogin = () => {
         maxLength={50}
         onValueChange={setEmail}
         wrapperStyle={styles.input}
-        placeholder="Email"
         keyboardType="email-address"
         errorHandler={emailError}
         errorMsg="이메일을 입력해주세요."
+        title={'Email'}
+        prepend={<Feather name="user" size={24} color={COLORS.dark} />}
       />
       <CustomInput
         secureTextEntry={true}
@@ -73,9 +75,10 @@ const DefaultLogin = () => {
         maxLength={16}
         onValueChange={setPassword}
         wrapperStyle={styles.input}
-        placeholder="Password"
         errorHandler={passwordError}
         errorMsg="비밀번호를 입력해주세요."
+        title={'Password'}
+        prepend={<Feather name="lock" size={24} color={COLORS.dark} />}
       />
       {loginFailed && (
         <CustomText
@@ -90,31 +93,39 @@ const DefaultLogin = () => {
           Invalid email or password
         </CustomText>
       )}
-      <View
-        style={{
-          marginTop: 15,
-          marginBottom: 5,
-          alignSelf: 'flex-end',
-        }}
-      >
-        <Pressable
-          onPress={() => {
-            Navigator.navigate({}, 'find_password_step1');
-          }}
-          hitSlop={10}
-        >
-          <CustomText fontSize={14}>Forget password?</CustomText>
-        </Pressable>
-      </View>
       <CustomButton
-        fontWeight={FONT_WEIGHT.BOLD}
-        fontColor={COLORS.white}
         bgColor={COLORS.main}
         bgColorPress={COLORS.mainDeep}
-        text="Sign In"
+        render={
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          >
+            <CustomText
+              fontWeight={FONT_WEIGHT.BOLD}
+              fontColor={COLORS.white}
+              fontSize={18}
+            >
+              SIGN IN
+            </CustomText>
+            <MaterialIcons
+              name="login"
+              size={28}
+              color={COLORS.white}
+              style={{ position: 'absolute', right: 20 }}
+            />
+          </View>
+        }
         onPress={loginSubmit}
         height={50}
         wrapperStyle={styles.submit}
+        style={{
+          borderRadius: 30,
+        }}
       />
     </View>
   );
@@ -127,9 +138,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    marginTop: 10,
+    marginTop: 20,
   },
   submit: {
-    marginTop: 10,
+    marginTop: 20,
   },
 });
