@@ -184,6 +184,7 @@ const WalkingStartView = () => {
   };
 
   const goToNextStep = (params) => {
+    systemStore.setIsWalking(true);
     Navigator.reset(params, 'walking');
   };
 
@@ -338,7 +339,7 @@ const WalkingStartView = () => {
         <CustomButton
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
-          render={<Ionicons name='options' size={30} color={COLORS.dark} />}
+          render={<Ionicons name="options" size={30} color={COLORS.dark} />}
           fontColor={COLORS.white}
           onPress={handleOpenSetting}
           width={50}
@@ -375,7 +376,7 @@ const WalkingStartView = () => {
           bgColor={COLORS.white}
           bgColorPress={COLORS.lightDeep}
           render={
-            <MaterialIcons name='my-location' size={30} color={COLORS.dark} />
+            <MaterialIcons name="my-location" size={30} color={COLORS.dark} />
           }
           fontColor={COLORS.white}
           onPress={getMyLocation}
@@ -529,7 +530,7 @@ const WalkingHistoryView = () => {
             }
           }}
         >
-          <Ionicons name='chevron-back' size={28} color={COLORS.white} />
+          <Ionicons name="chevron-back" size={28} color={COLORS.white} />
         </Pressable>
         <CustomText
           fontWeight={FONT_WEIGHT.BOLD}
@@ -547,7 +548,7 @@ const WalkingHistoryView = () => {
             }
           }}
         >
-          <Ionicons name='chevron-forward' size={28} color={COLORS.white} />
+          <Ionicons name="chevron-forward" size={28} color={COLORS.white} />
         </Pressable>
       </View>
       <View style={styles.historyWrap}>

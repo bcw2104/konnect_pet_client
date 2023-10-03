@@ -18,7 +18,7 @@ import Hr from '../../components/elements/Hr';
 
 const MyPageHomeView = ({ navigation }) => {
   const [myData, setMyData] = useState(null);
-
+  const { systemStore } = useStores();
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -140,12 +140,16 @@ const MyPageHomeView = ({ navigation }) => {
             <View style={styles.walkingWrap}>
               <Pressable
                 onPress={() => {
-                  Navigator.reset(
-                    { tab: 1 },
-                    'home_tabs',
-                    'walking_tab',
-                    'walking_home'
-                  );
+                  if (systemStore.isWalking) {
+                    Navigator.navigate({}, 'home_tabs', 'walking_tab');
+                  } else {
+                    Navigator.reset(
+                      { tab: 1 },
+                      'home_tabs',
+                      'walking_tab',
+                      'walking_home'
+                    );
+                  }
                 }}
                 style={styles.walking}
               >

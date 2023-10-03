@@ -67,7 +67,11 @@ const MyNotificationView = () => {
 
   const landing = useCallback((item) => {
     if (item.landingUrl == 'walking_history_tab2') {
-      Navigator.reset({ tab: 1 }, 'home_tabs', 'walking_tab', 'walking_home');
+      if (systemStore.isWalking) {
+        Navigator.navigate({}, 'home_tabs', 'walking_tab');
+      } else {
+        Navigator.reset({ tab: 1 }, 'home_tabs', 'walking_tab', 'walking_home');
+      }
     } else if (item.landingUrl == 'friends_tab1') {
       Navigator.reset({ tab: 0 }, 'friends');
     } else if (item.landingUrl == 'friends_tab2') {
@@ -92,7 +96,11 @@ const MyNotificationView = () => {
           (notifications.length > 0 ? (
             <>
               {notifications?.map((item) => (
-                <NotificationItem key={item.notiId} item={item} onPress={landing} />
+                <NotificationItem
+                  key={item.notiId}
+                  item={item}
+                  onPress={landing}
+                />
               ))}
               {hasNext && <MoreButton onPress={getNextData} />}
             </>

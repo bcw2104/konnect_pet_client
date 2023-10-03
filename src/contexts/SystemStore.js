@@ -4,6 +4,7 @@ export default class SystemStore {
   _rootStore = null;
   _displayTabBar = true;
   _isLoading = false;
+  _isWalking = false;
   _backHandlerCallback = null;
 
   _appVersion = null;
@@ -34,6 +35,10 @@ export default class SystemStore {
     this._isLoading = isLoading;
   }
 
+  setIsWalking(isWalking) {
+    this._isWalking = isWalking;
+  }
+
   get appVersion() {
     return this._appVersion;
   }
@@ -49,6 +54,9 @@ export default class SystemStore {
     return this._isLoading;
   }
 
+  get isWalking() {
+    return this._isWalking;
+  }
   get backHandlerCallback() {
     return this._backHandlerCallback;
   }
