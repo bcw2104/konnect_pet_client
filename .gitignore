@@ -13,6 +13,22 @@ web-build/
 *.apk
 *.aab
 
+.vscode
+android/
+ios/
+
+#setting
+.env
+.env.*
+app.json
+app.config.js
+eas.json
+credentials.json
+firebaseConfig.js
+google-services.json
+GoogleService-Info.plist
+googleServiceAccountKey.json
+
 # macOS
 .DS_Store
 
