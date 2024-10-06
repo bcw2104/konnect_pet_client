@@ -14,7 +14,7 @@ import { Image } from 'react-native';
 import { COLORS } from './../../commons/colors';
 import CustomText from '../elements/CustomText';
 
-const   GoogleLogin = () => {
+const GoogleLogin = () => {
   const { userStore, systemStore } = useStores();
 
   GoogleSignin.configure({});
@@ -85,7 +85,7 @@ const   GoogleLogin = () => {
         />
         <CustomText
           fontColor={COLORS.dark}
-          fontSize={18}
+          fontSize={16}
           fontWeight={FONT_WEIGHT.BOLD}
         >
           Continue With Google

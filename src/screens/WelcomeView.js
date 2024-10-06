@@ -100,7 +100,6 @@ const WelcomeView = () => {
           <View style={styles.socialWrap}>
             <GoogleLogin />
             <FacebookLogin />
-            <GoogleLogin />
           </View>
         </View>
       </KeyboardAwareScrollView>

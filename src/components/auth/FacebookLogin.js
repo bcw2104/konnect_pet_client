@@ -71,7 +71,7 @@ const FacebookLogin = () => {
       />
       <CustomText
         fontColor={COLORS.dark}
-        fontSize={18}
+        fontSize={16}
         fontWeight={FONT_WEIGHT.BOLD}
       >
         Continue With FaceBook
